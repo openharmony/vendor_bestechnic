@@ -1,0 +1,56 @@
+{
+  "product_name": "wifiiot_bes2600w",
+  "ohos_version": "OpenHarmony 1.0",
+  "device_company": "bestechnic",
+  "board": "bes2600w",
+  "kernel_type": "liteos_m",
+  "kernel_version": "3.0.0",
+  "trust_enable": "false",
+  "mini_enable": "false",
+  "subsystems": [
+    {
+      "subsystem": "distributed_schedule",
+      "components": [
+      ]
+    },
+    {
+      "subsystem": "kernel",
+      "components": [
+        {
+          "component": "liteos_m",
+          "features":[
+                "enable_ohos_kernel_liteos_m_tz = false",
+                "enable_ohos_kernel_liteos_m_fs = false",
+                "enable_ohos_kernel_liteos_m_cmsis = false",
+                "enable_ohos_kernel_liteos_m_posix = false"
+                ]
+        }
+      ]
+    },
+    {
+      "subsystem": "startup",
+      "components": [
+      ]
+    },
+    {
+      "subsystem": "graphic",
+      "components": [
+      ]
+    },
+    {
+      "subsystem": "distributed_schedule",
+      "components": [
+        { "component": "samgr_lite", "features":[] }
+      ]
+    },
+    {
+      "subsystem": "hiviewdfx",
+      "components": [
+        { "component": "hilog_lite", "features":[] }
+      ]
+    }
+  ],
+  "vendor_adapter_dir":"",
+  "product_adapter_dir": "",
+  "third_party_dir": ""
+}
