@@ -1,0 +1,56 @@
+#include "device_info.hcs"
+
+root {
+    module = "Bestechnic,bes2600w_chip";
+    platform {
+        gpio_config {
+            // 0:P1_3; 1:p1_2; 2:P3_7; 3:P0_5; 4:P1_5;
+            // 5:P3_6; 6:P2_1; 7:P3_3; 8:P0_1; 9:P0_0;
+            pin = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
+            realpin = [13, 12, 37, 5, 15, 36, 21, 33, 1, 0];
+            config = [2, 2, 2, 2, 2, 5, 3, 3, 3, 5];
+            pinNum = 10;
+            type = 1;
+            code = 114;
+            match_attr = "gpio_config";
+        }
+        i2c_config {
+            i2c_0_config {
+                port = 0;
+                speed = 200000;
+                use_dma = 0;
+                use_sync = 1;
+                as_master = 1;
+                scl_pin = 04;
+                sda_pin = 05;
+                match_attr = "i2c_0_config";
+                address_width = 8;
+                mode = 0;
+            }
+            i2c_1_config {
+                port = 1;
+                speed = 200000;
+                use_dma = 0;
+                use_sync = 1;
+                as_master = 1;
+                scl_pin = 22;
+                sda_pin = 23;
+                match_attr = "i2c_1_config";
+                address_width = 8;
+                mode = 0;
+            }
+        }
+        uart_config {
+            uart_0_config {
+                num = 0;
+                baudrate = 1500000;
+                parity = 0;
+                stopBit = 0;
+                data = 3;
+                txDMA = true;
+                rxDMA = true;
+                match_attr = "uart_0_config";
+            }
+        }
+    }
+}

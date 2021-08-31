@@ -1,12 +1,102 @@
 {
-  "product_name": "wifiiot_bes2600w",
+  "product_name": "display_demo",
   "ohos_version": "OpenHarmony 1.0",
   "device_company": "bestechnic",
   "board": "bes2600w",
   "kernel_type": "liteos_m",
   "kernel_version": "3.0.0",
-  "trust_enable": "false",
-  "mini_enable": "false",
+  "bin_list": [
+    {
+      "elf_name": "wifiiot",
+      "bsp_target_name": "best2600w_liteos",
+      "signature": "false",
+      "startaddr": "738721792",
+      "bin_size": "11010048",
+      "burn_name": "rtos_main",
+      "enable": "true"
+    },
+    {
+      "elf_name": "wifiiot_mini",
+      "bsp_target_name": "best2600w_liteos_mini",
+      "signature": "false",
+      "startaddr": "749731840",
+      "bin_size": "3735552",
+      "burn_name": "rtos_mini",
+      "enable": "false"
+    },
+    {
+      "elf_name": "wifiiot_se",
+      "bsp_target_name": "best2600w_liteos_se",
+      "signature": "false",
+      "startaddr": "738394112",
+      "bin_size": "155648",
+      "burn_name": "trustzone_main",
+      "enable": "false"
+    },
+    {
+      "elf_name": "wifiiot_mini_se",
+      "bsp_target_name": "best2600w_liteos_mini_se",
+      "signature": "false",
+      "startaddr": "738549760",
+      "bin_size": "155648",
+      "burn_name": "trustzone_mini",
+      "enable": "false"
+    }
+  ],
+  "fs_list": [
+    {
+      "fs_name": "littlefs",
+      "signature": "false",
+      "startaddr": "753467392",
+      "fs_size": "851968",
+      "fs_src": "./data/",
+      "burn_name": "littlefs",
+      "enable": "true"
+    }
+  ],
+  "bsp_bin_list": [
+    {
+      "bsp_bin_name": "best2600w_liteos_se",
+      "signature": "false",
+      "startaddr": "738549760",
+      "bin_size": "155648",
+      "burn_name": "trustzone_main",
+      "enable": "false"
+    },
+    {
+      "bsp_bin_name": "best2600w_liteos_mini_se",
+      "signature": "false",
+      "startaddr": "738394112",
+      "bin_size": "155648",
+      "burn_name": "trustzone_mini",
+      "enable": "false"
+    },
+    {
+      "bsp_bin_name": "ota_boot1",
+      "signature": "false",
+      "startaddr": "0",
+      "bin_size": "65536",
+      "burn_name": "ota_boot1",
+      "enable": "false"
+    },
+    {
+      "bsp_bin_name": "ota_boot2a",
+      "signature": "false",
+      "startaddr": "738263040",
+      "bin_size": "65536",
+      "burn_name": "ota_boot2a",
+      "remap_enable": "true",
+      "enable": "true"
+    },
+    {
+      "bsp_bin_name": "factory",
+      "signature": "false",
+      "startaddr": "754905088",
+      "bin_size": "4096",
+      "burn_name": "factory",
+      "enable": "false"
+    }
+  ],
   "subsystems": [
     {
       "subsystem": "distributed_schedule",
@@ -22,7 +112,8 @@
                 "enable_ohos_kernel_liteos_m_tz = false",
                 "enable_ohos_kernel_liteos_m_fs = false",
                 "enable_ohos_kernel_liteos_m_cmsis = false",
-                "enable_ohos_kernel_liteos_m_posix = false"
+                "enable_ohos_kernel_liteos_m_posix = false",
+                "enable_ohos_kernel_liteos_m_fatfs = false"
                 ]
         }
       ]
@@ -46,7 +137,11 @@
     {
       "subsystem": "hiviewdfx",
       "components": [
-        { "component": "hilog_lite", "features":[] }
+        { 
+          "component": "hilog_lite",
+          "optional": "true",
+          "features":[]
+        }
       ]
     }
   ],
