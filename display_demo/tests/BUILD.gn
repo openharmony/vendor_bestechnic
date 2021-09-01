@@ -11,8 +11,22 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-group("display_demo"){
+static_library("example") {
+    sources = [
+        "example.c"
+    ]
+
     deps = [
-      "tests:example",
+        "//device/bestechnic/bes2600w/sdk_liteos/fs_adpater:fs_adapter",
+    ]
+
+    include_dirs = [
+        "//third_party/musl/include",
+        "//base/hiviewdfx/hilog_lite/interfaces/native/kits/",
+    ]
+
+    cflags = [
+      "-nostdinc",
+      "-nostdlib",
     ]
 }
