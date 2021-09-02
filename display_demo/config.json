@@ -102,8 +102,7 @@
             "enable_ohos_kernel_liteos_m_tz = false",
             "enable_ohos_kernel_liteos_m_fs = false",
             "enable_ohos_kernel_liteos_m_cmsis = false",
-            "enable_ohos_kernel_liteos_m_posix = false",
-            "enable_ohos_kernel_liteos_m_fatfs = false"
+            "enable_ohos_kernel_liteos_m_posix = false"
           ]
         }
       ]

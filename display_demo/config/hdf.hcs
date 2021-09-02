@@ -1,5 +1,4 @@
 #include "device_info.hcs"
-
 root {
     platform {
         gpio_config {

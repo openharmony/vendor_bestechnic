@@ -12,22 +12,18 @@
 # limitations under the License.
 
 static_library("example") {
-    sources = [
-        "example.c"
-    ]
+  sources = [ "example.c" ]
 
-    include_dirs = [
-        "//third_party/musl/include",
-        "//base/hiviewdfx/hilog_lite/interfaces/native/kits/",
-        "//device/bestechnic/"+board_name+"/drivers/test",
-    ]
+  include_dirs = [
+    "//third_party/musl/include",
+    "//base/hiviewdfx/hilog_lite/interfaces/native/kits/",
+    "//device/bestechnic/" + board_name + "/drivers/tests",
+  ]
 
-    deps = [
-        "//device/bestechnic/"+board_name+"/drivers:drivers",
-    ]
+  deps = [ "//device/bestechnic/" + board_name + "/drivers:drivers" ]
 
-    cflags = [
-      "-nostdinc",
-      "-nostdlib",
-    ]
+  cflags = [
+    "-nostdinc",
+    "-nostdlib",
+  ]
 }
