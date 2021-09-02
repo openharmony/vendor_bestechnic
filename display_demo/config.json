@@ -13,7 +13,10 @@
       "startaddr": "738721792",
       "bin_size": "11010048",
       "burn_name": "rtos_main",
-      "enable": "true"
+      "enable": "true",
+      "force_link_libs": [
+        "example"
+      ]
     },
     {
       "elf_name": "wifiiot_mini",
@@ -22,25 +25,10 @@
       "startaddr": "749731840",
       "bin_size": "3735552",
       "burn_name": "rtos_mini",
-      "enable": "false"
-    },
-    {
-      "elf_name": "wifiiot_se",
-      "bsp_target_name": "best2600w_liteos_se",
-      "signature": "false",
-      "startaddr": "738394112",
-      "bin_size": "155648",
-      "burn_name": "trustzone_main",
-      "enable": "false"
-    },
-    {
-      "elf_name": "wifiiot_mini_se",
-      "bsp_target_name": "best2600w_liteos_mini_se",
-      "signature": "false",
-      "startaddr": "738549760",
-      "bin_size": "155648",
-      "burn_name": "trustzone_mini",
-      "enable": "false"
+      "enable": "false",
+      "force_link_libs": [
+        "example"
+      ]
     }
   ],
   "fs_list": [
@@ -51,7 +39,7 @@
       "fs_size": "851968",
       "fs_src": "./data/",
       "burn_name": "littlefs",
-      "enable": "true"
+      "enable": "false"
     }
   ],
   "bsp_bin_list": [
