@@ -15,7 +15,10 @@
       "burn_name": "rtos_main",
       "enable": "true",
       "force_link_libs": [
-        "example"
+        "hdf_platform_lite",
+        "example",
+        "gpio",
+        "i2c"
       ]
     },
     {
@@ -88,52 +91,52 @@
   "subsystems": [
     {
       "subsystem": "distributed_schedule",
-      "components": [
-      ]
+      "components": []
     },
     {
       "subsystem": "kernel",
       "components": [
         {
           "component": "liteos_m",
-          "features":[
-                "enable_ohos_kernel_liteos_m_tz = false",
-                "enable_ohos_kernel_liteos_m_fs = false",
-                "enable_ohos_kernel_liteos_m_cmsis = false",
-                "enable_ohos_kernel_liteos_m_posix = false",
-                "enable_ohos_kernel_liteos_m_fatfs = false"
-                ]
+          "features": [
+            "enable_ohos_kernel_liteos_m_tz = false",
+            "enable_ohos_kernel_liteos_m_fs = false",
+            "enable_ohos_kernel_liteos_m_cmsis = false",
+            "enable_ohos_kernel_liteos_m_posix = false",
+            "enable_ohos_kernel_liteos_m_fatfs = false"
+          ]
         }
       ]
     },
     {
       "subsystem": "startup",
-      "components": [
-      ]
+      "components": []
     },
     {
       "subsystem": "graphic",
-      "components": [
-      ]
+      "components": []
     },
     {
       "subsystem": "distributed_schedule",
       "components": [
-        { "component": "samgr_lite", "features":[] }
+        {
+          "component": "samgr_lite",
+          "features": []
+        }
       ]
     },
     {
       "subsystem": "hiviewdfx",
       "components": [
-        { 
+        {
           "component": "hilog_lite",
           "optional": "true",
-          "features":[]
+          "features": []
         }
       ]
     }
   ],
-  "vendor_adapter_dir":"",
+  "vendor_adapter_dir": "",
   "product_adapter_dir": "",
   "third_party_dir": ""
 }
