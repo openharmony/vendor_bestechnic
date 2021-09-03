@@ -16,10 +16,12 @@
 #include "ohos_init.h"
 #include "hal_trace.h"
 #include "hilog_lite/hiview_log.h"
+#include "driver_test.h"
 
 void DemoSdkMain(void)
 {
-    HILOG_INFO(HILOG_MODULE_APP,"HILOG_INFO %s\r\n",__func__);
+    HILOG_INFO(HILOG_MODULE_APP, "HILOG_INFO %s\r\n", __func__);
+    touch_test();
 }
 
 SYS_RUN(DemoSdkMain);

@@ -1,4 +1,5 @@
 root {
+    module = "bestechnic,bes2600w";
     device_info {
         match_attr = "hdf_manager";
         template host {
@@ -20,69 +21,27 @@ root {
             hostName = "platform_host";
             priority = 50;
             device_gpio :: device {
-                device0 :: deviceNode {
+                gpio0 :: deviceNode {
                     policy = 2;
-                    priority = 98;
-                    moduleName = "HDF_PLATFORM_GPIO_0";
-                    serviceName = "HDF_PLATFORM_GPIO_0";
+                    priority = 100;
+                    moduleName = "HDF_PLATFORM_GPIO";
+                    serviceName = "HDF_PLATFORM_GPIO";
                     deviceMatchAttr = "gpio_config";
                 }
             }
             device_i2c :: device {
-                device0 :: deviceNode {
+                i2c_manager :: deviceNode {
                     policy = 2;
-                    priority = 98;
-                    moduleName = "HDF_PLATFORM_I2C_0";
-                    serviceName = "HDF_PLATFORM_I2C_0";
-                    deviceMatchAttr = "i2c_0_config";
+                    priority = 50;
+                    moduleName = "HDF_PLATFORM_I2C_MANAGER";
+                    serviceName = "HDF_PLATFORM_I2C_MANAGER";
                 }
-                device1 :: deviceNode {
+                i2c0 :: deviceNode {
                     policy = 0;
-                    priority = 99;
-                    moduleName = "HDF_PLATFORM_I2C_1";
-                    serviceName = "HDF_PLATFORM_I2C_1";
-                    deviceMatchAttr = "i2c_1_config";
-                }
-                device2 :: deviceNode {
-                    policy = 0;
-                    priority = 99;
-                    moduleName = "HDF_PLATFORM_I2C_2";
-                    serviceName = "HDF_PLATFORM_I2C_2";
-                    deviceMatchAttr = "i2c_2_config";
-                }
-            }
-            device_uart :: device {
-                device0 :: deviceNode {
-                    policy = 2;
-                    priority = 99;
-                    moduleName = "HDF_PLATFORM_UART_0";
-                    serviceName = "HDF_PLATFORM_UART_0";
-                    deviceMatchAttr = "uart_0_config";
-                }
-                device1 :: deviceNode {
-                    policy = 2;
-                    permission = 0644;
-                    priority = 40;
-                    moduleName = "HDF_PLATFORM_UART_1";
-                    serviceName = "HDF_PLATFORM_UART_1";
-                    deviceMatchAttr = "uart_1_config";
-                }
-            }
-            device_spi :: device {
-                device0 :: deviceNode {
-                    policy = 2;
-                    priority = 99;
-                    moduleName = "HDF_PLATFORM_UART_0";
-                    serviceName = "HDF_PLATFORM_UART_0";
-                    deviceMatchAttr = "spi_0_config";
-                }
-                device1 :: deviceNode {
-                    policy = 2;
                     priority = 100;
-                    permission = 0660;
-                    moduleName = "HDF_PLATFORM_UART_1";
-                    serviceName = "HDF_PLATFORM_UART_1";
-                    deviceMatchAttr = "spi_1_config";
+                    moduleName = "HDF_PLATFORM_I2C";
+                    serviceName = "";
+                    deviceMatchAttr = "i2c0_config";
                 }
             }
         }
