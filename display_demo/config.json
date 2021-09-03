@@ -39,6 +39,7 @@
       "fs_name": "littlefs",
       "signature": "false",
       "startaddr": "753467392",
+      "block_size": "32768",
       "fs_size": "851968",
       "fs_src": "./data/",
       "burn_name": "littlefs",
