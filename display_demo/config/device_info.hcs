@@ -44,6 +44,23 @@ root {
                     deviceMatchAttr = "i2c0_config";
                 }
             }
+            device_mipi_dsi :: device {
+                mipi_dsi0 :: deviceNode {
+                    policy = 2;
+                    priority = 100;
+                    moduleName = "HDF_PLATFORM_MIPI_DSI";
+                    serviceName = "HDF_PLATFORM_MIPI_DSI";
+                    deviceMatchAttr = "mipi_dsi0_config";
+                }
+            }
+            device_lcd :: device {
+                lcd_rm69330 :: deviceNode {
+                    policy = 0;
+                    priority = 100;
+                    moduleName = "HDF_LCD_RM69330";
+                    serviceName = "HDF_LCD_RM69330";
+                }
+            }
         }
     }
 }

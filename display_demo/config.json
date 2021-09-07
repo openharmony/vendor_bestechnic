@@ -11,22 +11,25 @@
       "bsp_target_name": "best2600w_liteos",
       "signature": "false",
       "startaddr": "738721792",
-      "bin_size": "11010048",
+      "bin_size": "8257536",
       "burn_name": "rtos_main",
       "enable": "true",
       "force_link_libs": [
         "hdf_platform_lite",
+        "fs_adapter",
         "example",
         "gpio",
-        "i2c"
+        "i2c",
+        "mipi_dsi",
+        "lcd"
       ]
     },
     {
       "elf_name": "wifiiot_mini",
       "bsp_target_name": "best2600w_liteos_mini",
       "signature": "false",
-      "startaddr": "749731840",
-      "bin_size": "3735552",
+      "startaddr": "746979328",
+      "bin_size": "3145728",
       "burn_name": "rtos_mini",
       "enable": "false",
       "force_link_libs": [
@@ -38,12 +41,12 @@
     {
       "fs_name": "littlefs",
       "signature": "false",
-      "startaddr": "753467392",
+      "startaddr": "750125056",
       "block_size": "32768",
-      "fs_size": "851968",
+      "fs_size": "4194304",
       "fs_src": "./data/",
       "burn_name": "littlefs",
-      "enable": "false"
+      "enable": "true"
     }
   ],
   "bsp_bin_list": [
@@ -101,7 +104,8 @@
           "component": "liteos_m",
           "features": [
             "enable_ohos_kernel_liteos_m_tz = false",
-            "enable_ohos_kernel_liteos_m_fs = false",
+            "enable_ohos_kernel_liteos_m_fs = true",
+            "enable_ohos_kernel_liteos_m_fatfs = false",
             "enable_ohos_kernel_liteos_m_cmsis = false",
             "enable_ohos_kernel_liteos_m_posix = false"
           ]

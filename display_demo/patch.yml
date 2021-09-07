@@ -1,0 +1,8 @@
+base/hiviewdfx/hilog_lite:
+  - vendor/bestechnic/display_demo/patches/0001-use-external-HiLogWriteInternal-for-hilog-output.patch
+kernel/liteos_m:
+  - vendor/bestechnic/display_demo/patches/0001-work-around-fs-for-arm-none-eabi.patch
+drivers/adapter:
+  - vendor/bestechnic/display_demo/patches/0001-build-mipi_dsi-spi-watchdog.patch
+third_party/musl:
+  - vendor/bestechnic/display_demo/patches/0001-work-around-musl-for-arm-none-eabi.patch
