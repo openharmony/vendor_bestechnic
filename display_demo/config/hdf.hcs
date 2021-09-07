@@ -24,5 +24,16 @@ root {
                 mode = 0;
             }
         }
+        mipi_dsi_config {
+            mipi_dsi0 {
+                match_attr = "mipi_dsi0_config";
+                // EVB_V3/V2: DSI_RST - GPIO03, DSI_TE - GPIO21
+                // EVB_V2: DSI_VDD - GPIO14, DSI_VSS - GPIO15
+                rst_pin = 3;
+                te_pin = 21;
+                vdd_pin = 14;
+                vss_pin = 15;
+            }
+        }
     }
 }

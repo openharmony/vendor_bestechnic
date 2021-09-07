@@ -1,0 +1,344 @@
+From 79eba6e3f4e1a86b5162ae9aff48afcb73c9b112 Mon Sep 17 00:00:00 2001
+From: leihuang <leihuang@bestechnic.com>
+Date: Tue, 7 Sep 2021 14:36:49 +0800
+Subject: [PATCH] work around musl for arm-none-eabi
+
+Signed-off-by: leihuang <leihuang@bestechnic.com>
+Change-Id: Ib335ee98ad4ec7f8c0a492b61427fe18162e871b
+---
+ porting/liteos_m/kernel/include/stdlib.h          |  2 +-
+ porting/liteos_m/kernel/src/internal/stdio_impl.h |  5 +++++
+ porting/liteos_m/kernel/src/stdio/__stdio_read.c  |  2 +-
+ porting/liteos_m/kernel/src/stdio/clearerr.c      |  9 +++++++--
+ porting/liteos_m/kernel/src/stdio/fclose.c        |  2 +-
+ porting/liteos_m/kernel/src/stdio/feof.c          | 11 ++++++++---
+ porting/liteos_m/kernel/src/stdio/fflush.c        |  2 +-
+ porting/liteos_m/kernel/src/stdio/fgets.c         |  4 ++--
+ porting/liteos_m/kernel/src/stdio/fileno.c        |  4 ++--
+ porting/liteos_m/kernel/src/stdio/fopen.c         |  9 +++++++--
+ porting/liteos_m/kernel/src/stdio/fputs.c         |  9 +++++++--
+ porting/liteos_m/kernel/src/stdio/fread.c         | 11 ++++++++---
+ porting/liteos_m/kernel/src/stdio/fseek.c         |  2 +-
+ porting/liteos_m/kernel/src/stdio/ftell.c         |  2 +-
+ porting/liteos_m/kernel/src/stdio/fwrite.c        |  9 +++++++--
+ porting/liteos_m/kernel/src/string/strdup.c       |  7 ++++++-
+ 16 files changed, 65 insertions(+), 25 deletions(-)
+ mode change 100644 => 100755 porting/liteos_m/kernel/include/stdlib.h
+ mode change 100644 => 100755 porting/liteos_m/kernel/src/internal/stdio_impl.h
+ mode change 100644 => 100755 porting/liteos_m/kernel/src/stdio/__stdio_read.c
+ mode change 100644 => 100755 porting/liteos_m/kernel/src/stdio/fopen.c
+ mode change 100644 => 100755 porting/liteos_m/kernel/src/stdio/fread.c
+
+diff --git a/porting/liteos_m/kernel/include/stdlib.h b/porting/liteos_m/kernel/include/stdlib.h
+old mode 100644
+new mode 100755
+index 9c9b76ca..e665d446
+--- a/porting/liteos_m/kernel/include/stdlib.h
++++ b/porting/liteos_m/kernel/include/stdlib.h
+@@ -63,7 +63,7 @@ int abs (int);
+ long labs (long);
+ long long llabs (long long);
+ 
+-#ifndef ARM_NONE_EABI
++#ifndef __GNUC__
+ typedef struct { int quot, rem; } div_t;
+ typedef struct { long quot, rem; } ldiv_t;
+ typedef struct { long long quot, rem; } lldiv_t;
+diff --git a/porting/liteos_m/kernel/src/internal/stdio_impl.h b/porting/liteos_m/kernel/src/internal/stdio_impl.h
+old mode 100644
+new mode 100755
+index fa94606a..d5f8598c
+--- a/porting/liteos_m/kernel/src/internal/stdio_impl.h
++++ b/porting/liteos_m/kernel/src/internal/stdio_impl.h
+@@ -6,6 +6,11 @@
+ #include <stdio.h>
+ #include <bits/alltypes.h>
+ #include "../include/features.h"
++#ifdef __GNUC__
++#define WRAP(x) __wrap_##x
++#else
++#define WRAP(x) x
++#endif
+ 
+ #define UNGET 8
+ 
+diff --git a/porting/liteos_m/kernel/src/stdio/__stdio_read.c b/porting/liteos_m/kernel/src/stdio/__stdio_read.c
+old mode 100644
+new mode 100755
+index fcacffee..1117778f
+--- a/porting/liteos_m/kernel/src/stdio/__stdio_read.c
++++ b/porting/liteos_m/kernel/src/stdio/__stdio_read.c
+@@ -11,7 +11,7 @@ size_t __stdio_read(FILE *f, unsigned char *buf, size_t len)
+ 	ssize_t cnt;
+ 
+ 	cnt = read(f->fd, iov[0].iov_base, iov[0].iov_len);
+-	if (iov[1].iov_len - iov[0].iov_len > 0) cnt += read(f->fd, iov[1].iov_base, iov[1].iov_len - iov[0].iov_len);
++	if (iov[1].iov_len > iov[0].iov_len) cnt += read(f->fd, iov[1].iov_base, iov[1].iov_len - iov[0].iov_len);
+ 	if (cnt <= 0) {
+ 		f->flags |= cnt ? F_ERR : F_EOF;
+ 		return 0;
+diff --git a/porting/liteos_m/kernel/src/stdio/clearerr.c b/porting/liteos_m/kernel/src/stdio/clearerr.c
+index 3bf94d30..aaaaf83f 100644
+--- a/porting/liteos_m/kernel/src/stdio/clearerr.c
++++ b/porting/liteos_m/kernel/src/stdio/clearerr.c
+@@ -1,10 +1,15 @@
+ #include "stdio_impl.h"
+ 
+-void clearerr(FILE *f)
++void __clearerr(FILE *f)
+ {
+ 	FLOCK(f);
+ 	f->flags &= ~(F_EOF|F_ERR);
+ 	FUNLOCK(f);
+ }
+ 
+-weak_alias(clearerr, clearerr_unlocked);
++weak_alias(__clearerr, clearerr_unlocked);
++
++void WRAP(clearerr)(FILE *f)
++{
++	__clearerr(f);
++}
+diff --git a/porting/liteos_m/kernel/src/stdio/fclose.c b/porting/liteos_m/kernel/src/stdio/fclose.c
+index 9569c8ff..d6dfcadd 100644
+--- a/porting/liteos_m/kernel/src/stdio/fclose.c
++++ b/porting/liteos_m/kernel/src/stdio/fclose.c
+@@ -38,7 +38,7 @@ int __fclose(FILE *f)
+ }
+ weak_alias(__fclose, fclose);
+ 
+-int __wrap_fclose(FILE *f)
++int WRAP(fclose)(FILE *f)
+ {
+     return __fclose(f);
+ }
+diff --git a/porting/liteos_m/kernel/src/stdio/feof.c b/porting/liteos_m/kernel/src/stdio/feof.c
+index 56da6b91..fafaeb15 100644
+--- a/porting/liteos_m/kernel/src/stdio/feof.c
++++ b/porting/liteos_m/kernel/src/stdio/feof.c
+@@ -2,7 +2,7 @@
+ 
+ #undef feof
+ 
+-int feof(FILE *f)
++int __feof(FILE *f)
+ {
+ 	FLOCK(f);
+ 	int ret = !!(f->flags & F_EOF);
+@@ -10,5 +10,10 @@ int feof(FILE *f)
+ 	return ret;
+ }
+ 
+-weak_alias(feof, feof_unlocked);
+-weak_alias(feof, _IO_feof_unlocked);
++weak_alias(__feof, feof_unlocked);
++weak_alias(__feof, _IO_feof_unlocked);
++
++int WRAP(feof)(FILE *f)
++{
++	return __feof(f);
++}
+diff --git a/porting/liteos_m/kernel/src/stdio/fflush.c b/porting/liteos_m/kernel/src/stdio/fflush.c
+index f2164eec..71999bc0 100644
+--- a/porting/liteos_m/kernel/src/stdio/fflush.c
++++ b/porting/liteos_m/kernel/src/stdio/fflush.c
+@@ -47,7 +47,7 @@ int __fflush(FILE *f)
+ weak_alias(fflush, fflush_unlocked);
+ weak_alias(__fflush, fflush);
+ 
+-int __wrap_fflush(FILE *f)
++int WRAP(fflush)(FILE *f)
+ {
+     return __fflush(f);
+ }
+diff --git a/porting/liteos_m/kernel/src/stdio/fgets.c b/porting/liteos_m/kernel/src/stdio/fgets.c
+index d1109e75..26ef2b27 100644
+--- a/porting/liteos_m/kernel/src/stdio/fgets.c
++++ b/porting/liteos_m/kernel/src/stdio/fgets.c
+@@ -3,7 +3,7 @@
+ 
+ #define MIN(a,b) ((a)<(b) ? (a) : (b))
+ 
+-char *fgets(char *restrict s, int n, FILE *restrict f)
++char *WRAP(fgets)(char *restrict s, int n, FILE *restrict f)
+ {
+ 	char *p = s;
+ 	unsigned char *z;
+@@ -43,4 +43,4 @@ char *fgets(char *restrict s, int n, FILE *restrict f)
+ 	FUNLOCK(f);
+ 
+ 	return s;
+-}
+\ No newline at end of file
++}
+diff --git a/porting/liteos_m/kernel/src/stdio/fileno.c b/porting/liteos_m/kernel/src/stdio/fileno.c
+index e6e66908..5dee4215 100644
+--- a/porting/liteos_m/kernel/src/stdio/fileno.c
++++ b/porting/liteos_m/kernel/src/stdio/fileno.c
+@@ -1,7 +1,7 @@
+ #include "stdio_impl.h"
+ #include <errno.h>
+ 
+-int fileno(FILE *f)
++int WRAP(fileno)(FILE *f)
+ {
+ 	FLOCK(f);
+ 	int fd = f->fd;
+@@ -11,4 +11,4 @@ int fileno(FILE *f)
+ 		return -1;
+ 	}
+ 	return fd;
+-}
+\ No newline at end of file
++}
+diff --git a/porting/liteos_m/kernel/src/stdio/fopen.c b/porting/liteos_m/kernel/src/stdio/fopen.c
+old mode 100644
+new mode 100755
+index 7dddf930..ebd89547
+--- a/porting/liteos_m/kernel/src/stdio/fopen.c
++++ b/porting/liteos_m/kernel/src/stdio/fopen.c
+@@ -5,7 +5,7 @@
+ #include <errno.h>
+ #include <limits.h>
+ 
+-FILE *fopen(const char *restrict filename, const char *restrict mode)
++FILE *__fopen(const char *restrict filename, const char *restrict mode)
+ {
+ 	FILE *f;
+ 	int fd;
+@@ -39,4 +39,9 @@ FILE *fopen(const char *restrict filename, const char *restrict mode)
+ 	return 0;
+ }
+ 
+-weak_alias(fopen, fopen64);
++weak_alias(__fopen, fopen64);
++
++FILE *WRAP(fopen)(const char *restrict filename, const char *restrict mode)
++{
++	return __fopen(filename, mode);
++}
+diff --git a/porting/liteos_m/kernel/src/stdio/fputs.c b/porting/liteos_m/kernel/src/stdio/fputs.c
+index 1cf344f2..50b6efd4 100644
+--- a/porting/liteos_m/kernel/src/stdio/fputs.c
++++ b/porting/liteos_m/kernel/src/stdio/fputs.c
+@@ -1,10 +1,15 @@
+ #include "stdio_impl.h"
+ #include <string.h>
+ 
+-int fputs(const char *restrict s, FILE *restrict f)
++int __fputs(const char *restrict s, FILE *restrict f)
+ {
+ 	size_t l = strlen(s);
+ 	return (fwrite(s, 1, l, f)==l) - 1;
+ }
+ 
+-weak_alias(fputs, fputs_unlocked);
++weak_alias(__fputs, fputs_unlocked);
++
++int WRAP(fputs)(const char *restrict s, FILE *restrict f)
++{
++	return __fputs(s, f);
++}
+diff --git a/porting/liteos_m/kernel/src/stdio/fread.c b/porting/liteos_m/kernel/src/stdio/fread.c
+old mode 100644
+new mode 100755
+index a2116da6..858931a0
+--- a/porting/liteos_m/kernel/src/stdio/fread.c
++++ b/porting/liteos_m/kernel/src/stdio/fread.c
+@@ -3,12 +3,12 @@
+ 
+ #define MIN(a,b) ((a)<(b) ? (a) : (b))
+ 
+-size_t fread(void *restrict destv, size_t size, size_t nmemb, FILE *restrict f)
++size_t __fread(void *restrict destv, size_t size, size_t nmemb, FILE *restrict f)
+ {
+ 	unsigned char *dest = destv;
+ 	size_t len = size*nmemb, l = len, k;
+ 	if (!size) nmemb = 0;
+-
++	if (!nmemb) return 0;
+ 	FLOCK(f);
+ 
+ 	f->mode |= f->mode-1;
+@@ -35,4 +35,9 @@ size_t fread(void *restrict destv, size_t size, size_t nmemb, FILE *restrict f)
+ 	return nmemb;
+ }
+ 
+-weak_alias(fread, fread_unlocked);
++weak_alias(__fread, fread_unlocked);
++
++size_t WRAP(fread)(void *restrict destv, size_t size, size_t nmemb, FILE *restrict f)
++{
++	return __fread(destv, size, nmemb, f);
++}
+diff --git a/porting/liteos_m/kernel/src/stdio/fseek.c b/porting/liteos_m/kernel/src/stdio/fseek.c
+index 4731d8a0..0f10c2f6 100644
+--- a/porting/liteos_m/kernel/src/stdio/fseek.c
++++ b/porting/liteos_m/kernel/src/stdio/fseek.c
+@@ -33,7 +33,7 @@ int __fseeko(FILE *f, off_t off, int whence)
+ 	return result;
+ }
+ 
+-int fseek(FILE *f, long off, int whence)
++int WRAP(fseek)(FILE *f, long off, int whence)
+ {
+ 	return __fseeko(f, off, whence);
+ }
+diff --git a/porting/liteos_m/kernel/src/stdio/ftell.c b/porting/liteos_m/kernel/src/stdio/ftell.c
+index d15cc665..d899dcfd 100644
+--- a/porting/liteos_m/kernel/src/stdio/ftell.c
++++ b/porting/liteos_m/kernel/src/stdio/ftell.c
+@@ -26,7 +26,7 @@ off_t __ftello(FILE *f)
+ 	return pos;
+ }
+ 
+-long ftell(FILE *f)
++long WRAP(ftell)(FILE *f)
+ {
+ 	off_t pos = __ftello(f);
+ 	if (pos > LONG_MAX) {
+diff --git a/porting/liteos_m/kernel/src/stdio/fwrite.c b/porting/liteos_m/kernel/src/stdio/fwrite.c
+index 7a567b2c..5e3fb264 100644
+--- a/porting/liteos_m/kernel/src/stdio/fwrite.c
++++ b/porting/liteos_m/kernel/src/stdio/fwrite.c
+@@ -25,7 +25,7 @@ size_t __fwritex(const unsigned char *restrict s, size_t l, FILE *restrict f)
+ 	return l+i;
+ }
+ 
+-size_t fwrite(const void *restrict src, size_t size, size_t nmemb, FILE *restrict f)
++size_t __fwrite(const void *restrict src, size_t size, size_t nmemb, FILE *restrict f)
+ {
+ 	size_t k, l = size*nmemb;
+ 	if (!size) nmemb = 0;
+@@ -35,4 +35,9 @@ size_t fwrite(const void *restrict src, size_t size, size_t nmemb, FILE *restric
+ 	return k==l ? nmemb : k/size;
+ }
+ 
+-weak_alias(fwrite, fwrite_unlocked);
++weak_alias(__fwrite, fwrite_unlocked);
++
++size_t WRAP(fwrite)(const void *restrict src, size_t size, size_t nmemb, FILE *restrict f)
++{
++	return __fwrite(src, size, nmemb, f);
++}
+diff --git a/porting/liteos_m/kernel/src/string/strdup.c b/porting/liteos_m/kernel/src/string/strdup.c
+index d4c27449..68682c8a 100644
+--- a/porting/liteos_m/kernel/src/string/strdup.c
++++ b/porting/liteos_m/kernel/src/string/strdup.c
+@@ -1,7 +1,12 @@
+ #include <stdlib.h>
+ #include <string.h>
+ 
+-char *strdup(const char *s)
++#ifdef __GNUC__
++#define WRAP(x) __wrap_##x
++#else
++#define WRAP(x) x
++#endif
++char *WRAP(strdup)(const char *s)
+ {
+ 	size_t l = strlen(s);
+ 	char *d = malloc(l+1);
+-- 
+2.17.1
+

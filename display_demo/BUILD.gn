@@ -11,8 +11,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-group("display_demo"){
-    deps = [
-      "tests:example",
-    ]
+group("display_demo") {
+  deps = [
+    "tests:example",
+    "//base/hiviewdfx/hilog_lite/frameworks/featured:hilog_static",
+  ]
 }
