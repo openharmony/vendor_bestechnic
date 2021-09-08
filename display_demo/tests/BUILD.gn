@@ -26,4 +26,9 @@ static_library("example") {
     "-nostdinc",
     "-nostdlib",
   ]
+
+  deps = [
+    "//device/bestechnic/bes2600w/sdk_liteos/fs_adapter:fs_adapter",
+    "//device/bestechnic/bes2600w/drivers:drivers"
+  ]
 }
