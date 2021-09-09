@@ -18,12 +18,18 @@
 #include "hilog_lite/hiview_log.h"
 #include "driver_test.h"
 #include "fs_test.h"
+#include "ui_test.h"
 
 static void DemoSdkTask(void *arg)
 {
     (void)arg;
+#ifdef FS_TEST
     fs_test();
+#elif defined(UI_TEST)
+    UiTestEntry();
+#else
     display_test();
+#endif
 }
 
 void DemoSdkMain(void)
