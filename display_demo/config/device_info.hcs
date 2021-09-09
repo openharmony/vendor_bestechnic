@@ -53,6 +53,10 @@ root {
                     deviceMatchAttr = "mipi_dsi0_config";
                 }
             }
+        }
+        display :: host {
+            hostName = "display_host";
+            priority = 50;
             device_lcd :: device {
                 lcd_rm69330 :: deviceNode {
                     policy = 0;

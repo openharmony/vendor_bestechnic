@@ -11,24 +11,37 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-static_library("example") {
-  sources = [
-    "example.c",
-    "fs_test.c",
-  ]
+declare_args() {
+  fs_test = false
+  ui_test = true
+}
 
+static_library("example") {
+  sources = [ "example.c" ]
+  defines = []
+  deps = [
+    "//device/bestechnic/bes2600w/drivers:drivers",
+    "//device/bestechnic/bes2600w/sdk_liteos/fs_adapter:fs_adapter",
+  ]
   include_dirs = [
+    "//utils/native/lite/include",
     "//base/hiviewdfx/hilog_lite/interfaces/native/kits/",
+    "//third_party/musl/porting/liteos_m/kernel/include",
     "//device/bestechnic/" + board_name + "/drivers/tests",
   ]
 
-  cflags = [
-    "-nostdinc",
-    "-nostdlib",
-  ]
-
-  deps = [
-    "//device/bestechnic/bes2600w/sdk_liteos/fs_adapter:fs_adapter",
-    "//device/bestechnic/bes2600w/drivers:drivers"
-  ]
+  if (fs_test) {
+    sources += [ "fs_test.c" ]
+    defines += [ "FS_TEST" ]
+  } else if (ui_test) {
+    sources += [
+      "ui_animator_test.cpp",
+      "ui_basic_test.cpp",
+      "ui_image_test.cpp",
+      "ui_test.cpp",
+      "ui_view_test.cpp",
+    ]
+    defines += [ "UI_TEST" ]
+    deps += [ "../ui_adapter:ui_adapter" ]
+  }
 }

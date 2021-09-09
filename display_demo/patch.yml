@@ -5,4 +5,18 @@ kernel/liteos_m:
 drivers/adapter:
   - vendor/bestechnic/display_demo/patches/0001-build-mipi_dsi-spi-watchdog.patch
 third_party/musl:
-  - vendor/bestechnic/display_demo/patches/0001-work-around-musl-for-arm-none-eabi.patch
+  - vendor/bestechnic/display_demo/patches/0001-fix-work-around-musl-for-arm-none-eabi.patch
+foundation/graphic/ui:
+  - vendor/bestechnic/display_demo/patches/0001-feat-porting-graphic_ui-to-liteos_m.patch
+foundation/graphic/utils:
+  - vendor/bestechnic/display_demo/patches/0001-feat-porting-graphic_utils-to-liteos_m.patch
+third_party/giflib:
+  - vendor/bestechnic/display_demo/patches/0001-feat-build-libgif.a-for-liteos_m.patch
+third_party/libjpeg:
+  - vendor/bestechnic/display_demo/patches/0001-feat-build-libjpeg.a-for-liteos_m.patch
+third_party/libpng:
+  - vendor/bestechnic/display_demo/patches/0001-feat-build-libpng.a-for-liteos_m.patch
+third_party/qrcodegen:
+  - vendor/bestechnic/display_demo/patches/0001-feat-build-libqrcodegen.a-for-liteos_m.patch
+third_party/freetype:
+  - vendor/bestechnic/display_demo/patches/0001-feat-build-libfreetype.a-for-liteos_m.patch

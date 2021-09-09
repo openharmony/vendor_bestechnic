@@ -1,0 +1,39 @@
+From 2466a1e8e3fbc6d699e1c64d3cca37d0c0a39e5a Mon Sep 17 00:00:00 2001
+From: leihuang <leihuang@bestechnic.com>
+Date: Thu, 9 Sep 2021 10:23:42 +0800
+Subject: [PATCH] feat: build libpng.a for liteos_m
+
+Signed-off-by: leihuang <leihuang@bestechnic.com>
+Change-Id: Ifd37e70e7f956f7d474e3b284bceaeeb81753c9a
+---
+ BUILD.gn | 12 ++++++++----
+ 1 file changed, 8 insertions(+), 4 deletions(-)
+
+diff --git a/BUILD.gn b/BUILD.gn
+index 7035c41fd..f9f0c5910 100755
+--- a/BUILD.gn
++++ b/BUILD.gn
+@@ -29,12 +29,16 @@ if (defined(ohos_lite)) {
+   ]
+ 
+   lite_library("libpng") {
+-    target_type = "shared_library"
+-    sources = libpng_source
++    if (ohos_kernel_type == "liteos_m") {
++      target_type = "static_library"
++      deps = [ "//build/lite/config/component/zlib:zlib_static" ]
++    } else {
++      target_type = "shared_library"
++      deps = [ "//build/lite/config/component/zlib:zlib_shared" ]
++    }
+ 
++    sources = libpng_source
+     public_configs = [ ":libpng_config" ]
+-
+-    deps = [ "//build/lite/config/component/zlib:zlib_shared" ]
+   }
+ } else {
+   import("//build/ohos.gni")
+-- 
+2.17.1
+

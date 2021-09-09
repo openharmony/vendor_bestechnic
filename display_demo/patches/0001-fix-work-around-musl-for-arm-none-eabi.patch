@@ -1,14 +1,16 @@
-From 79eba6e3f4e1a86b5162ae9aff48afcb73c9b112 Mon Sep 17 00:00:00 2001
+From f93f8943a5acfdb358c386f5fa53ab68152e22c2 Mon Sep 17 00:00:00 2001
 From: leihuang <leihuang@bestechnic.com>
-Date: Tue, 7 Sep 2021 14:36:49 +0800
-Subject: [PATCH] work around musl for arm-none-eabi
+Date: Thu, 9 Sep 2021 10:40:53 +0800
+Subject: [PATCH] fix: work around musl for arm-none-eabi
 
 Signed-off-by: leihuang <leihuang@bestechnic.com>
-Change-Id: Ib335ee98ad4ec7f8c0a492b61427fe18162e871b
+Change-Id: Ic003a74b6e87d263d1140cb00fafff7fe9d438ea
 ---
+ porting/liteos_m/kernel/include/ctype.h           | 12 ++++++++++++
+ porting/liteos_m/kernel/include/stddef.h          | 13 +++++++++++++
  porting/liteos_m/kernel/include/stdlib.h          |  2 +-
  porting/liteos_m/kernel/src/internal/stdio_impl.h |  5 +++++
- porting/liteos_m/kernel/src/stdio/__stdio_read.c  |  2 +-
+ porting/liteos_m/kernel/src/stdio/__stdio_read.c  |  4 ++--
  porting/liteos_m/kernel/src/stdio/clearerr.c      |  9 +++++++--
  porting/liteos_m/kernel/src/stdio/fclose.c        |  2 +-
  porting/liteos_m/kernel/src/stdio/feof.c          | 11 ++++++++---
@@ -22,13 +24,66 @@ Change-Id: Ib335ee98ad4ec7f8c0a492b61427fe18162e871b
  porting/liteos_m/kernel/src/stdio/ftell.c         |  2 +-
  porting/liteos_m/kernel/src/stdio/fwrite.c        |  9 +++++++--
  porting/liteos_m/kernel/src/string/strdup.c       |  7 ++++++-
- 16 files changed, 65 insertions(+), 25 deletions(-)
+ 18 files changed, 91 insertions(+), 26 deletions(-)
+ mode change 100644 => 100755 porting/liteos_m/kernel/include/ctype.h
  mode change 100644 => 100755 porting/liteos_m/kernel/include/stdlib.h
  mode change 100644 => 100755 porting/liteos_m/kernel/src/internal/stdio_impl.h
  mode change 100644 => 100755 porting/liteos_m/kernel/src/stdio/__stdio_read.c
  mode change 100644 => 100755 porting/liteos_m/kernel/src/stdio/fopen.c
  mode change 100644 => 100755 porting/liteos_m/kernel/src/stdio/fread.c
 
+diff --git a/porting/liteos_m/kernel/include/ctype.h b/porting/liteos_m/kernel/include/ctype.h
+old mode 100644
+new mode 100755
+index 61e826d0..05fe3b58
+--- a/porting/liteos_m/kernel/include/ctype.h
++++ b/porting/liteos_m/kernel/include/ctype.h
+@@ -66,6 +66,18 @@ int   toupper_l(int, locale_t);
+ 
+ int   isascii(int);
+ int   toascii(int);
++
++#ifndef _U
++#define	_U	01
++#define	_L	02
++#define	_N	04
++#define	_S	010
++#define _P	020
++#define _C	040
++#define _X	0100
++#define	_B	0200
++#endif
++
+ #define _tolower(a) ((a)|0x20)
+ #define _toupper(a) ((a)&0x5f)
+ #define isascii(a) (0 ? isascii(a) : (unsigned)(a) < 128)
+diff --git a/porting/liteos_m/kernel/include/stddef.h b/porting/liteos_m/kernel/include/stddef.h
+index 27b5a9ad..dbc7b64e 100644
+--- a/porting/liteos_m/kernel/include/stddef.h
++++ b/porting/liteos_m/kernel/include/stddef.h
+@@ -17,9 +17,22 @@
+ #if __STDC_VERSION__ >= 201112L || __cplusplus >= 201103L
+ #define __NEED_max_align_t
+ #endif
++#define __need_wint_t
+ 
+ #include <bits/alltypes.h>
+ 
++#if defined (__need_wint_t)
++#ifndef _WINT_T
++#define _WINT_T
++
++#ifndef __WINT_TYPE__
++#define __WINT_TYPE__ unsigned int
++#endif
++typedef __WINT_TYPE__ wint_t;
++#endif
++#undef __need_wint_t
++#endif
++
+ #if __GNUC__ > 3
+ #define offsetof(type, member) __builtin_offsetof(type, member)
+ #else
 diff --git a/porting/liteos_m/kernel/include/stdlib.h b/porting/liteos_m/kernel/include/stdlib.h
 old mode 100644
 new mode 100755
@@ -65,7 +120,7 @@ index fa94606a..d5f8598c
 diff --git a/porting/liteos_m/kernel/src/stdio/__stdio_read.c b/porting/liteos_m/kernel/src/stdio/__stdio_read.c
 old mode 100644
 new mode 100755
-index fcacffee..1117778f
+index fcacffee..60c9f709
 --- a/porting/liteos_m/kernel/src/stdio/__stdio_read.c
 +++ b/porting/liteos_m/kernel/src/stdio/__stdio_read.c
 @@ -11,7 +11,7 @@ size_t __stdio_read(FILE *f, unsigned char *buf, size_t len)
@@ -77,6 +132,13 @@ index fcacffee..1117778f
  	if (cnt <= 0) {
  		f->flags |= cnt ? F_ERR : F_EOF;
  		return 0;
+@@ -22,4 +22,4 @@ size_t __stdio_read(FILE *f, unsigned char *buf, size_t len)
+ 	f->rend = f->buf + cnt;
+ 	if (f->buf_size) buf[len-1] = *f->rpos++;
+ 	return len;
+-}
+\ No newline at end of file
++}
 diff --git a/porting/liteos_m/kernel/src/stdio/clearerr.c b/porting/liteos_m/kernel/src/stdio/clearerr.c
 index 3bf94d30..aaaaf83f 100644
 --- a/porting/liteos_m/kernel/src/stdio/clearerr.c

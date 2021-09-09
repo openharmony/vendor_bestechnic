@@ -1,0 +1,32 @@
+From 658fa792ff91e2db08353d3b75a14ca3b666c5e6 Mon Sep 17 00:00:00 2001
+From: leihuang <leihuang@bestechnic.com>
+Date: Thu, 9 Sep 2021 12:09:41 +0800
+Subject: [PATCH] feat: build libfreetype.a for liteos_m
+
+Signed-off-by: leihuang <leihuang@bestechnic.com>
+Change-Id: I39122286411771f6772d6f7936ddd4a8cd5ebf76
+---
+ BUILD.gn | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
+
+diff --git a/BUILD.gn b/BUILD.gn
+index 19dd78e..2cc1fb7 100755
+--- a/BUILD.gn
++++ b/BUILD.gn
+@@ -61,7 +61,12 @@ freetype_sources = [
+ ]
+ 
+ if (defined(ohos_lite)) {
+-  shared_library("freetype") {
++  lite_library("freetype") {
++    if (ohos_kernel_type == "liteos_m") {
++      target_type = "static_library"
++    } else {
++      target_type = "shared_library"
++    }
+     sources = freetype_sources
+     include_dirs = [ "src\base" ]
+     public_configs = [ ":freetype_config" ]
+-- 
+2.17.1
+
