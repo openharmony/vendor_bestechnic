@@ -1,0 +1,31 @@
+From 8e6f698c61bbb666250902c0e1f4137cb68eb670 Mon Sep 17 00:00:00 2001
+From: leihuang <leihuang@bestechnic.com>
+Date: Thu, 9 Sep 2021 10:18:27 +0800
+Subject: [PATCH] feat: build libgif.a for liteos_m
+
+Signed-off-by: leihuang <leihuang@bestechnic.com>
+Change-Id: Ic0928f910ab9def12f9a89932876afae719865a2
+---
+ BUILD.gn | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
+
+diff --git a/BUILD.gn b/BUILD.gn
+index a4489b3..d8c6d10 100755
+--- a/BUILD.gn
++++ b/BUILD.gn
+@@ -18,7 +18,11 @@ if (defined(ohos_lite)) {  # is on lite Os for ipcamera
+   ]
+ 
+   lite_library("libgif") {
+-    target_type = "shared_library"
++    if (ohos_kernel_type == "liteos_m") {
++      target_type = "static_library"
++    } else {
++      target_type = "shared_library"
++    }
+     sources = libgif_source
+ 
+     public_configs = [ ":libgif_config" ]
+-- 
+2.17.1
+
