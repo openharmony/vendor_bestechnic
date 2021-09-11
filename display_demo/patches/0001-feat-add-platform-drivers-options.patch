@@ -1,0 +1,62 @@
+From b036a27ed36b62bbd83a8cc333d77970feaf9678 Mon Sep 17 00:00:00 2001
+From: leihuang <leihuang@bestechnic.com>
+Date: Sat, 11 Sep 2021 10:20:34 +0800
+Subject: [PATCH] feat: add platform drivers options
+
+Signed-off-by: leihuang <leihuang@bestechnic.com>
+Change-Id: If3f3028b21c1b30e43bc8bf264b21198bed475a2
+---
+ khdf/liteos_m/BUILD.gn          | 4 ++--
+ khdf/liteos_m/platform/BUILD.gn | 7 +++++++
+ 2 files changed, 9 insertions(+), 2 deletions(-)
+ mode change 100644 => 100755 khdf/liteos_m/BUILD.gn
+ mode change 100644 => 100755 khdf/liteos_m/platform/BUILD.gn
+
+diff --git a/khdf/liteos_m/BUILD.gn b/khdf/liteos_m/BUILD.gn
+old mode 100644
+new mode 100755
+index a72632b..18b178d
+--- a/khdf/liteos_m/BUILD.gn
++++ b/khdf/liteos_m/BUILD.gn
+@@ -30,9 +30,9 @@
+ group("hdf_lite") {
+   deps = [
+     "core:hdf_core",
+-    "network:hdf_network",
++    # "network:hdf_network",
+     "osal:hdf_osal_lite",
+     "platform:hdf_platform_lite",
+-    "test\sample_driver:sample_driver",
++    # "test\sample_driver:sample_driver",
+   ]
+ }
+diff --git a/khdf/liteos_m/platform/BUILD.gn b/khdf/liteos_m/platform/BUILD.gn
+old mode 100644
+new mode 100755
+index 9c2625b..3c5071f
+--- a/khdf/liteos_m/platform/BUILD.gn
++++ b/khdf/liteos_m/platform/BUILD.gn
+@@ -34,6 +34,7 @@ config("libhdf_platform_pub_config") {
+   include_dirs = [
+     "$hdf_fwk_path/include/platform",
+     "$hdf_fwk_path/support/platform/include",
++    "$hdf_fwk_path/support/platform/include/common",
+   ]
+ }
+ 
+@@ -46,6 +47,12 @@ static_library("hdf_platform_lite") {
+     "$hdf_fwk_path/support/platform/src/uart_core.c",
+     "$hdf_fwk_path/support/platform/src/uart_if.c",
+     "$hdf_fwk_path/support/platform/src/pwm_core.c",
++    "$hdf_fwk_path/support/platform/src/mipi_dsi_core.c",
++    "$hdf_fwk_path/support/platform/src/mipi_dsi_if.c",
++    "$hdf_fwk_path/support/platform/src/spi_core.c",
++    "$hdf_fwk_path/support/platform/src/spi_if.c",
++    "$hdf_fwk_path/support/platform/src/watchdog_core.c",
++    "$hdf_fwk_path/support/platform/src/watchdog_if.c",
+     "plat_common.c",
+   ]
+   include_dirs = [ "kernel/liteos_m/kernel/arch/include" ]
+-- 
+2.17.1
+
