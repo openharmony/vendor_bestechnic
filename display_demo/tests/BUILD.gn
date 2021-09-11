@@ -1,0 +1,47 @@
+# Copyright (c) 2021 bestechnic (Shanghai) Technologies CO., LIMITED.
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+declare_args() {
+  fs_test = false
+  ui_test = true
+}
+
+static_library("example") {
+  sources = [ "example.c" ]
+  defines = []
+  deps = [
+    "//device/bestechnic/bes2600w/drivers:drivers",
+    "//device/bestechnic/bes2600w/sdk_liteos/fs_adapter:fs_adapter",
+  ]
+  include_dirs = [
+    "//utils/native/lite/include",
+    "//base/hiviewdfx/hilog_lite/interfaces/native/kits/",
+    "//third_party/musl/porting/liteos_m/kernel/include",
+    "//device/bestechnic/" + board_name + "/drivers/tests",
+  ]
+
+  if (fs_test) {
+    sources += [ "fs_test.c" ]
+    defines += [ "FS_TEST" ]
+  } else if (ui_test) {
+    sources += [
+      "ui_animator_test.cpp",
+      "ui_basic_test.cpp",
+      "ui_image_test.cpp",
+      "ui_test.cpp",
+      "ui_view_test.cpp",
+    ]
+    defines += [ "UI_TEST" ]
+    deps += [ "../ui_adapter:ui_adapter" ]
+  }
+}
