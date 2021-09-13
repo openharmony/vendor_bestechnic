@@ -15,5 +15,6 @@ group("display_demo") {
   deps = [
     "tests:example",
     "//base/hiviewdfx/hilog_lite/frameworks/featured:hilog_static",
+    "tests/iot_wifi_sta_connect:wifi_sta_connect",
   ]
 }

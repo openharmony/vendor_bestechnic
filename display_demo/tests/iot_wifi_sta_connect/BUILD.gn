@@ -1,0 +1,11 @@
+static_library("wifi_sta_connect") {
+    sources = [
+        "wifi_sta_connect.c"
+    ]
+    cflags = [ "-Wno-unused-variable" ]
+    include_dirs = [
+        "//utils/native/lite/include",
+        "//device/bestechnic/" + board_name + "/hardware/hals/communication/wifi_lite/wifiservice/include",
+        "//foundation/communication/wifi_lite/interfaces/wifiservice/",
+    ]
+}

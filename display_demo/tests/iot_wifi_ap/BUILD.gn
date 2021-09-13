@@ -1,0 +1,10 @@
+static_library("wifi_ap") {
+    sources = [
+        "wifi_ap.c"
+    ]
+    cflags = [ "-Wno-unused-variable" ]
+    include_dirs = [
+        "//utils/native/lite/include",
+        "//foundation/communication/wifi_lite/interfaces/wifiservice/",
+    ]
+}
