@@ -62,7 +62,18 @@ root {
                     policy = 0;
                     priority = 100;
                     moduleName = "HDF_LCD_RM69330";
-                    serviceName = "HDF_LCD_RM69330";
+                }
+            }
+        }
+        input :: host {
+            hostName = "input_host";
+            priority = 50;
+            device_touch :: device {
+                touch_ztw523 :: deviceNode {
+                    policy = 0;
+                    priority = 100;
+                    moduleName = "HDF_TOUCH_ZTW523";
+                    deviceMatchAttr = "touch_ztw523_config";
                 }
             }
         }

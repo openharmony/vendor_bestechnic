@@ -1,13 +1,14 @@
-From 71306c6b5ccc5a62e7f242ea6f18b17efd14f64b Mon Sep 17 00:00:00 2001
+From 3571496961e08903cfc38b168489664af523faae Mon Sep 17 00:00:00 2001
 From: leihuang <leihuang@bestechnic.com>
-Date: Tue, 7 Sep 2021 14:19:39 +0800
-Subject: [PATCH] work around fs for arm-none-eabi
+Date: Sun, 19 Sep 2021 14:22:33 +0800
+Subject: [PATCH] fix: work around fs for arm-none-eabi
 
 Signed-off-by: leihuang <leihuang@bestechnic.com>
-Change-Id: I79477061d4f309c9c8cf0aaba758bdfc5edbc54b
+Change-Id: I688e1d3d147dfa884301daa9e88cef01426d95b5
 ---
- components/fs/fs.c | 46 +++++++++++++++++++++++++---------------------
- 1 file changed, 25 insertions(+), 21 deletions(-)
+ components/fs/fs.c   | 46 ++++++++++++++++++++++++--------------------
+ kal/posix/src/time.c |  2 +-
+ 2 files changed, 26 insertions(+), 22 deletions(-)
  mode change 100644 => 100755 components/fs/fs.c
 
 diff --git a/components/fs/fs.c b/components/fs/fs.c
@@ -209,6 +210,19 @@ index a06212a..635e072
  {
      if (g_fs == NULL) {
          errno = ENODEV;
+diff --git a/kal/posix/src/time.c b/kal/posix/src/time.c
+index 0f54fca..2c1caed 100644
+--- a/kal/posix/src/time.c
++++ b/kal/posix/src/time.c
+@@ -589,7 +589,7 @@ time_t mktime(struct tm *tmptr)
+     return timeInSeconds;
+ }
+ 
+-int gettimeofday(struct timeval *tv, void *ptz)
++__attribute__((weak)) int gettimeofday(struct timeval *tv, void *ptz)
+ {
+     struct timespec ts;
+     struct timezone *tz = (struct timezone *)ptz;
 -- 
 2.17.1
 

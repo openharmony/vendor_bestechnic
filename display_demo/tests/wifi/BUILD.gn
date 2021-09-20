@@ -11,13 +11,15 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-static_library("wifi_ap") {
+static_library("wifi_test") {
     sources = [
-        "wifi_ap.c"
+        "wifi_sta.c",
+        # "wifi_ap.c",
     ]
     cflags = [ "-Wno-unused-variable" ]
     include_dirs = [
         "//utils/native/lite/include",
+        "//device/bestechnic/" + board_name + "/hardware/hals/communication/wifi_lite/wifiservice/include",
         "//foundation/communication/wifi_lite/interfaces/wifiservice/",
     ]
 }

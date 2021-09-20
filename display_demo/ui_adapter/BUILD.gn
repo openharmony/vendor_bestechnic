@@ -13,6 +13,12 @@
 
 import("//build/lite/config/component/lite_component.gni")
 
+enable_ace = true
+
+config("ui_adapter_config") {
+  include_dirs = [ "." ]
+}
+
 static_library("ui_adapter") {
   sources = [
     "display_device.cpp",
@@ -20,10 +26,17 @@ static_library("ui_adapter") {
     "touch_input.cpp",
     "ui_main.cpp",
   ]
+
+  public_configs = [ ":ui_adapter_config" ]
   public_deps = [
     "//device/bestechnic/" + board_name + "/drivers:drivers",
     "//foundation/graphic/ui:ui",
   ]
+  if (enable_ace) {
+    defines = [ "ENABLE_ACE" ]
+    public_deps += [ "//foundation/ace/ace_engine_lite/frameworks:ace_lite" ]
+  }
+
   include_dirs = [
     "//device/bestechnic/" + board_name + "/drivers/touch/include",
     "//device/bestechnic/" + board_name + "/sdk_liteos/sys_adapter/include",

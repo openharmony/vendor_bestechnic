@@ -28,13 +28,18 @@
 #include "hal_tick.h"
 #include "touch_input.h"
 
-using namespace OHOS;
+#define ENABLE_FPS
+#ifdef ENABLE_ACE
+#include "product_adapter.h"
+#endif
 
 #define FONT_MEM_LEN (512 * 1024)
 static uint8_t g_fontMemBaseAddr[FONT_MEM_LEN];
 #if ENABLE_ICU
 static uint8_t g_icuMemBaseAddr[SHAPING_WORD_DICT_LENGTH];
 #endif
+
+using namespace OHOS;
 
 static void InitFontEngine()
 {
@@ -65,7 +70,6 @@ static void InitHal()
     InputDeviceManager::GetInstance()->Add(touch);
 }
 
-extern void RunApp(void);
 void InitUiKit(void)
 {
     GraphicStartUp::Init();
@@ -77,22 +81,52 @@ void InitUiKit(void)
     InitImageDecodeAbility();
 }
 
+__attribute__((weak)) void RunApp(void)
+{
+    GRAPHIC_LOGI("RunApp default");
+}
+
+#ifdef ENABLE_ACE
+static void RenderTEHandler()
+{
+}
+#endif
+
 static void UiMainTask(void *arg)
 {
     (void)arg;
     InitUiKit();
     RunApp();
 
+#ifdef ENABLE_ACE
+    const ACELite::TEHandlingHooks hooks = {RenderTEHandler, NULL};
+    ACELite::ProductAdapter::RegTEHandlers(hooks);
+#endif
+#ifdef ENABLE_FPS
+    uint32_t cnt = 0;
+    uint32_t start = HALTick::GetInstance().GetTime();
+#endif
     while (1) {
+#ifdef ENABLE_ACE
+        // Here render all js app in the same task.
+        ACELite::ProductAdapter::DispatchTEMessage();
+#endif
         DisplayDevice::GetInstance()->UpdateFBBuffer();
-        uint32_t lastRun_ = HALTick::GetInstance().GetTime();
+        uint32_t temp = HALTick::GetInstance().GetTime();
         TaskManager::GetInstance()->TaskHandler();
-        uint32_t time = HALTick::GetInstance().GetElapseTime(lastRun_);
+        uint32_t time = HALTick::GetInstance().GetElapseTime(temp);
         if (time < DEFAULT_TASK_PERIOD) {
             osDelay(DEFAULT_TASK_PERIOD - time);
-        } else {
-            GRAPHIC_LOGD("task used %u ms", time);
         }
+#ifdef ENABLE_FPS
+        cnt++;
+        time = HALTick::GetInstance().GetElapseTime(start);
+        if (time >= 1000) {
+            GRAPHIC_LOGD("%u fps", 1000 * cnt / time);
+            start = HALTick::GetInstance().GetTime();
+            cnt = 0;
+        }
+#endif
     }
 }
 
