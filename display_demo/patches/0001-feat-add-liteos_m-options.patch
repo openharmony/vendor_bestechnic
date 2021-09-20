@@ -1,0 +1,172 @@
+From 6a75fd24742e34890a053b4f1b8f9b0c6b1d3e9f Mon Sep 17 00:00:00 2001
+From: leihuang <leihuang@bestechnic.com>
+Date: Sun, 19 Sep 2021 14:26:41 +0800
+Subject: [PATCH] feat: add liteos_m options
+
+Signed-off-by: leihuang <leihuang@bestechnic.com>
+Change-Id: I418c5f2f7b51c4e7353200936066177cc01a640a
+---
+ components/aafwk.json      |  1 +
+ components/ace.json        | 19 +++++++++----------
+ components/appexecfwk.json |  1 +
+ components/global.json     | 10 ++++------
+ components/graphic.json    | 12 ++++++------
+ 5 files changed, 21 insertions(+), 22 deletions(-)
+
+diff --git a/components/aafwk.json b/components/aafwk.json
+index e71ad88..8ae543f 100755
+--- a/components/aafwk.json
++++ b/components/aafwk.json
+@@ -20,6 +20,7 @@
+       ],
+       "adapted_kernel": [
+         "liteos_a",
++        "liteos_m",
+         "linux"
+       ],
+       "features": [
+diff --git a/components/ace.json b/components/ace.json
+index 8103970..e20e33e 100755
+--- a/components/ace.json
++++ b/components/ace.json
+@@ -8,13 +8,12 @@
+         "foundation/ace/ace_engine_lite"
+       ],
+       "targets": [
+-        "//foundation/ace/ace_engine_lite/frameworks:jsfwk",
+-        "//foundation/ace/ace_engine_lite/test:unittest"
++        "//foundation/ace/ace_engine_lite/frameworks:jsfwk"
+       ],
+       "rom": "521KB",
+       "ram": "~82KB",
+-      "output": [ "libace_lite.so" ],
+-      "adapted_kernel": [ "liteos_a", "linux"],
++      "output": [ "libace_lite.a" ],
++      "adapted_kernel": [ "liteos_a", "liteos_m", "linux"],
+       "features": [],
+       "deps": {
+         "third_party": [
+@@ -57,8 +56,8 @@
+       ],
+       "rom": "9KB",
+       "ram": "~2KB",
+-      "output": [ "libace_common.so" ],
+-      "adapted_kernel": [ "liteos_a", "linux"],
++      "output": [ "libace_common.a" ],
++      "adapted_kernel": [ "liteos_a", "liteos_m", "linux"],
+       "features": [],
+       "deps": {
+         "third_party": [
+@@ -83,8 +82,8 @@
+       ],
+       "rom": "32KB",
+       "ram": "~5KB",
+-      "output": [ "libace_native_engine.so" ],
+-      "adapted_kernel": [ "liteos_a", "linux"],
++      "output": [ "libace_native_engine.a" ],
++      "adapted_kernel": [ "liteos_a", "liteos_m", "linux"],
+       "features": [],
+       "deps": {
+         "third_party": [
+@@ -110,8 +109,8 @@
+       ],
+       "rom": "12KB",
+       "ram": "~2KB",
+-      "output": [ "libace_module_manager.so" ],
+-      "adapted_kernel": [ "liteos_a", "linux"],
++      "output": [ "libace_module_manager.a" ],
++      "adapted_kernel": [ "liteos_a", "liteos_m", "linux"],
+       "features": [],
+       "deps": {
+         "third_party": [
+diff --git a/components/appexecfwk.json b/components/appexecfwk.json
+index 4253651..79c0ab1 100755
+--- a/components/appexecfwk.json
++++ b/components/appexecfwk.json
+@@ -21,6 +21,7 @@
+       ],
+       "adapted_kernel": [
+         "liteos_a",
++        "liteos_m",
+         "linux"
+       ],
+       "features": [],
+diff --git a/components/global.json b/components/global.json
+index 26ad50d..721857a 100644
+--- a/components/global.json
++++ b/components/global.json
+@@ -8,13 +8,12 @@
+         "base/global/resmgr_lite"
+       ],
+       "targets": [
+-        "//base/global/resmgr_lite/frameworks/resmgr_lite:global_resmgr",
+-        "//base/global/resmgr_lite/frameworks/resmgr_lite/test:unittest"
++        "//base/global/resmgr_lite/frameworks/resmgr_lite:global_resmgr"
+       ],
+       "rom": "21KB",
+       "ram": "~48KB",
+       "output": [ "global_resmgr.so" ],
+-      "adapted_kernel": [ "liteos_a" ],
++      "adapted_kernel": [ "liteos_a", "liteos_m" ],
+       "features": [],
+       "deps": {
+         "third_party": [
+@@ -33,13 +32,12 @@
+         "base/global/i18n_lite"
+       ],
+       "targets": [
+-        "//base/global/i18n_lite/frameworks/i18n:global_i18n",
+-        "//base/global/i18n_lite/frameworks/i18n/test:I18nTest"
++        "//base/global/i18n_lite/frameworks/i18n:global_i18n"
+       ],
+       "rom": "2.5MB",
+       "ram": "~112KB",
+       "output": [ "global_i18n.so" ],
+-      "adapted_kernel": [ "liteos_a" ],
++      "adapted_kernel": [ "liteos_a", "liteos_m" ],
+       "features": [],
+       "deps": {
+         "third_party": [
+diff --git a/components/graphic.json b/components/graphic.json
+index 135ea4d..f313782 100644
+--- a/components/graphic.json
++++ b/components/graphic.json
+@@ -6,14 +6,14 @@
+       "optional": "true",
+       "dirs": ["foundation/graphic/utils"],
+       "targets": [
+-        "//foundation/graphic/utils:lite_graphic_utils",
+-        "//foundation/graphic/utils/test:lite_graphic_utils_test"
++        "//foundation/graphic/utils:lite_graphic_utils"
+       ],
+       "rom": "",
+       "ram": "",
+-      "output": ["libgraphic_utils.so"],
++      "output": ["libgraphic_utils.a"],
+       "adapted_kernel": [
+         "liteos_a",
++        "liteos_m",
+         "linux"
+       ],
+       "features": [],
+@@ -117,14 +117,14 @@
+       "optional": "true",
+       "dirs": ["foundation/graphic/ui"],
+       "targets": [
+-        "//foundation/graphic/ui:lite_ui",
+-        "//foundation/graphic/ui/test/unittest:lite_graphic_ui_test"
++        "//foundation/graphic/ui:lite_ui"
+       ],
+       "rom": "900KB",
+       "ram": "~90KB",
+-      "output": ["libui.so"],
++      "output": ["libui.a"],
+       "adapted_kernel": [
+         "liteos_a",
++        "liteos_m",
+         "linux"
+       ],
+       "features": [],
+-- 
+2.17.1
+

@@ -37,7 +37,7 @@ bool TouchInput::Read(DeviceData &data)
     // It shouldn't block here, so timeout = 0.
     if (TouchRead(this->handle, &tmp, 0) == 0) {
         this->msg = tmp;
-        GRAPHIC_LOGI("x %d, y %d, event %d", this->msg.x, this->msg.y, this->msg.event);
+        // GRAPHIC_LOGI("x %d, y %d, event %d", this->msg.x, this->msg.y, this->msg.event);
     }
     // may use last msg
     data.point.x = this->msg.x;

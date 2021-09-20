@@ -11,26 +11,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-declare_args() {
-  drivers_test = false
-  wifi_test = false
-  fs_test = false
-  ui_test = false
-  ability_test = true
-}
-
-static_library("example") {
-  sources = [
-    "app.cpp",
-    "example.c",
-  ]
-  defines = []
+static_library("fs_test") {
+  sources = [ "fs_test.c" ]
   deps = [
     "//device/bestechnic/bes2600w/drivers:drivers",
     "//device/bestechnic/bes2600w/sdk_liteos/fs_adapter:fs_adapter",
-    "//base/hiviewdfx/hilog_lite/frameworks/featured:hilog_static",
   ]
-
   include_dirs = [
     "//utils/native/lite/include",
     "//utils/native/lite/memory/include",
@@ -38,23 +24,4 @@ static_library("example") {
     "//third_party/musl/porting/liteos_m/kernel/include",
     "//device/bestechnic/" + board_name + "/drivers/tests",
   ]
-
-  if (drivers_test) {
-    defines += [ "DRIVERS_TEST" ]
-  } else if (wifi_test) {
-    deps += [ "wifi:wifi_test" ]
-    defines += [ "WIFI_TEST" ]
-  } else if (fs_test) {
-    deps += [ "fs:fs_test" ]
-    defines += [ "FS_TEST" ]
-    include_dirs += [ "fs" ]
-  } else if (ui_test) {
-    deps += [ "ui:ui_test" ]
-    defines += [ "UI_TEST" ]
-    include_dirs += [ "ui" ]
-  } else if (ability_test) {
-    deps += [ "ability:ability_test" ]
-    defines += [ "ABILITY_TEST" ]
-    include_dirs += [ "ability" ]
-  }
 }

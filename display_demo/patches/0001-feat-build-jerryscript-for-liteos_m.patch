@@ -1,0 +1,118 @@
+From 57001837633e234583e35aa3953e745f1ba3d370 Mon Sep 17 00:00:00 2001
+From: leihuang <leihuang@bestechnic.com>
+Date: Sun, 19 Sep 2021 14:33:58 +0800
+Subject: [PATCH] feat: build jerryscript for liteos_m
+
+Signed-off-by: leihuang <leihuang@bestechnic.com>
+Change-Id: Ifdf9a33e8dcfe7db558a45f2d50d467246fced35
+---
+ jerry-core/BUILD.gn         | 14 +++++++-------
+ jerry-ext/BUILD.gn          | 12 ++++++------
+ jerry-libm/BUILD.gn         | 12 ++++++------
+ jerry-port/default/BUILD.gn | 12 ++++++------
+ 4 files changed, 25 insertions(+), 25 deletions(-)
+
+diff --git a/jerry-core/BUILD.gn b/jerry-core/BUILD.gn
+index 45ff49f2..1a3cd61d 100755
+--- a/jerry-core/BUILD.gn
++++ b/jerry-core/BUILD.gn
+@@ -14,12 +14,12 @@
+ import("//build/lite/config/component/lite_component.gni")
+ import("//third_party/jerryscript/engine.gni")
+ 
+-lite_component("jerry-core") {
+-  features = [ ":jerry-core_shared" ]
+-}
+-
+-lite_library("jerry-core_shared") {
+-  target_type = "shared_library"
++lite_library("jerry-core") {
++  if (ohos_kernel_type == "liteos_m") {
++    target_type = "static_library"
++  } else {
++    target_type = "shared_library"
++  }
+ 
+   sources = [
+     "api/jerry-debugger-transport.c",
+@@ -214,7 +214,7 @@ lite_library("jerry-core_shared") {
+ 
+   defines = []
+ 
+-  if (ohos_kernel_type == "liteos_a" || ohos_kernel_type == "linux") {
++  if (ohos_kernel_type == "liteos_m" || ohos_kernel_type == "liteos_a" || ohos_kernel_type == "linux") {
+     defines += [
+       "JERRY_GLOBAL_HEAP_SIZE = (128)",
+       "JERRY_ERROR_MESSAGES = 1",
+diff --git a/jerry-ext/BUILD.gn b/jerry-ext/BUILD.gn
+index 4efd8ec6..e12553c2 100755
+--- a/jerry-ext/BUILD.gn
++++ b/jerry-ext/BUILD.gn
+@@ -14,12 +14,12 @@
+ import("//build/lite/config/component/lite_component.gni")
+ import("//third_party/jerryscript/engine.gni")
+ 
+-lite_component("jerry-ext") {
+-  features = [ ":jerry-ext_shared" ]
+-}
+-
+-lite_library("jerry-ext_shared") {
+-  target_type = "shared_library"
++lite_library("jerry-ext") {
++  if (ohos_kernel_type == "liteos_m") {
++    target_type = "static_library"
++  } else {
++    target_type = "shared_library"
++  }
+ 
+   sources = [
+     "arg/arg-js-iterator-helper.c",
+diff --git a/jerry-libm/BUILD.gn b/jerry-libm/BUILD.gn
+index c4c24e1d..67d14c55 100755
+--- a/jerry-libm/BUILD.gn
++++ b/jerry-libm/BUILD.gn
+@@ -14,12 +14,12 @@
+ import("//build/lite/config/component/lite_component.gni")
+ import("//third_party/jerryscript/engine.gni")
+ 
+-lite_component("jerry-libm") {
+-  features = [ ":jerry-libm_shared" ]
+-}
+-
+-lite_library("jerry-libm_shared") {
+-  target_type = "shared_library"
++lite_library("jerry-libm") {
++  if (ohos_kernel_type == "liteos_m") {
++    target_type = "static_library"
++  } else {
++    target_type = "shared_library"
++  }
+   sources = [
+     "acos.c",
+     "acosh.c",
+diff --git a/jerry-port/default/BUILD.gn b/jerry-port/default/BUILD.gn
+index 7df0d7c4..ce29db89 100755
+--- a/jerry-port/default/BUILD.gn
++++ b/jerry-port/default/BUILD.gn
+@@ -14,12 +14,12 @@
+ import("//build/lite/config/component/lite_component.gni")
+ import("//third_party/jerryscript/engine.gni")
+ 
+-lite_component("jerry-port-default") {
+-  features = [ ":jerry-port-default_shared" ]
+-}
+-
+-lite_library("jerry-port-default_shared") {
+-  target_type = "shared_library"
++lite_library("jerry-port-default") {
++  if (ohos_kernel_type == "liteos_m") {
++    target_type = "static_library"
++  } else {
++    target_type = "shared_library"
++  }
+   sources = [
+     "default-date.c",
+     "default-debugger.c",
+-- 
+2.17.1
+

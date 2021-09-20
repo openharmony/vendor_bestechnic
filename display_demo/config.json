@@ -15,13 +15,16 @@
       "burn_name": "rtos_main",
       "enable": "true",
       "force_link_libs": [
+        "bootstrap",
+        "abilityms",
         "hdf_platform_lite",
         "fs_adapter",
         "example",
         "gpio",
         "i2c",
         "mipi_dsi",
-        "lcd"
+        "lcd",
+        "touch"
       ]
     },
     {
@@ -94,10 +97,6 @@
   ],
   "subsystems": [
     {
-      "subsystem": "distributed_schedule",
-      "components": []
-    },
-    {
       "subsystem": "kernel",
       "components": [
         {
@@ -107,25 +106,16 @@
             "enable_ohos_kernel_liteos_m_fs = true",
             "enable_ohos_kernel_liteos_m_fatfs = false",
             "enable_ohos_kernel_liteos_m_cmsis = false",
-            "enable_ohos_kernel_liteos_m_posix = false"
+            "enable_ohos_kernel_liteos_m_posix = true"
           ]
         }
       ]
     },
     {
       "subsystem": "startup",
-      "components": []
-    },
-    {
-      "subsystem": "graphic",
-      "components": []
-    },
-    {
-      "subsystem": "distributed_schedule",
       "components": [
         {
-          "component": "samgr_lite",
-          "features": []
+          "component": "bootstrap_lite"
         }
       ]
     },
@@ -134,8 +124,56 @@
       "components": [
         {
           "component": "hilog_lite",
-          "optional": "true",
-          "features": []
+          "optional": "true"
+        }
+      ]
+    },
+    {
+      "subsystem": "graphic",
+      "components": [
+        {
+          "component": "graphic_utils"
+        },
+        {
+          "component": "ui"
+        }
+      ]
+    },
+    {
+      "subsystem": "ace",
+      "components": [
+        {
+          "component": "ace_engine_lite"
+        }
+      ]
+    },
+    {
+      "subsystem": "aafwk",
+      "components": [
+        {
+          "component": "aafwk_lite",
+          "features": [
+            "enable_ohos_appexecfwk_feature_ability = true"
+          ]
+        }
+      ]
+    },
+    {
+      "subsystem": "global",
+      "components": [
+        {
+          "component": "resmgr_lite"
+        },
+        {
+          "component": "i18n_lite"
+        }
+      ]
+    },
+    {
+      "subsystem": "distributed_schedule",
+      "components": [
+        {
+          "component": "samgr_lite"
         }
       ]
     },
@@ -144,8 +182,7 @@
       "components": [
         {
           "component": "wifi_lite",
-          "optional": "true",
-          "features": []
+          "optional": "true"
         }
       ]
     }

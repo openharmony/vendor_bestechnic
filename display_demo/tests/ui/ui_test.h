@@ -12,16 +12,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include "ui_test.h"
-#include "../ui_adapter/ui_main.h"
+#ifndef __UI_TEST_H__
+#define __UI_TEST_H__
 
-/* ui app entry */
-void RunApp(void)
-{
-    ImageDemoStart();
-}
+#ifdef __cplusplus
+extern "C" {
+#endif
 
-void UiTestEntry(void)
-{
-    UiMain();
+void UiDemoStart(void);
+void ViewDemoStart(void);
+void AnimatorDemoStart(void);
+void ImageDemoStart(void);
+
+#ifdef __cplusplus
 }
+#endif
+
+#endif // __UI_TEST_H__

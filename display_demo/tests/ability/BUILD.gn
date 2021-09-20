@@ -11,8 +11,16 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-group("display_demo") {
-  deps = [
-    "tests:example",
+static_library("ability_test") {
+  sources = [
+    "ability_test.cpp",
+    "launcher.cpp",
+  ]
+
+  public_deps = [
+    "//base/hiviewdfx/hilog_lite/frameworks/featured:hilog_static",
+    "//foundation/aafwk/aafwk_lite/frameworks/ability_lite:aafwk_abilitykit_lite",
+    "//foundation/ace/ace_engine_lite/frameworks:ace_lite",
+    "//vendor/bestechnic/display_demo/ui_adapter:ui_adapter",
   ]
 }

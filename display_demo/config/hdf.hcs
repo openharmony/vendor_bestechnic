@@ -36,4 +36,15 @@ root {
             }
         }
     }
+    input {
+        touch_config {
+            touch_ztw523 {
+                match_attr = "touch_ztw523_config";
+                gpio_rst = 0;
+                gpio_int = 1;
+                i2c_id = 0;
+                i2c_addr = 0x20;
+            }
+        }
+    }
 }

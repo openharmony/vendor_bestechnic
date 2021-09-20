@@ -23,6 +23,35 @@
 #include <unistd.h>
 #include "hal_trace.h"
 
+static void dir_test(const char *path)
+{
+    DIR *dir;
+    struct dirent *dp;
+    if ((dir = opendir(path)) == NULL) {
+        printf("opendir %s failed, %s\n", path, strerror(errno));
+        return;
+    }
+    while ((dp = readdir(dir)) != NULL) {
+        if (strcmp(dp->d_name, ".") == 0 || strcmp(dp->d_name, "..") == 0) {
+            continue;
+        }
+        struct stat st_buf = {0};
+        char realpath[128];
+        snprintf(realpath, sizeof(realpath), "%s/%s", path, dp->d_name);
+        if (stat(realpath, &st_buf) != 0) {
+            printf("can not access %s\n", realpath);
+            closedir(dir);
+            return;
+        }
+        if ((st_buf.st_mode & S_IFMT) == S_IFDIR) {
+            printf("DIR %s\n", realpath);
+        } else {
+            printf("FILE %s, %ld bytes\n", realpath, st_buf.st_size);
+        }
+    }
+    closedir(dir);
+}
+
 static void read_file(const char *file, bool print_str)
 {
     int fd = open(file, O_RDONLY);
@@ -76,38 +105,23 @@ static void fread_file(const char *file, bool print_str)
     printf("fread file '%s' total bytes: %d\r\n", file, bytes);
 }
 
-static void dir_test(const char *path)
+static void fwrite_file(const char *file)
 {
-    DIR *dir;
-    struct dirent *dp;
-    if ((dir = opendir(path)) == NULL) {
-        printf("opendir %s failed, %s\n", path, strerror(errno));
+    FILE *fp = fopen(file, "w");
+    if (fp == NULL) {
+        printf("fopen file '%s' failed, %s\r\n", file, strerror(errno));
         return;
     }
-    while ((dp = readdir(dir)) != NULL) {
-        if (strcmp(dp->d_name, ".") == 0 || strcmp(dp->d_name, "..") == 0) {
-            continue;
-        }
-        struct stat st_buf = {0};
-        char realpath[128];
-        snprintf(realpath, sizeof(realpath), "%s/%s", path, dp->d_name);
-        if (stat(realpath, &st_buf) != 0) {
-            printf("can not access %s\n", realpath);
-            closedir(dir);
-            return;
-        }
-        if ((st_buf.st_mode & S_IFMT) == S_IFDIR) {
-            printf("DIR %s\n", realpath);
-        } else {
-            printf("FILE %s, %ld bytes\n", realpath, st_buf.st_size);
-        }
-    }
-    closedir(dir);
+    const char *buf = "fs write test";
+    int bytes = fwrite(buf, 1, strlen(buf), fp);
+    fclose(fp);
+    printf("fwrite file '%s' total bytes: %d, %s\r\n", file, bytes, buf);
 }
 
 void fs_test(void)
 {
     dir_test("/data");
-    read_file("/data/font.ttf", false);
+    read_file("/data/test.txt", true);
+    fwrite_file("/data/test.txt");
     fread_file("/data/font.ttf", false);
 }
