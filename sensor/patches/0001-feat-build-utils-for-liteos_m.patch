@@ -1,0 +1,145 @@
+From 4abd79070d4c572c5f3cf77c6652024fbe939be6 Mon Sep 17 00:00:00 2001
+From: leihuang <leihuang@bestechnic.com>
+Date: Fri, 24 Sep 2021 20:46:04 +0800
+Subject: [PATCH] feat: build utils for liteos_m
+
+Signed-off-by: leihuang <leihuang@bestechnic.com>
+Change-Id: I7561adf7ce97eeac58c1da8812fb6a7658821b22
+---
+ js/builtin/common/BUILD.gn        |  9 ++++++++-
+ js/builtin/deviceinfokit/BUILD.gn | 10 ++++++++--
+ js/builtin/filekit/BUILD.gn       |  8 +++++++-
+ js/builtin/kvstorekit/BUILD.gn    |  8 +++++++-
+ kal/timer/BUILD.gn                |  9 ++++++++-
+ timer_task/BUILD.gn               |  9 ++++++++-
+ 6 files changed, 46 insertions(+), 7 deletions(-)
+
+diff --git a/js/builtin/common/BUILD.gn b/js/builtin/common/BUILD.gn
+index dd8f39a..699965e 100755
+--- a/js/builtin/common/BUILD.gn
++++ b/js/builtin/common/BUILD.gn
+@@ -13,7 +13,14 @@
+ # limitations under the License.
+ #
+ 
+-shared_library("ace_kit_common") {
++import("//build/lite/config/component/lite_component.gni")
++
++lite_library("ace_kit_common") {
++  if (ohos_kernel_type == "liteos_m") {
++    target_type = "static_library"
++  } else {
++    target_type = "shared_library"
++  }
+   sources = [ "src/nativeapi_common.cpp" ]
+   cflags = [ "-Wall" ]
+   cflags_cc = cflags
+diff --git a/js/builtin/deviceinfokit/BUILD.gn b/js/builtin/deviceinfokit/BUILD.gn
+index 19e76ea..2103dce 100755
+--- a/js/builtin/deviceinfokit/BUILD.gn
++++ b/js/builtin/deviceinfokit/BUILD.gn
+@@ -13,11 +13,17 @@
+ # limitations under the License.
+ #
+ 
+-shared_library("ace_kit_deviceinfo") {
++import("//build/lite/config/component/lite_component.gni")
++
++lite_library("ace_kit_deviceinfo") {
++  if (ohos_kernel_type == "liteos_m") {
++    target_type = "static_library"
++  } else {
++    target_type = "shared_library"
++  }
+   sources = [ "src/nativeapi_deviceinfo.cpp" ]
+   cflags = [ "-Wall" ]
+   cflags_cc = cflags
+-  ldflags = [ "-shared" ]
+ 
+   include_dirs = [
+     "include",
+diff --git a/js/builtin/filekit/BUILD.gn b/js/builtin/filekit/BUILD.gn
+index d61d9b1..9979cef 100755
+--- a/js/builtin/filekit/BUILD.gn
++++ b/js/builtin/filekit/BUILD.gn
+@@ -13,9 +13,15 @@
+ # limitations under the License.
+ #
+ 
++import("//build/lite/config/component/lite_component.gni")
+ import("//build/lite/config/subsystem/aafwk/path.gni")
+ 
+-shared_library("ace_kit_file") {
++lite_library("ace_kit_file") {
++  if (ohos_kernel_type == "liteos_m") {
++    target_type = "static_library"
++  } else {
++    target_type = "shared_library"
++  }
+   sources = [
+     "src/nativeapi_fs.cpp",
+     "src/nativeapi_fs_impl.c",
+diff --git a/js/builtin/kvstorekit/BUILD.gn b/js/builtin/kvstorekit/BUILD.gn
+index ddea7a3..65cae60 100755
+--- a/js/builtin/kvstorekit/BUILD.gn
++++ b/js/builtin/kvstorekit/BUILD.gn
+@@ -13,9 +13,15 @@
+ # limitations under the License.
+ #
+ 
++import("//build/lite/config/component/lite_component.gni")
+ import("//build/lite/config/subsystem/aafwk/path.gni")
+ 
+-shared_library("ace_kit_kvstore") {
++lite_library("ace_kit_kvstore") {
++  if (ohos_kernel_type == "liteos_m") {
++    target_type = "static_library"
++  } else {
++    target_type = "shared_library"
++  }
+   sources = [
+     "src/nativeapi_kv.cpp",
+     "src/nativeapi_kv_impl.c",
+diff --git a/kal/timer/BUILD.gn b/kal/timer/BUILD.gn
+index 7b75e4c..8dacc97 100755
+--- a/kal/timer/BUILD.gn
++++ b/kal/timer/BUILD.gn
+@@ -11,7 +11,14 @@
+ # See the License for the specific language governing permissions and
+ # limitations under the License.
+ 
+-shared_library("kal_timer") {
++import("//build/lite/config/component/lite_component.gni")
++
++lite_library("kal_timer") {
++    if (ohos_kernel_type == "liteos_m") {
++        target_type = "static_library"
++    } else {
++        target_type = "shared_library"
++    }
+     sources = [
+         "src/kal.c",
+     ]
+diff --git a/timer_task/BUILD.gn b/timer_task/BUILD.gn
+index 16e95ab..b0bed03 100755
+--- a/timer_task/BUILD.gn
++++ b/timer_task/BUILD.gn
+@@ -11,7 +11,14 @@
+ # See the License for the specific language governing permissions and
+ # limitations under the License.
+ 
+-shared_library("ace_kit_timer") {
++import("//build/lite/config/component/lite_component.gni")
++
++lite_library("ace_kit_timer") {
++    if (ohos_kernel_type == "liteos_m") {
++        target_type = "static_library"
++    } else {
++        target_type = "shared_library"
++    }
+     sources = [
+         "src/nativeapi_timer_task.c",
+     ]
+-- 
+2.17.1
+

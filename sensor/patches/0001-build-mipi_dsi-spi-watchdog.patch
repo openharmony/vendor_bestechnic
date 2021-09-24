@@ -1,0 +1,42 @@
+From 9e264e10d649246dfc264d59bc02c29f7cfc6699 Mon Sep 17 00:00:00 2001
+From: leihuang <leihuang@bestechnic.com>
+Date: Tue, 7 Sep 2021 14:17:04 +0800
+Subject: [PATCH] build mipi_dsi/spi/watchdog
+
+Signed-off-by: leihuang <leihuang@bestechnic.com>
+Change-Id: Ib686c0827dfd33d418ff5028c8594457f1632965
+---
+ khdf/liteos_m/platform/BUILD.gn | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
+ mode change 100644 => 100755 khdf/liteos_m/platform/BUILD.gn
+
+diff --git a/khdf/liteos_m/platform/BUILD.gn b/khdf/liteos_m/platform/BUILD.gn
+old mode 100644
+new mode 100755
+index 9c2625b..9e76664
+--- a/khdf/liteos_m/platform/BUILD.gn
++++ b/khdf/liteos_m/platform/BUILD.gn
+@@ -25,7 +25,7 @@
+ # OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+ # WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+ # OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
+-# ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
++# ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ 
+ import("//drivers/adapter/khdf/liteos_m/hdf.gni")
+ 
+@@ -46,6 +46,11 @@ static_library("hdf_platform_lite") {
+     "$hdf_fwk_path/support/platform/src/uart_core.c",
+     "$hdf_fwk_path/support/platform/src/uart_if.c",
+     "$hdf_fwk_path/support/platform/src/pwm_core.c",
++    "$hdf_fwk_path/support/platform/src/mipi_dsi_core.c",
++    "$hdf_fwk_path/support/platform/src/spi_core.c",
++    "$hdf_fwk_path/support/platform/src/spi_if.c",
++    "$hdf_fwk_path/support/platform/src/watchdog_core.c",
++    "$hdf_fwk_path/support/platform/src/watchdog_if.c",
+     "plat_common.c",
+   ]
+   include_dirs = [ "kernel/liteos_m/kernel/arch/include" ]
+-- 
+2.17.1
+

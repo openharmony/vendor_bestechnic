@@ -12,11 +12,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+#if defined(UI_TEST) || defined(ABILITY_TEST)
 #include "ohos_init.h"
+#include "ui_main.h"
 #if defined(UI_TEST)
-#include "ui_main.h"
+#include "ui_test.h"
 #elif defined(ABILITY_TEST)
-#include "ui_main.h"
 #include "ability_test.h"
 #endif
 
@@ -33,9 +34,8 @@ void RunApp()
 
 void AppEntry(void)
 {
-#if defined(UI_TEST) || defined(ABILITY_TEST)
     UiMain();
-#endif
 }
 
 APP_FEATURE_INIT(AppEntry);
+#endif
