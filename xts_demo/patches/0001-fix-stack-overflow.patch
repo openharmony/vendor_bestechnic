@@ -1,0 +1,27 @@
+From 3e379bacad83dac0f0996377405d36eeeee97f18 Mon Sep 17 00:00:00 2001
+From: yangjian <jianyang@bestechnic.com>
+Date: Fri, 17 Sep 2021 20:29:29 +0800
+Subject: [PATCH] fix stack overflow
+
+Signed-off-by: yangjian <jianyang@bestechnic.com>
+Change-Id: I4f2ac87d36cab25ae92d8eb3cd28e753d3b503ff
+---
+ hiview_service.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/hiview_service.c b/hiview_service.c
+index 2d4d511..5a6786a 100755
+--- a/hiview_service.c
++++ b/hiview_service.c
+@@ -88,7 +88,7 @@ static BOOL MessageHandle(Service *service, Request *request)
+ static TaskConfig GetTaskConfig(Service *service)
+ {
+     (void)service;
+-    TaskConfig config = { LEVEL_LOW, PRI_NORMAL, 0x800, 10, SINGLE_TASK };
++    TaskConfig config = { LEVEL_LOW, PRI_NORMAL, 0xF000, 10, SINGLE_TASK };
+     return config;
+ }
+ 
+-- 
+2.17.1
+
