@@ -1,29 +1,25 @@
 {
-  "product_name": "display_demo",
+  "product_name": "xts_demo",
   "ohos_version": "OpenHarmony 1.0",
   "device_company": "bestechnic",
   "board": "bes2600w",
   "kernel_type": "liteos_m",
   "kernel_version": "3.0.0",
-  "pack_burn": "true",
+  "pack_burn": "false",
   "bin_list": [
     {
       "elf_name": "wifiiot",
       "bsp_target_name": "best2600w_liteos",
       "signature": "false",
-      "startaddr": "738721792",
+      "startaddr": "0",
       "bin_size": "8257536",
       "burn_name": "rtos_main",
       "enable": "true",
       "force_link_libs": [
         "hdf_platform_lite",
-        "fs_adapter",
-        "example",
-        "gpio",
-        "i2c",
-        "mipi_dsi",
-        "lcd",
-        "touch"
+        "module_ActsCMSISTest",
+        "sysparam",
+        "hctest"
       ]
     },
     {
@@ -140,9 +136,16 @@
           "features": []
         }
       ]
-    }
+    },
+    {
+      "subsystem": "test",
+      "components": [
+        { "component": "xts_acts", "features":[] },
+        { "component": "xts_tools", "features":[] }
+       ]
+     }
   ],
   "vendor_adapter_dir": "",
-  "product_adapter_dir": "",
+  "product_adapter_dir": "//vendor/bestechnic/xts_demo/hals",
   "third_party_dir": ""
 }
