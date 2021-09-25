@@ -1,0 +1,26 @@
+From b6de2c7a9a8996524e3691f908c78c74c6717372 Mon Sep 17 00:00:00 2001
+From: yangjian <jianyang@bestechnic.com>
+Date: Sat, 25 Sep 2021 20:39:47 +0800
+Subject: [PATCH] patch for test xts acts
+
+Signed-off-by: yangjian <jianyang@bestechnic.com>
+Change-Id: Ia0000e1aad0a37c117e14f7fff3dff3614ef06a0
+---
+ communication_lite/lwip_hal/src/lwip_func_test.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/communication_lite/lwip_hal/src/lwip_func_test.c b/communication_lite/lwip_hal/src/lwip_func_test.c
+index f350dbb..3c3e22c 100755
+--- a/communication_lite/lwip_hal/src/lwip_func_test.c
++++ b/communication_lite/lwip_hal/src/lwip_func_test.c
+@@ -14,6 +14,7 @@
+  */
+ 
+ #include "hctest.h"
++#define _GNU_SOURCE
+ #include "lwip/sockets.h"
+ #include "lwip/inet.h"
+ #include "lwip/tcp.h"
+-- 
+2.17.1
+
