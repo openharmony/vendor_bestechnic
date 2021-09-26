@@ -47,4 +47,26 @@ root {
             }
         }
     }
+    misc {
+        fs_config {
+            littlefs_config {
+                match_attr = "littlefs_config";
+                mount_points = ["/data"];
+                partitions = [10];
+                block_size = [32768];
+                block_count = [128];
+            }
+        }
+        storage_config {
+            flash_config {
+                match_attr = "flash_config";
+                partitions = [10];
+                owner = [0];
+                description = ["littlefs"];
+                start_addr = [0xB60000];
+                length = [0x400000];
+                options = [3];
+            }
+        }
+    }
 }

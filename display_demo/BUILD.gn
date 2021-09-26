@@ -11,8 +11,20 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import("config.gni")
+
 group("display_demo") {
   deps = [
+    "hals/utils/file:hal_file_static",
+    "hals/utils/sys_param:hal_sysparam",
     "tests:example",
   ]
+
+  if (fs_enable) {
+    deps += [ "//device/bestechnic/${board_name}/components/fs:fs_adapter" ]
+  }
+
+  if (ui_enable || ace_enable || ability_enable) {
+    deps += [ "//device/bestechnic/${board_name}/components/ui:ui_adapter" ]
+  }
 }

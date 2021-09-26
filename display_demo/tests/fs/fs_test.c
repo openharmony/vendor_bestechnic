@@ -12,23 +12,29 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+#define _GNU_SOURCE
 #include <dirent.h>
 #include <errno.h>
-#include <fcntl.h>
-#include <stdint.h>
-#include <stdio.h>
-#include <string.h>
 #include <sys/stat.h>
 #include <sys/types.h>
+#include <fcntl.h>
+#include <stdint.h>
+#include <stdbool.h>
+#include <stdio.h>
+#include <string.h>
 #include <unistd.h>
-#include "hal_trace.h"
+#define LOG_TAG "FS"
+#include "log.h"
+
+#define LOG_E(fmt, ...) HILOG_ERROR(HILOG_MODULE_APP, fmt, ##__VA_ARGS__)
+#define LOG_I(fmt, ...) HILOG_INFO(HILOG_MODULE_APP, fmt, ##__VA_ARGS__)
 
 static void dir_test(const char *path)
 {
     DIR *dir;
     struct dirent *dp;
     if ((dir = opendir(path)) == NULL) {
-        printf("opendir %s failed, %s\n", path, strerror(errno));
+        LOG_E("opendir %s failed, %s\n", path, strerror(errno));
         return;
     }
     while ((dp = readdir(dir)) != NULL) {
@@ -39,14 +45,14 @@ static void dir_test(const char *path)
         char realpath[128];
         snprintf(realpath, sizeof(realpath), "%s/%s", path, dp->d_name);
         if (stat(realpath, &st_buf) != 0) {
-            printf("can not access %s\n", realpath);
+            LOG_E("can not access %s\n", realpath);
             closedir(dir);
             return;
         }
         if ((st_buf.st_mode & S_IFMT) == S_IFDIR) {
-            printf("DIR %s\n", realpath);
+            LOG_E("DIR %s\n", realpath);
         } else {
-            printf("FILE %s, %ld bytes\n", realpath, st_buf.st_size);
+            LOG_I("FILE %s, %ld bytes\n", realpath, st_buf.st_size);
         }
     }
     closedir(dir);
@@ -56,7 +62,7 @@ static void read_file(const char *file, bool print_str)
 {
     int fd = open(file, O_RDONLY);
     if (fd < 0) {
-        printf("open file '%s' failed, %s\r\n", file, strerror(errno));
+        LOG_E("open file '%s' failed, %s\r\n", file, strerror(errno));
         return;
     }
     int bytes = 0;
@@ -69,21 +75,21 @@ static void read_file(const char *file, bool print_str)
 
         if (print_str) {
             buf[rc] = '\0';
-            printf("%s", buf);
+            LOG_I("%s", buf);
         }
 
         if (rc < sizeof(buf) - 1)
             break;
     }
     close(fd);
-    printf("read file '%s' total bytes: %d\r\n", file, bytes);
+    LOG_I("read file '%s' total bytes: %d\r\n", file, bytes);
 }
 
 static void fread_file(const char *file, bool print_str)
 {
     FILE *fp = fopen(file, "rb");
     if (fp == NULL) {
-        printf("fopen file '%s' failed, %s\r\n", file, strerror(errno));
+        LOG_E("fopen file '%s' failed, %s\r\n", file, strerror(errno));
         return;
     }
     int bytes = 0;
@@ -96,32 +102,31 @@ static void fread_file(const char *file, bool print_str)
 
         if (print_str) {
             buf[rc] = '\0';
-            printf("%s", buf);
+            LOG_I("%s", buf);
         }
         if (rc < sizeof(buf) - 1)
             break;
     }
     fclose(fp);
-    printf("fread file '%s' total bytes: %d\r\n", file, bytes);
+    LOG_I("fread file '%s' total bytes: %d\r\n", file, bytes);
 }
 
-static void fwrite_file(const char *file)
+static void fwrite_file(const char *file, const char *data)
 {
     FILE *fp = fopen(file, "w");
     if (fp == NULL) {
-        printf("fopen file '%s' failed, %s\r\n", file, strerror(errno));
+        LOG_E("fopen file '%s' failed, %s\r\n", file, strerror(errno));
         return;
     }
-    const char *buf = "fs write test";
-    int bytes = fwrite(buf, 1, strlen(buf), fp);
+    int bytes = fwrite(data, 1, strlen(data), fp);
     fclose(fp);
-    printf("fwrite file '%s' total bytes: %d, %s\r\n", file, bytes, buf);
+    LOG_I("fwrite file '%s' total bytes: %d, %s\r\n", file, bytes, data);
 }
 
 void fs_test(void)
 {
     dir_test("/data");
     read_file("/data/test.txt", true);
-    fwrite_file("/data/test.txt");
-    fread_file("/data/font.ttf", false);
+    fwrite_file("/data/test.txt", "fwrite data test");
+    fread_file("/data/test.txt", true);
 }

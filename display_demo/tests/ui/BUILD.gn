@@ -19,16 +19,13 @@ static_library("ui_test") {
     "ui_view_test.cpp",
   ]
   deps = [
-    "//device/bestechnic/bes2600w/drivers:drivers",
-    "//device/bestechnic/bes2600w/sdk_liteos/fs_adapter:fs_adapter",
+    "//base/hiviewdfx/hilog_lite/frameworks/featured:hilog_static",
+    "//device/bestechnic/${board_name}/components/drivers:drivers_adapter",
+    "//device/bestechnic/${board_name}/components/fs:fs_adapter",
+    "//device/bestechnic/${board_name}/components/ui:ui_adapter",
   ]
   include_dirs = [
     "//utils/native/lite/include",
-    "//utils/native/lite/memory/include",
-    "//base/hiviewdfx/hilog_lite/interfaces/native/kits/",
     "//third_party/musl/porting/liteos_m/kernel/include",
-    "//device/bestechnic/" + board_name + "/drivers/tests",
   ]
-
-  public_deps = [ "//vendor/bestechnic/display_demo/ui_adapter:ui_adapter" ]
 }

@@ -1,0 +1,50 @@
+#include "device_info.hcs"
+root {
+    platform {
+        gpio_config {
+            match_attr = "gpio_config";
+            pin = [0, 1];
+            // EVB_V3: TSP_RST - GPIO12, TSP_INT-GPIO27 
+            realPin = [12, 27];
+            config = [5, 2];
+            pinNum = 2;
+        }
+        i2c_config {
+            i2c0 {
+                match_attr = "i2c0_config";
+                port = 0;
+                speed = 200000;
+                // TSP_SCL/SDA - I2C0 = GPIO04/GPIO05
+                scl_pin = 4;
+                sda_pin = 5;
+                use_dma = 0;
+                use_sync = 1;
+                as_master = 1;
+                address_width = 8;
+                mode = 0;
+            }
+        }
+    }
+    misc {
+        fs_config {
+            littlefs_config {
+                match_attr = "littlefs_config";
+                mount_points = ["/resource", "/log", "/data"];
+                partitions = [10, 11, 12];
+                block_size = [4096, 4096, 4096];
+                block_count = [128, 80, 512];
+            }
+        }
+        storage_config {
+            flash_config {
+                match_attr = "flash_config";
+                partitions = [8, 9, 10, 11, 12];
+                owner = [0, 0, 0, 0, 0];
+                description = ["cm33_main", "system_mini", "resource", "log", "data"];
+                start_addr = [0x80000, 0x680000, 0xC80000, 0xD80000, 0xDD0000];
+                length = [0x600000, 0x600000, 0x80000, 0x50000, 0x200000];
+                options = [3, 3, 3, 3, 3];
+            }
+        }
+    }
+}
