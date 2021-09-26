@@ -11,20 +11,16 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import("config.gni")
-
-group("display_demo") {
-  deps = [
-    "config:hdf_hcs",
-    "hals/utils/sys_param:hal_sysparam",
-    "tests:example",
+static_library("ability_test") {
+  sources = [
+    "ability_test.cpp",
+    "launcher.cpp",
   ]
 
-  if (fs_enable) {
-    deps += [ "//device/bestechnic/${board_name}/components/fs:fs_adapter" ]
-  }
-
-  if (ui_enable || ace_enable || ability_enable) {
-    deps += [ "//device/bestechnic/${board_name}/components/ui:ui_adapter" ]
-  }
+  public_deps = [
+    "//base/hiviewdfx/hilog_lite/frameworks/featured:hilog_static",
+    "//foundation/aafwk/aafwk_lite/frameworks/ability_lite:aafwk_abilitykit_lite",
+    "//foundation/ace/ace_engine_lite/frameworks:ace_lite",
+    "//device/bestechnic/${board_name}/components/ui:ui_adapter",
+  ]
 }
