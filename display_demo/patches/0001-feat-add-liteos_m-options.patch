@@ -1,10 +1,10 @@
-From c34839a3103e607688d4e991ff0232beb0a6b4e2 Mon Sep 17 00:00:00 2001
+From 9b2968d78fb5641f9a1209a859e99585b029dabf Mon Sep 17 00:00:00 2001
 From: leihuang <leihuang@bestechnic.com>
-Date: Fri, 24 Sep 2021 20:44:25 +0800
+Date: Sun, 26 Sep 2021 16:41:05 +0800
 Subject: [PATCH] feat: add liteos_m options
 
 Signed-off-by: leihuang <leihuang@bestechnic.com>
-Change-Id: I428927357cc4a756a913b7609d589b10367d7112
+Change-Id: Ia261889ed553f779656d3fde11c538788aa2e11c
 ---
  components/aafwk.json      |  1 +
  components/ace.json        | 19 +++++++++----------
@@ -12,7 +12,8 @@ Change-Id: I428927357cc4a756a913b7609d589b10367d7112
  components/global.json     | 10 ++++------
  components/graphic.json    | 12 ++++++------
  components/utils.json      |  3 +++
- 6 files changed, 24 insertions(+), 22 deletions(-)
+ components/vendor.json     |  6 ++++++
+ 7 files changed, 30 insertions(+), 22 deletions(-)
 
 diff --git a/components/aafwk.json b/components/aafwk.json
 index e71ad88..8ae543f 100755
@@ -196,6 +197,23 @@ index 19cdb8b..972d477 100755
          "linux"
        ],
        "features": [],
+diff --git a/components/vendor.json b/components/vendor.json
+index a977c9e..12a9725 100755
+--- a/components/vendor.json
++++ b/components/vendor.json
+@@ -333,6 +333,12 @@
+           "utils_base"
+         ]
+       }
++    },
++    {
++      "component": "custom",
++      "features": [],
++      "adapted_kernel": [ "liteos_m", "liteos_a", "linux" ],
++      "targets": []
+     }
+   ]
+ }
 -- 
 2.17.1
 

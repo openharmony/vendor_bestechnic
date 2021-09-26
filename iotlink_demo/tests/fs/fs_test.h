@@ -12,31 +12,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include "cmsis_os2.h"
-#include "ohos_init.h"
-#include "log.h"
-#ifdef FS_TEST
-#include "fs_test.h"
+#ifndef __FS_TEST_H__
+#define __FS_TEST_H__
+
+#ifdef __cplusplus
+extern "C" {
 #endif
 
-static void DemoSdkTask(void *arg)
-{
-    (void)arg;
-#ifdef FS_TEST
-    fs_test();
+void fs_test(void);
+
+#ifdef __cplusplus
+}
 #endif
-}
 
-void DemoSdkMain(void)
-{
-    HILOG_INFO(HILOG_MODULE_APP, "HILOG_INFO %s\r\n", __func__);
-    osThreadAttr_t attr = {0};
-    attr.stack_size = 4096;
-    attr.priority = osPriorityNormal;
-    attr.name = "DemoSdk";
-    if (osThreadNew((osThreadFunc_t)DemoSdkTask, NULL, &attr) == NULL) {
-        HILOG_ERROR(HILOG_MODULE_APP, "Failed to create DemoSdkTask\r\n");
-    }
-}
-
-APP_FEATURE_INIT(DemoSdkMain);
+#endif

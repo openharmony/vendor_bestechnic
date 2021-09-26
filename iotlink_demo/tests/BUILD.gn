@@ -15,7 +15,6 @@ import("//device/bestechnic/${board_name}/components/components.gni")
 
 static_library("example") {
   sources = [
-    "app.cpp",
     "example.c",
   ]
   defines = []
@@ -30,17 +29,15 @@ static_library("example") {
     "//third_party/musl/porting/liteos_m/kernel/include",
   ]
 
-  if (bes_fs_enable && bes_fs_test) {
+  if (bes_drivers_test) {
+    deps += [ "drivers:drivers_test" ]
+    defines += [ "DRIVERS_TEST" ]
+  } else if (bes_communication_wifi_lite_enable && bes_wifi_test) {
+    deps += [ "wifi:wifi_test" ]
+    defines += [ "WIFI_TEST" ]
+  } else if (bes_fs_enable && bes_fs_test) {
     deps += [ "fs:fs_test" ]
     defines += [ "FS_TEST" ]
     include_dirs += [ "fs" ]
-  } else if (bes_ui_enable && bes_ui_test) {
-    deps += [ "ui:ui_test" ]
-    defines += [ "UI_TEST" ]
-    include_dirs += [ "ui" ]
-  } else if (bes_ability_enable && bes_ace_enable && bes_ability_test) {
-    deps += [ "ability:ability_test" ]
-    defines += [ "ABILITY_TEST" ]
-    include_dirs += [ "ability" ]
   }
 }
