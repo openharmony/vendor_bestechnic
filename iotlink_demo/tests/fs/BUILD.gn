@@ -11,33 +11,18 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import("../config.gni")
-
-static_library("example") {
+static_library("fs_test") {
   sources = [
-    "example.c",
+    "fs_test.c",
   ]
-  defines = []
   deps = [
     "//base/hiviewdfx/hilog_lite/frameworks/featured:hilog_static",
     "//device/bestechnic/${board_name}/components/drivers:drivers_adapter",
     "//device/bestechnic/${board_name}/components/fs:fs_adapter",
   ]
-
   include_dirs = [
     "//utils/native/lite/include",
+    "//utils/native/lite/memory/include",
     "//third_party/musl/porting/liteos_m/kernel/include",
   ]
-
-  if (drivers_test) {
-    deps += [ "drivers:drivers_test" ]
-    defines += [ "DRIVERS_TEST" ]
-  } else if (communication_wifi_lite_enable && wifi_test) {
-    deps += [ "wifi:wifi_test" ]
-    defines += [ "WIFI_TEST" ]
-  } else if (fs_enable && fs_test) {
-    deps += [ "fs:fs_test" ]
-    defines += [ "FS_TEST" ]
-    include_dirs += [ "fs" ]
-  }
 }

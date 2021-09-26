@@ -11,7 +11,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import("config.gni")
+import("//device/bestechnic/${board_name}/components/components.gni")
 
 group("display_demo") {
   deps = [
@@ -20,11 +20,11 @@ group("display_demo") {
     "tests:example",
   ]
 
-  if (fs_enable) {
+  if (bes_fs_enable) {
     deps += [ "//device/bestechnic/${board_name}/components/fs:fs_adapter" ]
   }
 
-  if (ui_enable || ace_enable || ability_enable) {
+  if (bes_ui_enable || bes_ace_enable || bes_ability_enable) {
     deps += [ "//device/bestechnic/${board_name}/components/ui:ui_adapter" ]
   }
 }
