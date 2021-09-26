@@ -1,3 +1,4 @@
+#!/bin/bash
 # Copyright (c) 2021 bestechnic (Shanghai) Technologies CO., LIMITED.
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -11,20 +12,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import("config.gni")
-
-group("display_demo") {
-  deps = [
-    "config:hdf_hcs",
-    "hals/utils/sys_param:hal_sysparam",
-    "tests:example",
-  ]
-
-  if (fs_enable) {
-    deps += [ "//device/bestechnic/${board_name}/components/fs:fs_adapter" ]
-  }
-
-  if (ui_enable || ace_enable || ability_enable) {
-    deps += [ "//device/bestechnic/${board_name}/components/ui:ui_adapter" ]
-  }
-}
+# generate fs
+let block_size=$1
+let fs_image_size=$2
+let page_size=fs_image_size/block_size
+let fs_image_size=page_size*block_size
+fs_src_path=$3
+fs_name=$4
+mklittlefs_path="../../../../device/bestechnic/bes2600w/sdk_liteos/bsp/tools"
+fs_path="../../../../device/bestechnic/bes2600w/burn_tools/release_bin"
+${mklittlefs_path}/mklittlefs -c ${fs_src_path} -d 5 -b ${block_size} -p ${page_size} -s ${fs_image_size} ./${fs_path}/${fs_name}.bin

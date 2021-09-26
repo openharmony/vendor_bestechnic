@@ -77,5 +77,25 @@ root {
                 }
             }
         }
+        misc :: host {
+            hostName = "misc_host";
+            priority = 50;
+            fs :: device {
+                littlefs :: deviceNode {
+                    policy = 0;
+                    priority = 100;
+                    moduleName = "HDF_FS_LITTLEFS";
+                    deviceMatchAttr = "littlefs_config";
+                }
+            }
+            storage :: device {
+                flash :: deviceNode {
+                    policy = 0;
+                    priority = 50; // load before fs
+                    moduleName = "HDF_STORAGE_FLASH";
+                    deviceMatchAttr = "flash_config";
+                }
+            }
+        }
     }
 }
