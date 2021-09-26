@@ -130,9 +130,8 @@ static void WifiSTATask(void)
         printf("WifiScan failed\r\n");
         return;
     }
-    WifiScanInfo *info = NULL;
     unsigned int size = WIFI_SCAN_HOTSPOT_LIMIT;
-    info = (WifiScanInfo *)malloc(sizeof(WifiScanInfo) * WIFI_SCAN_HOTSPOT_LIMIT);
+    WifiScanInfo *info = (WifiScanInfo *)malloc(sizeof(WifiScanInfo) * WIFI_SCAN_HOTSPOT_LIMIT);
     if (info == NULL) {
         printf("malloc failed\r\n");
         return;
@@ -145,7 +144,7 @@ static void WifiSTATask(void)
     }
     printf("********************\r\n");
     for (unsigned int i = 0; i < size; i++) {
-        printf("no:%03d, ssid:%-30s, rssi:%5d\r\n", i + 1, info[i].ssid, info[i].rssi);
+        printf("no:%03u, ssid:%-30s, rssi:%5d\r\n", i + 1, info[i].ssid, info[i].rssi);
     }
     printf("********************\r\n");
     free(info);

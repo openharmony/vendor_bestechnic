@@ -1,5 +1,5 @@
 {
-  "product_name": "display_demo",
+  "product_name": "iotlink_demo",
   "ohos_version": "OpenHarmony 2.3",
   "device_company": "bestechnic",
   "board": "bes2600w",
@@ -12,63 +12,80 @@
       "bsp_target_name": "best2600w_liteos",
       "signature": "false",
       "startaddr": "738721792",
-      "bin_size": "8257536",
+      "bin_size": "6291456",
       "burn_name": "rtos_main",
       "enable": "true",
       "force_link_libs": [
         "bootstrap",
-        "abilityms",
         "hdf_platform_lite",
         "fs_adapter",
         "example",
         "flash",
         "gpio",
         "i2c",
-        "mipi_dsi",
-        "lcd",
-        "touch"
-      ]
-    },
-    {
-      "elf_name": "wifiiot_mini",
-      "bsp_target_name": "best2600w_liteos_mini",
-      "signature": "false",
-      "startaddr": "746979328",
-      "bin_size": "3145728",
-      "burn_name": "rtos_mini",
-      "enable": "false",
-      "force_link_libs": [
-        "example"
+        "fs_test"
       ]
     }
   ],
   "fs_list": [
     {
-      "fs_name": "littlefs",
+      "fs_name": "resource",
       "signature": "false",
-      "startaddr": "750125056",
-      "block_size": "32768",
-      "fs_size": "4194304",
-      "fs_src": "data",
-      "burn_name": "littlefs",
+      "startaddr": "751304704",
+      "block_size": "4096",
+      "fs_size": "524288",
+      "fs_src": "resource",
+      "burn_name": "resource",
       "enable": "true"
+    },
+    {
+      "fs_name": "log",
+      "signature": "false",
+      "startaddr": "752353280",
+      "block_size": "4096",
+      "fs_size": "327680",
+      "fs_src": "log",
+      "burn_name": "log",
+      "enable": "true"
+    },
+    {
+      "fs_name": "data",
+      "signature": "false",
+      "startaddr": "752680960",
+      "block_size": "4096",
+      "fs_size": "2097152",
+      "fs_src": "data",
+      "burn_name": "data",
+      "enable": "true"
+    },
+    {
+      "fs_name": "misc",
+      "signature": "false",
+      "startaddr": "754778112",
+      "block_size": "4096",
+      "fs_size": "49152",
+      "fs_src": "misc",
+      "burn_name": "misc",
+      "enable": "false"
+    },
+    {
+      "fs_name": "userdata",
+      "signature": "false",
+      "startaddr": "754827264",
+      "block_size": "4096",
+      "fs_size": "16384",
+      "fs_src": "userdata",
+      "burn_name": "userdata",
+      "enable": "false"
     }
   ],
   "bsp_bin_list": [
     {
       "bsp_bin_name": "best2600w_liteos_se",
       "signature": "false",
-      "startaddr": "738549760",
-      "bin_size": "155648",
-      "burn_name": "trustzone_main",
-      "enable": "false"
-    },
-    {
-      "bsp_bin_name": "best2600w_liteos_mini_se",
-      "signature": "false",
       "startaddr": "738394112",
       "bin_size": "155648",
-      "burn_name": "trustzone_mini",
+      "burn_name": "trustzone_main",
       "enable": "false"
     },
     {
@@ -87,14 +104,6 @@
       "burn_name": "ota_boot2a",
       "remap_enable": "true",
       "enable": "true"
-    },
-    {
-      "bsp_bin_name": "factory",
-      "signature": "false",
-      "startaddr": "754905088",
-      "bin_size": "4096",
-      "burn_name": "factory",
-      "enable": "false"
     }
   ],
   "subsystems": [
@@ -131,47 +140,6 @@
       ]
     },
     {
-      "subsystem": "graphic",
-      "components": [
-        {
-          "component": "graphic_utils"
-        },
-        {
-          "component": "ui"
-        }
-      ]
-    },
-    {
-      "subsystem": "ace",
-      "components": [
-        {
-          "component": "ace_engine_lite"
-        }
-      ]
-    },
-    {
-      "subsystem": "aafwk",
-      "components": [
-        {
-          "component": "aafwk_lite",
-          "features": [
-            "enable_ohos_appexecfwk_feature_ability = true"
-          ]
-        }
-      ]
-    },
-    {
-      "subsystem": "global",
-      "components": [
-        {
-          "component": "resmgr_lite"
-        },
-        {
-          "component": "i18n_lite"
-        }
-      ]
-    },
-    {
       "subsystem": "distributed_schedule",
       "components": [
         {
@@ -189,26 +157,6 @@
       ]
     },
     {
-      "subsystem": "utils",
-      "components": [
-        {
-          "component": "kv_store"
-        },
-        {
-          "component": "file"
-        },
-        {
-          "component": "js_builtin"
-        },
-        {
-          "component": "timer_task"
-        },
-        {
-          "component": "kal_timer"
-        }
-      ]
-    },
-    {
       "subsystem": "vendor",
       "components": [
         {
@@ -218,21 +166,14 @@
             "bes_drivers_gpio_enable = true",
             "bes_drivers_i2c_enable = true",
             "bes_drivers_flash_enable = true",
-            "bes_drivers_mipi_dsi_enable = true",
-            "bes_drivers_lcd_enable = true",
-            "bes_drivers_display_enable = true",
-            "bes_drivers_touch_enable = true",
             "bes_fs_enable = true",
-            "bes_ui_enable = true",
-            "bes_ace_enable = true",
-            "bes_ability_enable = true",
-            "bes_ability_test = true"
+            "bes_fs_test = true"
           ]
         }
       ]
     }
   ],
   "vendor_adapter_dir": "",
-  "product_adapter_dir": "//vendor/bestechnic/display_demo/hals",
+  "product_adapter_dir": "//vendor/bestechnic/iotlink_demo/hals",
   "third_party_dir": ""
 }
