@@ -15,7 +15,6 @@ import("//device/bestechnic/${board_name}/components/components.gni")
 
 static_library("example") {
   sources = [
-    "app.cpp",
     "example.c",
   ]
   defines = []
@@ -40,13 +39,5 @@ static_library("example") {
     deps += [ "fs:fs_test" ]
     defines += [ "FS_TEST" ]
     include_dirs += [ "fs" ]
-  } else if (bes_ui_enable && bes_ui_test) {
-    deps += [ "ui:ui_test" ]
-    defines += [ "UI_TEST" ]
-    include_dirs += [ "ui" ]
-  } else if (bes_ability_enable && bes_ace_enable && bes_ability_test) {
-    deps += [ "ability:ability_test" ]
-    defines += [ "ABILITY_TEST" ]
-    include_dirs += [ "ability" ]
   }
 }

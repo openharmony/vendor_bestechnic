@@ -206,6 +206,29 @@
           "component": "kal_timer"
         }
       ]
+    },
+    {
+      "subsystem": "vendor",
+      "components": [
+        {
+          "component": "custom",
+          "features": [
+            "bes_communication_wifi_lite_enable = true",
+            "bes_drivers_gpio_enable = true",
+            "bes_drivers_i2c_enable = true",
+            "bes_drivers_flash_enable = true",
+            "bes_drivers_mipi_dsi_enable = true",
+            "bes_drivers_lcd_enable = true",
+            "bes_drivers_display_enable = true",
+            "bes_drivers_touch_enable = true",
+            "bes_fs_enable = true",
+            "bes_ui_enable = true",
+            "bes_ace_enable = true",
+            "bes_ability_enable = true",
+            "bes_ability_test = true"
+          ]
+        }
+      ]
     }
   ],
   "vendor_adapter_dir": "//vendor/bestechnic/display_demo",

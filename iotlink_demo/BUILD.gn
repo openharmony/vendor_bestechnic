@@ -11,19 +11,20 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-static_library("fs_test") {
-  sources = [
-    "fs_test.c",
-    "utils_file_test.c",
-  ]
+import("//device/bestechnic/${board_name}/components/components.gni")
+
+group("iotlink_demo") {
   deps = [
-    "//base/hiviewdfx/hilog_lite/frameworks/featured:hilog_static",
-    "//device/bestechnic/${board_name}/components/drivers:drivers_adapter",
-    "//device/bestechnic/${board_name}/components/fs:fs_adapter",
+    "hals/utils/file:hal_file_static",
+    "hals/utils/sys_param:hal_sysparam",
+    "tests:example",
   ]
-  include_dirs = [
-    "//utils/native/lite/include",
-    "//utils/native/lite/memory/include",
-    "//third_party/musl/porting/liteos_m/kernel/include",
-  ]
+
+  if (bes_fs_enable) {
+    deps += [ "//device/bestechnic/${board_name}/components/fs:fs_adapter" ]
+  }
+
+  if (bes_ui_enable || bes_ace_enable || bes_ability_enable) {
+    deps += [ "//device/bestechnic/${board_name}/components/ui:ui_adapter" ]
+  }
 }

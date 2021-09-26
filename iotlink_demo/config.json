@@ -1,5 +1,5 @@
 {
-  "product_name": "sensor",
+  "product_name": "iotlink_demo",
   "ohos_version": "OpenHarmony 2.2",
   "device_company": "bestechnic",
   "board": "bes2600w",
@@ -85,7 +85,7 @@
       "startaddr": "738394112",
       "bin_size": "155648",
       "burn_name": "trustzone_main",
-      "enable": "true"
+      "enable": "false"
     },
     {
       "bsp_bin_name": "ota_boot1",
@@ -93,7 +93,7 @@
       "startaddr": "0",
       "bin_size": "65536",
       "burn_name": "ota_boot1",
-      "enable": "true"
+      "enable": "false"
     },
     {
       "bsp_bin_name": "ota_boot2a",
@@ -154,9 +154,25 @@
           "optional": "true"
         }
       ]
+    },
+    {
+      "subsystem": "vendor",
+      "components": [
+        {
+          "component": "custom",
+          "features": [
+            "bes_communication_wifi_lite_enable = true",
+            "bes_drivers_gpio_enable = true",
+            "bes_drivers_i2c_enable = true",
+            "bes_drivers_flash_enable = true",
+            "bes_fs_enable = true",
+            "bes_fs_test = true"
+          ]
+        }
+      ]
     }
   ],
-  "vendor_adapter_dir": "//vendor/bestechnic/sensor",
-  "product_adapter_dir": "//vendor/bestechnic/sensor/hals",
+  "vendor_adapter_dir": "//vendor/bestechnic/iotlink_demo",
+  "product_adapter_dir": "//vendor/bestechnic/iotlink_demo/hals",
   "third_party_dir": ""
 }

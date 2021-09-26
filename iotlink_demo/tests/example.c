@@ -15,18 +15,14 @@
 #include "cmsis_os2.h"
 #include "ohos_init.h"
 #include "log.h"
-#ifdef DRIVERS_TEST
-#include "driver_test.h"
-#elif defined(FS_TEST)
+#ifdef FS_TEST
 #include "fs_test.h"
 #endif
 
 static void DemoSdkTask(void *arg)
 {
     (void)arg;
-#ifdef DRIVERS_TEST
-    display_test();
-#elif defined(FS_TEST)
+#ifdef FS_TEST
     fs_test();
 #endif
 }
