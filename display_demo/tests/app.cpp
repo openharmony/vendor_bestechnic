@@ -12,35 +12,30 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include "cmsis_os2.h"
+#if defined(UI_TEST) || defined(ABILITY_TEST)
 #include "ohos_init.h"
-#include "log.h"
-#ifdef DRIVERS_TEST
-#include "driver_test.h"
-#elif defined(FS_TEST)
-#include "fs_test.h"
+#include "ui_main.h"
+#if defined(UI_TEST)
+#include "ui_test.h"
+#elif defined(ABILITY_TEST)
+#include "ability_test.h"
 #endif
 
-static void DemoSdkTask(void *arg)
+/* ui app entry */
+void RunApp()
 {
-    (void)arg;
-#ifdef DRIVERS_TEST
-    display_test();
-#elif defined(FS_TEST)
-    fs_test();
+#ifdef UI_TEST
+    AnimatorDemoStart();
+#elif defined(ABILITY_TEST)
+    // StartLauncherApp();
+    StartJSApp();
 #endif
 }
 
-void DemoSdkMain(void)
+void AppEntry(void)
 {
-    HILOG_INFO(HILOG_MODULE_APP, "HILOG_INFO %s\r\n", __func__);
-    osThreadAttr_t attr = {0};
-    attr.stack_size = 4096;
-    attr.priority = osPriorityNormal;
-    attr.name = "DemoSdk";
-    if (osThreadNew((osThreadFunc_t)DemoSdkTask, NULL, &attr) == NULL) {
-        HILOG_ERROR(HILOG_MODULE_APP, "Failed to create DemoSdkTask\r\n");
-    }
+    UiMain();
 }
 
-APP_FEATURE_INIT(DemoSdkMain);
+APP_FEATURE_INIT(AppEntry);
+#endif
