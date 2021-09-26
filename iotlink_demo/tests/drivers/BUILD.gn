@@ -19,24 +19,24 @@ import("${drivers_path}/drivers.gni")
 static_library("drivers_test") {
   sources = [ "driver_test.c" ]
 
-  if (drivers_gpio_enable) {
+  if (bes_drivers_gpio_enable) {
     sources += [ "gpio_test.c" ]
   }
 
-  if (drivers_i2c_enable) {
+  if (bes_drivers_i2c_enable) {
     sources += [ "i2c_test.c" ]
   }
 
-  if (drivers_spi_enable) {
+  if (bes_drivers_spi_enable) {
     sources += [ "spi_test.c" ]
   }
 
-  if (drivers_touch_enable) {
+  if (bes_drivers_touch_enable) {
     sources += [ "touch_test.c" ]
     defines = [ "TOUCH_TEST" ]
   }
 
-  if (drivers_display_enable) {
+  if (bes_drivers_display_enable) {
     sources += [ "disp_test.c" ]
   }
 

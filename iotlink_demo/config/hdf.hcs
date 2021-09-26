@@ -1,0 +1,36 @@
+#include "../../../../device/bestechnic/bes2600w/components/config/hdf.hcs"
+root {
+    device_info {
+        platform :: host {
+            device_mipi_dsi : delete {}
+        }
+        display : delete {}
+        input : delete {}
+    }
+    platform {
+       mipi_dsi_config : delete {}
+    }
+    input : delete {}
+    misc {
+        fs_config {
+            littlefs_config {
+                match_attr = "littlefs_config";
+                mount_points = ["/resource", "/log", "/data"];
+                partitions = [10, 11, 12];
+                block_size = [4096, 4096, 4096];
+                block_count = [128, 80, 512];
+            }
+        }
+        storage_config {
+            flash_config {
+                match_attr = "flash_config";
+                partitions = [8, 9, 10, 11, 12];
+                owner = [0, 0, 0, 0, 0];
+                description = ["rtos_main", "rtos_mini", "resource", "log", "data"];
+                start_addr = [0x80000, 0x680000, 0xC80000, 0xD80000, 0xDD0000];
+                length = [0x600000, 0x600000, 0x80000, 0x50000, 0x200000];
+                options = [3, 3, 3, 3, 3];
+            }
+        }
+    }
+}
