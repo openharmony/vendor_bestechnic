@@ -13,6 +13,6 @@
 
 group("wifiservice") {
   deps = [
-    "//device/bestechnic/${board_name}/components/communication/wifi_lite/wifiservice:wifiservice",
+    "//device/bestechnic/${board_name}/hals/communication/wifi_lite/wifiservice:wifiservice",
   ]
 }

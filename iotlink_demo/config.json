@@ -10,8 +10,6 @@
       "elf_name": "wifiiot",
       "bsp_target_name": "best2600w_liteos",
       "signature": "false",
-      "startaddr": "738721792",
-      "bin_size": "6291456",
       "burn_name": "rtos_main",
       "enable": "true",
       "force_link_libs": [
@@ -30,7 +28,6 @@
     {
       "fs_name": "resource",
       "signature": "false",
-      "startaddr": "751304704",
       "block_size": "4096",
       "fs_size": "524288",
       "fs_src": "resource",
@@ -40,7 +37,6 @@
     {
       "fs_name": "log",
       "signature": "false",
-      "startaddr": "752353280",
       "block_size": "4096",
       "fs_size": "327680",
       "fs_src": "log",
@@ -50,7 +46,6 @@
     {
       "fs_name": "data",
       "signature": "false",
-      "startaddr": "752680960",
       "block_size": "4096",
       "fs_size": "2097152",
       "fs_src": "data",
@@ -60,7 +55,6 @@
     {
       "fs_name": "misc",
       "signature": "false",
-      "startaddr": "754778112",
       "block_size": "4096",
       "fs_size": "49152",
       "fs_src": "misc",
@@ -70,7 +64,6 @@
     {
       "fs_name": "userdata",
       "signature": "false",
-      "startaddr": "754827264",
       "block_size": "4096",
       "fs_size": "16384",
       "fs_src": "userdata",
@@ -82,24 +75,18 @@
     {
       "bsp_bin_name": "best2600w_liteos_se",
       "signature": "false",
-      "startaddr": "738394112",
-      "bin_size": "155648",
       "burn_name": "trustzone_main",
       "enable": "false"
     },
     {
       "bsp_bin_name": "ota_boot1",
       "signature": "false",
-      "startaddr": "0",
-      "bin_size": "65536",
       "burn_name": "ota_boot1",
-      "enable": "false"
+      "enable": "true"
     },
     {
       "bsp_bin_name": "ota_boot2a",
       "signature": "false",
-      "startaddr": "738263040",
-      "bin_size": "65536",
       "burn_name": "ota_boot2a",
       "remap_enable": "true",
       "enable": "true"
@@ -174,5 +161,6 @@
   ],
   "vendor_adapter_dir": "//vendor/bestechnic/iotlink_demo",
   "product_adapter_dir": "//vendor/bestechnic/iotlink_demo/hals",
-  "third_party_dir": ""
+  "third_party_dir": "",
+  "flash_partition_dir": "fs"
 }
