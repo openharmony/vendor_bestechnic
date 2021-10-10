@@ -11,8 +11,6 @@
       "elf_name": "wifiiot",
       "bsp_target_name": "best2600w_liteos",
       "signature": "false",
-      "startaddr": "0",
-      "bin_size": "8257536",
       "burn_name": "rtos_main",
       "enable": "true",
       "force_link_libs": [
@@ -26,8 +24,6 @@
       "elf_name": "wifiiot_mini",
       "bsp_target_name": "best2600w_liteos_mini",
       "signature": "false",
-      "startaddr": "746979328",
-      "bin_size": "3145728",
       "burn_name": "rtos_mini",
       "enable": "false",
       "force_link_libs": [
@@ -39,10 +35,9 @@
     {
       "fs_name": "littlefs",
       "signature": "false",
-      "startaddr": "750125056",
       "block_size": "32768",
       "fs_size": "4194304",
-      "fs_src": "./data/",
+      "fs_src": "data",
       "burn_name": "littlefs",
       "enable": "true"
     }
@@ -51,43 +46,27 @@
     {
       "bsp_bin_name": "best2600w_liteos_se",
       "signature": "false",
-      "startaddr": "738549760",
-      "bin_size": "155648",
       "burn_name": "trustzone_main",
       "enable": "false"
     },
     {
       "bsp_bin_name": "best2600w_liteos_mini_se",
       "signature": "false",
-      "startaddr": "738394112",
-      "bin_size": "155648",
       "burn_name": "trustzone_mini",
       "enable": "false"
     },
     {
       "bsp_bin_name": "ota_boot1",
       "signature": "false",
-      "startaddr": "0",
-      "bin_size": "65536",
       "burn_name": "ota_boot1",
       "enable": "false"
     },
     {
       "bsp_bin_name": "ota_boot2a",
       "signature": "false",
-      "startaddr": "738263040",
-      "bin_size": "65536",
       "burn_name": "ota_boot2a",
       "remap_enable": "true",
       "enable": "true"
-    },
-    {
-      "bsp_bin_name": "factory",
-      "signature": "false",
-      "startaddr": "754905088",
-      "bin_size": "4096",
-      "burn_name": "factory",
-      "enable": "false"
     }
   ],
   "subsystems": [
@@ -143,9 +122,20 @@
         { "component": "xts_acts", "features":[] },
         { "component": "xts_tools", "features":[] }
        ]
-     }
+     },
+     {
+       "subsystem": "utils",
+       "components": [
+         {
+           "component": "file",
+           "optional": "true",
+           "features":[]
+          }
+        ]
+      }
   ],
   "vendor_adapter_dir": "",
   "product_adapter_dir": "//vendor/bestechnic/xts_demo/hals",
-  "third_party_dir": ""
+  "third_party_dir": "",
+  "flash_partition_dir": "fs"
 }
