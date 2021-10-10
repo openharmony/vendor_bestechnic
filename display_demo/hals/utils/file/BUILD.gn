@@ -14,5 +14,5 @@
 import("//build/lite/config/component/lite_component.gni")
 
 group("hal_file_static") {
-  deps = [ "//device/bestechnic/${board_name}/components/fs:fs_adapter" ]
+  deps = [ "//device/bestechnic/${board_name}/hals/utils/file:hal_file_static" ]
 }
