@@ -12,13 +12,25 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# generate fs
-let block_size=$1
-let fs_image_size=$2
-let page_size=fs_image_size/block_size
-let fs_image_size=page_size*block_size
-fs_src_path=$3
-fs_name=$4
-mklittlefs_path="../../../../device/bestechnic/bes2600w/sdk_liteos/bsp/tools"
-fs_path="../../../../device/bestechnic/bes2600w/burn_tools/release_bin"
-${mklittlefs_path}/mklittlefs -c ${fs_src_path} -d 5 -b ${block_size} -p ${page_size} -s ${fs_image_size} ./${fs_path}/${fs_name}.bin
+# == area config a7 liteos bin begin == #
+OPT_BEST2600W_LITEOS_A7=" \
+"
+# == area config a7 liteos bin end   == #
+
+# == area config liteos main bin begin == #
+OPT_BEST2600W_LITEOS_MAIN=" \
+OTA_CODE_OFFSET=0 \
+"
+# == area config liteos main bin end   == #
+
+# == area config liteos cp bin begin == #
+OPT_BEST2600W_LITEOS_CP=" \
+"
+# == area config liteos cp bin end   == #
+
+
+# == area config liteos main mini bin begin == #
+OPT_BEST2600W_LITEOS_MAIN_MINI_SE=" \
+"
+# == area config liteos main mini bin end   == #
+
