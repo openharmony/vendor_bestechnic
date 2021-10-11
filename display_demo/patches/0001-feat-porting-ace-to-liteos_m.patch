@@ -1,10 +1,10 @@
-From f808fb717b13fc0ca253de0c67a3ab2e0335d5e6 Mon Sep 17 00:00:00 2001
-From: leihuang <leihuang@bestechnic.com>
-Date: Sun, 26 Sep 2021 02:21:45 +0800
-Subject: [PATCH] feat: porting ace to liteos_m
+From 2a506d8f5cf9f488b8ed60755e94d92c25ebed85 Mon Sep 17 00:00:00 2001
+From: yangjian <jianyang@bestechnic.com>
+Date: Mon, 11 Oct 2021 15:09:31 +0800
+Subject: [PATCH] feat porting ace to liteos_m
 
-Signed-off-by: leihuang <leihuang@bestechnic.com>
-Change-Id: I727a06892bef4ece7f6d7a3ccf41cc09d0778e63
+Signed-off-by: yangjian <jianyang@bestechnic.com>
+Change-Id: I2bf6c548bc4be45f8e97ac954b534f77771e04d3
 ---
  frameworks/BUILD.gn                           | 57 +++++++++++++------
  frameworks/common/BUILD.gn                    | 14 ++++-
@@ -12,9 +12,9 @@ Change-Id: I727a06892bef4ece7f6d7a3ccf41cc09d0778e63
  frameworks/native_engine/BUILD.gn             | 15 ++++-
  .../async/message_queue_utils.cpp             |  8 +--
  .../src/core/context/js_app_context.cpp       |  2 +-
- frameworks/targets/liteos_m/acelite_config.h  | 24 +++++---
+ frameworks/targets/liteos_m/acelite_config.h  | 24 ++++----
  frameworks/targets/platform_adapter.cpp       |  2 +-
- 8 files changed, 106 insertions(+), 45 deletions(-)
+ 8 files changed, 104 insertions(+), 47 deletions(-)
  mode change 100644 => 100755 frameworks/common/BUILD.gn
  mode change 100644 => 100755 frameworks/module_manager/BUILD.gn
  mode change 100644 => 100755 frameworks/native_engine/BUILD.gn
@@ -22,7 +22,7 @@ Change-Id: I727a06892bef4ece7f6d7a3ccf41cc09d0778e63
  mode change 100644 => 100755 frameworks/targets/platform_adapter.cpp
 
 diff --git a/frameworks/BUILD.gn b/frameworks/BUILD.gn
-index 8c3fc0d..beb81cc 100755
+index 5b96908..c6586c2 100755
 --- a/frameworks/BUILD.gn
 +++ b/frameworks/BUILD.gn
 @@ -25,25 +25,42 @@ lite_component("jsfwk") {
@@ -242,7 +242,7 @@ index ac56627..c477580
 diff --git a/frameworks/native_engine/async/message_queue_utils.cpp b/frameworks/native_engine/async/message_queue_utils.cpp
 old mode 100644
 new mode 100755
-index 102ec69..5b339eb
+index 18fc87c..00a0edd
 --- a/frameworks/native_engine/async/message_queue_utils.cpp
 +++ b/frameworks/native_engine/async/message_queue_utils.cpp
 @@ -28,7 +28,7 @@ QueueHandler MessageQueueUtils::CreateMessageQueue(uint32_t capacity, uint32_t m
@@ -272,7 +272,7 @@ index 102ec69..5b339eb
      HILOG_WARN(HILOG_MODULE_ACE, "todo call linux putmsg interface here!");
      return MSGQ_FAIL;
  #else
-@@ -81,7 +81,7 @@ int8_t MessageQueueUtils::GetMessage(QueueHandler handler, void* msgPtr, uint32_
+@@ -82,7 +82,7 @@ int8_t MessageQueueUtils::GetMessage(QueueHandler handler, void* msgPtr, uint32_
          HILOG_ERROR(HILOG_MODULE_ACE, "MessageQueueUtils:GetMessage parameters invalid!");
          return MSGQ_FAIL;
      }
@@ -282,7 +282,7 @@ index 102ec69..5b339eb
      return MSGQ_FAIL;
  #else
 diff --git a/frameworks/src/core/context/js_app_context.cpp b/frameworks/src/core/context/js_app_context.cpp
-index 32147f9..821dcf1 100755
+index f1c6555..c50640f 100755
 --- a/frameworks/src/core/context/js_app_context.cpp
 +++ b/frameworks/src/core/context/js_app_context.cpp
 @@ -16,7 +16,7 @@
@@ -293,9 +293,9 @@ index 32147f9..821dcf1 100755
 +#if (defined(__LINUX__) || defined(__LITEOS_A__))
  #include "ace_ability.h"
  #endif
- #include "component_factory.h"
+ #ifdef FEATURE_API_VERSION
 diff --git a/frameworks/targets/liteos_m/acelite_config.h b/frameworks/targets/liteos_m/acelite_config.h
-index a292610..279e2b2 100755
+index ad16e44..6468617 100755
 --- a/frameworks/targets/liteos_m/acelite_config.h
 +++ b/frameworks/targets/liteos_m/acelite_config.h
 @@ -29,9 +29,6 @@
@@ -329,21 +329,21 @@ index a292610..279e2b2 100755
  
  /**
   * support config for product JS modules
-@@ -140,20 +141,25 @@
+@@ -140,22 +141,23 @@
  /**
   * date time module
   */
 -#define FEATURE_DATE_FORMAT
+-
+-#define FEATURE_API_VERSION
 +// #define FEATURE_DATE_FORMAT
-+
-+// #define FEATURE_API_VERSION
-+
-+// #define JS_ENGINE_STATIC_MULTI_CONTEXTS_ENABLED
  
 -#define JS_ENGINE_STATIC_MULTI_CONTEXTS_ENABLED
++// #define FEATURE_API_VERSION
+ 
++// #define JS_ENGINE_STATIC_MULTI_CONTEXTS_ENABLED
 +#define FEATURE_MODULE_STORAGE
 +#define FEATURE_MODULE_DEVICE
- 
  /**
   * support js profiler
   */
