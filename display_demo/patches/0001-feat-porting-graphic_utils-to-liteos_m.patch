@@ -1,15 +1,14 @@
-From 9091e98e8f4105731d644f497392baa74bd77689 Mon Sep 17 00:00:00 2001
+From e5a88cfb9f02f40c34d7ddb1c3a1e390d84666cf Mon Sep 17 00:00:00 2001
 From: leihuang <leihuang@bestechnic.com>
-Date: Thu, 9 Sep 2021 10:32:31 +0800
+Date: Wed, 13 Oct 2021 17:08:06 +0800
 Subject: [PATCH] feat: porting graphic_utils to liteos_m
 
 Signed-off-by: leihuang <leihuang@bestechnic.com>
-Change-Id: I13e2139939456ccedba98086eac3024f1e9f37fb
+Change-Id: Ie49d20d1e5862f3fb7bb492d562dae67feaa6a40
 ---
- BUILD.gn                                | 76 ++++++++++++++-----------
- interfaces/innerkits/graphic_config.h   | 24 ++++----
- interfaces/kits/gfx_utils/graphic_log.h | 33 +++--------
- 3 files changed, 66 insertions(+), 67 deletions(-)
+ BUILD.gn                              | 76 ++++++++++++++++-----------
+ interfaces/innerkits/graphic_config.h | 24 +++++----
+ 2 files changed, 58 insertions(+), 42 deletions(-)
  mode change 100644 => 100755 BUILD.gn
  mode change 100644 => 100755 interfaces/innerkits/graphic_config.h
 
@@ -121,7 +120,7 @@ index 0bfcf85..22bddc7
 diff --git a/interfaces/innerkits/graphic_config.h b/interfaces/innerkits/graphic_config.h
 old mode 100644
 new mode 100755
-index eebdb17..961a976
+index 2e730ab..332fe0b
 --- a/interfaces/innerkits/graphic_config.h
 +++ b/interfaces/innerkits/graphic_config.h
 @@ -53,7 +53,7 @@ namespace OHOS {
@@ -218,60 +217,6 @@ index eebdb17..961a976
  #else
  /* Default file path for screenshots */
  static constexpr const char* DEFAULT_SCREENSHOT_PATH = "/storage/screenshot.bin";
-diff --git a/interfaces/kits/gfx_utils/graphic_log.h b/interfaces/kits/gfx_utils/graphic_log.h
-index 8d2a268..a355b4c 100755
---- a/interfaces/kits/gfx_utils/graphic_log.h
-+++ b/interfaces/kits/gfx_utils/graphic_log.h
-@@ -19,6 +19,8 @@
- #include "graphic_config.h"
- #if ENABLE_GRAPHIC_LOG
- #ifdef __LITEOS__
-+#undef LOG_TAG
-+#define LOG_TAG "Graphic"
- #include "hilog/log.h"
- #include <cstring>
- #else
-@@ -29,34 +31,15 @@
- namespace OHOS {
- #if ENABLE_GRAPHIC_LOG
- #ifdef __LITEOS__
--typedef enum {
--    LOG_LEVEL_FATAL = 0,
--    LOG_LEVEL_ERROR,
--    LOG_LEVEL_WARN,
--    LOG_LEVEL_INFO,
--    LOG_LEVEL_DEBUG,
--    LOG_LEVEL_MAX
--} LOG_LEVEL;
- 
--static constexpr HiviewDFX::HiLogLabel GRPHIC_LABEL = {LOG_CORE, 0xD001400, "Graphic"};
--
--#define FILE_NAME(x) (strrchr(x, '/') ? (strrchr(x, '/') + 1) : x)
--
--#define GRAPHIC_DECORATOR_HILOG(level, op, fmt, args...)                                                    \
--do {                                                                                                        \
--    if ((level < GRAPHIC_LOG_LEVEL) && (level < LOG_LEVEL_MAX)) {                                           \
--        op(GRPHIC_LABEL, "{%s()-%s:%d} " fmt, __FUNCTION__, FILE_NAME(__FILE__), __LINE__, ##args);         \
--    }                                                                                                       \
--} while (0)
--
--#define GRAPHIC_LOGF(fmt, args...) GRAPHIC_DECORATOR_HILOG(LOG_LEVEL_FATAL, HiviewDFX::HiLog::Fatal, fmt, ##args)
--#define GRAPHIC_LOGE(fmt, args...) GRAPHIC_DECORATOR_HILOG(LOG_LEVEL_ERROR, HiviewDFX::HiLog::Error, fmt, ##args)
--#define GRAPHIC_LOGW(fmt, args...) GRAPHIC_DECORATOR_HILOG(LOG_LEVEL_WARN, HiviewDFX::HiLog::Warn, fmt, ##args)
--#define GRAPHIC_LOGI(fmt, args...) GRAPHIC_DECORATOR_HILOG(LOG_LEVEL_INFO, HiviewDFX::HiLog::Info, fmt, ##args)
--#define GRAPHIC_LOGD(fmt, args...) GRAPHIC_DECORATOR_HILOG(LOG_LEVEL_DEBUG, HiviewDFX::HiLog::Debug, fmt, ##args)
-+#define GRAPHIC_LOGF(fmt, args...) HILOG_FATAL(HILOG_MODULE_GRAPHIC, fmt "\n", ##args)
-+#define GRAPHIC_LOGE(fmt, args...) HILOG_ERROR(HILOG_MODULE_GRAPHIC, fmt "\n", ##args)
-+#define GRAPHIC_LOGW(fmt, args...) HILOG_WARN(HILOG_MODULE_GRAPHIC, fmt "\n", ##args)
-+#define GRAPHIC_LOGI(fmt, args...) HILOG_INFO(HILOG_MODULE_GRAPHIC, fmt "\n", ##args)
-+#define GRAPHIC_LOGD(fmt, args...) HILOG_DEBUG(HILOG_MODULE_GRAPHIC, fmt "\n", ##args)
- 
- #else
--#define GRAPHIC_LOGF(...) printf("[%d]" format "\n", __LINE__, ##__VA_ARGS__)
-+#define GRAPHIC_LOGF(format, ...) printf("[%d]" format "\n", __LINE__, ##__VA_ARGS__)
- #define GRAPHIC_LOGE(...) GRAPHIC_LOGF(__VA_ARGS__)
- #define GRAPHIC_LOGW(...) GRAPHIC_LOGF(__VA_ARGS__)
- #define GRAPHIC_LOGI(...) GRAPHIC_LOGF(__VA_ARGS__)
 -- 
 2.17.1
 
