@@ -6,21 +6,11 @@ drivers/adapter:
   - vendor/bestechnic/xts_demo/patches/0001-feat-add-platform-drivers-options.patch
 third_party/musl:
   - vendor/bestechnic/xts_demo/patches/0001-fix-work-around-musl-for-arm-none-eabi.patch
-foundation/graphic/ui:
-  - vendor/bestechnic/xts_demo/patches/0001-feat-porting-graphic_ui-to-liteos_m.patch
-foundation/graphic/utils:
-  - vendor/bestechnic/xts_demo/patches/0001-feat-porting-graphic_utils-to-liteos_m.patch
-third_party/giflib:
-  - vendor/bestechnic/xts_demo/patches/0001-feat-build-libgif.a-for-liteos_m.patch
-third_party/libjpeg:
-  - vendor/bestechnic/xts_demo/patches/0001-feat-build-libjpeg.a-for-liteos_m.patch
-third_party/libpng:
-  - vendor/bestechnic/xts_demo/patches/0001-feat-build-libpng.a-for-liteos_m.patch
-third_party/qrcodegen:
-  - vendor/bestechnic/xts_demo/patches/0001-feat-build-libqrcodegen.a-for-liteos_m.patch
-third_party/freetype:
-  - vendor/bestechnic/xts_demo/patches/0001-feat-build-libfreetype.a-for-liteos_m.patch
 base/hiviewdfx/hiview_lite:
   - vendor/bestechnic/xts_demo/patches/0001-fix-stack-overflow.patch
 test/xts/acts:
   - vendor/bestechnic/xts_demo/patches/0001-patch-for-test-xts-acts.patch
+build/lite:
+  - vendor/bestechnic/xts_demo/patches/0001-feat-add-liteos_m-options.patch
+test/xts/tools/lite:
+  - vendor/bestechnic/xts_demo/patches/0001-build-for-xts-test-xts-tools-lite.patch

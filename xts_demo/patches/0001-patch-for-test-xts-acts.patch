@@ -1,13 +1,14 @@
-From b6de2c7a9a8996524e3691f908c78c74c6717372 Mon Sep 17 00:00:00 2001
+From c90a14663424fc6cce7f5388444597b373f6375a Mon Sep 17 00:00:00 2001
 From: yangjian <jianyang@bestechnic.com>
-Date: Sat, 25 Sep 2021 20:39:47 +0800
+Date: Fri, 15 Oct 2021 14:10:53 +0800
 Subject: [PATCH] patch for test xts acts
 
 Signed-off-by: yangjian <jianyang@bestechnic.com>
-Change-Id: Ia0000e1aad0a37c117e14f7fff3dff3614ef06a0
+Change-Id: I6f45950cd7ce940e7088fc2908ca462c9a3b838d
 ---
  communication_lite/lwip_hal/src/lwip_func_test.c | 1 +
- 1 file changed, 1 insertion(+)
+ hiviewdfx_lite/hilog_hal/src/dfx_hilog.c         | 2 +-
+ 2 files changed, 2 insertions(+), 1 deletion(-)
 
 diff --git a/communication_lite/lwip_hal/src/lwip_func_test.c b/communication_lite/lwip_hal/src/lwip_func_test.c
 index f350dbb..3c3e22c 100755
@@ -21,6 +22,19 @@ index f350dbb..3c3e22c 100755
  #include "lwip/sockets.h"
  #include "lwip/inet.h"
  #include "lwip/tcp.h"
+diff --git a/hiviewdfx_lite/hilog_hal/src/dfx_hilog.c b/hiviewdfx_lite/hilog_hal/src/dfx_hilog.c
+index d592537..0d0e3c4 100755
+--- a/hiviewdfx_lite/hilog_hal/src/dfx_hilog.c
++++ b/hiviewdfx_lite/hilog_hal/src/dfx_hilog.c
+@@ -13,7 +13,7 @@
+  * limitations under the License.
+  */
+ 
+-
++#include <stdbool.h>
+ #include <hiview_util.h>
+ #include <securec.h>
+ #include <hiview_config.h>
 -- 
 2.17.1
 

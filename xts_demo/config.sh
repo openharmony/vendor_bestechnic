@@ -19,7 +19,6 @@ OPT_BEST2600W_LITEOS_A7=" \
 
 # == area config liteos main bin begin == #
 OPT_BEST2600W_LITEOS_MAIN=" \
-OTA_CODE_OFFSET=0 \
 "
 # == area config liteos main bin end   == #
 
