@@ -1,0 +1,33 @@
+From c18d7dd65c9058ac4bd395f9ee1938a0edf70a63 Mon Sep 17 00:00:00 2001
+From: yangjian <jianyang@bestechnic.com>
+Date: Mon, 18 Oct 2021 12:02:12 +0800
+Subject: [PATCH] feat:base/security/huks/ diable ED25519
+
+Signed-off-by: yangjian <jianyang@bestechnic.com>
+Change-Id: I4bab7ebdfad0aafe2124583bd69d679faeea841c
+---
+ frameworks/huks_standard/main/common/include/hks_config.h | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
+
+diff --git a/frameworks/huks_standard/main/common/include/hks_config.h b/frameworks/huks_standard/main/common/include/hks_config.h
+index d1e94a4..0817261 100644
+--- a/frameworks/huks_standard/main/common/include/hks_config.h
++++ b/frameworks/huks_standard/main/common/include/hks_config.h
+@@ -36,10 +36,10 @@
+ #define HKS_SUPPORT_ECDSA_C
+ 
+ /* ED25519 */
+-#define HKS_SUPPORT_ED25519_C
+-#define HKS_SUPPORT_ED25519_GENERATE_KEY
+-#define HKS_SUPPORT_ED25519_SIGN_VERIFY
+-#define HKS_SUPPORT_ED2519_GET_PUBLIC_KEY
++// #define HKS_SUPPORT_ED25519_C
++// #define HKS_SUPPORT_ED25519_GENERATE_KEY
++// #define HKS_SUPPORT_ED25519_SIGN_VERIFY
++// #define HKS_SUPPORT_ED2519_GET_PUBLIC_KEY
+ 
+ /* HASH */
+ #define HKS_SUPPORT_HASH_C
+-- 
+2.17.1
+

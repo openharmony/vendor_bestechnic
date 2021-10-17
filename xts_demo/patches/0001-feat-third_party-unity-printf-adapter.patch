@@ -1,0 +1,35 @@
+From ef7614077f3e1e6a6bd40ce70abe1cb36f6aca31 Mon Sep 17 00:00:00 2001
+From: yangjian <jianyang@bestechnic.com>
+Date: Mon, 18 Oct 2021 12:10:56 +0800
+Subject: [PATCH] feat:third_party/unity/ printf adapter
+
+Signed-off-by: yangjian <jianyang@bestechnic.com>
+Change-Id: I419c5ce31ce2081d45ef7ef3544b96d00fbcbec6
+---
+ src/unity_internals.h | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
+
+diff --git a/src/unity_internals.h b/src/unity_internals.h
+index a9a7ea2..bfbc409 100644
+--- a/src/unity_internals.h
++++ b/src/unity_internals.h
+@@ -252,10 +252,14 @@ typedef UNITY_FLOAT_TYPE UNITY_FLOAT;
+ /*-------------------------------------------------------
+  * Output Method: stdout (DEFAULT)
+  *-------------------------------------------------------*/
++#include "hal_trace.h"
++static void unity_putchar(char a){
++  printf("%c",a);
++}
+ #ifndef UNITY_OUTPUT_CHAR
+   /* Default to using putchar, which is defined in stdio.h */
+-  #include <stdio.h>
+-  #define UNITY_OUTPUT_CHAR(a) (void)putchar(a)
++  // #include <stdio.h>
++  #define UNITY_OUTPUT_CHAR(a) (void)unity_putchar(a)
+ #else
+   /* If defined as something else, make sure we declare it here so it's ready for use */
+   #ifdef UNITY_OUTPUT_CHAR_HEADER_DECLARATION
+-- 
+2.17.1
+
