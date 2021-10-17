@@ -17,7 +17,11 @@
         "hdf_platform_lite",
         "sysparam",
         "hctest",
-        "module_ActsBootstrapTest"
+        "module_ActsBootstrapTest",
+        "module_ActsLwipTest",
+        "module_ActsWifiServiceTest",
+        "module_ActsParameterTest",
+        "module_ActsDfxFuncTest"
       ]
     },
     {
@@ -84,7 +88,10 @@
             "enable_ohos_kernel_liteos_m_fs = true",
             "enable_ohos_kernel_liteos_m_fatfs = false",
             "enable_ohos_kernel_liteos_m_cmsis = false",
-            "enable_ohos_kernel_liteos_m_posix = true"
+            "enable_ohos_kernel_liteos_m_posix = true",
+            "enable_ohos_kernel_liteos_m_lwip = true",
+            "enable_ohos_kernel_liteos_m_shell = false",
+            "ohos_kernel_liteos_m_lwip_path = \"//device/bestechnic/bes2600w/components/net/lwip-2.1:lwip\""
           ]
         }
       ]
@@ -138,6 +145,15 @@
         "components": [
           {
             "component": "wifi_lite",
+            "optional": "true"
+          }
+        ]
+      },
+      {
+        "subsystem": "security",
+        "components": [
+          {
+            "component": "huks",
             "optional": "true"
           }
         ]

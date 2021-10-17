@@ -12,5 +12,9 @@ test/xts/acts:
   - vendor/bestechnic/xts_demo/patches/0001-patch-for-test-xts-acts.patch
 build/lite:
   - vendor/bestechnic/xts_demo/patches/0001-feat-add-liteos_m-options.patch
-test/xts/tools/lite:
-  - vendor/bestechnic/xts_demo/patches/0001-build-for-xts-test-xts-tools-lite.patch
+base/security/huks:
+  - vendor/bestechnic/xts_demo/patches/0001-feat-base-security-huks-diable-ED25519.patch
+test/xts/acts:
+  - vendor/bestechnic/xts_demo/patches/0001-feat-test-xts-acts-stacksize-bigger-and-bool-type-bu.patch
+third_party/unity:
+  - vendor/bestechnic/xts_demo/patches/0001-feat-third_party-unity-printf-adapter.patch
