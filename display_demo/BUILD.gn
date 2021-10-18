@@ -27,4 +27,8 @@ group("display_demo") {
   if (bes_ui_enable || bes_ace_enable || bes_ability_enable) {
     deps += [ "//device/bestechnic/${board_name}/components/ui:ui_adapter" ]
   }
+
+  if (bes_histreamer_test) {
+    deps += [ "//foundation/multimedia/histreamer_lite:histreamer" ]
+  }
 }
