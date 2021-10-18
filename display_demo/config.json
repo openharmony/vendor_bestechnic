@@ -205,7 +205,8 @@
             "bes_ui_enable = true",
             "bes_ace_enable = true",
             "bes_ability_enable = true",
-            "bes_ability_test = true"
+            "bes_ability_test = true",
+            "bes_histreamer_test = false"
           ]
         }
       ]

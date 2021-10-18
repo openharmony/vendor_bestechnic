@@ -11,41 +11,29 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import("//device/bestechnic/${board_name}/components/components.gni")
-
-static_library("example") {
-  sources = [
-    "app.cpp",
-    "example.c",
+config("include") {
+  include_dirs = [
+    ".",
   ]
-  defines = []
+}
+
+static_library("histreamer_test") {
+  sources = [
+    "audio_player.cpp",
+  ]
+
   deps = [
     "//base/hiviewdfx/hilog_lite/frameworks/featured:hilog_static",
     "//device/bestechnic/${board_name}/components/drivers:drivers_adapter",
     "//device/bestechnic/${board_name}/components/fs:fs_adapter",
+    "//device/bestechnic/${board_name}/components/ui:ui_adapter",
+    "//foundation/multimedia/histreamer_lite:histreamer",
   ]
 
   include_dirs = [
     "//utils/native/lite/include",
-    "//third_party/musl/porting/liteos_m/kernel/include",
   ]
 
-  if (bes_histreamer_test) {
-    deps += [ "histreamer:histreamer_test" ]
-    defines += [ "HISTREAMER_TEST" ]
-  }
-
-  if (bes_fs_enable && bes_fs_test) {
-    deps += [ "fs:fs_test" ]
-    defines += [ "FS_TEST" ]
-    include_dirs += [ "fs" ]
-  } else if (bes_ui_enable && bes_ui_test) {
-    deps += [ "ui:ui_test" ]
-    defines += [ "UI_TEST" ]
-    include_dirs += [ "ui" ]
-  } else if (bes_ability_enable && bes_ace_enable && bes_ability_test) {
-    deps += [ "ability:ability_test" ]
-    defines += [ "ABILITY_TEST" ]
-    include_dirs += [ "ability" ]
-  }
+  public_configs = [ ":include" ]
 }
+

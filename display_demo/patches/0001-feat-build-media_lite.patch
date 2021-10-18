@@ -1,0 +1,1174 @@
+From 2f0cdc898d6ee2e4c4394b88ae5bc9340035cc01 Mon Sep 17 00:00:00 2001
+From: SimonLi <likailong@huawei.com>
+Date: Fri, 15 Oct 2021 17:23:43 +0800
+Subject: [PATCH] =?UTF-8?q?feat(build):=20=E5=B0=86media=5Flite=E9=83=A8?=
+ =?UTF-8?q?=E4=BB=B6=E7=A7=BB=E6=A4=8D=E5=88=B0=E8=BD=BB=E9=87=8F=E7=B3=BB?=
+ =?UTF-8?q?=E7=BB=9F?=
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+【背景】
+新开发histreamer部件，移植到轻量系统，同步适配media_lite
+
+【解决方案】
+1. 在media_lite中采用直通方案（passthrough）适配轻量系统
+
+2. 新增静态编译
+
+3. 临时将histreamer的依赖改为histreamer_lite部件
+
+Signed-off-by: SimonLi <likailong@huawei.com>
+Change-Id: I05d16678d43dd1d9d5b4dec0288d0ee7b2992c10
+---
+ frameworks/player_lite/BUILD.gn               | 108 +-------
+ frameworks/player_lite/binder/BUILD.gn        | 117 +++++++++
+ .../buffersource/include/buffer_source.h      |   0
+ .../buffersource/src/buffer_source.cpp        |   0
+ .../player_lite/{ => binder}/player.cpp       |   0
+ .../player_control/decoder/decoder.cpp        |   0
+ .../player_control/decoder/decoder.h          |   0
+ .../player_control/include/hi_demuxer.h       |   0
+ .../player_control/include/hi_demuxer_err.h   |   0
+ .../player_control/include/hi_error_def.h     |   0
+ .../player_control/include/hi_liteplayer.h    |   0
+ .../include/hi_liteplayer_err.h               |   0
+ .../player_control/include/player_define.h    |   0
+ .../player/fsm/include/fsm_message.h          |   0
+ .../player/fsm/include/hi_fsm.h               |   0
+ .../player/fsm/src/fsm_common.cpp             |   0
+ .../player/fsm/src/fsm_common.h               |   0
+ .../player/fsm/src/fsm_oberver.h              |   0
+ .../player_control/player/fsm/src/fsm_state.h |   0
+ .../player_control/player/fsm/src/hi_fsm.cpp  |   0
+ .../player/fsm/src/hi_state.cpp               |   0
+ .../player_control/player/fsm/src/hi_state.h  |   0
+ .../player/fsm/src/hi_state_machine.cpp       |   0
+ .../player/fsm/src/hi_state_machine.h         |   0
+ .../fsm/src/hi_state_machine_observer.cpp     |   0
+ .../fsm/src/hi_state_machine_observer.h       |   0
+ .../player/fsm/src/message_handler.h          |   0
+ .../player/fsm/src/message_looper.cpp         |   0
+ .../player/fsm/src/message_looper.h           |   0
+ .../player/fsm/src/mmessage_pool.cpp          |   0
+ .../player/fsm/src/mmessage_pool.h            |   0
+ .../player_control/player/liteplayer.cpp      |   0
+ .../player_control/player/liteplayer.h        |   0
+ .../player_control/player/liteplayer_comm.cpp |   0
+ .../player_control/player/liteplayer_comm.h   |   0
+ .../player_control/player/liteplayer_define.h |   0
+ .../player/liteplayer_msgtype.h               |   0
+ .../player/liteplayer_state_machine.cpp       |   0
+ .../player/liteplayer_state_machine.h         |   0
+ .../player_control/sink/player_audio_sink.cpp |   0
+ .../player_control/sink/player_audio_sink.h   |   0
+ .../sink/player_sink_manager.cpp              |   0
+ .../player_control/sink/player_sink_manager.h |   0
+ .../player_control/sink/player_sink_type.h    |   0
+ .../player_control/sink/player_sync.cpp       |   0
+ .../player_control/sink/player_sync.h         |   0
+ .../player_control/sink/player_video_sink.cpp |   0
+ .../player_control/sink/player_video_sink.h   |   0
+ .../player_control/source/player_demux.cpp    |   0
+ .../player_control/source/player_demux.h      |   0
+ .../player_control/source/player_source.cpp   |   0
+ .../player_control/source/player_source.h     |   0
+ .../player_lite/{ => binder}/player_impl.cpp  |   0
+ .../player_lite/{ => binder}/player_impl.h    |   0
+ frameworks/player_lite/passthrough/BUILD.gn   |  38 +++
+ frameworks/player_lite/passthrough/player.cpp | 238 ++++++++++++++++++
+ interfaces/kits/player_lite/player.h          | 100 ++++----
+ .../kits/player_lite/player_interface.h       |  64 +++++
+ 58 files changed, 516 insertions(+), 149 deletions(-)
+ create mode 100755 frameworks/player_lite/binder/BUILD.gn
+ rename frameworks/player_lite/{ => binder}/buffersource/include/buffer_source.h (100%)
+ rename frameworks/player_lite/{ => binder}/buffersource/src/buffer_source.cpp (100%)
+ rename frameworks/player_lite/{ => binder}/player.cpp (100%)
+ rename frameworks/player_lite/{ => binder}/player_control/decoder/decoder.cpp (100%)
+ rename frameworks/player_lite/{ => binder}/player_control/decoder/decoder.h (100%)
+ rename frameworks/player_lite/{ => binder}/player_control/include/hi_demuxer.h (100%)
+ rename frameworks/player_lite/{ => binder}/player_control/include/hi_demuxer_err.h (100%)
+ rename frameworks/player_lite/{ => binder}/player_control/include/hi_error_def.h (100%)
+ rename frameworks/player_lite/{ => binder}/player_control/include/hi_liteplayer.h (100%)
+ rename frameworks/player_lite/{ => binder}/player_control/include/hi_liteplayer_err.h (100%)
+ rename frameworks/player_lite/{ => binder}/player_control/include/player_define.h (100%)
+ rename frameworks/player_lite/{ => binder}/player_control/player/fsm/include/fsm_message.h (100%)
+ rename frameworks/player_lite/{ => binder}/player_control/player/fsm/include/hi_fsm.h (100%)
+ rename frameworks/player_lite/{ => binder}/player_control/player/fsm/src/fsm_common.cpp (100%)
+ rename frameworks/player_lite/{ => binder}/player_control/player/fsm/src/fsm_common.h (100%)
+ rename frameworks/player_lite/{ => binder}/player_control/player/fsm/src/fsm_oberver.h (100%)
+ rename frameworks/player_lite/{ => binder}/player_control/player/fsm/src/fsm_state.h (100%)
+ rename frameworks/player_lite/{ => binder}/player_control/player/fsm/src/hi_fsm.cpp (100%)
+ rename frameworks/player_lite/{ => binder}/player_control/player/fsm/src/hi_state.cpp (100%)
+ rename frameworks/player_lite/{ => binder}/player_control/player/fsm/src/hi_state.h (100%)
+ rename frameworks/player_lite/{ => binder}/player_control/player/fsm/src/hi_state_machine.cpp (100%)
+ rename frameworks/player_lite/{ => binder}/player_control/player/fsm/src/hi_state_machine.h (100%)
+ rename frameworks/player_lite/{ => binder}/player_control/player/fsm/src/hi_state_machine_observer.cpp (100%)
+ rename frameworks/player_lite/{ => binder}/player_control/player/fsm/src/hi_state_machine_observer.h (100%)
+ rename frameworks/player_lite/{ => binder}/player_control/player/fsm/src/message_handler.h (100%)
+ rename frameworks/player_lite/{ => binder}/player_control/player/fsm/src/message_looper.cpp (100%)
+ rename frameworks/player_lite/{ => binder}/player_control/player/fsm/src/message_looper.h (100%)
+ rename frameworks/player_lite/{ => binder}/player_control/player/fsm/src/mmessage_pool.cpp (100%)
+ rename frameworks/player_lite/{ => binder}/player_control/player/fsm/src/mmessage_pool.h (100%)
+ rename frameworks/player_lite/{ => binder}/player_control/player/liteplayer.cpp (100%)
+ rename frameworks/player_lite/{ => binder}/player_control/player/liteplayer.h (100%)
+ rename frameworks/player_lite/{ => binder}/player_control/player/liteplayer_comm.cpp (100%)
+ rename frameworks/player_lite/{ => binder}/player_control/player/liteplayer_comm.h (100%)
+ rename frameworks/player_lite/{ => binder}/player_control/player/liteplayer_define.h (100%)
+ rename frameworks/player_lite/{ => binder}/player_control/player/liteplayer_msgtype.h (100%)
+ rename frameworks/player_lite/{ => binder}/player_control/player/liteplayer_state_machine.cpp (100%)
+ rename frameworks/player_lite/{ => binder}/player_control/player/liteplayer_state_machine.h (100%)
+ rename frameworks/player_lite/{ => binder}/player_control/sink/player_audio_sink.cpp (100%)
+ rename frameworks/player_lite/{ => binder}/player_control/sink/player_audio_sink.h (100%)
+ rename frameworks/player_lite/{ => binder}/player_control/sink/player_sink_manager.cpp (100%)
+ rename frameworks/player_lite/{ => binder}/player_control/sink/player_sink_manager.h (100%)
+ rename frameworks/player_lite/{ => binder}/player_control/sink/player_sink_type.h (100%)
+ rename frameworks/player_lite/{ => binder}/player_control/sink/player_sync.cpp (100%)
+ rename frameworks/player_lite/{ => binder}/player_control/sink/player_sync.h (100%)
+ rename frameworks/player_lite/{ => binder}/player_control/sink/player_video_sink.cpp (100%)
+ rename frameworks/player_lite/{ => binder}/player_control/sink/player_video_sink.h (100%)
+ rename frameworks/player_lite/{ => binder}/player_control/source/player_demux.cpp (100%)
+ rename frameworks/player_lite/{ => binder}/player_control/source/player_demux.h (100%)
+ rename frameworks/player_lite/{ => binder}/player_control/source/player_source.cpp (100%)
+ rename frameworks/player_lite/{ => binder}/player_control/source/player_source.h (100%)
+ rename frameworks/player_lite/{ => binder}/player_impl.cpp (100%)
+ rename frameworks/player_lite/{ => binder}/player_impl.h (100%)
+ create mode 100755 frameworks/player_lite/passthrough/BUILD.gn
+ create mode 100755 frameworks/player_lite/passthrough/player.cpp
+ create mode 100755 interfaces/kits/player_lite/player_interface.h
+
+diff --git a/frameworks/player_lite/BUILD.gn b/frameworks/player_lite/BUILD.gn
+index 1c63831..fcd5932 100755
+--- a/frameworks/player_lite/BUILD.gn
++++ b/frameworks/player_lite/BUILD.gn
+@@ -13,105 +13,11 @@
+ import("//build/lite/config/component/lite_component.gni")
+ import("//build/lite/ndk/ndk.gni")
+ 
+-shared_library("player_lite_impl") {
+-  sources = [
+-    "buffersource/src/buffer_source.cpp",
+-    "player_control/decoder/decoder.cpp",
+-    "player_control/player/fsm/src/fsm_common.cpp",
+-    "player_control/player/fsm/src/hi_fsm.cpp",
+-    "player_control/player/fsm/src/hi_state.cpp",
+-    "player_control/player/fsm/src/hi_state_machine.cpp",
+-    "player_control/player/fsm/src/hi_state_machine_observer.cpp",
+-    "player_control/player/fsm/src/message_looper.cpp",
+-    "player_control/player/fsm/src/mmessage_pool.cpp",
+-    "player_control/player/liteplayer.cpp",
+-    "player_control/player/liteplayer_comm.cpp",
+-    "player_control/player/liteplayer_state_machine.cpp",
+-    "player_control/sink/player_audio_sink.cpp",
+-    "player_control/sink/player_sink_manager.cpp",
+-    "player_control/sink/player_sync.cpp",
+-    "player_control/sink/player_video_sink.cpp",
+-    "player_control/source/player_demux.cpp",
+-    "player_control/source/player_source.cpp",
+-    "player_impl.cpp",
+-  ]
+-  cflags = [ "-fPIC" ]
+-  cflags += [ "-Wall" ]
+-  cflags_cc = cflags
+-  include_dirs = [
+-    "//third_party/bounds_checking_function/include",
+-    "//foundation/multimedia/utils/lite/hals",
+-    "//foundation/multimedia/utils/lite/interfaces/kits",
+-    "//drivers/peripheral/display/interfaces/include",
+-    "//drivers/peripheral/base"
+-  ]
+-  outdir = rebase_path("$root_out_dir")
+-  public_configs = [ ":player_impl_external_library_config" ]
+-  ldflags = [ "-L$outdir" ]
+-  ldflags += [ "-laudio_hw" ]
+-  ldflags += [ "-lcodec" ]
+-  ldflags += [ "-lformat_hw" ]
+-  ldflags += [ "-lhdi_videodisplayer" ]
+-  public_deps = [
+-    "//base/hiviewdfx/hilog_lite/frameworks/featured:hilog_shared",
+-    "//foundation/graphic/surface:lite_surface",
+-    "//foundation/multimedia/utils/lite:media_common",
+-    "//third_party/bounds_checking_function:libsec_shared",
+-    "//third_party/iniparser:iniparser",
+-  ]
+-}
+-
+-config("player_impl_external_library_config") {
+-  include_dirs = [ "//foundation/multimedia/fr:ameworks/player_lite" ]
+-  include_dirs +=
+-      [ "//foundation/multimedia/media_lite/interfaces/kits/player_lite" ]
+-  include_dirs += [ "//foundation/multimedia/media_lite/frameworks/player_lite/buffersource/include" ]
+-  include_dirs += [ "//foundation/multimedia/media_lite/frameworks/player_lite/player_control/include" ]
+-  include_dirs += [ "//foundation/multimedia/media_lite/frameworks/player_lite/player_control/player" ]
+-  include_dirs += [ "//foundation/multimedia/utils/lite/interfaces/kits" ]
+-  include_dirs += [ "//drivers/peripheral/format/interfaces/include" ]
+-  include_dirs += [ "//foundation/multimedia/media_lite/frameworks/player_lite/player_control/player/fsm/src" ]
+-  include_dirs += [ "//foundation/multimedia/media_lite/frameworks/player_lite/player_control/player/fsm/include" ]
+-  include_dirs += [ "//foundation/multimedia/media_lite/frameworks/player_lite/player_control/source" ]
+-  include_dirs += [ "//foundation/multimedia/media_lite/frameworks/player_lite/player_control/sink" ]
+-  include_dirs += [ "//drivers/peripheral/codec/interfaces/include" ]
+-  include_dirs += [ "//foundation/multimedia/media_lite/frameworks/player_lite/player_control/decoder" ]
+-  include_dirs += [ "//drivers/peripheral/audio/interfaces/include" ]
+-}
+-
+-shared_library("player_lite") {
+-  sources = [ "player.cpp" ]
+-  cflags = [ "-fPIC" ]
+-  cflags += [ "-Wall" ]
+-  cflags_cc = cflags
+-  include_dirs = [
+-    "//base/security/permission/interfaces/kits/permission_lite",
+-    "//foundation/multimedia/media_lite/services/player_lite/client/include",
+-    "//foundation/multimedia/media_lite/frameworks/player_lite",
+-  ]
+-  outdir = rebase_path("$root_out_dir")
+-  public_configs = [ ":player_external_library_config" ]
+-  ldflags = [ "-L$outdir" ]
+-  public_deps = [
+-    "//base/security/permission/services/permission_lite/pms_client:pms_client",
+-    "//foundation/distributedschedule/samgr_lite/samgr:samgr",
+-    "//foundation/graphic/surface:lite_surface",
+-    "//foundation/multimedia/media_lite/services/player_lite:player_client",
+-    "//foundation/multimedia/utils/lite:media_common",
+-    "//third_party/bounds_checking_function:libsec_shared",
+-  ]
+-}
+-
+-config("player_external_library_config") {
+-  include_dirs =
+-      [ "//foundation/multimedia/media_lite/interfaces/kits/player_lite" ]
+-  include_dirs += [ "//foundation/multimedia/utils/lite/interfaces/kits" ]
+-}
+-
+-lite_component("media_lite") {
+-  features = [
+-    ":player_lite_impl",
+-    ":player_lite",
+-    "//foundation/multimedia/media_lite/interfaces/kits/player_lite/js/builtin:audio_lite_api",
+-  ]
++group("player_lite") {
++    public_deps = []
++    if (ohos_kernel_type == "liteos_m") {
++        public_deps += ["passthrough:player_direct"]
++    } else {
++        public_deps += ["binder"]
++    }
+ }
+diff --git a/frameworks/player_lite/binder/BUILD.gn b/frameworks/player_lite/binder/BUILD.gn
+new file mode 100755
+index 0000000..1c63831
+--- /dev/null
++++ b/frameworks/player_lite/binder/BUILD.gn
+@@ -0,0 +1,117 @@
++# Copyright (c) 2020-2021 Huawei Device Co., Ltd.
++# Licensed under the Apache License, Version 2.0 (the "License");
++# you may not use this file except in compliance with the License.
++# You may obtain a copy of the License at
++#
++#     http://www.apache.org/licenses/LICENSE-2.0
++#
++# Unless required by applicable law or agreed to in writing, software
++# distributed under the License is distributed on an "AS IS" BASIS,
++# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
++# See the License for the specific language governing permissions and
++# limitations under the License.
++import("//build/lite/config/component/lite_component.gni")
++import("//build/lite/ndk/ndk.gni")
++
++shared_library("player_lite_impl") {
++  sources = [
++    "buffersource/src/buffer_source.cpp",
++    "player_control/decoder/decoder.cpp",
++    "player_control/player/fsm/src/fsm_common.cpp",
++    "player_control/player/fsm/src/hi_fsm.cpp",
++    "player_control/player/fsm/src/hi_state.cpp",
++    "player_control/player/fsm/src/hi_state_machine.cpp",
++    "player_control/player/fsm/src/hi_state_machine_observer.cpp",
++    "player_control/player/fsm/src/message_looper.cpp",
++    "player_control/player/fsm/src/mmessage_pool.cpp",
++    "player_control/player/liteplayer.cpp",
++    "player_control/player/liteplayer_comm.cpp",
++    "player_control/player/liteplayer_state_machine.cpp",
++    "player_control/sink/player_audio_sink.cpp",
++    "player_control/sink/player_sink_manager.cpp",
++    "player_control/sink/player_sync.cpp",
++    "player_control/sink/player_video_sink.cpp",
++    "player_control/source/player_demux.cpp",
++    "player_control/source/player_source.cpp",
++    "player_impl.cpp",
++  ]
++  cflags = [ "-fPIC" ]
++  cflags += [ "-Wall" ]
++  cflags_cc = cflags
++  include_dirs = [
++    "//third_party/bounds_checking_function/include",
++    "//foundation/multimedia/utils/lite/hals",
++    "//foundation/multimedia/utils/lite/interfaces/kits",
++    "//drivers/peripheral/display/interfaces/include",
++    "//drivers/peripheral/base"
++  ]
++  outdir = rebase_path("$root_out_dir")
++  public_configs = [ ":player_impl_external_library_config" ]
++  ldflags = [ "-L$outdir" ]
++  ldflags += [ "-laudio_hw" ]
++  ldflags += [ "-lcodec" ]
++  ldflags += [ "-lformat_hw" ]
++  ldflags += [ "-lhdi_videodisplayer" ]
++  public_deps = [
++    "//base/hiviewdfx/hilog_lite/frameworks/featured:hilog_shared",
++    "//foundation/graphic/surface:lite_surface",
++    "//foundation/multimedia/utils/lite:media_common",
++    "//third_party/bounds_checking_function:libsec_shared",
++    "//third_party/iniparser:iniparser",
++  ]
++}
++
++config("player_impl_external_library_config") {
++  include_dirs = [ "//foundation/multimedia/fr:ameworks/player_lite" ]
++  include_dirs +=
++      [ "//foundation/multimedia/media_lite/interfaces/kits/player_lite" ]
++  include_dirs += [ "//foundation/multimedia/media_lite/frameworks/player_lite/buffersource/include" ]
++  include_dirs += [ "//foundation/multimedia/media_lite/frameworks/player_lite/player_control/include" ]
++  include_dirs += [ "//foundation/multimedia/media_lite/frameworks/player_lite/player_control/player" ]
++  include_dirs += [ "//foundation/multimedia/utils/lite/interfaces/kits" ]
++  include_dirs += [ "//drivers/peripheral/format/interfaces/include" ]
++  include_dirs += [ "//foundation/multimedia/media_lite/frameworks/player_lite/player_control/player/fsm/src" ]
++  include_dirs += [ "//foundation/multimedia/media_lite/frameworks/player_lite/player_control/player/fsm/include" ]
++  include_dirs += [ "//foundation/multimedia/media_lite/frameworks/player_lite/player_control/source" ]
++  include_dirs += [ "//foundation/multimedia/media_lite/frameworks/player_lite/player_control/sink" ]
++  include_dirs += [ "//drivers/peripheral/codec/interfaces/include" ]
++  include_dirs += [ "//foundation/multimedia/media_lite/frameworks/player_lite/player_control/decoder" ]
++  include_dirs += [ "//drivers/peripheral/audio/interfaces/include" ]
++}
++
++shared_library("player_lite") {
++  sources = [ "player.cpp" ]
++  cflags = [ "-fPIC" ]
++  cflags += [ "-Wall" ]
++  cflags_cc = cflags
++  include_dirs = [
++    "//base/security/permission/interfaces/kits/permission_lite",
++    "//foundation/multimedia/media_lite/services/player_lite/client/include",
++    "//foundation/multimedia/media_lite/frameworks/player_lite",
++  ]
++  outdir = rebase_path("$root_out_dir")
++  public_configs = [ ":player_external_library_config" ]
++  ldflags = [ "-L$outdir" ]
++  public_deps = [
++    "//base/security/permission/services/permission_lite/pms_client:pms_client",
++    "//foundation/distributedschedule/samgr_lite/samgr:samgr",
++    "//foundation/graphic/surface:lite_surface",
++    "//foundation/multimedia/media_lite/services/player_lite:player_client",
++    "//foundation/multimedia/utils/lite:media_common",
++    "//third_party/bounds_checking_function:libsec_shared",
++  ]
++}
++
++config("player_external_library_config") {
++  include_dirs =
++      [ "//foundation/multimedia/media_lite/interfaces/kits/player_lite" ]
++  include_dirs += [ "//foundation/multimedia/utils/lite/interfaces/kits" ]
++}
++
++lite_component("media_lite") {
++  features = [
++    ":player_lite_impl",
++    ":player_lite",
++    "//foundation/multimedia/media_lite/interfaces/kits/player_lite/js/builtin:audio_lite_api",
++  ]
++}
+diff --git a/frameworks/player_lite/buffersource/include/buffer_source.h b/frameworks/player_lite/binder/buffersource/include/buffer_source.h
+similarity index 100%
+rename from frameworks/player_lite/buffersource/include/buffer_source.h
+rename to frameworks/player_lite/binder/buffersource/include/buffer_source.h
+diff --git a/frameworks/player_lite/buffersource/src/buffer_source.cpp b/frameworks/player_lite/binder/buffersource/src/buffer_source.cpp
+similarity index 100%
+rename from frameworks/player_lite/buffersource/src/buffer_source.cpp
+rename to frameworks/player_lite/binder/buffersource/src/buffer_source.cpp
+diff --git a/frameworks/player_lite/player.cpp b/frameworks/player_lite/binder/player.cpp
+similarity index 100%
+rename from frameworks/player_lite/player.cpp
+rename to frameworks/player_lite/binder/player.cpp
+diff --git a/frameworks/player_lite/player_control/decoder/decoder.cpp b/frameworks/player_lite/binder/player_control/decoder/decoder.cpp
+similarity index 100%
+rename from frameworks/player_lite/player_control/decoder/decoder.cpp
+rename to frameworks/player_lite/binder/player_control/decoder/decoder.cpp
+diff --git a/frameworks/player_lite/player_control/decoder/decoder.h b/frameworks/player_lite/binder/player_control/decoder/decoder.h
+similarity index 100%
+rename from frameworks/player_lite/player_control/decoder/decoder.h
+rename to frameworks/player_lite/binder/player_control/decoder/decoder.h
+diff --git a/frameworks/player_lite/player_control/include/hi_demuxer.h b/frameworks/player_lite/binder/player_control/include/hi_demuxer.h
+similarity index 100%
+rename from frameworks/player_lite/player_control/include/hi_demuxer.h
+rename to frameworks/player_lite/binder/player_control/include/hi_demuxer.h
+diff --git a/frameworks/player_lite/player_control/include/hi_demuxer_err.h b/frameworks/player_lite/binder/player_control/include/hi_demuxer_err.h
+similarity index 100%
+rename from frameworks/player_lite/player_control/include/hi_demuxer_err.h
+rename to frameworks/player_lite/binder/player_control/include/hi_demuxer_err.h
+diff --git a/frameworks/player_lite/player_control/include/hi_error_def.h b/frameworks/player_lite/binder/player_control/include/hi_error_def.h
+similarity index 100%
+rename from frameworks/player_lite/player_control/include/hi_error_def.h
+rename to frameworks/player_lite/binder/player_control/include/hi_error_def.h
+diff --git a/frameworks/player_lite/player_control/include/hi_liteplayer.h b/frameworks/player_lite/binder/player_control/include/hi_liteplayer.h
+similarity index 100%
+rename from frameworks/player_lite/player_control/include/hi_liteplayer.h
+rename to frameworks/player_lite/binder/player_control/include/hi_liteplayer.h
+diff --git a/frameworks/player_lite/player_control/include/hi_liteplayer_err.h b/frameworks/player_lite/binder/player_control/include/hi_liteplayer_err.h
+similarity index 100%
+rename from frameworks/player_lite/player_control/include/hi_liteplayer_err.h
+rename to frameworks/player_lite/binder/player_control/include/hi_liteplayer_err.h
+diff --git a/frameworks/player_lite/player_control/include/player_define.h b/frameworks/player_lite/binder/player_control/include/player_define.h
+similarity index 100%
+rename from frameworks/player_lite/player_control/include/player_define.h
+rename to frameworks/player_lite/binder/player_control/include/player_define.h
+diff --git a/frameworks/player_lite/player_control/player/fsm/include/fsm_message.h b/frameworks/player_lite/binder/player_control/player/fsm/include/fsm_message.h
+similarity index 100%
+rename from frameworks/player_lite/player_control/player/fsm/include/fsm_message.h
+rename to frameworks/player_lite/binder/player_control/player/fsm/include/fsm_message.h
+diff --git a/frameworks/player_lite/player_control/player/fsm/include/hi_fsm.h b/frameworks/player_lite/binder/player_control/player/fsm/include/hi_fsm.h
+similarity index 100%
+rename from frameworks/player_lite/player_control/player/fsm/include/hi_fsm.h
+rename to frameworks/player_lite/binder/player_control/player/fsm/include/hi_fsm.h
+diff --git a/frameworks/player_lite/player_control/player/fsm/src/fsm_common.cpp b/frameworks/player_lite/binder/player_control/player/fsm/src/fsm_common.cpp
+similarity index 100%
+rename from frameworks/player_lite/player_control/player/fsm/src/fsm_common.cpp
+rename to frameworks/player_lite/binder/player_control/player/fsm/src/fsm_common.cpp
+diff --git a/frameworks/player_lite/player_control/player/fsm/src/fsm_common.h b/frameworks/player_lite/binder/player_control/player/fsm/src/fsm_common.h
+similarity index 100%
+rename from frameworks/player_lite/player_control/player/fsm/src/fsm_common.h
+rename to frameworks/player_lite/binder/player_control/player/fsm/src/fsm_common.h
+diff --git a/frameworks/player_lite/player_control/player/fsm/src/fsm_oberver.h b/frameworks/player_lite/binder/player_control/player/fsm/src/fsm_oberver.h
+similarity index 100%
+rename from frameworks/player_lite/player_control/player/fsm/src/fsm_oberver.h
+rename to frameworks/player_lite/binder/player_control/player/fsm/src/fsm_oberver.h
+diff --git a/frameworks/player_lite/player_control/player/fsm/src/fsm_state.h b/frameworks/player_lite/binder/player_control/player/fsm/src/fsm_state.h
+similarity index 100%
+rename from frameworks/player_lite/player_control/player/fsm/src/fsm_state.h
+rename to frameworks/player_lite/binder/player_control/player/fsm/src/fsm_state.h
+diff --git a/frameworks/player_lite/player_control/player/fsm/src/hi_fsm.cpp b/frameworks/player_lite/binder/player_control/player/fsm/src/hi_fsm.cpp
+similarity index 100%
+rename from frameworks/player_lite/player_control/player/fsm/src/hi_fsm.cpp
+rename to frameworks/player_lite/binder/player_control/player/fsm/src/hi_fsm.cpp
+diff --git a/frameworks/player_lite/player_control/player/fsm/src/hi_state.cpp b/frameworks/player_lite/binder/player_control/player/fsm/src/hi_state.cpp
+similarity index 100%
+rename from frameworks/player_lite/player_control/player/fsm/src/hi_state.cpp
+rename to frameworks/player_lite/binder/player_control/player/fsm/src/hi_state.cpp
+diff --git a/frameworks/player_lite/player_control/player/fsm/src/hi_state.h b/frameworks/player_lite/binder/player_control/player/fsm/src/hi_state.h
+similarity index 100%
+rename from frameworks/player_lite/player_control/player/fsm/src/hi_state.h
+rename to frameworks/player_lite/binder/player_control/player/fsm/src/hi_state.h
+diff --git a/frameworks/player_lite/player_control/player/fsm/src/hi_state_machine.cpp b/frameworks/player_lite/binder/player_control/player/fsm/src/hi_state_machine.cpp
+similarity index 100%
+rename from frameworks/player_lite/player_control/player/fsm/src/hi_state_machine.cpp
+rename to frameworks/player_lite/binder/player_control/player/fsm/src/hi_state_machine.cpp
+diff --git a/frameworks/player_lite/player_control/player/fsm/src/hi_state_machine.h b/frameworks/player_lite/binder/player_control/player/fsm/src/hi_state_machine.h
+similarity index 100%
+rename from frameworks/player_lite/player_control/player/fsm/src/hi_state_machine.h
+rename to frameworks/player_lite/binder/player_control/player/fsm/src/hi_state_machine.h
+diff --git a/frameworks/player_lite/player_control/player/fsm/src/hi_state_machine_observer.cpp b/frameworks/player_lite/binder/player_control/player/fsm/src/hi_state_machine_observer.cpp
+similarity index 100%
+rename from frameworks/player_lite/player_control/player/fsm/src/hi_state_machine_observer.cpp
+rename to frameworks/player_lite/binder/player_control/player/fsm/src/hi_state_machine_observer.cpp
+diff --git a/frameworks/player_lite/player_control/player/fsm/src/hi_state_machine_observer.h b/frameworks/player_lite/binder/player_control/player/fsm/src/hi_state_machine_observer.h
+similarity index 100%
+rename from frameworks/player_lite/player_control/player/fsm/src/hi_state_machine_observer.h
+rename to frameworks/player_lite/binder/player_control/player/fsm/src/hi_state_machine_observer.h
+diff --git a/frameworks/player_lite/player_control/player/fsm/src/message_handler.h b/frameworks/player_lite/binder/player_control/player/fsm/src/message_handler.h
+similarity index 100%
+rename from frameworks/player_lite/player_control/player/fsm/src/message_handler.h
+rename to frameworks/player_lite/binder/player_control/player/fsm/src/message_handler.h
+diff --git a/frameworks/player_lite/player_control/player/fsm/src/message_looper.cpp b/frameworks/player_lite/binder/player_control/player/fsm/src/message_looper.cpp
+similarity index 100%
+rename from frameworks/player_lite/player_control/player/fsm/src/message_looper.cpp
+rename to frameworks/player_lite/binder/player_control/player/fsm/src/message_looper.cpp
+diff --git a/frameworks/player_lite/player_control/player/fsm/src/message_looper.h b/frameworks/player_lite/binder/player_control/player/fsm/src/message_looper.h
+similarity index 100%
+rename from frameworks/player_lite/player_control/player/fsm/src/message_looper.h
+rename to frameworks/player_lite/binder/player_control/player/fsm/src/message_looper.h
+diff --git a/frameworks/player_lite/player_control/player/fsm/src/mmessage_pool.cpp b/frameworks/player_lite/binder/player_control/player/fsm/src/mmessage_pool.cpp
+similarity index 100%
+rename from frameworks/player_lite/player_control/player/fsm/src/mmessage_pool.cpp
+rename to frameworks/player_lite/binder/player_control/player/fsm/src/mmessage_pool.cpp
+diff --git a/frameworks/player_lite/player_control/player/fsm/src/mmessage_pool.h b/frameworks/player_lite/binder/player_control/player/fsm/src/mmessage_pool.h
+similarity index 100%
+rename from frameworks/player_lite/player_control/player/fsm/src/mmessage_pool.h
+rename to frameworks/player_lite/binder/player_control/player/fsm/src/mmessage_pool.h
+diff --git a/frameworks/player_lite/player_control/player/liteplayer.cpp b/frameworks/player_lite/binder/player_control/player/liteplayer.cpp
+similarity index 100%
+rename from frameworks/player_lite/player_control/player/liteplayer.cpp
+rename to frameworks/player_lite/binder/player_control/player/liteplayer.cpp
+diff --git a/frameworks/player_lite/player_control/player/liteplayer.h b/frameworks/player_lite/binder/player_control/player/liteplayer.h
+similarity index 100%
+rename from frameworks/player_lite/player_control/player/liteplayer.h
+rename to frameworks/player_lite/binder/player_control/player/liteplayer.h
+diff --git a/frameworks/player_lite/player_control/player/liteplayer_comm.cpp b/frameworks/player_lite/binder/player_control/player/liteplayer_comm.cpp
+similarity index 100%
+rename from frameworks/player_lite/player_control/player/liteplayer_comm.cpp
+rename to frameworks/player_lite/binder/player_control/player/liteplayer_comm.cpp
+diff --git a/frameworks/player_lite/player_control/player/liteplayer_comm.h b/frameworks/player_lite/binder/player_control/player/liteplayer_comm.h
+similarity index 100%
+rename from frameworks/player_lite/player_control/player/liteplayer_comm.h
+rename to frameworks/player_lite/binder/player_control/player/liteplayer_comm.h
+diff --git a/frameworks/player_lite/player_control/player/liteplayer_define.h b/frameworks/player_lite/binder/player_control/player/liteplayer_define.h
+similarity index 100%
+rename from frameworks/player_lite/player_control/player/liteplayer_define.h
+rename to frameworks/player_lite/binder/player_control/player/liteplayer_define.h
+diff --git a/frameworks/player_lite/player_control/player/liteplayer_msgtype.h b/frameworks/player_lite/binder/player_control/player/liteplayer_msgtype.h
+similarity index 100%
+rename from frameworks/player_lite/player_control/player/liteplayer_msgtype.h
+rename to frameworks/player_lite/binder/player_control/player/liteplayer_msgtype.h
+diff --git a/frameworks/player_lite/player_control/player/liteplayer_state_machine.cpp b/frameworks/player_lite/binder/player_control/player/liteplayer_state_machine.cpp
+similarity index 100%
+rename from frameworks/player_lite/player_control/player/liteplayer_state_machine.cpp
+rename to frameworks/player_lite/binder/player_control/player/liteplayer_state_machine.cpp
+diff --git a/frameworks/player_lite/player_control/player/liteplayer_state_machine.h b/frameworks/player_lite/binder/player_control/player/liteplayer_state_machine.h
+similarity index 100%
+rename from frameworks/player_lite/player_control/player/liteplayer_state_machine.h
+rename to frameworks/player_lite/binder/player_control/player/liteplayer_state_machine.h
+diff --git a/frameworks/player_lite/player_control/sink/player_audio_sink.cpp b/frameworks/player_lite/binder/player_control/sink/player_audio_sink.cpp
+similarity index 100%
+rename from frameworks/player_lite/player_control/sink/player_audio_sink.cpp
+rename to frameworks/player_lite/binder/player_control/sink/player_audio_sink.cpp
+diff --git a/frameworks/player_lite/player_control/sink/player_audio_sink.h b/frameworks/player_lite/binder/player_control/sink/player_audio_sink.h
+similarity index 100%
+rename from frameworks/player_lite/player_control/sink/player_audio_sink.h
+rename to frameworks/player_lite/binder/player_control/sink/player_audio_sink.h
+diff --git a/frameworks/player_lite/player_control/sink/player_sink_manager.cpp b/frameworks/player_lite/binder/player_control/sink/player_sink_manager.cpp
+similarity index 100%
+rename from frameworks/player_lite/player_control/sink/player_sink_manager.cpp
+rename to frameworks/player_lite/binder/player_control/sink/player_sink_manager.cpp
+diff --git a/frameworks/player_lite/player_control/sink/player_sink_manager.h b/frameworks/player_lite/binder/player_control/sink/player_sink_manager.h
+similarity index 100%
+rename from frameworks/player_lite/player_control/sink/player_sink_manager.h
+rename to frameworks/player_lite/binder/player_control/sink/player_sink_manager.h
+diff --git a/frameworks/player_lite/player_control/sink/player_sink_type.h b/frameworks/player_lite/binder/player_control/sink/player_sink_type.h
+similarity index 100%
+rename from frameworks/player_lite/player_control/sink/player_sink_type.h
+rename to frameworks/player_lite/binder/player_control/sink/player_sink_type.h
+diff --git a/frameworks/player_lite/player_control/sink/player_sync.cpp b/frameworks/player_lite/binder/player_control/sink/player_sync.cpp
+similarity index 100%
+rename from frameworks/player_lite/player_control/sink/player_sync.cpp
+rename to frameworks/player_lite/binder/player_control/sink/player_sync.cpp
+diff --git a/frameworks/player_lite/player_control/sink/player_sync.h b/frameworks/player_lite/binder/player_control/sink/player_sync.h
+similarity index 100%
+rename from frameworks/player_lite/player_control/sink/player_sync.h
+rename to frameworks/player_lite/binder/player_control/sink/player_sync.h
+diff --git a/frameworks/player_lite/player_control/sink/player_video_sink.cpp b/frameworks/player_lite/binder/player_control/sink/player_video_sink.cpp
+similarity index 100%
+rename from frameworks/player_lite/player_control/sink/player_video_sink.cpp
+rename to frameworks/player_lite/binder/player_control/sink/player_video_sink.cpp
+diff --git a/frameworks/player_lite/player_control/sink/player_video_sink.h b/frameworks/player_lite/binder/player_control/sink/player_video_sink.h
+similarity index 100%
+rename from frameworks/player_lite/player_control/sink/player_video_sink.h
+rename to frameworks/player_lite/binder/player_control/sink/player_video_sink.h
+diff --git a/frameworks/player_lite/player_control/source/player_demux.cpp b/frameworks/player_lite/binder/player_control/source/player_demux.cpp
+similarity index 100%
+rename from frameworks/player_lite/player_control/source/player_demux.cpp
+rename to frameworks/player_lite/binder/player_control/source/player_demux.cpp
+diff --git a/frameworks/player_lite/player_control/source/player_demux.h b/frameworks/player_lite/binder/player_control/source/player_demux.h
+similarity index 100%
+rename from frameworks/player_lite/player_control/source/player_demux.h
+rename to frameworks/player_lite/binder/player_control/source/player_demux.h
+diff --git a/frameworks/player_lite/player_control/source/player_source.cpp b/frameworks/player_lite/binder/player_control/source/player_source.cpp
+similarity index 100%
+rename from frameworks/player_lite/player_control/source/player_source.cpp
+rename to frameworks/player_lite/binder/player_control/source/player_source.cpp
+diff --git a/frameworks/player_lite/player_control/source/player_source.h b/frameworks/player_lite/binder/player_control/source/player_source.h
+similarity index 100%
+rename from frameworks/player_lite/player_control/source/player_source.h
+rename to frameworks/player_lite/binder/player_control/source/player_source.h
+diff --git a/frameworks/player_lite/player_impl.cpp b/frameworks/player_lite/binder/player_impl.cpp
+similarity index 100%
+rename from frameworks/player_lite/player_impl.cpp
+rename to frameworks/player_lite/binder/player_impl.cpp
+diff --git a/frameworks/player_lite/player_impl.h b/frameworks/player_lite/binder/player_impl.h
+similarity index 100%
+rename from frameworks/player_lite/player_impl.h
+rename to frameworks/player_lite/binder/player_impl.h
+diff --git a/frameworks/player_lite/passthrough/BUILD.gn b/frameworks/player_lite/passthrough/BUILD.gn
+new file mode 100755
+index 0000000..37d2cc4
+--- /dev/null
++++ b/frameworks/player_lite/passthrough/BUILD.gn
+@@ -0,0 +1,38 @@
++# Copyright (c) 2020-2021 Huawei Device Co., Ltd.
++# Licensed under the Apache License, Version 2.0 (the "License");
++# you may not use this file except in compliance with the License.
++# You may obtain a copy of the License at
++#
++#     http://www.apache.org/licenses/LICENSE-2.0
++#
++# Unless required by applicable law or agreed to in writing, software
++# distributed under the License is distributed on an "AS IS" BASIS,
++# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
++# See the License for the specific language governing permissions and
++# limitations under the License.
++
++import("//build/lite/config/component/lite_component.gni")
++import("//build/lite/ndk/ndk.gni")
++
++lite_library("player_direct") {
++    target_type = "static_library"
++    sources = ["player.cpp"]
++    include_dirs = [
++        "//base/hiviewdfx/hilog_lite/interfaces/native/innerkits/hilog",
++#        "//base/security/permission/interfaces/kits/permission_lite",
++    ]
++    public_deps = [
++        "//foundation/multimedia/histreamer_lite:histreamer",
++        "//base/hiviewdfx/hilog_lite/frameworks/featured:hilog_shared",
++#        "//base/security/permission/services/permission_lite/pms_client:pms_client",
++    ]
++    public_configs = [ ":player_direct_external_library_config" ]
++}
++
++config("player_direct_external_library_config") {
++    include_dirs = [ "//foundation/multimedia/frameworks/player_lite" ]
++    include_dirs +=
++    [ "//foundation/multimedia/media_lite/interfaces/kits/player_lite" ]
++    include_dirs += [ "//foundation/multimedia/utils/lite/interfaces/kits" ]
++    include_dirs += [ "//drivers/peripheral/format/interfaces/include" ]
++}
+diff --git a/frameworks/player_lite/passthrough/player.cpp b/frameworks/player_lite/passthrough/player.cpp
+new file mode 100755
+index 0000000..aae75d1
+--- /dev/null
++++ b/frameworks/player_lite/passthrough/player.cpp
+@@ -0,0 +1,238 @@
++/*
++ * Copyright (c) 2020-2021 Huawei Device Co., Ltd.
++ * Licensed under the Apache License, Version 2.0 (the "License");
++ * you may not use this file except in compliance with the License.
++ * You may obtain a copy of the License at
++ *
++ *     http://www.apache.org/licenses/LICENSE-2.0
++ *
++ * Unless required by applicable law or agreed to in writing, software
++ * distributed under the License is distributed on an "AS IS" BASIS,
++ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
++ * See the License for the specific language governing permissions and
++ * limitations under the License.
++ */
++
++#include "player.h"
++#include <sys/stat.h>
++#include <cinttypes>
++#include <memory>
++#include "histreamer/hiplayer.h"
++#include "media_log.h"
++//#include "pms_interface.h"
++
++using namespace std;
++
++namespace OHOS {
++namespace Media {
++class Player;
++
++#define CHK_NULL_RETURN(ptr)                                                                                           \
++    do {                                                                                                               \
++        if (ptr == nullptr) {                                                                                          \
++            MEDIA_ERR_LOG("ptr null");                                                                                 \
++            return -1;                                                                                                 \
++        }                                                                                                              \
++    } while (0)
++
++namespace {
++auto g_player = CreateHiPlayer();
++}
++
++Player::Player()
++{
++    MEDIA_INFO_LOG("Player process");
++}
++
++Player::~Player()
++{
++    MEDIA_INFO_LOG("~Player process");
++}
++
++int32_t Player::SetSource(const Source& source)
++{
++    MEDIA_INFO_LOG("process in");
++    int32_t ret;
++    CHK_NULL_RETURN(g_player);
++    ret = g_player->SetSource(source);
++    MEDIA_INFO_LOG("process out");
++    return ret;
++}
++
++int32_t Player::Prepare()
++{
++    MEDIA_INFO_LOG("process in");
++//    if (CheckSelfPermission("ohos.permission.MODIFY_AUDIO_SETTINGS") != GRANTED) {
++//        MEDIA_WARNING_LOG("Process can not access audio-setting.");
++//        return MEDIA_PERMISSION_DENIED;
++//    }
++//    if (CheckSelfPermission("ohos.permission.READ_MEDIA") != GRANTED) {
++//        MEDIA_WARNING_LOG("Process can not read media.");
++//        return MEDIA_PERMISSION_DENIED;
++//    }
++    CHK_NULL_RETURN(g_player);
++    return g_player->Prepare();
++}
++
++int32_t Player::Play()
++{
++    MEDIA_INFO_LOG("process in");
++    CHK_NULL_RETURN(g_player);
++    return g_player->Play();
++}
++
++bool Player::IsPlaying()
++{
++    MEDIA_INFO_LOG("process in");
++    CHK_NULL_RETURN(g_player);
++    return g_player->IsPlaying();
++}
++
++int32_t Player::Pause()
++{
++    MEDIA_INFO_LOG("process in");
++    CHK_NULL_RETURN(g_player);
++    return g_player->Pause();
++}
++
++int32_t Player::Stop()
++{
++    MEDIA_INFO_LOG("process in");
++    CHK_NULL_RETURN(g_player);
++    return g_player->Stop();
++}
++
++int32_t Player::Rewind(int64_t mSeconds, int32_t mode)
++{
++    MEDIA_INFO_LOG("process in");
++    CHK_NULL_RETURN(g_player);
++    return g_player->Rewind(mSeconds, mode);
++}
++
++int32_t Player::SetVolume(float leftVolume, float rightVolume)
++{
++    MEDIA_INFO_LOG("process in");
++    CHK_NULL_RETURN(g_player);
++    return g_player->SetVolume(leftVolume, rightVolume);
++}
++
++#ifndef SURFACE_DISABLED
++int32_t Player::SetVideoSurface(Surface* surface)
++{
++    MEDIA_INFO_LOG("process in");
++    CHK_NULL_RETURN(g_player);
++    return g_player->SetSurface(surface);
++}
++#endif
++
++bool Player::IsSingleLooping()
++{
++    MEDIA_INFO_LOG("process in");
++    CHK_NULL_RETURN(g_player);
++    return g_player->IsSingleLooping();
++}
++
++int32_t Player::GetCurrentTime(int64_t& time) const
++{
++    CHK_NULL_RETURN(g_player);
++    return g_player->GetCurrentPosition(time);
++}
++
++int32_t Player::GetDuration(int64_t& durationMs) const
++{
++    MEDIA_INFO_LOG("process in");
++    CHK_NULL_RETURN(g_player);
++    return g_player->GetDuration(durationMs);
++}
++
++int32_t Player::GetVideoWidth(int32_t& videoWidth)
++{
++    MEDIA_INFO_LOG("process in");
++    CHK_NULL_RETURN(g_player);
++    return g_player->GetVideoWidth(videoWidth);
++}
++
++int32_t Player::GetVideoHeight(int32_t& videoHeight)
++{
++    MEDIA_INFO_LOG("process in");
++    CHK_NULL_RETURN(g_player);
++    return g_player->GetVideoHeight(videoHeight);
++}
++
++int32_t Player::Reset()
++{
++    MEDIA_INFO_LOG("process in");
++    CHK_NULL_RETURN(g_player);
++    return g_player->Reset();
++}
++
++int32_t Player::Release()
++{
++    MEDIA_INFO_LOG("process in");
++    CHK_NULL_RETURN(g_player);
++    return g_player->Release();
++}
++
++void Player::SetPlayerCallback(const std::shared_ptr<PlayerCallback>& cb)
++{
++    MEDIA_INFO_LOG("process in");
++    if (g_player == nullptr) {
++        MEDIA_ERR_LOG("ptr null");
++        return;
++    }
++    g_player->SetPlayerCallback(cb);
++}
++
++int32_t Player::EnableSingleLooping(bool loop)
++{
++    MEDIA_INFO_LOG("process in");
++    CHK_NULL_RETURN(g_player);
++    return g_player->SetLoop(loop);
++}
++
++int32_t Player::GetPlayerState(int32_t& state) const
++{
++    MEDIA_INFO_LOG("process in");
++    CHK_NULL_RETURN(g_player);
++    return g_player->GetPlayerState(state);
++}
++
++int32_t Player::SetPlaybackSpeed(float speed)
++{
++    MEDIA_INFO_LOG("process in");
++    CHK_NULL_RETURN(g_player);
++    return g_player->SetPlaybackSpeed(speed);
++}
++
++int32_t Player::GetPlaybackSpeed(float& speed)
++{
++    MEDIA_INFO_LOG("process in");
++    CHK_NULL_RETURN(g_player);
++    return g_player->GetPlaybackSpeed(speed);
++}
++
++int32_t Player::SetAudioStreamType(int32_t type)
++{
++    MEDIA_INFO_LOG("process in");
++    CHK_NULL_RETURN(g_player);
++    return g_player->SetAudioStreamType(type);
++}
++
++void Player::GetAudioStreamType(int32_t& type)
++{
++    MEDIA_INFO_LOG("process in");
++    if (g_player == nullptr) {
++        MEDIA_ERR_LOG("g_player null");
++        return;
++    }
++    g_player->GetAudioStreamType(type);
++}
++
++int32_t Player::SetParameter(const Format& params)
++{
++    MEDIA_INFO_LOG("process in");
++    CHK_NULL_RETURN(g_player);
++    return g_player->SetParameter(params);
++}
++} // namespace Media
++} // namespace OHOS
+diff --git a/interfaces/kits/player_lite/player.h b/interfaces/kits/player_lite/player.h
+index 3da795a..04cfae4 100755
+--- a/interfaces/kits/player_lite/player.h
++++ b/interfaces/kits/player_lite/player.h
+@@ -37,11 +37,13 @@
+ #ifndef PLAYER_H
+ #define PLAYER_H
+ 
+-#include "source.h"
+-#include "format.h"
+ #include <memory>
+ #include <vector>
++#include "format.h"
++#include "source.h"
++#ifndef SURFACE_DISABLED
+ #include "surface.h"
++#endif
+ 
+ namespace OHOS {
+ namespace Media {
+@@ -111,49 +113,49 @@ public:
+     virtual ~PlayerCallback() = default;
+ 
+     /**
+-    * @brief Called when the playback is complete.
+-    *
+-    * @since 1.0
+-    * @version 1.0
+-    */
++     * @brief Called when the playback is complete.
++     *
++     * @since 1.0
++     * @version 1.0
++     */
+     virtual void OnPlaybackComplete() = 0;
+ 
+     /**
+-    * @brief Called when a playback error occurs.
+-    *
+-    * @param errorType Indicates the error type. For details, see {@link PlayerErrorType}.
+-    * @param errorCode Indicates the error code.
+-    * @since 1.0
+-    * @version 1.0
+-    */
++     * @brief Called when a playback error occurs.
++     *
++     * @param errorType Indicates the error type. For details, see {@link PlayerErrorType}.
++     * @param errorCode Indicates the error code.
++     * @since 1.0
++     * @version 1.0
++     */
+     virtual void OnError(int32_t errorType, int32_t errorCode) = 0;
+ 
+     /**
+-    * @brief Called when playback information is received.
+-    *
+-    * @param type Indicates the information type. For details, see {@link PlayerInfoType}.
+-    * @param extra Indicates the information code.
+-    * @since 1.0
+-    * @version 1.0
+-    */
++     * @brief Called when playback information is received.
++     *
++     * @param type Indicates the information type. For details, see {@link PlayerInfoType}.
++     * @param extra Indicates the information code.
++     * @since 1.0
++     * @version 1.0
++     */
+     virtual void OnInfo(int type, int extra) = 0;
+ 
+     /**
+-    * @brief Called when the video image size changes.
+-    *
+-    * @param width Indicates the video width.
+-    * @param height Indicates the video height.
+-    * @since 1.0
+-    * @version 1.0
+-    */
++     * @brief Called when the video image size changes.
++     *
++     * @param width Indicates the video width.
++     * @param height Indicates the video height.
++     * @since 1.0
++     * @version 1.0
++     */
+     virtual void OnVideoSizeChanged(int width, int height) = 0;
+ 
+     /**
+-    * @brief Called when the rewind is complete.
+-    *
+-    * @since 1.0
+-    * @version 1.0
+-    */
++     * @brief Called when the rewind is complete.
++     *
++     * @since 1.0
++     * @version 1.0
++     */
+     virtual void OnRewindToComplete() = 0;
+ };
+ 
+@@ -179,7 +181,7 @@ public:
+      * @since 1.0
+      * @version 1.0
+      */
+-    int32_t SetSource(const Source &source);
++    int32_t SetSource(const Source& source);
+ 
+     /**
+      * @brief Prepares the playback environment and buffers media data.
+@@ -244,7 +246,7 @@ public:
+      * @return Returns <b>0</b> if the playback position is changed; returns <b>-1</b> otherwise.
+      * @since 1.0
+      * @version 1.0
+-    */
++     */
+     int32_t Rewind(int64_t mSeconds, int32_t mode);
+ 
+     /**
+@@ -262,6 +264,7 @@ public:
+      */
+     int32_t SetVolume(float leftVolume, float rightVolume);
+ 
++#ifndef SURFACE_DISABLED
+     /**
+      * @brief Sets a surface for video playback.
+      *
+@@ -270,7 +273,8 @@ public:
+      * @since 1.0
+      * @version 1.0
+      */
+-    int32_t SetVideoSurface(Surface *surface);
++    int32_t SetVideoSurface(Surface* surface);
++#endif
+ 
+     /**
+      * @brief Sets loop playback.
+@@ -300,7 +304,7 @@ public:
+      * @since 1.0
+      * @version 1.0
+      */
+-    int32_t GetCurrentTime(int64_t &time) const;
++    int32_t GetCurrentTime(int64_t& time) const;
+ 
+     /**
+      * @brief Obtains the total duration of media files, in milliseconds.
+@@ -310,7 +314,7 @@ public:
+      * @since 1.0
+      * @version 1.0
+      */
+-    int32_t GetDuration(int64_t &duration) const;
++    int32_t GetDuration(int64_t& duration) const;
+ 
+     /**
+      * @brief Obtains the width of the video.
+@@ -320,7 +324,7 @@ public:
+      * @since 1.0
+      * @version 1.0
+      */
+-    int32_t GetVideoWidth(int32_t &videoWidth);
++    int32_t GetVideoWidth(int32_t& videoWidth);
+ 
+     /**
+      * @brief Obtains the height of the video.
+@@ -330,7 +334,7 @@ public:
+      * @since 1.0
+      * @version 1.0
+      */
+-    int32_t GetVideoHeight(int32_t &videoHeight);
++    int32_t GetVideoHeight(int32_t& videoHeight);
+ 
+     /**
+      * @brief Restores the player to the initial state.
+@@ -357,7 +361,7 @@ public:
+      * @since 1.0
+      * @version 1.0
+      */
+-    void SetPlayerCallback(const std::shared_ptr<PlayerCallback> &cb);
++    void SetPlayerCallback(const std::shared_ptr<PlayerCallback>& cb);
+ 
+     /**
+      * @brief Obtains the player state.
+@@ -367,7 +371,7 @@ public:
+      * @since 1.0
+      * @version 1.0
+      */
+-    int32_t GetPlayerState(int32_t &state) const;
++    int32_t GetPlayerState(int32_t& state) const;
+ 
+     /**
+      * Sets the playback speed.
+@@ -383,7 +387,7 @@ public:
+      * @param speed Indicates the playback speed.
+      * @return Returns {@code 0} if the playback speed is set; returns {@code -1} otherwise.
+      */
+-    int32_t GetPlaybackSpeed(float &speed);
++    int32_t GetPlaybackSpeed(float& speed);
+ 
+     /**
+      * Sets the audio type.
+@@ -399,7 +403,7 @@ public:
+      * @param type Indicates the audio type.
+      * @return Returns {@code 0} if the playback speed is set; returns {@code -1} otherwise.
+      */
+-    void GetAudioStreamType(int32_t &type);
++    void GetAudioStreamType(int32_t& type);
+ 
+     /**
+      * set parameter through format, extended interface.
+@@ -408,12 +412,12 @@ public:
+      * @return Returns {@code 0} if set parameter successfully; returns {@code -1} otherwise.
+      * @note not support on current version
+      */
+-    int32_t SetParameter(const Format &params);
++    int32_t SetParameter(const Format& params);
+ 
+ private:
+     class PlayerClient;
+     PlayerClient* player_;
+ };
+-}  // namespace Media
+-}  // namespace OHOS
+-#endif  // PLAYER_H
++} // namespace Media
++} // namespace OHOS
++#endif // PLAYER_H
+diff --git a/interfaces/kits/player_lite/player_interface.h b/interfaces/kits/player_lite/player_interface.h
+new file mode 100755
+index 0000000..0439ba4
+--- /dev/null
++++ b/interfaces/kits/player_lite/player_interface.h
+@@ -0,0 +1,64 @@
++/*
++ * Copyright (c) 2021-2021 Huawei Device Co., Ltd.
++ * Licensed under the Apache License, Version 2.0 (the "License");
++ * you may not use this file except in compliance with the License.
++ * You may obtain a copy of the License at
++ *
++ *     http://www.apache.org/licenses/LICENSE-2.0
++ *
++ * Unless required by applicable law or agreed to in writing, software
++ * distributed under the License is distributed on an "AS IS" BASIS,
++ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
++ * See the License for the specific language governing permissions and
++ * limitations under the License.
++ */
++
++#ifndef MULTIMEDIA_PLAYER_INTERFACE_H
++#define MULTIMEDIA_PLAYER_INTERFACE_H
++
++#include "format.h"
++#include "player.h"
++#include "source.h"
++#ifndef SURFACE_DISABLED
++#include "surface.h"
++#endif
++
++namespace OHOS {
++namespace Media {
++
++class PlayerInterface {
++public:
++  virtual ~PlayerInterface() = default;
++  virtual int32_t SetSource(const Source &source) = 0;
++  virtual int32_t Prepare() = 0;
++  virtual int32_t Play() = 0;
++  virtual bool IsPlaying() = 0;
++  virtual int32_t Pause() = 0;
++  virtual int32_t Stop() = 0;
++  virtual int32_t Rewind(int64_t mSeconds, int32_t mode) = 0;
++  virtual int32_t SetVolume(float leftVolume, float rightVolume) = 0;
++#ifndef SURFACE_DISABLED
++  virtual int32_t SetSurface(Surface *surface) = 0;
++#endif
++  virtual bool IsSingleLooping() = 0;
++  virtual int32_t GetPlayerState(int32_t &state) = 0;
++  virtual int32_t GetCurrentPosition(int64_t &currentPosition) = 0;
++  virtual int32_t GetDuration(int64_t &duration) = 0;
++  virtual int32_t GetVideoWidth(int32_t &videoWidth) = 0;
++  virtual int32_t GetVideoHeight(int32_t &videoHeight) = 0;
++  virtual int32_t SetPlaybackSpeed(float speed) = 0;
++  virtual int32_t GetPlaybackSpeed(float &speed) = 0;
++  virtual int32_t SetAudioStreamType(int32_t type) = 0;
++  virtual void GetAudioStreamType(int32_t &type) = 0;
++  virtual int32_t Reset(void) = 0;
++  virtual int32_t Release() = 0;
++  virtual int32_t SetLoop(bool loop) = 0;
++  virtual void SetPlayerCallback(const std::shared_ptr<PlayerCallback> &cb) = 0;
++//  virtual int32_t SetVideoScaleType(int32_t type) = 0;
++  virtual int32_t Init(void) = 0;
++  virtual int32_t DeInit(void) = 0;
++  virtual int32_t SetParameter(const Format &params) = 0;
++};
++} // namespace Media
++} // namespace OHOS
++#endif // MULTIMEDIA_PLAYER_INTERFACE_H
+-- 
+2.17.1
+
