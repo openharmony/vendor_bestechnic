@@ -21,7 +21,8 @@
         "module_ActsLwipTest",
         "module_ActsWifiServiceTest",
         "module_ActsParameterTest",
-        "module_ActsDfxFuncTest"
+        "module_ActsDfxFuncTest",
+        "module_ActsKvStoreTest"
       ]
     },
     {
@@ -134,10 +135,14 @@
        "subsystem": "utils",
        "components": [
          {
-           "component": "file",
-           "optional": "true",
-           "features":[]
-          }
+          "component": "kv_store",
+          "optional": "true"
+         },
+         {
+          "component": "file",
+          "optional": "true",
+          "features":[]
+         }
         ]
       },
       {
@@ -145,6 +150,15 @@
         "components": [
           {
             "component": "wifi_lite",
+            "optional": "true"
+          }
+        ]
+      },
+      {
+        "subsystem": "iot_hardware",
+        "components": [
+          {
+            "component": "iot_controller",
             "optional": "true"
           }
         ]
