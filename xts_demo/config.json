@@ -5,7 +5,7 @@
   "board": "bes2600w",
   "kernel_type": "liteos_m",
   "kernel_version": "3.0.0",
-  "pack_burn": "false",
+  "pack_burn": "true",
   "bin_list": [
     {
       "elf_name": "wifiiot",
@@ -15,9 +15,14 @@
       "enable": "true",
       "force_link_libs": [
         "hdf_platform_lite",
-        "module_ActsCMSISTest",
         "sysparam",
-        "hctest"
+        "hctest",
+        "module_ActsBootstrapTest",
+        "module_ActsLwipTest",
+        "module_ActsWifiServiceTest",
+        "module_ActsParameterTest",
+        "module_ActsDfxFuncTest",
+        "module_ActsKvStoreTest"
       ]
     },
     {
@@ -84,7 +89,10 @@
             "enable_ohos_kernel_liteos_m_fs = true",
             "enable_ohos_kernel_liteos_m_fatfs = false",
             "enable_ohos_kernel_liteos_m_cmsis = false",
-            "enable_ohos_kernel_liteos_m_posix = false"
+            "enable_ohos_kernel_liteos_m_posix = true",
+            "enable_ohos_kernel_liteos_m_lwip = true",
+            "enable_ohos_kernel_liteos_m_shell = false",
+            "ohos_kernel_liteos_m_lwip_path = \"//device/bestechnic/bes2600w/components/net/lwip-2.1:lwip\""
           ]
         }
       ]
@@ -127,9 +135,56 @@
        "subsystem": "utils",
        "components": [
          {
-           "component": "file",
-           "optional": "true",
-           "features":[]
+          "component": "kv_store",
+          "optional": "true"
+         },
+         {
+          "component": "file",
+          "optional": "true",
+          "features":[]
+         }
+        ]
+      },
+      {
+        "subsystem": "communication",
+        "components": [
+          {
+            "component": "wifi_lite",
+            "optional": "true"
+          }
+        ]
+      },
+      {
+        "subsystem": "iot_hardware",
+        "components": [
+          {
+            "component": "iot_controller",
+            "optional": "true"
+          }
+        ]
+      },
+      {
+        "subsystem": "security",
+        "components": [
+          {
+            "component": "huks",
+            "optional": "true"
+          }
+        ]
+      },
+      {
+        "subsystem": "vendor",
+        "components": [
+          {
+            "component": "custom",
+            "features": [
+              "bes_communication_wifi_lite_enable = true",
+              "bes_drivers_gpio_enable = true",
+              "bes_drivers_i2c_enable = true",
+              "bes_drivers_flash_enable = true",
+              "bes_fs_enable = true",
+              "bes_fs_test = true"
+            ]
           }
         ]
       }
