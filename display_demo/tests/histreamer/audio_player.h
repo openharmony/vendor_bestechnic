@@ -12,37 +12,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#if defined(UI_TEST) || defined(ABILITY_TEST)
-#include "ohos_init.h"
-#include "ui_main.h"
-#if defined(UI_TEST)
-#include "ui_test.h"
-#elif defined(ABILITY_TEST)
-#include "ability_test.h"
-#endif
 
-#if defined(HISTREAMER_TEST)
-#include "audio_player.h"
-#endif
+int AudioPlayerStart(void);
 
-/* ui app entry */
-void RunApp()
-{
-#ifdef UI_TEST
-    AnimatorDemoStart();
-#elif defined(ABILITY_TEST)
-    // StartLauncherApp();
-    StartJSApp();
-#endif
-}
-
-void AppEntry(void)
-{
-    UiMain();
-#if defined(HISTREAMER_TEST)
-    AudioPlayerStart();
-#endif
-}
-
-APP_FEATURE_INIT(AppEntry);
-#endif
