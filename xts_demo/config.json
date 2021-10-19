@@ -22,7 +22,9 @@
         "module_ActsWifiServiceTest",
         "module_ActsParameterTest",
         "module_ActsDfxFuncTest",
-        "module_ActsKvStoreTest"
+        "module_ActsKvStoreTest",
+        "module_ActsUpdaterFuncTest",
+        "module_ActsSecurityDataTest"
       ]
     },
     {
@@ -159,6 +161,15 @@
         "components": [
           {
             "component": "iot_controller",
+            "optional": "true"
+          }
+        ]
+      },
+      {
+        "subsystem": "update",
+        "components": [
+          {
+            "component": "ota_lite",
             "optional": "true"
           }
         ]
