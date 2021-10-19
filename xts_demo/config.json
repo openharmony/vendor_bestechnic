@@ -24,7 +24,8 @@
         "module_ActsDfxFuncTest",
         "module_ActsKvStoreTest",
         "module_ActsUpdaterFuncTest",
-        "module_ActsSecurityDataTest"
+        "module_ActsSecurityDataTest",
+        "module_ActsWifiIotTest"
       ]
     },
     {

@@ -16,7 +16,8 @@ group("xts_demo") {
     "config:hdf_hcs",
     "//base/hiviewdfx/hilog_lite/frameworks/featured:hilog_static",
     "//base/startup/syspara_lite/frameworks/parameter/src:sysparam",
-    "//device/bestechnic/bes2600w/hals/security/huks:huks_adapter",
+    "//device/bestechnic/${board_name}/hals/security/huks:huks_adapter",
+    "//device/bestechnic/${board_name}/components/drivers:drivers_adapter",
   ]
 
   deps += [
