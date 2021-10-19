@@ -16,6 +16,10 @@ group("xts_demo") {
     "config:hdf_hcs",
     "//base/hiviewdfx/hilog_lite/frameworks/featured:hilog_static",
     "//base/startup/syspara_lite/frameworks/parameter/src:sysparam",
+    "//device/bestechnic/bes2600w/hals/security/huks:huks_adapter",
+  ]
+
+  deps += [
     "//test/xts/acts/communication_lite/lwip_hal:ActsLwipTest",
     "//test/xts/acts/communication_lite/wifiservice_hal:ActsWifiServiceTest",
     "//test/xts/acts/startup_lite/syspara_hal:ActsParameterTest",
