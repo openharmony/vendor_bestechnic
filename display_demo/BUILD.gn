@@ -29,6 +29,6 @@ group("display_demo") {
   }
 
   if (bes_histreamer_test) {
-    deps += [ "//foundation/multimedia/histreamer_lite:histreamer" ]
+    deps += [ "//foundation/multimedia/histreamer:histreamer" ]
   }
 }
