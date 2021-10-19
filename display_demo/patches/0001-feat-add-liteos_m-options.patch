@@ -1,19 +1,26 @@
-From 9b2968d78fb5641f9a1209a859e99585b029dabf Mon Sep 17 00:00:00 2001
-From: leihuang <leihuang@bestechnic.com>
-Date: Sun, 26 Sep 2021 16:41:05 +0800
-Subject: [PATCH] feat: add liteos_m options
+From 3da5be7fe2b45c0460c46154d95428c0e740b818 Mon Sep 17 00:00:00 2001
+From: SimonLi <likailong@huawei.com>
+Date: Tue, 19 Oct 2021 15:55:30 +0800
+Subject: [PATCH] =?UTF-8?q?feat(patch):=20=E5=90=88=E5=B9=B6=E7=BB=84?=
+ =?UTF-8?q?=E4=BB=B6=E9=85=8D=E7=BD=AEpatch=E5=92=8Cmultimedia=E7=9A=84pat?=
+ =?UTF-8?q?ch?=
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-Signed-off-by: leihuang <leihuang@bestechnic.com>
-Change-Id: Ia261889ed553f779656d3fde11c538788aa2e11c
+Signed-off-by: SimonLi <likailong@huawei.com>
+Change-Id: Ie4041299b39d29c9f46b27b512e9ed7decbf21fa
 ---
- components/aafwk.json      |  1 +
- components/ace.json        | 19 +++++++++----------
- components/appexecfwk.json |  1 +
- components/global.json     | 10 ++++------
- components/graphic.json    | 12 ++++++------
- components/utils.json      |  3 +++
- components/vendor.json     |  6 ++++++
- 7 files changed, 30 insertions(+), 22 deletions(-)
+ components/aafwk.json                  |  1 +
+ components/ace.json                    | 19 +++++++++----------
+ components/appexecfwk.json             |  1 +
+ components/global.json                 | 10 ++++------
+ components/graphic.json                | 12 ++++++------
+ components/utils.json                  |  3 +++
+ components/vendor.json                 |  6 ++++++
+ config/subsystem/multimedia/config.gni | 22 ++++++++++++++++++++++
+ 8 files changed, 52 insertions(+), 22 deletions(-)
+ create mode 100755 config/subsystem/multimedia/config.gni
 
 diff --git a/components/aafwk.json b/components/aafwk.json
 index e71ad88..8ae543f 100755
@@ -198,10 +205,10 @@ index 19cdb8b..972d477 100755
        ],
        "features": [],
 diff --git a/components/vendor.json b/components/vendor.json
-index a977c9e..12a9725 100755
+index 4e5c4e9..d012f85 100755
 --- a/components/vendor.json
 +++ b/components/vendor.json
-@@ -333,6 +333,12 @@
+@@ -277,6 +277,12 @@
            "utils_base"
          ]
        }
@@ -214,6 +221,34 @@ index a977c9e..12a9725 100755
      }
    ]
  }
+diff --git a/config/subsystem/multimedia/config.gni b/config/subsystem/multimedia/config.gni
+new file mode 100755
+index 0000000..8825281
+--- /dev/null
++++ b/config/subsystem/multimedia/config.gni
+@@ -0,0 +1,22 @@
++#
++# Copyright (c) 2020 Huawei Device Co., Ltd.
++# Licensed under the Apache License, Version 2.0 (the "License");
++# you may not use this file except in compliance with the License.
++# You may obtain a copy of the License at
++#
++#     http://www.apache.org/licenses/LICENSE-2.0
++#
++# Unless required by applicable law or agreed to in writing, software
++# distributed under the License is distributed on an "AS IS" BASIS,
++# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
++# See the License for the specific language governing permissions and
++# limitations under the License.
++#
++
++declare_args() {
++  # build histreamer plugin feature ability
++  enable_histreamer_plugin_ffmpeg_adapter = true
++  enable_histreamer_plugin_hdi_adapter = true
++  enable_histreamer_plugin_file_source = true
++  enable_histreamer_plugin_stream_source = true
++}
 -- 
 2.17.1
 
