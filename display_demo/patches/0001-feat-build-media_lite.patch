@@ -1,5 +1,193 @@
+From c8ce9d9e008560e98b127763bfcc93b03e2a1adf Mon Sep 17 00:00:00 2001
+From: SimonLi <likailong@huawei.com>
+Date: Wed, 20 Oct 2021 00:34:34 +0800
+Subject: [PATCH] build: porting media_lite to mini system
+
+Signed-off-by: SimonLi <likailong@huawei.com>
+Change-Id: Id5688c470da982af73c0610b0947df03e983aead
+---
+ frameworks/player_lite/BUILD.gn               | 221 +++++++++-------
+ .../buffersource/include/buffer_source.h      |   0
+ .../buffersource/src/buffer_source.cpp        |   0
+ .../player_lite/{ => binder}/player.cpp       |   0
+ .../player_control/decoder/decoder.cpp        |   0
+ .../player_control/decoder/decoder.h          |   0
+ .../player_control/include/hi_demuxer.h       |   0
+ .../player_control/include/hi_demuxer_err.h   |   0
+ .../player_control/include/hi_error_def.h     |   0
+ .../player_control/include/hi_liteplayer.h    |   0
+ .../include/hi_liteplayer_err.h               |   0
+ .../player_control/include/player_define.h    |   0
+ .../player/fsm/include/fsm_message.h          |   0
+ .../player/fsm/include/hi_fsm.h               |   0
+ .../player/fsm/src/fsm_common.cpp             |   0
+ .../player/fsm/src/fsm_common.h               |   0
+ .../player/fsm/src/fsm_oberver.h              |   0
+ .../player_control/player/fsm/src/fsm_state.h |   0
+ .../player_control/player/fsm/src/hi_fsm.cpp  |   0
+ .../player/fsm/src/hi_state.cpp               |   0
+ .../player_control/player/fsm/src/hi_state.h  |   0
+ .../player/fsm/src/hi_state_machine.cpp       |   0
+ .../player/fsm/src/hi_state_machine.h         |   0
+ .../fsm/src/hi_state_machine_observer.cpp     |   0
+ .../fsm/src/hi_state_machine_observer.h       |   0
+ .../player/fsm/src/message_handler.h          |   0
+ .../player/fsm/src/message_looper.cpp         |   0
+ .../player/fsm/src/message_looper.h           |   0
+ .../player/fsm/src/mmessage_pool.cpp          |   0
+ .../player/fsm/src/mmessage_pool.h            |   0
+ .../player_control/player/liteplayer.cpp      |   0
+ .../player_control/player/liteplayer.h        |   0
+ .../player_control/player/liteplayer_comm.cpp |   0
+ .../player_control/player/liteplayer_comm.h   |   0
+ .../player_control/player/liteplayer_define.h |   0
+ .../player/liteplayer_msgtype.h               |   0
+ .../player/liteplayer_state_machine.cpp       |   0
+ .../player/liteplayer_state_machine.h         |   0
+ .../player_control/sink/player_audio_sink.cpp |   0
+ .../player_control/sink/player_audio_sink.h   |   0
+ .../sink/player_sink_manager.cpp              |   0
+ .../player_control/sink/player_sink_manager.h |   0
+ .../player_control/sink/player_sink_type.h    |   0
+ .../player_control/sink/player_sync.cpp       |   0
+ .../player_control/sink/player_sync.h         |   0
+ .../player_control/sink/player_video_sink.cpp |   0
+ .../player_control/sink/player_video_sink.h   |   0
+ .../player_control/source/player_demux.cpp    |   0
+ .../player_control/source/player_demux.h      |   0
+ .../player_control/source/player_source.cpp   |   0
+ .../player_control/source/player_source.h     |   0
+ .../player_lite/{ => binder}/player_impl.cpp  |   0
+ .../player_lite/{ => binder}/player_impl.h    |  56 +++--
+ frameworks/player_lite/passthrough/player.cpp | 238 ++++++++++++++++++
+ interfaces/innerkits/player_interface.h       |  62 +++++
+ .../kits/player_lite/js/builtin/BUILD.gn      |  22 +-
+ .../js/builtin/src/audio_player.cpp           |   6 +-
+ interfaces/kits/player_lite/player.h          | 100 ++++----
+ services/BUILD.gn                             |   5 +-
+ services/player_lite/BUILD.gn                 |  15 +-
+ .../server/include/player_factory.h           |  37 +++
+ .../server/include/player_server.h            |   5 +-
+ .../player_lite/server/src/player_factory.cpp |  55 ++++
+ .../player_lite/server/src/player_server.cpp  |  10 +-
+ 64 files changed, 633 insertions(+), 199 deletions(-)
+ rename frameworks/player_lite/{ => binder}/buffersource/include/buffer_source.h (100%)
+ mode change 100755 => 100644
+ rename frameworks/player_lite/{ => binder}/buffersource/src/buffer_source.cpp (100%)
+ mode change 100755 => 100644
+ rename frameworks/player_lite/{ => binder}/player.cpp (100%)
+ mode change 100755 => 100644
+ rename frameworks/player_lite/{ => binder}/player_control/decoder/decoder.cpp (100%)
+ mode change 100755 => 100644
+ rename frameworks/player_lite/{ => binder}/player_control/decoder/decoder.h (100%)
+ mode change 100755 => 100644
+ rename frameworks/player_lite/{ => binder}/player_control/include/hi_demuxer.h (100%)
+ mode change 100755 => 100644
+ rename frameworks/player_lite/{ => binder}/player_control/include/hi_demuxer_err.h (100%)
+ mode change 100755 => 100644
+ rename frameworks/player_lite/{ => binder}/player_control/include/hi_error_def.h (100%)
+ mode change 100755 => 100644
+ rename frameworks/player_lite/{ => binder}/player_control/include/hi_liteplayer.h (100%)
+ mode change 100755 => 100644
+ rename frameworks/player_lite/{ => binder}/player_control/include/hi_liteplayer_err.h (100%)
+ mode change 100755 => 100644
+ rename frameworks/player_lite/{ => binder}/player_control/include/player_define.h (100%)
+ mode change 100755 => 100644
+ rename frameworks/player_lite/{ => binder}/player_control/player/fsm/include/fsm_message.h (100%)
+ mode change 100755 => 100644
+ rename frameworks/player_lite/{ => binder}/player_control/player/fsm/include/hi_fsm.h (100%)
+ mode change 100755 => 100644
+ rename frameworks/player_lite/{ => binder}/player_control/player/fsm/src/fsm_common.cpp (100%)
+ mode change 100755 => 100644
+ rename frameworks/player_lite/{ => binder}/player_control/player/fsm/src/fsm_common.h (100%)
+ mode change 100755 => 100644
+ rename frameworks/player_lite/{ => binder}/player_control/player/fsm/src/fsm_oberver.h (100%)
+ mode change 100755 => 100644
+ rename frameworks/player_lite/{ => binder}/player_control/player/fsm/src/fsm_state.h (100%)
+ mode change 100755 => 100644
+ rename frameworks/player_lite/{ => binder}/player_control/player/fsm/src/hi_fsm.cpp (100%)
+ mode change 100755 => 100644
+ rename frameworks/player_lite/{ => binder}/player_control/player/fsm/src/hi_state.cpp (100%)
+ mode change 100755 => 100644
+ rename frameworks/player_lite/{ => binder}/player_control/player/fsm/src/hi_state.h (100%)
+ mode change 100755 => 100644
+ rename frameworks/player_lite/{ => binder}/player_control/player/fsm/src/hi_state_machine.cpp (100%)
+ mode change 100755 => 100644
+ rename frameworks/player_lite/{ => binder}/player_control/player/fsm/src/hi_state_machine.h (100%)
+ mode change 100755 => 100644
+ rename frameworks/player_lite/{ => binder}/player_control/player/fsm/src/hi_state_machine_observer.cpp (100%)
+ mode change 100755 => 100644
+ rename frameworks/player_lite/{ => binder}/player_control/player/fsm/src/hi_state_machine_observer.h (100%)
+ mode change 100755 => 100644
+ rename frameworks/player_lite/{ => binder}/player_control/player/fsm/src/message_handler.h (100%)
+ mode change 100755 => 100644
+ rename frameworks/player_lite/{ => binder}/player_control/player/fsm/src/message_looper.cpp (100%)
+ mode change 100755 => 100644
+ rename frameworks/player_lite/{ => binder}/player_control/player/fsm/src/message_looper.h (100%)
+ mode change 100755 => 100644
+ rename frameworks/player_lite/{ => binder}/player_control/player/fsm/src/mmessage_pool.cpp (100%)
+ mode change 100755 => 100644
+ rename frameworks/player_lite/{ => binder}/player_control/player/fsm/src/mmessage_pool.h (100%)
+ mode change 100755 => 100644
+ rename frameworks/player_lite/{ => binder}/player_control/player/liteplayer.cpp (100%)
+ mode change 100755 => 100644
+ rename frameworks/player_lite/{ => binder}/player_control/player/liteplayer.h (100%)
+ mode change 100755 => 100644
+ rename frameworks/player_lite/{ => binder}/player_control/player/liteplayer_comm.cpp (100%)
+ mode change 100755 => 100644
+ rename frameworks/player_lite/{ => binder}/player_control/player/liteplayer_comm.h (100%)
+ mode change 100755 => 100644
+ rename frameworks/player_lite/{ => binder}/player_control/player/liteplayer_define.h (100%)
+ mode change 100755 => 100644
+ rename frameworks/player_lite/{ => binder}/player_control/player/liteplayer_msgtype.h (100%)
+ mode change 100755 => 100644
+ rename frameworks/player_lite/{ => binder}/player_control/player/liteplayer_state_machine.cpp (100%)
+ mode change 100755 => 100644
+ rename frameworks/player_lite/{ => binder}/player_control/player/liteplayer_state_machine.h (100%)
+ mode change 100755 => 100644
+ rename frameworks/player_lite/{ => binder}/player_control/sink/player_audio_sink.cpp (100%)
+ mode change 100755 => 100644
+ rename frameworks/player_lite/{ => binder}/player_control/sink/player_audio_sink.h (100%)
+ mode change 100755 => 100644
+ rename frameworks/player_lite/{ => binder}/player_control/sink/player_sink_manager.cpp (100%)
+ mode change 100755 => 100644
+ rename frameworks/player_lite/{ => binder}/player_control/sink/player_sink_manager.h (100%)
+ mode change 100755 => 100644
+ rename frameworks/player_lite/{ => binder}/player_control/sink/player_sink_type.h (100%)
+ mode change 100755 => 100644
+ rename frameworks/player_lite/{ => binder}/player_control/sink/player_sync.cpp (100%)
+ mode change 100755 => 100644
+ rename frameworks/player_lite/{ => binder}/player_control/sink/player_sync.h (100%)
+ mode change 100755 => 100644
+ rename frameworks/player_lite/{ => binder}/player_control/sink/player_video_sink.cpp (100%)
+ mode change 100755 => 100644
+ rename frameworks/player_lite/{ => binder}/player_control/sink/player_video_sink.h (100%)
+ mode change 100755 => 100644
+ rename frameworks/player_lite/{ => binder}/player_control/source/player_demux.cpp (100%)
+ mode change 100755 => 100644
+ rename frameworks/player_lite/{ => binder}/player_control/source/player_demux.h (100%)
+ mode change 100755 => 100644
+ rename frameworks/player_lite/{ => binder}/player_control/source/player_source.cpp (100%)
+ mode change 100755 => 100644
+ rename frameworks/player_lite/{ => binder}/player_control/source/player_source.h (100%)
+ mode change 100755 => 100644
+ rename frameworks/player_lite/{ => binder}/player_impl.cpp (100%)
+ mode change 100755 => 100644
+ rename frameworks/player_lite/{ => binder}/player_impl.h (76%)
+ mode change 100755 => 100644
+ create mode 100644 frameworks/player_lite/passthrough/player.cpp
+ create mode 100644 interfaces/innerkits/player_interface.h
+ mode change 100755 => 100644 interfaces/kits/player_lite/js/builtin/src/audio_player.cpp
+ mode change 100755 => 100644 interfaces/kits/player_lite/player.h
+ mode change 100755 => 100644 services/BUILD.gn
+ mode change 100755 => 100644 services/player_lite/BUILD.gn
+ create mode 100644 services/player_lite/server/include/player_factory.h
+ mode change 100755 => 100644 services/player_lite/server/include/player_server.h
+ create mode 100644 services/player_lite/server/src/player_factory.cpp
+ mode change 100755 => 100644 services/player_lite/server/src/player_server.cpp
+
 diff --git a/frameworks/player_lite/BUILD.gn b/frameworks/player_lite/BUILD.gn
-index 1c63831..7416d0d 100755
+index 1c63831..ddd17ce 100755
 --- a/frameworks/player_lite/BUILD.gn
 +++ b/frameworks/player_lite/BUILD.gn
 @@ -13,105 +13,132 @@
@@ -207,13 +395,10 @@ index 1c63831..7416d0d 100755
 +    sources = [ "passthrough/player.cpp" ]
 +    include_dirs = [
 +      "//base/hiviewdfx/hilog_lite/interfaces/native/innerkits/hilog",
-+      #        "//base/security/permission/interfaces/kits/permission_lite",
 +    ]
 +    public_deps = [
-+      "//base/hiviewdfx/hilog_lite/frameworks/featured:hilog_shared",
++      "//base/hiviewdfx/hilog_lite/frameworks/featured:hilog_static",
 +      "//foundation/multimedia/histreamer:histreamer",
-+
-+      #        "//base/security/permission/services/permission_lite/pms_client:pms_client",
 +    ]
 +    public_configs = [ ":player_direct_external_library_config" ]
 +  }
@@ -225,222 +410,329 @@ index 1c63831..7416d0d 100755
 -    "//foundation/multimedia/media_lite/interfaces/kits/player_lite/js/builtin:audio_lite_api",
 -  ]
 +  config("player_direct_external_library_config") {
-+    include_dirs = [ "//foundation/multimedia/frameworks/player_lite" ]
-+    include_dirs +=
-+        [ "//foundation/multimedia/media_lite/interfaces/kits/player_lite" ]
-+    include_dirs += [ "//foundation/multimedia/utils/lite/interfaces/kits" ]
-+    include_dirs += [ "//drivers/peripheral/format/interfaces/include" ]
++    include_dirs = [
++      "//foundation/multimedia/media_lite/interfaces/innerkits",
++      "//foundation/multimedia/frameworks/player_lite",
++      "//foundation/multimedia/utils/lite/interfaces/kits",
++      "//foundation/multimedia/media_lite/interfaces/kits/player_lite",
++      "//drivers/peripheral/format/interfaces/include"
++    ]
 +  }
  }
++
 diff --git a/frameworks/player_lite/buffersource/include/buffer_source.h b/frameworks/player_lite/binder/buffersource/include/buffer_source.h
+old mode 100755
+new mode 100644
 similarity index 100%
 rename from frameworks/player_lite/buffersource/include/buffer_source.h
 rename to frameworks/player_lite/binder/buffersource/include/buffer_source.h
 diff --git a/frameworks/player_lite/buffersource/src/buffer_source.cpp b/frameworks/player_lite/binder/buffersource/src/buffer_source.cpp
+old mode 100755
+new mode 100644
 similarity index 100%
 rename from frameworks/player_lite/buffersource/src/buffer_source.cpp
 rename to frameworks/player_lite/binder/buffersource/src/buffer_source.cpp
 diff --git a/frameworks/player_lite/player.cpp b/frameworks/player_lite/binder/player.cpp
+old mode 100755
+new mode 100644
 similarity index 100%
 rename from frameworks/player_lite/player.cpp
 rename to frameworks/player_lite/binder/player.cpp
 diff --git a/frameworks/player_lite/player_control/decoder/decoder.cpp b/frameworks/player_lite/binder/player_control/decoder/decoder.cpp
+old mode 100755
+new mode 100644
 similarity index 100%
 rename from frameworks/player_lite/player_control/decoder/decoder.cpp
 rename to frameworks/player_lite/binder/player_control/decoder/decoder.cpp
 diff --git a/frameworks/player_lite/player_control/decoder/decoder.h b/frameworks/player_lite/binder/player_control/decoder/decoder.h
+old mode 100755
+new mode 100644
 similarity index 100%
 rename from frameworks/player_lite/player_control/decoder/decoder.h
 rename to frameworks/player_lite/binder/player_control/decoder/decoder.h
 diff --git a/frameworks/player_lite/player_control/include/hi_demuxer.h b/frameworks/player_lite/binder/player_control/include/hi_demuxer.h
+old mode 100755
+new mode 100644
 similarity index 100%
 rename from frameworks/player_lite/player_control/include/hi_demuxer.h
 rename to frameworks/player_lite/binder/player_control/include/hi_demuxer.h
 diff --git a/frameworks/player_lite/player_control/include/hi_demuxer_err.h b/frameworks/player_lite/binder/player_control/include/hi_demuxer_err.h
+old mode 100755
+new mode 100644
 similarity index 100%
 rename from frameworks/player_lite/player_control/include/hi_demuxer_err.h
 rename to frameworks/player_lite/binder/player_control/include/hi_demuxer_err.h
 diff --git a/frameworks/player_lite/player_control/include/hi_error_def.h b/frameworks/player_lite/binder/player_control/include/hi_error_def.h
+old mode 100755
+new mode 100644
 similarity index 100%
 rename from frameworks/player_lite/player_control/include/hi_error_def.h
 rename to frameworks/player_lite/binder/player_control/include/hi_error_def.h
 diff --git a/frameworks/player_lite/player_control/include/hi_liteplayer.h b/frameworks/player_lite/binder/player_control/include/hi_liteplayer.h
+old mode 100755
+new mode 100644
 similarity index 100%
 rename from frameworks/player_lite/player_control/include/hi_liteplayer.h
 rename to frameworks/player_lite/binder/player_control/include/hi_liteplayer.h
 diff --git a/frameworks/player_lite/player_control/include/hi_liteplayer_err.h b/frameworks/player_lite/binder/player_control/include/hi_liteplayer_err.h
+old mode 100755
+new mode 100644
 similarity index 100%
 rename from frameworks/player_lite/player_control/include/hi_liteplayer_err.h
 rename to frameworks/player_lite/binder/player_control/include/hi_liteplayer_err.h
 diff --git a/frameworks/player_lite/player_control/include/player_define.h b/frameworks/player_lite/binder/player_control/include/player_define.h
+old mode 100755
+new mode 100644
 similarity index 100%
 rename from frameworks/player_lite/player_control/include/player_define.h
 rename to frameworks/player_lite/binder/player_control/include/player_define.h
 diff --git a/frameworks/player_lite/player_control/player/fsm/include/fsm_message.h b/frameworks/player_lite/binder/player_control/player/fsm/include/fsm_message.h
+old mode 100755
+new mode 100644
 similarity index 100%
 rename from frameworks/player_lite/player_control/player/fsm/include/fsm_message.h
 rename to frameworks/player_lite/binder/player_control/player/fsm/include/fsm_message.h
 diff --git a/frameworks/player_lite/player_control/player/fsm/include/hi_fsm.h b/frameworks/player_lite/binder/player_control/player/fsm/include/hi_fsm.h
+old mode 100755
+new mode 100644
 similarity index 100%
 rename from frameworks/player_lite/player_control/player/fsm/include/hi_fsm.h
 rename to frameworks/player_lite/binder/player_control/player/fsm/include/hi_fsm.h
 diff --git a/frameworks/player_lite/player_control/player/fsm/src/fsm_common.cpp b/frameworks/player_lite/binder/player_control/player/fsm/src/fsm_common.cpp
+old mode 100755
+new mode 100644
 similarity index 100%
 rename from frameworks/player_lite/player_control/player/fsm/src/fsm_common.cpp
 rename to frameworks/player_lite/binder/player_control/player/fsm/src/fsm_common.cpp
 diff --git a/frameworks/player_lite/player_control/player/fsm/src/fsm_common.h b/frameworks/player_lite/binder/player_control/player/fsm/src/fsm_common.h
+old mode 100755
+new mode 100644
 similarity index 100%
 rename from frameworks/player_lite/player_control/player/fsm/src/fsm_common.h
 rename to frameworks/player_lite/binder/player_control/player/fsm/src/fsm_common.h
 diff --git a/frameworks/player_lite/player_control/player/fsm/src/fsm_oberver.h b/frameworks/player_lite/binder/player_control/player/fsm/src/fsm_oberver.h
+old mode 100755
+new mode 100644
 similarity index 100%
 rename from frameworks/player_lite/player_control/player/fsm/src/fsm_oberver.h
 rename to frameworks/player_lite/binder/player_control/player/fsm/src/fsm_oberver.h
 diff --git a/frameworks/player_lite/player_control/player/fsm/src/fsm_state.h b/frameworks/player_lite/binder/player_control/player/fsm/src/fsm_state.h
+old mode 100755
+new mode 100644
 similarity index 100%
 rename from frameworks/player_lite/player_control/player/fsm/src/fsm_state.h
 rename to frameworks/player_lite/binder/player_control/player/fsm/src/fsm_state.h
 diff --git a/frameworks/player_lite/player_control/player/fsm/src/hi_fsm.cpp b/frameworks/player_lite/binder/player_control/player/fsm/src/hi_fsm.cpp
+old mode 100755
+new mode 100644
 similarity index 100%
 rename from frameworks/player_lite/player_control/player/fsm/src/hi_fsm.cpp
 rename to frameworks/player_lite/binder/player_control/player/fsm/src/hi_fsm.cpp
 diff --git a/frameworks/player_lite/player_control/player/fsm/src/hi_state.cpp b/frameworks/player_lite/binder/player_control/player/fsm/src/hi_state.cpp
+old mode 100755
+new mode 100644
 similarity index 100%
 rename from frameworks/player_lite/player_control/player/fsm/src/hi_state.cpp
 rename to frameworks/player_lite/binder/player_control/player/fsm/src/hi_state.cpp
 diff --git a/frameworks/player_lite/player_control/player/fsm/src/hi_state.h b/frameworks/player_lite/binder/player_control/player/fsm/src/hi_state.h
+old mode 100755
+new mode 100644
 similarity index 100%
 rename from frameworks/player_lite/player_control/player/fsm/src/hi_state.h
 rename to frameworks/player_lite/binder/player_control/player/fsm/src/hi_state.h
 diff --git a/frameworks/player_lite/player_control/player/fsm/src/hi_state_machine.cpp b/frameworks/player_lite/binder/player_control/player/fsm/src/hi_state_machine.cpp
+old mode 100755
+new mode 100644
 similarity index 100%
 rename from frameworks/player_lite/player_control/player/fsm/src/hi_state_machine.cpp
 rename to frameworks/player_lite/binder/player_control/player/fsm/src/hi_state_machine.cpp
 diff --git a/frameworks/player_lite/player_control/player/fsm/src/hi_state_machine.h b/frameworks/player_lite/binder/player_control/player/fsm/src/hi_state_machine.h
+old mode 100755
+new mode 100644
 similarity index 100%
 rename from frameworks/player_lite/player_control/player/fsm/src/hi_state_machine.h
 rename to frameworks/player_lite/binder/player_control/player/fsm/src/hi_state_machine.h
 diff --git a/frameworks/player_lite/player_control/player/fsm/src/hi_state_machine_observer.cpp b/frameworks/player_lite/binder/player_control/player/fsm/src/hi_state_machine_observer.cpp
+old mode 100755
+new mode 100644
 similarity index 100%
 rename from frameworks/player_lite/player_control/player/fsm/src/hi_state_machine_observer.cpp
 rename to frameworks/player_lite/binder/player_control/player/fsm/src/hi_state_machine_observer.cpp
 diff --git a/frameworks/player_lite/player_control/player/fsm/src/hi_state_machine_observer.h b/frameworks/player_lite/binder/player_control/player/fsm/src/hi_state_machine_observer.h
+old mode 100755
+new mode 100644
 similarity index 100%
 rename from frameworks/player_lite/player_control/player/fsm/src/hi_state_machine_observer.h
 rename to frameworks/player_lite/binder/player_control/player/fsm/src/hi_state_machine_observer.h
 diff --git a/frameworks/player_lite/player_control/player/fsm/src/message_handler.h b/frameworks/player_lite/binder/player_control/player/fsm/src/message_handler.h
+old mode 100755
+new mode 100644
 similarity index 100%
 rename from frameworks/player_lite/player_control/player/fsm/src/message_handler.h
 rename to frameworks/player_lite/binder/player_control/player/fsm/src/message_handler.h
 diff --git a/frameworks/player_lite/player_control/player/fsm/src/message_looper.cpp b/frameworks/player_lite/binder/player_control/player/fsm/src/message_looper.cpp
+old mode 100755
+new mode 100644
 similarity index 100%
 rename from frameworks/player_lite/player_control/player/fsm/src/message_looper.cpp
 rename to frameworks/player_lite/binder/player_control/player/fsm/src/message_looper.cpp
 diff --git a/frameworks/player_lite/player_control/player/fsm/src/message_looper.h b/frameworks/player_lite/binder/player_control/player/fsm/src/message_looper.h
+old mode 100755
+new mode 100644
 similarity index 100%
 rename from frameworks/player_lite/player_control/player/fsm/src/message_looper.h
 rename to frameworks/player_lite/binder/player_control/player/fsm/src/message_looper.h
 diff --git a/frameworks/player_lite/player_control/player/fsm/src/mmessage_pool.cpp b/frameworks/player_lite/binder/player_control/player/fsm/src/mmessage_pool.cpp
+old mode 100755
+new mode 100644
 similarity index 100%
 rename from frameworks/player_lite/player_control/player/fsm/src/mmessage_pool.cpp
 rename to frameworks/player_lite/binder/player_control/player/fsm/src/mmessage_pool.cpp
 diff --git a/frameworks/player_lite/player_control/player/fsm/src/mmessage_pool.h b/frameworks/player_lite/binder/player_control/player/fsm/src/mmessage_pool.h
+old mode 100755
+new mode 100644
 similarity index 100%
 rename from frameworks/player_lite/player_control/player/fsm/src/mmessage_pool.h
 rename to frameworks/player_lite/binder/player_control/player/fsm/src/mmessage_pool.h
 diff --git a/frameworks/player_lite/player_control/player/liteplayer.cpp b/frameworks/player_lite/binder/player_control/player/liteplayer.cpp
+old mode 100755
+new mode 100644
 similarity index 100%
 rename from frameworks/player_lite/player_control/player/liteplayer.cpp
 rename to frameworks/player_lite/binder/player_control/player/liteplayer.cpp
 diff --git a/frameworks/player_lite/player_control/player/liteplayer.h b/frameworks/player_lite/binder/player_control/player/liteplayer.h
+old mode 100755
+new mode 100644
 similarity index 100%
 rename from frameworks/player_lite/player_control/player/liteplayer.h
 rename to frameworks/player_lite/binder/player_control/player/liteplayer.h
 diff --git a/frameworks/player_lite/player_control/player/liteplayer_comm.cpp b/frameworks/player_lite/binder/player_control/player/liteplayer_comm.cpp
+old mode 100755
+new mode 100644
 similarity index 100%
 rename from frameworks/player_lite/player_control/player/liteplayer_comm.cpp
 rename to frameworks/player_lite/binder/player_control/player/liteplayer_comm.cpp
 diff --git a/frameworks/player_lite/player_control/player/liteplayer_comm.h b/frameworks/player_lite/binder/player_control/player/liteplayer_comm.h
+old mode 100755
+new mode 100644
 similarity index 100%
 rename from frameworks/player_lite/player_control/player/liteplayer_comm.h
 rename to frameworks/player_lite/binder/player_control/player/liteplayer_comm.h
 diff --git a/frameworks/player_lite/player_control/player/liteplayer_define.h b/frameworks/player_lite/binder/player_control/player/liteplayer_define.h
+old mode 100755
+new mode 100644
 similarity index 100%
 rename from frameworks/player_lite/player_control/player/liteplayer_define.h
 rename to frameworks/player_lite/binder/player_control/player/liteplayer_define.h
 diff --git a/frameworks/player_lite/player_control/player/liteplayer_msgtype.h b/frameworks/player_lite/binder/player_control/player/liteplayer_msgtype.h
+old mode 100755
+new mode 100644
 similarity index 100%
 rename from frameworks/player_lite/player_control/player/liteplayer_msgtype.h
 rename to frameworks/player_lite/binder/player_control/player/liteplayer_msgtype.h
 diff --git a/frameworks/player_lite/player_control/player/liteplayer_state_machine.cpp b/frameworks/player_lite/binder/player_control/player/liteplayer_state_machine.cpp
+old mode 100755
+new mode 100644
 similarity index 100%
 rename from frameworks/player_lite/player_control/player/liteplayer_state_machine.cpp
 rename to frameworks/player_lite/binder/player_control/player/liteplayer_state_machine.cpp
 diff --git a/frameworks/player_lite/player_control/player/liteplayer_state_machine.h b/frameworks/player_lite/binder/player_control/player/liteplayer_state_machine.h
+old mode 100755
+new mode 100644
 similarity index 100%
 rename from frameworks/player_lite/player_control/player/liteplayer_state_machine.h
 rename to frameworks/player_lite/binder/player_control/player/liteplayer_state_machine.h
 diff --git a/frameworks/player_lite/player_control/sink/player_audio_sink.cpp b/frameworks/player_lite/binder/player_control/sink/player_audio_sink.cpp
+old mode 100755
+new mode 100644
 similarity index 100%
 rename from frameworks/player_lite/player_control/sink/player_audio_sink.cpp
 rename to frameworks/player_lite/binder/player_control/sink/player_audio_sink.cpp
 diff --git a/frameworks/player_lite/player_control/sink/player_audio_sink.h b/frameworks/player_lite/binder/player_control/sink/player_audio_sink.h
+old mode 100755
+new mode 100644
 similarity index 100%
 rename from frameworks/player_lite/player_control/sink/player_audio_sink.h
 rename to frameworks/player_lite/binder/player_control/sink/player_audio_sink.h
 diff --git a/frameworks/player_lite/player_control/sink/player_sink_manager.cpp b/frameworks/player_lite/binder/player_control/sink/player_sink_manager.cpp
+old mode 100755
+new mode 100644
 similarity index 100%
 rename from frameworks/player_lite/player_control/sink/player_sink_manager.cpp
 rename to frameworks/player_lite/binder/player_control/sink/player_sink_manager.cpp
 diff --git a/frameworks/player_lite/player_control/sink/player_sink_manager.h b/frameworks/player_lite/binder/player_control/sink/player_sink_manager.h
+old mode 100755
+new mode 100644
 similarity index 100%
 rename from frameworks/player_lite/player_control/sink/player_sink_manager.h
 rename to frameworks/player_lite/binder/player_control/sink/player_sink_manager.h
 diff --git a/frameworks/player_lite/player_control/sink/player_sink_type.h b/frameworks/player_lite/binder/player_control/sink/player_sink_type.h
+old mode 100755
+new mode 100644
 similarity index 100%
 rename from frameworks/player_lite/player_control/sink/player_sink_type.h
 rename to frameworks/player_lite/binder/player_control/sink/player_sink_type.h
 diff --git a/frameworks/player_lite/player_control/sink/player_sync.cpp b/frameworks/player_lite/binder/player_control/sink/player_sync.cpp
+old mode 100755
+new mode 100644
 similarity index 100%
 rename from frameworks/player_lite/player_control/sink/player_sync.cpp
 rename to frameworks/player_lite/binder/player_control/sink/player_sync.cpp
 diff --git a/frameworks/player_lite/player_control/sink/player_sync.h b/frameworks/player_lite/binder/player_control/sink/player_sync.h
+old mode 100755
+new mode 100644
 similarity index 100%
 rename from frameworks/player_lite/player_control/sink/player_sync.h
 rename to frameworks/player_lite/binder/player_control/sink/player_sync.h
 diff --git a/frameworks/player_lite/player_control/sink/player_video_sink.cpp b/frameworks/player_lite/binder/player_control/sink/player_video_sink.cpp
+old mode 100755
+new mode 100644
 similarity index 100%
 rename from frameworks/player_lite/player_control/sink/player_video_sink.cpp
 rename to frameworks/player_lite/binder/player_control/sink/player_video_sink.cpp
 diff --git a/frameworks/player_lite/player_control/sink/player_video_sink.h b/frameworks/player_lite/binder/player_control/sink/player_video_sink.h
+old mode 100755
+new mode 100644
 similarity index 100%
 rename from frameworks/player_lite/player_control/sink/player_video_sink.h
 rename to frameworks/player_lite/binder/player_control/sink/player_video_sink.h
 diff --git a/frameworks/player_lite/player_control/source/player_demux.cpp b/frameworks/player_lite/binder/player_control/source/player_demux.cpp
+old mode 100755
+new mode 100644
 similarity index 100%
 rename from frameworks/player_lite/player_control/source/player_demux.cpp
 rename to frameworks/player_lite/binder/player_control/source/player_demux.cpp
 diff --git a/frameworks/player_lite/player_control/source/player_demux.h b/frameworks/player_lite/binder/player_control/source/player_demux.h
+old mode 100755
+new mode 100644
 similarity index 100%
 rename from frameworks/player_lite/player_control/source/player_demux.h
 rename to frameworks/player_lite/binder/player_control/source/player_demux.h
 diff --git a/frameworks/player_lite/player_control/source/player_source.cpp b/frameworks/player_lite/binder/player_control/source/player_source.cpp
+old mode 100755
+new mode 100644
 similarity index 100%
 rename from frameworks/player_lite/player_control/source/player_source.cpp
 rename to frameworks/player_lite/binder/player_control/source/player_source.cpp
 diff --git a/frameworks/player_lite/player_control/source/player_source.h b/frameworks/player_lite/binder/player_control/source/player_source.h
+old mode 100755
+new mode 100644
 similarity index 100%
 rename from frameworks/player_lite/player_control/source/player_source.h
 rename to frameworks/player_lite/binder/player_control/source/player_source.h
 diff --git a/frameworks/player_lite/player_impl.cpp b/frameworks/player_lite/binder/player_impl.cpp
+old mode 100755
+new mode 100644
 similarity index 100%
 rename from frameworks/player_lite/player_impl.cpp
 rename to frameworks/player_lite/binder/player_impl.cpp
 diff --git a/frameworks/player_lite/player_impl.h b/frameworks/player_lite/binder/player_impl.h
+old mode 100755
+new mode 100644
 similarity index 76%
 rename from frameworks/player_lite/player_impl.h
 rename to frameworks/player_lite/binder/player_impl.h
-index 28d20df..7e27cf3 100755
+index 28d20df..7e27cf3
 --- a/frameworks/player_lite/player_impl.h
 +++ b/frameworks/player_lite/binder/player_impl.h
 @@ -27,6 +27,8 @@
@@ -521,7 +813,7 @@ index 28d20df..7e27cf3 100755
      void NotifySeekComplete(PlayerImpl *curPlayer, int64_t seekToMs);
      void NotifyPlaybackComplete(PlayerImpl *curPlayer);
 diff --git a/frameworks/player_lite/passthrough/player.cpp b/frameworks/player_lite/passthrough/player.cpp
-new file mode 100755
+new file mode 100644
 index 0000000..aae75d1
 --- /dev/null
 +++ b/frameworks/player_lite/passthrough/player.cpp
@@ -765,7 +1057,7 @@ index 0000000..aae75d1
 +} // namespace Media
 +} // namespace OHOS
 diff --git a/interfaces/innerkits/player_interface.h b/interfaces/innerkits/player_interface.h
-new file mode 100755
+new file mode 100644
 index 0000000..98a93d0
 --- /dev/null
 +++ b/interfaces/innerkits/player_interface.h
@@ -832,8 +1124,89 @@ index 0000000..98a93d0
 +} // namespace Media
 +} // namespace OHOS
 +#endif // MULTIMEDIA_PLAYER_INTERFACE_H
+diff --git a/interfaces/kits/player_lite/js/builtin/BUILD.gn b/interfaces/kits/player_lite/js/builtin/BUILD.gn
+index 32c09f9..9fdea56 100755
+--- a/interfaces/kits/player_lite/js/builtin/BUILD.gn
++++ b/interfaces/kits/player_lite/js/builtin/BUILD.gn
+@@ -12,14 +12,16 @@
+ # limitations under the License.
+ import("//build/lite/config/component/lite_component.gni")
+ import("//build/lite/ndk/ndk.gni")
+-shared_library("audio_lite_api") {
++lite_library("audio_lite_api") {
++  if (ohos_kernel_type == "liteos_m") {
++    target_type = "static_library"
++  } else {
++    target_type = "shared_library"
++  }
+   sources = [
+     "//foundation/multimedia/media_lite/interfaces/kits/player_lite/js/builtin/src/audio_module.cpp",
+     "//foundation/multimedia/media_lite/interfaces/kits/player_lite/js/builtin/src/audio_player.cpp",
+   ]
+-  cflags = [ "-fPIC" ]
+-  cflags += [ "-Wall" ]
+-  cflags_cc = cflags
+   include_dirs = [
+     "//foundation/ace/ace_engine_lite/interfaces/innerkits/builtin/base",
+     "//foundation/ace/ace_engine_lite/interfaces/innerkits/builtin/jsi",
+@@ -28,14 +30,14 @@ shared_library("audio_lite_api") {
+     "//foundation/multimedia/media_lite/interfaces/kits/player_lite",
+     "//foundation/multimedia/utils/lite/interfaces/kits",
+   ]
+-  outdir = rebase_path("$root_out_dir")
+-  ldflags = [ "-L$outdir" ]
+-  ldflags += [ "-laudio_hw" ]
+-  ldflags += [ "-lcodec" ]
+-  ldflags += [ "-lformat_hw" ]
+   public_deps = [
+     "//foundation/multimedia/media_lite/frameworks/player_lite:player_lite",
+     "//foundation/multimedia/utils/lite:media_common",
+-    "//third_party/bounds_checking_function:libsec_shared",
+   ]
++  if (ohos_kernel_type == "liteos_m") {
++      public_deps += [ "//third_party/bounds_checking_function:libsec_static" ]
++  } else {
++      public_deps += [ "//third_party/bounds_checking_function:libsec_shared" ]
++  }
+ }
++
+diff --git a/interfaces/kits/player_lite/js/builtin/src/audio_player.cpp b/interfaces/kits/player_lite/js/builtin/src/audio_player.cpp
+old mode 100755
+new mode 100644
+index e995704..2c350ff
+--- a/interfaces/kits/player_lite/js/builtin/src/audio_player.cpp
++++ b/interfaces/kits/player_lite/js/builtin/src/audio_player.cpp
+@@ -14,7 +14,7 @@
+  */
+ #include "audio_player.h"
+ #include <errno.h>
+-#include <sys/prctl.h>
++// #include <sys/prctl.h>
+ #include <sys/time.h>
+ #include <unistd.h>
+ #include "js_async_work.h"
+@@ -79,7 +79,7 @@ AudioPlayerCallback::AudioPlayerCallback(AudioPlayer *audioPlayer) : PlayerCallb
+ void *AudioPlayerCallback::PlaybackCompleteHandler(void *arg)
+ {
+     AudioPlayer *audioPlayer_ = (AudioPlayer *)arg;
+-    prctl(PR_SET_NAME, "PlaybackCompleteHandler");
++//    prctl(PR_SET_NAME, "PlaybackCompleteHandler");
+ 
+     if (!audioPlayer_->ResetPlayer()) {
+         MEDIA_ERR_LOG("fail to reset player.");
+@@ -176,7 +176,7 @@ void AudioPlayer::ForkUpdateTimeThread()
+ 
+ void *AudioPlayer::UpdateTimeHandler(void *arg)
+ {
+-    prctl(PR_SET_NAME, "UpdateTimeHandler");
++//    prctl(PR_SET_NAME, "UpdateTimeHandler");
+     if (arg == nullptr) {
+         MEDIA_ERR_LOG("audio player is null.");
+         return nullptr;
 diff --git a/interfaces/kits/player_lite/player.h b/interfaces/kits/player_lite/player.h
-index 3da795a..04cfae4 100755
+old mode 100755
+new mode 100644
+index 3da795a..04cfae4
 --- a/interfaces/kits/player_lite/player.h
 +++ b/interfaces/kits/player_lite/player.h
 @@ -37,11 +37,13 @@
@@ -1059,7 +1432,9 @@ index 3da795a..04cfae4 100755
 +} // namespace OHOS
 +#endif // PLAYER_H
 diff --git a/services/BUILD.gn b/services/BUILD.gn
-index 2c8ebdb..195f3e1 100755
+old mode 100755
+new mode 100644
+index 2c8ebdb..195f3e1
 --- a/services/BUILD.gn
 +++ b/services/BUILD.gn
 @@ -21,9 +21,10 @@ executable("media_server") {
@@ -1085,10 +1460,21 @@ index 2c8ebdb..195f3e1 100755
  }
  copy("camera_config") {
 diff --git a/services/player_lite/BUILD.gn b/services/player_lite/BUILD.gn
-index 93afa25..0dd5009 100755
+old mode 100755
+new mode 100644
+index 93afa25..220fb2c
 --- a/services/player_lite/BUILD.gn
 +++ b/services/player_lite/BUILD.gn
-@@ -36,6 +36,7 @@ shared_library("player_client") {
+@@ -27,8 +27,6 @@ shared_library("player_client") {
+   ]
+   ldflags = [ "-lstdc++" ]
+   cflags = [
+-    "-fPIC",
+-    "-Wall",
+     "-Wno-format",
+   ]
+   cflags_cc = cflags
+@@ -36,6 +34,7 @@ shared_library("player_client") {
  
  shared_library("player_server") {
    sources = [
@@ -1096,7 +1482,7 @@ index 93afa25..0dd5009 100755
      "server/src/player_server.cpp",
      "server/src/samgr_player_server.cpp",
    ]
-@@ -47,11 +48,14 @@ shared_library("player_server") {
+@@ -47,17 +46,18 @@ shared_library("player_server") {
      "//drivers/peripheral/format/interfaces/include",
      "//drivers/peripheral/display/interfaces/include",
      "//drivers/peripheral/base",
@@ -1111,7 +1497,13 @@ index 93afa25..0dd5009 100755
    ]
    outdir = rebase_path("$root_out_dir")
    public_configs = [ ":player_server_external_library_config" ]
-@@ -70,16 +74,19 @@ shared_library("player_server") {
+   cflags = [
+-    "-fPIC",
+-    "-Wall",
+     "-Wno-format",
+   ]
+   cflags_cc = cflags
+@@ -70,16 +70,19 @@ shared_library("player_server") {
    deps = [
      "//foundation/distributedschedule/samgr_lite/samgr:samgr",
      "//foundation/graphic/surface:lite_surface",
@@ -1134,7 +1526,7 @@ index 93afa25..0dd5009 100755
        [ "//foundation/multimedia/media_lite/frameworks/player_lite" ]
  }
 diff --git a/services/player_lite/server/include/player_factory.h b/services/player_lite/server/include/player_factory.h
-new file mode 100755
+new file mode 100644
 index 0000000..d4df8a5
 --- /dev/null
 +++ b/services/player_lite/server/include/player_factory.h
@@ -1177,7 +1569,9 @@ index 0000000..d4df8a5
 +} // namespace OHOS
 +#endif // MULTIMEDIA_PLAYER_FACTORY_H
 diff --git a/services/player_lite/server/include/player_server.h b/services/player_lite/server/include/player_server.h
-index 77eb7d4..d6ae48d 100755
+old mode 100755
+new mode 100644
+index 77eb7d4..d6ae48d
 --- a/services/player_lite/server/include/player_server.h
 +++ b/services/player_lite/server/include/player_server.h
 @@ -18,7 +18,7 @@
@@ -1201,7 +1595,7 @@ index 77eb7d4..d6ae48d 100755
      PlayerServer() : player_(nullptr), stream_(nullptr), sid_(nullptr) {}
      ~PlayerServer() {}
 diff --git a/services/player_lite/server/src/player_factory.cpp b/services/player_lite/server/src/player_factory.cpp
-new file mode 100755
+new file mode 100644
 index 0000000..88f1ce4
 --- /dev/null
 +++ b/services/player_lite/server/src/player_factory.cpp
@@ -1263,7 +1657,9 @@ index 0000000..88f1ce4
 +} // namespace OHOS
 \ No newline at end of file
 diff --git a/services/player_lite/server/src/player_server.cpp b/services/player_lite/server/src/player_server.cpp
-index 37a8900..c182e7f 100755
+old mode 100755
+new mode 100644
+index 37a8900..c182e7f
 --- a/services/player_lite/server/src/player_server.cpp
 +++ b/services/player_lite/server/src/player_server.cpp
 @@ -21,6 +21,7 @@
@@ -1305,3 +1701,6 @@ index 37a8900..c182e7f 100755
              return;
          }
      }
+-- 
+2.17.1
+

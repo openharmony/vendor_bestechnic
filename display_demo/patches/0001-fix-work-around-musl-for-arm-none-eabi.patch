@@ -1,13 +1,14 @@
-From c68dcb75401a317ef527a866e7472c72cc013ed3 Mon Sep 17 00:00:00 2001
-From: leihuang <leihuang@bestechnic.com>
-Date: Sun, 26 Sep 2021 02:28:27 +0800
-Subject: [PATCH] fix: work around musl for arm-none-eabi
+From 483dac6a951f4a23fbc14b1ffe08753b82adaf20 Mon Sep 17 00:00:00 2001
+From: SimonLi <likailong@huawei.com>
+Date: Wed, 20 Oct 2021 01:08:05 +0800
+Subject: [PATCH] build: porting musl to mini system
 
-Signed-off-by: leihuang <leihuang@bestechnic.com>
-Change-Id: I9e38fbe4ac076f2121ea836be41e298ebacf5b5e
+Signed-off-by: SimonLi <likailong@huawei.com>
+Change-Id: Icb6746fd0a55d653d928bff7d888f87abd71cb98
 ---
  porting/liteos_m/kernel/BUILD.gn              | 25 +++---
  porting/liteos_m/kernel/include/ctype.h       | 12 +++
+ porting/liteos_m/kernel/include/pthread.h     |  2 +-
  porting/liteos_m/kernel/include/stddef.h      | 13 ++++
  porting/liteos_m/kernel/include/stdlib.h      |  2 +
  .../liteos_m/kernel/src/internal/stdio_impl.h |  5 ++
@@ -25,7 +26,7 @@ Change-Id: I9e38fbe4ac076f2121ea836be41e298ebacf5b5e
  porting/liteos_m/kernel/src/stdio/ftell.c     |  2 +-
  porting/liteos_m/kernel/src/stdio/fwrite.c    |  9 ++-
  porting/liteos_m/kernel/src/string/strdup.c   |  7 +-
- 19 files changed, 179 insertions(+), 35 deletions(-)
+ 20 files changed, 180 insertions(+), 36 deletions(-)
  mode change 100644 => 100755 porting/liteos_m/kernel/BUILD.gn
  mode change 100644 => 100755 porting/liteos_m/kernel/include/ctype.h
  mode change 100644 => 100755 porting/liteos_m/kernel/include/stddef.h
@@ -135,6 +136,19 @@ index 61e826d0..05fe3b58
  #define _tolower(a) ((a)|0x20)
  #define _toupper(a) ((a)&0x5f)
  #define isascii(a) (0 ? isascii(a) : (unsigned)(a) < 128)
+diff --git a/porting/liteos_m/kernel/include/pthread.h b/porting/liteos_m/kernel/include/pthread.h
+index 8291cdef..cd68607b 100644
+--- a/porting/liteos_m/kernel/include/pthread.h
++++ b/porting/liteos_m/kernel/include/pthread.h
+@@ -62,7 +62,7 @@ extern "C" {
+ #define PTHREAD_RECURSIVE_MUTEX_INITIALIZER_NP { _MUX_MAGIC, _MUX_INVALID_HANDLE }
+ #endif
+ #define PTHREAD_RWLOCK_INITIALIZER {{{0}}}
+-#define PTHREAD_COND_INITIALIZER {{{0}}}
++#define PTHREAD_COND_INITIALIZER {0}
+ #define PTHREAD_ONCE_INIT 0
+ 
+ 
 diff --git a/porting/liteos_m/kernel/include/stddef.h b/porting/liteos_m/kernel/include/stddef.h
 old mode 100644
 new mode 100755

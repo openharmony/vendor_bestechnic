@@ -1,35 +1,25 @@
-From 324c96d143f73f8d027924c71aa34694f9dacc82 Mon Sep 17 00:00:00 2001
+From 2a7bd27ba5b0d14d91609fde52d626c5f4c2bdf3 Mon Sep 17 00:00:00 2001
 From: SimonLi <likailong@huawei.com>
-Date: Mon, 18 Oct 2021 17:42:24 +0800
-Subject: [PATCH] =?UTF-8?q?feat(build):=20=E5=B0=86multimedia=5Futils?=
- =?UTF-8?q?=E9=80=82=E9=85=8D=E5=88=B0=E8=BD=BB=E9=87=8F=E7=B3=BB=E7=BB=9F?=
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-
-【背景】
-新开发histreamer，适配到轻量系统
-
-【解决方案】
-1. BUILD.gn新增静态库配置
-
-2. source.h和source.cpp新增surface的宏隔离
-
-rep #I4EAPP
+Date: Wed, 20 Oct 2021 00:14:51 +0800
+Subject: [PATCH] build: porting media_utils_lite to mini system
 
 Signed-off-by: SimonLi <likailong@huawei.com>
-Change-Id: I19ecf78e2a3c98253493fd7ae0bde4b93d355597
 ---
- BUILD.gn                 | 32 +++++++++++++++++++++++++-------
+ BUILD.gn                 | 41 +++++++++++++++++++++++++++++-----------
  interfaces/kits/source.h |  6 ++++++
  src/source.cpp           | 13 ++++++++++++-
- 3 files changed, 43 insertions(+), 8 deletions(-)
+ 3 files changed, 48 insertions(+), 12 deletions(-)
+ mode change 100755 => 100644 BUILD.gn
+ mode change 100755 => 100644 interfaces/kits/source.h
+ mode change 100755 => 100644 src/source.cpp
 
 diff --git a/BUILD.gn b/BUILD.gn
-index dff89f1..4d4403b 100755
+old mode 100755
+new mode 100644
+index dff89f1..35183a8
 --- a/BUILD.gn
 +++ b/BUILD.gn
-@@ -11,7 +11,14 @@
+@@ -11,22 +11,41 @@
  # See the License for the specific language governing permissions and
  # limitations under the License.
  
@@ -45,22 +35,30 @@ index dff89f1..4d4403b 100755
    sources = [
      "src/format.cpp",
      "src/source.cpp",
-@@ -22,11 +29,22 @@ shared_library("media_common") {
+   ]
+-  cflags = [ "-fPIC" ]
+-  cflags += [ "-Wall" ]
+-  cflags_cc = cflags
    include_dirs = [
      "interfaces/kits",
-     "//third_party/bounds_checking_function/include",
-+    "//base/hiviewdfx/hilog_lite/interfaces/native/innerkits/hilog",
-   ]
+-    "//third_party/bounds_checking_function/include",
+-  ]
 -  public_deps = [
 -    "$ohos_board_adapter_dir:hardware_media_sdk",
 -    "$ohos_board_adapter_dir/../modules/middleware:middleware_source_sdk",
 -    "//foundation/graphic/surface:lite_surface",
 -    "//third_party/bounds_checking_function:libsec_shared",
--  ]
-+  public_deps = [ "//third_party/bounds_checking_function:libsec_shared" ]
++    "//base/hiviewdfx/hilog_lite/interfaces/native/innerkits/hilog",
+   ]
++  if (ohos_kernel_type == "liteos_m") {
++    public_deps = [ "//third_party/bounds_checking_function:libsec_static" ]
++  } else {
++    public_deps = [ "//third_party/bounds_checking_function:libsec_shared" ]
++  }
++
 +  if (ohos_kernel_type == "liteos_m") {
 +    public_deps +=
-+        [ "//base/hiviewdfx/hilog_lite/frameworks/featured:hilog_shared" ]
++        [ "//base/hiviewdfx/hilog_lite/frameworks/featured:hilog_static" ]
 +    public_configs = [ ":media_common_public_config" ]
 +  } else {
 +    public_deps += [
@@ -75,7 +73,9 @@ index dff89f1..4d4403b 100755
 +  defines = [ "SURFACE_DISABLED" ]
  }
 diff --git a/interfaces/kits/source.h b/interfaces/kits/source.h
-index 5dd0045..c7673bc 100755
+old mode 100755
+new mode 100644
+index 5dd0045..c7673bc
 --- a/interfaces/kits/source.h
 +++ b/interfaces/kits/source.h
 @@ -40,7 +40,9 @@
@@ -112,7 +112,9 @@ index 5dd0045..c7673bc 100755
  
  /**
 diff --git a/src/source.cpp b/src/source.cpp
-index 945d23f..1de2b3d 100755
+old mode 100755
+new mode 100644
+index 945d23f..1de2b3d
 --- a/src/source.cpp
 +++ b/src/source.cpp
 @@ -61,18 +61,23 @@ const Format &Source::GetSourceStreamFormat() const
