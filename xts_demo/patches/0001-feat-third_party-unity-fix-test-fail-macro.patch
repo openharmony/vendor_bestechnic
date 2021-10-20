@@ -1,0 +1,62 @@
+From 8a67ce3a249e0456b773f23239168b2511ff9b23 Mon Sep 17 00:00:00 2001
+From: yangjian <jianyang@bestechnic.com>
+Date: Wed, 20 Oct 2021 00:52:37 +0800
+Subject: [PATCH] feat: third_party/unity/ fix test fail macro
+
+Signed-off-by: yangjian <jianyang@bestechnic.com>
+Change-Id: Idd09a8e23f3f98cddc22da46b116d28727115a47
+---
+ src/unity_internals.h | 15 ++++++++++-----
+ 1 file changed, 10 insertions(+), 5 deletions(-)
+
+diff --git a/src/unity_internals.h b/src/unity_internals.h
+index a9a7ea2..9d673ae 100644
+--- a/src/unity_internals.h
++++ b/src/unity_internals.h
+@@ -252,10 +252,14 @@ typedef UNITY_FLOAT_TYPE UNITY_FLOAT;
+ /*-------------------------------------------------------
+  * Output Method: stdout (DEFAULT)
+  *-------------------------------------------------------*/
++#include "hal_trace.h"
++static void unity_putchar(char a){
++  printf("%c",a);
++}
+ #ifndef UNITY_OUTPUT_CHAR
+   /* Default to using putchar, which is defined in stdio.h */
+-  #include <stdio.h>
+-  #define UNITY_OUTPUT_CHAR(a) (void)putchar(a)
++  // #include <stdio.h>
++  #define UNITY_OUTPUT_CHAR(a) (void)unity_putchar(a)
+ #else
+   /* If defined as something else, make sure we declare it here so it's ready for use */
+   #ifdef UNITY_OUTPUT_CHAR_HEADER_DECLARATION
+@@ -270,7 +274,8 @@ typedef UNITY_FLOAT_TYPE UNITY_FLOAT;
+     #define UNITY_OUTPUT_FLUSH() (void)fflush(stdout)
+   #else
+     /* We've specified nothing, therefore flush should just be ignored */
+-    #define UNITY_OUTPUT_FLUSH()
++    #define UNITY_OUTPUT_FLUSH() hal_trace_flush_buffer()
++
+   #endif
+ #else
+   /* If defined as something else, make sure we declare it here so it's ready for use */
+@@ -280,7 +285,7 @@ typedef UNITY_FLOAT_TYPE UNITY_FLOAT;
+ #endif
+ 
+ #ifndef UNITY_OUTPUT_FLUSH
+-#define UNITY_FLUSH_CALL()
++#define UNITY_FLUSH_CALL()  hal_trace_flush_buffer()
+ #else
+ #define UNITY_FLUSH_CALL() UNITY_OUTPUT_FLUSH()
+ #endif
+@@ -746,7 +751,7 @@ int UnityTestMatches(void);
+  * Basic Fail and Ignore
+  *-------------------------------------------------------*/
+ 
+-#define UNITY_TEST_FAIL(line, message)   UnityFail(   (message), (UNITY_LINE_TYPE)(line))
++#define UNITY_TEST_FAIL(line, message)   UnityFail(   (message), (UNITY_LINE_TYPE)(line));return
+ #define UNITY_TEST_IGNORE(line, message) UnityIgnore( (message), (UNITY_LINE_TYPE)(line))
+ 
+ /*-------------------------------------------------------
+-- 
+2.17.1
