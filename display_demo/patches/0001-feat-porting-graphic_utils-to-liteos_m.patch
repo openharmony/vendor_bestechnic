@@ -1,16 +1,16 @@
-From b6bc0afc59d97dd1e360ca64c0c7d7386dd358f1 Mon Sep 17 00:00:00 2001
+From a7faa2fb96c9b77518b5643d2cdc946658e8bbe7 Mon Sep 17 00:00:00 2001
 From: leihuang <leihuang@bestechnic.com>
-Date: Sat, 11 Sep 2021 10:24:26 +0800
+Date: Wed, 20 Oct 2021 16:58:45 +0800
 Subject: [PATCH] feat: porting graphic_utils to liteos_m
 
 Signed-off-by: leihuang <leihuang@bestechnic.com>
-Change-Id: I8b824f04240ce30bbef5facad66fe35378c1c285
+Change-Id: I13c86a215b350d92a08a0e53bc94dc83ae1df76a
 ---
  BUILD.gn                                   | 76 +++++++++++++---------
- interfaces/innerkits/graphic_config.h      | 24 ++++---
+ interfaces/innerkits/graphic_config.h      | 32 ++++++---
  interfaces/kits/gfx_utils/graphic_assert.h | 14 +++-
  interfaces/kits/gfx_utils/graphic_log.h    | 33 +++-------
- 4 files changed, 78 insertions(+), 69 deletions(-)
+ 4 files changed, 86 insertions(+), 69 deletions(-)
  mode change 100644 => 100755 BUILD.gn
  mode change 100644 => 100755 interfaces/innerkits/graphic_config.h
 
@@ -122,7 +122,7 @@ index 0bfcf85..22bddc7
 diff --git a/interfaces/innerkits/graphic_config.h b/interfaces/innerkits/graphic_config.h
 old mode 100644
 new mode 100755
-index eebdb17..961a976
+index eebdb17..639b664
 --- a/interfaces/innerkits/graphic_config.h
 +++ b/interfaces/innerkits/graphic_config.h
 @@ -53,7 +53,7 @@ namespace OHOS {
@@ -195,16 +195,28 @@ index eebdb17..961a976
  #else
  #define DEFAULT_VECTOR_FONT_FILENAME      "SourceHanSansSC-Regular"
  #endif
-@@ -288,7 +290,7 @@ static constexpr uint8_t DEFAULT_VECTOR_FONT_SIZE = 18;
+@@ -288,11 +290,19 @@ static constexpr uint8_t DEFAULT_VECTOR_FONT_SIZE = 18;
  /* Defines the file name of default line break rule. */
  #define DEFAULT_LINE_BREAK_RULE_FILENAME   "line_cj.brk"
  /* Defines some configurations and their default values on Huawei LiteOS and other system platforms. */
 -#ifdef _LITEOS
 +#ifdef __LITEOS_M__
++#ifdef CONFIG_DISPLAY_RM69330
  /* Resolution width of a graphics display screen. The default value is <b>454</b>. */
  static constexpr int16_t HORIZONTAL_RESOLUTION = 454;
  /* Resolution height of a graphics display screen. The default value is <b>454</b>. */
-@@ -324,11 +326,13 @@ static constexpr const char* VECTOR_FONT_DIR = "..\\..\\simulator\\font\\";
+ static constexpr int16_t VERTICAL_RESOLUTION = 454;
++#elif defined(CONFIG_DISPLAY_ICNA3311)
++static constexpr int16_t HORIZONTAL_RESOLUTION = 280;
++static constexpr int16_t VERTICAL_RESOLUTION = 456;
++#elif defined(CONFIG_DISPLAY_A064)
++static constexpr int16_t HORIZONTAL_RESOLUTION = 480;
++static constexpr int16_t VERTICAL_RESOLUTION = 480;
++#endif
+ #elif defined _WIN32 || defined __APPLE__
+ /* Resolution width of a graphics display screen. The default value is <b>454</b>. */
+ static constexpr int16_t HORIZONTAL_RESOLUTION = 960;
+@@ -324,11 +334,13 @@ static constexpr const char* VECTOR_FONT_DIR = "..\\..\\simulator\\font\\";
  static constexpr const char* DEFAULT_DUMP_DOM_TREE_PATH = ".\\dump_dom_tree.json";
  /* Default file path for font */
  static constexpr const char* VECTOR_FONT_DIR = "..\\..\\tools\\font\\font_tool\\font_tool\\font\\";

@@ -23,7 +23,7 @@
         "gpio",
         "i2c",
         "mipi_dsi",
-        "lcd",
+        "hal_display",
         "touch"
       ]
     },
@@ -198,7 +198,6 @@
             "bes_drivers_i2c_enable = true",
             "bes_drivers_flash_enable = true",
             "bes_drivers_mipi_dsi_enable = true",
-            "bes_drivers_lcd_enable = true",
             "bes_drivers_display_enable = true",
             "bes_drivers_touch_enable = true",
             "bes_fs_enable = true",

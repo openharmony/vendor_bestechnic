@@ -28,6 +28,7 @@ static_library("example") {
   include_dirs = [
     "//utils/native/lite/include",
     "//third_party/musl/porting/liteos_m/kernel/include",
+    "//device/bestechnic/${board_name}/components/ui",
   ]
 
   if (bes_histreamer_test) {

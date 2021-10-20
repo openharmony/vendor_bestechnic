@@ -170,7 +170,7 @@ index 0742812..d4c97fc
 +    "//third_party/bounds_checking_function:libsec_static",
 +    "//third_party/jerryscript:jerry_engine",
      "//utils/native/lite/js/builtin:ace_utils_kits",
-+    "//foundation/multimedia/media_lite/interfaces/kits/player_lite/js/builtin:audio_lite_api",
++    # "//foundation/multimedia/media_lite/interfaces/kits/player_lite/js/builtin:audio_lite_api",
    ]
 +
 +  if (ohos_kernel_type != "liteos_m") {
@@ -327,7 +327,7 @@ index ad16e44..2b71b49 100755
 +// #define JS_ENGINE_STATIC_MULTI_CONTEXTS_ENABLED
 +#define FEATURE_MODULE_STORAGE
 +#define FEATURE_MODULE_DEVICE
-+#define FEATURE_MODULE_AUDIO
++//#define FEATURE_MODULE_AUDIO
  /**
   * support js profiler
   */
