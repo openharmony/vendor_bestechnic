@@ -20,7 +20,7 @@ using namespace OHOS::Media;
 
 std::string GetMusicUri()
 {
-    std::string uri = "dream_it_possible.mp3";
+    std::string uri = "/data/dream_it_possible.mp3";
     return uri;
 }
 

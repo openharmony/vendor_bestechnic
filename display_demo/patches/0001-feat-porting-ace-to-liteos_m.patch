@@ -1,3 +1,25 @@
+From 83283212369cb00f11698151edd11395e3724889 Mon Sep 17 00:00:00 2001
+From: SimonLi <likailong@huawei.com>
+Date: Wed, 20 Oct 2021 23:19:25 +0800
+Subject: [PATCH] ace_engine_lite add audio plugin api
+
+Change-Id: Ifa03355b822198bf709dac18f26716e66d6f2299
+---
+ frameworks/BUILD.gn                           | 57 +++++++++++++------
+ frameworks/common/BUILD.gn                    | 14 ++++-
+ frameworks/module_manager/BUILD.gn            | 30 +++++++---
+ frameworks/native_engine/BUILD.gn             | 15 ++++-
+ .../async/message_queue_utils.cpp             |  8 +--
+ .../src/core/context/js_app_context.cpp       |  2 +-
+ frameworks/targets/liteos_m/acelite_config.h  | 25 ++++----
+ frameworks/targets/platform_adapter.cpp       |  2 +-
+ 8 files changed, 104 insertions(+), 49 deletions(-)
+ mode change 100644 => 100755 frameworks/common/BUILD.gn
+ mode change 100644 => 100755 frameworks/module_manager/BUILD.gn
+ mode change 100644 => 100755 frameworks/native_engine/BUILD.gn
+ mode change 100644 => 100755 frameworks/native_engine/async/message_queue_utils.cpp
+ mode change 100644 => 100755 frameworks/targets/platform_adapter.cpp
+
 diff --git a/frameworks/BUILD.gn b/frameworks/BUILD.gn
 index 5b96908..c6586c2 100755
 --- a/frameworks/BUILD.gn
@@ -122,7 +144,7 @@ index d51cc4e..b424ca8
 diff --git a/frameworks/module_manager/BUILD.gn b/frameworks/module_manager/BUILD.gn
 old mode 100644
 new mode 100755
-index 0742812..d4c97fc
+index 0742812..eff1e8f
 --- a/frameworks/module_manager/BUILD.gn
 +++ b/frameworks/module_manager/BUILD.gn
 @@ -22,7 +22,13 @@ lite_component("ace_module_manager_lite") {
@@ -163,14 +185,13 @@ index 0742812..d4c97fc
      "$ace_frameworks_root/native_engine:ace_native_engine_lite",
 -    "${appexecfwk_lite_path}/interfaces/kits/bundle_lite/js/builtin:capability_api",
 -    "//base/security/huks/frameworks/crypto_lite/js/builtin:ace_kit_cipher",
--    "//foundation/multimedia/media_lite/interfaces/kits/player_lite/js/builtin:audio_lite_api",
++    "//foundation/graphic/ui:ui",
+     "//foundation/multimedia/media_lite/interfaces/kits/player_lite/js/builtin:audio_lite_api",
 -    "//third_party/bounds_checking_function:libsec_shared",
 -    "//third_party/jerryscript/jerry-core:jerry-core_shared",
-+    "//foundation/graphic/ui:ui",
 +    "//third_party/bounds_checking_function:libsec_static",
 +    "//third_party/jerryscript:jerry_engine",
      "//utils/native/lite/js/builtin:ace_utils_kits",
-+    # "//foundation/multimedia/media_lite/interfaces/kits/player_lite/js/builtin:audio_lite_api",
    ]
 +
 +  if (ohos_kernel_type != "liteos_m") {
@@ -184,7 +205,7 @@ index 0742812..d4c97fc
 diff --git a/frameworks/native_engine/BUILD.gn b/frameworks/native_engine/BUILD.gn
 old mode 100644
 new mode 100755
-index ac56627..c477580
+index ac56627..9e538dc
 --- a/frameworks/native_engine/BUILD.gn
 +++ b/frameworks/native_engine/BUILD.gn
 @@ -23,7 +23,13 @@ lite_component("ace_native_engine_lite") {
@@ -218,8 +239,8 @@ index ac56627..c477580
    public_deps = [
      "$ace_common_root:ace_common_lite",
 -    "//third_party/jerryscript/jerry-core:jerry-core_shared",
-+    "//third_party/jerryscript:jerry_engine",
 +    "//foundation/graphic/ui:ui",
++    "//third_party/jerryscript:jerry_engine",
    ]
  }
 diff --git a/frameworks/native_engine/async/message_queue_utils.cpp b/frameworks/native_engine/async/message_queue_utils.cpp
@@ -327,7 +348,7 @@ index ad16e44..2b71b49 100755
 +// #define JS_ENGINE_STATIC_MULTI_CONTEXTS_ENABLED
 +#define FEATURE_MODULE_STORAGE
 +#define FEATURE_MODULE_DEVICE
-+//#define FEATURE_MODULE_AUDIO
++#define FEATURE_MODULE_AUDIO
  /**
   * support js profiler
   */
@@ -359,3 +380,6 @@ index ef3d193..288a733
  #include "ace_ability.h"
  #endif
  #include "ace_log.h"
+-- 
+2.17.1
+
