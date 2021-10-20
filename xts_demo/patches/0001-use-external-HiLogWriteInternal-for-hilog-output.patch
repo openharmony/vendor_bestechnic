@@ -1,10 +1,10 @@
-From bf2b7b94a96c77abd82133d191d897368f423c75 Mon Sep 17 00:00:00 2001
-From: leihuang <leihuang@bestechnic.com>
-Date: Tue, 7 Sep 2021 14:08:23 +0800
+From bf75790f0762711af73f7667c800999be8888dd7 Mon Sep 17 00:00:00 2001
+From: yangjian <jianyang@bestechnic.com>
+Date: Wed, 20 Oct 2021 12:40:14 +0800
 Subject: [PATCH] use external HiLogWriteInternal for hilog output
 
-Signed-off-by: leihuang <leihuang@bestechnic.com>
-Change-Id: Ib1b97a74fea859f8392c2e9e8d27730edab91274
+Signed-off-by: yangjian <jianyang@bestechnic.com>
+Change-Id: Id0f9ec0f91413c2c1c0ae64595ea5791e72b31de
 ---
  frameworks/featured/BUILD.gn | 5 +++--
  1 file changed, 3 insertions(+), 2 deletions(-)
