@@ -17,4 +17,6 @@ base/security/huks:
 test/xts/acts:
   - vendor/bestechnic/xts_demo/patches/0001-feat-test-xts-acts-stacksize-bigger-and-bool-type-bu.patch
 third_party/unity:
-  - vendor/bestechnic/xts_demo/patches/0001-feat-third_party-unity-printf-adapter.patch
+  - vendor/bestechnic/xts_demo/patches/0001-feat-third_party-unity-fix-test-fail-macro.patch
+test/xts/tools/lite:
+  - vendor/bestechnic/xts_demo/patches/0001-feat-test-xts-tools-lite-larger-HCTEST-stacksize.patch
