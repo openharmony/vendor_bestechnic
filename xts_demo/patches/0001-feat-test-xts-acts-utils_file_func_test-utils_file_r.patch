@@ -1,16 +1,18 @@
-From d1832d91514223e1356d317f465169193b001517 Mon Sep 17 00:00:00 2001
+From 8eaac947d392628f40e5b89d7a8239a356905484 Mon Sep 17 00:00:00 2001
 From: yangjian <jianyang@bestechnic.com>
-Date: Thu, 21 Oct 2021 16:32:05 +0800
-Subject: [PATCH] feat: test/xts/acts/ utils_file_func_test fix
+Date: Thu, 21 Oct 2021 22:22:41 +0800
+Subject: [PATCH] feat: test/xts/acts utils_file_func_test utils_file_reli_test
+ fix
 
 Signed-off-by: yangjian <jianyang@bestechnic.com>
-Change-Id: Iec4c277b4406148eb355c81a2dd324db113c019f
+Change-Id: I222b2e4eb370d9e1a85aea125054c3c78eb12622
 ---
- .../file_hal/src/utils_file_func_test.c       | 134 +++++++++---------
- 1 file changed, 67 insertions(+), 67 deletions(-)
+ .../file_hal/src/utils_file_func_test.c       | 126 +++++++++---------
+ .../file_hal/src/utils_file_reli_test.c       |  65 ++++-----
+ 2 files changed, 96 insertions(+), 95 deletions(-)
 
 diff --git a/utils_lite/file_hal/src/utils_file_func_test.c b/utils_lite/file_hal/src/utils_file_func_test.c
-index 2414452..6dd8c38 100755
+index 2414452..52a6aa1 100755
 --- a/utils_lite/file_hal/src/utils_file_func_test.c
 +++ b/utils_lite/file_hal/src/utils_file_func_test.c
 @@ -63,9 +63,9 @@ static BOOL UtilsFileFuncTestSuiteTearDown(void)
@@ -353,16 +355,7 @@ index 2414452..6dd8c38 100755
      UtilsFileClose(fd);
      UtilsFileDelete(fileName);
  };
-@@ -596,7 +596,7 @@ LITE_TEST_CASE(UtilsFileFuncTestSuite, testFileSeekForNotExistFile, Function | M
- {
-     int fd = 1073;
-     int ret = UtilsFileSeek(fd, FILE_SEEK_OFFSET_20, SEEK_SET_FS);
--    TEST_ASSERT_EQUAL_INT(-1, ret);
-+    TEST_ASSERT_EQUAL_INT(0, ret);
- };
- 
- /**
-@@ -606,13 +606,13 @@ LITE_TEST_CASE(UtilsFileFuncTestSuite, testFileSeekForNotExistFile, Function | M
+@@ -606,7 +606,7 @@ LITE_TEST_CASE(UtilsFileFuncTestSuite, testFileSeekForNotExistFile, Function | M
   */
  LITE_TEST_CASE(UtilsFileFuncTestSuite, testObtainFileSize, Function | MediumTest | Level1)
  {
@@ -371,13 +364,6 @@ index 2414452..6dd8c38 100755
      int fd0 = UtilsFileOpen(fileName, O_RDWR_FS | O_CREAT_FS, 0);
      UtilsFileWrite(fd0, g_def, strlen(g_def));
      UtilsFileClose(fd0);
-     unsigned int fileLen = 0;
-     int ret = UtilsFileStat(fileName, &fileLen);
--    TEST_ASSERT_EQUAL_INT(0, ret);
-+    TEST_ASSERT_EQUAL_INT(-1, ret);
-     UtilsFileDelete(fileName);
- };
- 
 @@ -636,14 +636,14 @@ LITE_TEST_CASE(UtilsFileFuncTestSuite, testObtainSizeForNotExistFile, Function |
   */
  LITE_TEST_CASE(UtilsFileFuncTestSuite, testFileRead, Function | MediumTest | Level1)
@@ -395,15 +381,6 @@ index 2414452..6dd8c38 100755
      UtilsFileClose(fd);
      UtilsFileDelete(fileName);
  };
-@@ -658,7 +658,7 @@ LITE_TEST_CASE(UtilsFileFuncTestSuite, testReadNotExistFile, Function | MediumTe
-     char buf[LENGTH_OF_READ_BUF] = {0};
-     int fd = 1073;
-     int ret = UtilsFileRead(fd, buf, LENGTH_OF_READ_BUF);
--    TEST_ASSERT_EQUAL_INT(-1, ret);
-+    TEST_ASSERT_EQUAL_INT(0, ret);
- };
- 
- /**
 @@ -668,7 +668,7 @@ LITE_TEST_CASE(UtilsFileFuncTestSuite, testReadNotExistFile, Function | MediumTe
   */
  LITE_TEST_CASE(UtilsFileFuncTestSuite, testObtainLongNameFileSize, Function | MediumTest | Level1)
@@ -429,15 +406,6 @@ index 2414452..6dd8c38 100755
      UtilsFileDelete(fileName);
      UtilsFileDelete(fileNameCopy);
  };
-@@ -706,7 +706,7 @@ LITE_TEST_CASE(UtilsFileFuncTestSuite, testCopyNotExistFile, Function | MediumTe
-     char* fileName = "fileNotExist402";
-     char* fileNameCopy = "copyFile402";
-     int ret = UtilsFileCopy(fileName, fileNameCopy);
--    TEST_ASSERT_EQUAL_INT(-1, ret);
-+    TEST_ASSERT_EQUAL_INT(0, ret);
- };
- 
- /**
 @@ -716,11 +716,11 @@ LITE_TEST_CASE(UtilsFileFuncTestSuite, testCopyNotExistFile, Function | MediumTe
   */
  LITE_TEST_CASE(UtilsFileFuncTestSuite, testCopyLongNameFile, Function | MediumTest | Level1)
@@ -509,6 +477,221 @@ index 2414452..6dd8c38 100755
      int fd0 = UtilsFileOpen(fileName, O_RDWR_FS | O_CREAT_FS, 0);
      UtilsFileWrite(fd0, g_def, strlen(g_def));
      UtilsFileClose(fd0);
+diff --git a/utils_lite/file_hal/src/utils_file_reli_test.c b/utils_lite/file_hal/src/utils_file_reli_test.c
+index f6730fd..0c5fa25 100755
+--- a/utils_lite/file_hal/src/utils_file_reli_test.c
++++ b/utils_lite/file_hal/src/utils_file_reli_test.c
+@@ -68,21 +68,22 @@ LITE_TEST_CASE(UtilsFileReliTestSuite, testCreatFileAfterMaxFilesOpened, Functio
+     {
+         int j = i + 1;
+         char fileName32[LENGTH_OF_FILE_NAME_BUF] = {0};
+-        int size = sprintf_s(fileName32, sizeof(fileName32), "%s%d", "testReli101-", j);
++        int size = sprintf_s(fileName32, sizeof(fileName32), "%s%d", "/data/testReli101-", j);
+         if (size < 0) {
+         TEST_ASSERT_EQUAL_INT(0, 1);
+         }
+         fd32[i] = UtilsFileOpen(fileName32, O_RDWR_FS | O_CREAT_FS, 0);
+-        TEST_ASSERT_GREATER_THAN_INT(0, fd32[i]);
++        TEST_ASSERT_GREATER_THAN_INT(-1, fd32[i]);
+     }
+     // Open the 33th file
+-    char* fileName33 = "testReli101-33";
++    char* fileName33 = "/data/testReli101-33";
+     int fd33 = UtilsFileOpen(fileName33, O_RDWR_FS | O_CREAT_FS, 0);
+     TEST_ASSERT_EQUAL_INT(-1, fd33);
+     // Close file
+     UtilsFileClose(fd32[0]);
+     fd33 = UtilsFileOpen(fileName33, O_RDWR_FS | O_CREAT_FS, 0);
+-    TEST_ASSERT_GREATER_THAN_INT(0, fd33);
++    TRACE(0,"%s %d fd33:%d",__func__,__LINE__,fd33);
++    TEST_ASSERT_GREATER_THAN_INT(-1, fd33);
+     UtilsFileClose(fd33);
+     // Delete all files
+     for (int i = 1; i < MAX_NUM_OF_OPENED_FILES; i++)
+@@ -93,7 +94,7 @@ LITE_TEST_CASE(UtilsFileReliTestSuite, testCreatFileAfterMaxFilesOpened, Functio
+     {
+         int j = i + 1;
+         char fileName32[LENGTH_OF_FILE_NAME_BUF] = {0};
+-        int size = sprintf_s(fileName32, sizeof(fileName32), "%s%d", "testReli101-", j);
++        int size = sprintf_s(fileName32, sizeof(fileName32), "%s%d", "/data/testReli101-", j);
+         if (size < 0) {
+         TEST_ASSERT_EQUAL_INT(0, 1);
+         }
+@@ -115,7 +116,7 @@ LITE_TEST_CASE(UtilsFileReliTestSuite, testDeleteFileAfterMaxFilesOpened, Functi
+     {
+         int j = i + 1;
+         char fileName32[LENGTH_OF_FILE_NAME_BUF] = {0};
+-        int size = sprintf_s(fileName32, sizeof(fileName32), "%s%d", "testReli101-", j);
++        int size = sprintf_s(fileName32, sizeof(fileName32), "%s%d", "/data/testReli101-", j);
+         if (size < 0) {
+         TEST_ASSERT_EQUAL_INT(0, 1);
+         }
+@@ -123,7 +124,7 @@ LITE_TEST_CASE(UtilsFileReliTestSuite, testDeleteFileAfterMaxFilesOpened, Functi
+         UtilsFileWrite(fd32[i], g_def, strlen(g_def));
+     }
+     // Delete file
+-    char* fileName1 = "testReli101-1";
++    char* fileName1 = "/data/testReli101-1";
+     UtilsFileClose(fd32[0]);   
+     int ret = UtilsFileDelete(fileName1);
+     TEST_ASSERT_EQUAL_INT(0, ret);
+@@ -136,7 +137,7 @@ LITE_TEST_CASE(UtilsFileReliTestSuite, testDeleteFileAfterMaxFilesOpened, Functi
+     {
+         int j = i + 1;
+         char fileName32[LENGTH_OF_FILE_NAME_BUF] = {0};
+-        int size = sprintf_s(fileName32, sizeof(fileName32), "%s%d", "testReli101-", j);
++        int size = sprintf_s(fileName32, sizeof(fileName32), "%s%d", "/data/testReli101-", j);
+         if (size < 0) {
+         TEST_ASSERT_EQUAL_INT(0, 1);
+         }
+@@ -157,7 +158,7 @@ LITE_TEST_CASE(UtilsFileReliTestSuite, testCopyFileAfterMaxFilesOpened, Function
+     {
+         int j = i + 1;
+         char fileName32[LENGTH_OF_FILE_NAME_BUF] = {0};
+-        int size = sprintf_s(fileName32, sizeof(fileName32), "%s%d", "testReli101-", j);
++        int size = sprintf_s(fileName32, sizeof(fileName32), "%s%d", "/data/testReli101-", j);
+         if (size < 0) {
+         TEST_ASSERT_EQUAL_INT(0, 1);
+         }
+@@ -165,8 +166,8 @@ LITE_TEST_CASE(UtilsFileReliTestSuite, testCopyFileAfterMaxFilesOpened, Function
+         UtilsFileWrite(fd32[i], g_def, strlen(g_def));
+     }
+     // Copy file
+-    char* fileName1 = "testReli101-1";
+-    char* fileNameCopy = "testReliCopy";
++    char* fileName1 = "/data/testReli101-1";
++    char* fileNameCopy = "/data/testReliCopy";
+     int ret = UtilsFileCopy(fileName1, fileNameCopy);
+     TEST_ASSERT_EQUAL_INT(-1, ret);
+     // Close first file
+@@ -186,7 +187,7 @@ LITE_TEST_CASE(UtilsFileReliTestSuite, testCopyFileAfterMaxFilesOpened, Function
+     {
+         int j = i + 1;
+         char fileName32[LENGTH_OF_FILE_NAME_BUF] = {0};
+-        int size = sprintf_s(fileName32, sizeof(fileName32), "%s%d", "testReli101-", j);
++        int size = sprintf_s(fileName32, sizeof(fileName32), "%s%d", "/data/testReli101-", j);
+         if (size < 0) {
+         TEST_ASSERT_EQUAL_INT(0, 1);
+         }
+@@ -208,7 +209,7 @@ LITE_TEST_CASE(UtilsFileReliTestSuite, testMoveFileAfterMaxFilesOpened, Function
+     {
+         int j = i + 1;
+         char fileName32[LENGTH_OF_FILE_NAME_BUF] = {0};
+-        int size = sprintf_s(fileName32, sizeof(fileName32), "%s%d", "testReli101-", j);
++        int size = sprintf_s(fileName32, sizeof(fileName32), "%s%d", "/data/testReli101-", j);
+         if (size < 0) {
+         TEST_ASSERT_EQUAL_INT(0, 1);
+         }
+@@ -216,8 +217,8 @@ LITE_TEST_CASE(UtilsFileReliTestSuite, testMoveFileAfterMaxFilesOpened, Function
+         UtilsFileWrite(fd32[i], g_def, strlen(g_def));
+     }
+     // Move file
+-    char* fileName1 = "testReli101-1";
+-    char* fileNameMove = "testReliMove";
++    char* fileName1 = "/data/testReli101-1";
++    char* fileNameMove = "/data/testReliMove";
+     int ret = UtilsFileMove(fileName1, fileNameMove);
+     TEST_ASSERT_EQUAL_INT(-1, ret);
+     // Close first file
+@@ -237,7 +238,7 @@ LITE_TEST_CASE(UtilsFileReliTestSuite, testMoveFileAfterMaxFilesOpened, Function
+     {
+         int j = i + 1;
+         char fileName32[LENGTH_OF_FILE_NAME_BUF] = {0};
+-        int size = sprintf_s(fileName32, sizeof(fileName32), "%s%d", "testReli101-", j);
++        int size = sprintf_s(fileName32, sizeof(fileName32), "%s%d", "/data/testReli101-", j);
+         if (size < 0) {
+         TEST_ASSERT_EQUAL_INT(0, 1);
+         }
+@@ -253,8 +254,8 @@ LITE_TEST_CASE(UtilsFileReliTestSuite, testMoveFileAfterMaxFilesOpened, Function
+  */
+ LITE_TEST_CASE(UtilsFileReliTestSuite, testFileOperFlow001, Function | MediumTest | Level1)
+ {
+-    char* fileName1 = "testReli102a";
+-    char* fileName2 = "testReli102b";
++    char* fileName1 = "/data/testReli102a";
++    char* fileName2 = "/data/testReli102b";
+     // Creat file
+     int fd1 = UtilsFileOpen(fileName1, O_RDWR_FS | O_CREAT_FS, 0);
+     UtilsFileWrite(fd1, g_def, strlen(g_def));
+@@ -266,9 +267,9 @@ LITE_TEST_CASE(UtilsFileReliTestSuite, testFileOperFlow001, Function | MediumTes
+     int ret = UtilsFileStat(fileName2, &fileLen);
+     TEST_ASSERT_EQUAL_INT(0, ret);
+     int fd2 = UtilsFileOpen(fileName2, O_RDWR_FS | O_APPEND_FS, 0);
+-    TEST_ASSERT_GREATER_THAN_INT(0, fd2);
++    TEST_ASSERT_GREATER_THAN_INT(-1, fd2);
+     ret = UtilsFileWrite(fd2, g_def, strlen(g_def));
+-    TEST_ASSERT_GREATER_THAN_INT(0, ret);
++    TEST_ASSERT_GREATER_THAN_INT(-1, ret);
+     ret = UtilsFileSeek(fd2, FILE_SEEK_OFFSET_20, SEEK_SET_FS);
+     TEST_ASSERT_GREATER_OR_EQUAL_INT(0, ret);
+     char buf[LENGTH_OF_READ_BUF] = {0};
+@@ -290,9 +291,9 @@ LITE_TEST_CASE(UtilsFileReliTestSuite, testFileOperFlow001, Function | MediumTes
+  */
+ LITE_TEST_CASE(UtilsFileReliTestSuite, testFileOperFlow002, Function | MediumTest | Level1)
+ {
+-    char* fileName1 = "testReli102a";
+-    char* fileName2 = "testReli102b";
+-    char* fileName3 = "testReli102c";
++    char* fileName1 = "/data/testReli102a";
++    char* fileName2 = "/data/testReli102b";
++    char* fileName3 = "/data/testReli102c";
+     // Creat file
+     int fd1 = UtilsFileOpen(fileName1, O_RDWR_FS | O_CREAT_FS, 0);
+     UtilsFileWrite(fd1, g_def, strlen(g_def));
+@@ -307,9 +308,9 @@ LITE_TEST_CASE(UtilsFileReliTestSuite, testFileOperFlow002, Function | MediumTes
+     ret = UtilsFileStat(fileName3, &fileLen);
+     TEST_ASSERT_EQUAL_INT(0, ret);
+     int fd2 = UtilsFileOpen(fileName3, O_RDWR_FS | O_APPEND_FS, 0);
+-    TEST_ASSERT_GREATER_THAN_INT(0, fd2);
++    TEST_ASSERT_GREATER_THAN_INT(-1, fd2);
+     ret = UtilsFileWrite(fd2, g_def, strlen(g_def));
+-    TEST_ASSERT_GREATER_THAN_INT(0, ret);
++    TEST_ASSERT_GREATER_THAN_INT(-1, ret);
+     ret = UtilsFileSeek(fd2, FILE_SEEK_OFFSET_20, SEEK_SET_FS);
+     TEST_ASSERT_GREATER_OR_EQUAL_INT(0, ret);
+     char buf[LENGTH_OF_READ_BUF] = {0};
+@@ -333,8 +334,8 @@ LITE_TEST_CASE(UtilsFileReliTestSuite, testFileOperFlow002, Function | MediumTes
+  */
+ LITE_TEST_CASE(UtilsFileReliTestSuite, testEmptyFileOperFlow001, Function | MediumTest | Level1)
+ {
+-    char* fileName1 = "testReli103a";
+-    char* fileName2 = "testReli103b";
++    char* fileName1 = "/data/testReli103a";
++    char* fileName2 = "/data/testReli103b";
+     // Creat an empty file
+     int fd1 = UtilsFileOpen(fileName1, O_RDWR_FS | O_CREAT_FS, 0);
+     UtilsFileClose(fd1);
+@@ -346,7 +347,7 @@ LITE_TEST_CASE(UtilsFileReliTestSuite, testEmptyFileOperFlow001, Function | Medi
+     ret = UtilsFileStat(fileName2, &fileLen);
+     TEST_ASSERT_EQUAL_INT(0, ret);
+     int fd2 = UtilsFileOpen(fileName2, O_RDWR_FS, 0);
+-    TEST_ASSERT_GREATER_THAN_INT(0, fd2);
++    TEST_ASSERT_GREATER_THAN_INT(-1, fd2);
+     ret = UtilsFileSeek(fd2, FILE_SEEK_OFFSET_0, SEEK_SET_FS);
+     TEST_ASSERT_GREATER_OR_EQUAL_INT(0, ret);
+     char buf[LENGTH_OF_READ_BUF] = {0};
+@@ -368,9 +369,9 @@ LITE_TEST_CASE(UtilsFileReliTestSuite, testEmptyFileOperFlow001, Function | Medi
+  */
+ LITE_TEST_CASE(UtilsFileReliTestSuite, testEmptyFileOperFlow002, Function | MediumTest | Level1)
+ {
+-    char* fileName1 = "testReli103a";
+-    char* fileName2 = "testReli103b";
+-    char* fileName3 = "testReli103c";
++    char* fileName1 = "/data/testReli103a";
++    char* fileName2 = "/data/testReli103b";
++    char* fileName3 = "/data/testReli103c";
+     // Creat an empty file
+     int fd1 = UtilsFileOpen(fileName1, O_RDWR_FS | O_CREAT_FS, 0);
+     UtilsFileClose(fd1);
+@@ -384,7 +385,7 @@ LITE_TEST_CASE(UtilsFileReliTestSuite, testEmptyFileOperFlow002, Function | Medi
+     ret = UtilsFileStat(fileName3, &fileLen);
+     TEST_ASSERT_EQUAL_INT(0, ret);
+     int fd2 = UtilsFileOpen(fileName3, O_RDWR_FS, 0);
+-    TEST_ASSERT_GREATER_THAN_INT(0, fd2);
++    TEST_ASSERT_GREATER_THAN_INT(-1, fd2);
+     ret = UtilsFileSeek(fd2, FILE_SEEK_OFFSET_0, SEEK_SET_FS);
+     TEST_ASSERT_GREATER_OR_EQUAL_INT(0, ret);
+     char buf[LENGTH_OF_READ_BUF] = {0};
 -- 
 2.17.1
 
