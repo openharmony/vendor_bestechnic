@@ -17,6 +17,7 @@ base/security/huks:
 test/xts/acts:
   - vendor/bestechnic/xts_demo/patches/0001-feat-test-xts-acts-stacksize-bigger-and-bool-type-bu.patch
   - vendor/bestechnic/xts_demo/patches/0001-change-per-second.patch
+  - vendor/bestechnic/xts_demo/patches/0001-feat-test-xts-acts-utils_file_func_test-fix.patch
 third_party/unity:
   - vendor/bestechnic/xts_demo/patches/0001-feat-third_party-unity-fix-test-fail-macro.patch
 test/xts/tools/lite:
