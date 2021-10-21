@@ -65,7 +65,7 @@ FILE_LIST:
     FILE_NAME: rtos_mini.bin
     MAGIC: true
     SIZE: 3735552
-    SWITCH: true
+    SWITCH: false
 - LITTLEFS:
     ADDR: 750125056
     FILE_NAME: littlefs.bin
@@ -85,4 +85,4 @@ FILE_LIST:
     ADDR: 0
     FILE_NAME: pub_otp.bin
     SIZE: 1024
-    SWITCH: true
+    SWITCH: false

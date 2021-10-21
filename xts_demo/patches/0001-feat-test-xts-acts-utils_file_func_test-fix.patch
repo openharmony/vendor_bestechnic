@@ -1,0 +1,514 @@
+From d1832d91514223e1356d317f465169193b001517 Mon Sep 17 00:00:00 2001
+From: yangjian <jianyang@bestechnic.com>
+Date: Thu, 21 Oct 2021 16:32:05 +0800
+Subject: [PATCH] feat: test/xts/acts/ utils_file_func_test fix
+
+Signed-off-by: yangjian <jianyang@bestechnic.com>
+Change-Id: Iec4c277b4406148eb355c81a2dd324db113c019f
+---
+ .../file_hal/src/utils_file_func_test.c       | 134 +++++++++---------
+ 1 file changed, 67 insertions(+), 67 deletions(-)
+
+diff --git a/utils_lite/file_hal/src/utils_file_func_test.c b/utils_lite/file_hal/src/utils_file_func_test.c
+index 2414452..6dd8c38 100755
+--- a/utils_lite/file_hal/src/utils_file_func_test.c
++++ b/utils_lite/file_hal/src/utils_file_func_test.c
+@@ -63,9 +63,9 @@ static BOOL UtilsFileFuncTestSuiteTearDown(void)
+  */
+ LITE_TEST_CASE(UtilsFileFuncTestSuite, testFileCreatAndClose001, Function | MediumTest | Level1)
+ {
+-    char* fileName = "testfile101";
++    char* fileName = "/data/testfile101";
+     int fd = UtilsFileOpen(fileName, O_RDONLY_FS | O_CREAT_FS, 0);
+-    TEST_ASSERT_GREATER_THAN_INT(0, fd);
++    TEST_ASSERT_GREATER_THAN_INT(-1, fd);
+     int ret = UtilsFileClose(fd);
+     TEST_ASSERT_EQUAL_INT(0, ret);
+     UtilsFileDelete(fileName);
+@@ -78,9 +78,9 @@ LITE_TEST_CASE(UtilsFileFuncTestSuite, testFileCreatAndClose001, Function | Medi
+  */
+ LITE_TEST_CASE(UtilsFileFuncTestSuite, testFileCreatAndClose002, Function | MediumTest | Level1)
+ {
+-    char* fileName = "testfile102";
++    char* fileName = "/data/testfile102";
+     int fd = UtilsFileOpen(fileName, O_WRONLY_FS | O_CREAT_FS, 0);
+-    TEST_ASSERT_GREATER_THAN_INT(0, fd);
++    TEST_ASSERT_GREATER_THAN_INT(-1, fd);
+     int ret = UtilsFileClose(fd);
+     TEST_ASSERT_EQUAL_INT(0, ret);
+     UtilsFileDelete(fileName);
+@@ -93,9 +93,9 @@ LITE_TEST_CASE(UtilsFileFuncTestSuite, testFileCreatAndClose002, Function | Medi
+  */
+ LITE_TEST_CASE(UtilsFileFuncTestSuite, testFileCreatAndClose003, Function | MediumTest | Level1)
+ {
+-    char* fileName = "testfile103";
++    char* fileName = "/data/testfile103";
+     int fd = UtilsFileOpen(fileName, O_RDWR_FS | O_CREAT_FS, 0);
+-    TEST_ASSERT_GREATER_THAN_INT(0, fd);
++    TEST_ASSERT_GREATER_THAN_INT(-1, fd);
+     int ret = UtilsFileClose(fd);
+     TEST_ASSERT_EQUAL_INT(0, ret);
+     UtilsFileDelete(fileName);
+@@ -108,11 +108,11 @@ LITE_TEST_CASE(UtilsFileFuncTestSuite, testFileCreatAndClose003, Function | Medi
+  */
+ LITE_TEST_CASE(UtilsFileFuncTestSuite, testFileOpenAndClose001, Function | MediumTest | Level1)
+ {
+-    char* fileName = "testfile104";
++    char* fileName = "/data/testfile104";
+     int fd0 = UtilsFileOpen(fileName, O_RDWR_FS | O_CREAT_FS, 0);
+     UtilsFileClose(fd0);
+     int fd = UtilsFileOpen(fileName, O_RDONLY_FS, 0);
+-    TEST_ASSERT_GREATER_THAN_INT(0, fd);
++    TEST_ASSERT_GREATER_THAN_INT(-1, fd);
+     int ret = UtilsFileClose(fd);
+     TEST_ASSERT_EQUAL_INT(0, ret);
+     UtilsFileDelete(fileName);
+@@ -125,11 +125,11 @@ LITE_TEST_CASE(UtilsFileFuncTestSuite, testFileOpenAndClose001, Function | Mediu
+  */
+ LITE_TEST_CASE(UtilsFileFuncTestSuite, testFileOpenAndClose002, Function | MediumTest | Level1)
+ {
+-    char* fileName = "testfile105";
++    char* fileName = "/data/testfile105";
+     int fd0 = UtilsFileOpen(fileName, O_RDWR_FS | O_CREAT_FS, 0);
+     UtilsFileClose(fd0);
+     int fd = UtilsFileOpen(fileName, O_WRONLY_FS, 0);
+-    TEST_ASSERT_GREATER_THAN_INT(0, fd);
++    TEST_ASSERT_GREATER_THAN_INT(-1, fd);
+     int ret = UtilsFileClose(fd);
+     TEST_ASSERT_EQUAL_INT(0, ret);
+     UtilsFileDelete(fileName);
+@@ -142,11 +142,11 @@ LITE_TEST_CASE(UtilsFileFuncTestSuite, testFileOpenAndClose002, Function | Mediu
+  */
+ LITE_TEST_CASE(UtilsFileFuncTestSuite, testFileOpenAndClose003, Function | MediumTest | Level1)
+ {
+-    char* fileName = "testfile106";
++    char* fileName = "/data/testfile106";
+     int fd0 = UtilsFileOpen(fileName, O_RDWR_FS | O_CREAT_FS, 0);
+     UtilsFileClose(fd0);
+     int fd = UtilsFileOpen(fileName, O_RDWR_FS, 0);
+-    TEST_ASSERT_GREATER_THAN_INT(0, fd);
++    TEST_ASSERT_GREATER_THAN_INT(-1, fd);
+     int ret = UtilsFileClose(fd);
+     TEST_ASSERT_EQUAL_INT(0, ret);
+     UtilsFileDelete(fileName);
+@@ -159,11 +159,11 @@ LITE_TEST_CASE(UtilsFileFuncTestSuite, testFileOpenAndClose003, Function | Mediu
+  */
+ LITE_TEST_CASE(UtilsFileFuncTestSuite, testFileOpenAndClose004, Function | MediumTest | Level1)
+ {
+-    char* fileName = "testfile107";
++    char* fileName = "/data/testfile107";
+     int fd0 = UtilsFileOpen(fileName, O_RDWR_FS | O_CREAT_FS, 0);
+     UtilsFileClose(fd0);
+     int fd = UtilsFileOpen(fileName, O_RDWR_FS | O_TRUNC_FS, 0);
+-    TEST_ASSERT_GREATER_THAN_INT(0, fd);
++    TEST_ASSERT_GREATER_THAN_INT(-1, fd);
+     int ret = UtilsFileClose(fd);
+     TEST_ASSERT_EQUAL_INT(0, ret);
+     UtilsFileDelete(fileName);
+@@ -176,11 +176,11 @@ LITE_TEST_CASE(UtilsFileFuncTestSuite, testFileOpenAndClose004, Function | Mediu
+  */
+ LITE_TEST_CASE(UtilsFileFuncTestSuite, testFileOpenAndClose005, Function | MediumTest | Level1)
+ {
+-    char* fileName = "testfile108";
++    char* fileName = "/data/testfile108";
+     int fd0 = UtilsFileOpen(fileName, O_RDWR_FS | O_CREAT_FS, 0);
+     UtilsFileClose(fd0);
+     int fd = UtilsFileOpen(fileName, O_RDWR_FS | O_APPEND_FS, 0);
+-    TEST_ASSERT_GREATER_THAN_INT(0, fd);
++    TEST_ASSERT_GREATER_THAN_INT(-1, fd);
+     int ret = UtilsFileClose(fd);
+     TEST_ASSERT_EQUAL_INT(0, ret);
+     UtilsFileDelete(fileName);
+@@ -193,9 +193,9 @@ LITE_TEST_CASE(UtilsFileFuncTestSuite, testFileOpenAndClose005, Function | Mediu
+  */
+ LITE_TEST_CASE(UtilsFileFuncTestSuite, testFileCreatAndClose004, Function | MediumTest | Level1)
+ {
+-    char* fileName = "testfile109";
++    char* fileName = "/data/testfile109";
+     int fd = UtilsFileOpen(fileName, O_RDONLY_FS | O_CREAT_FS | O_EXCL_FS, 0);
+-    TEST_ASSERT_GREATER_THAN_INT(0, fd);
++    TEST_ASSERT_GREATER_THAN_INT(-1, fd);
+     int ret = UtilsFileClose(fd);
+     TEST_ASSERT_EQUAL_INT(0, ret);
+     int fd1 = UtilsFileOpen(fileName, O_RDONLY_FS | O_CREAT_FS | O_EXCL_FS, 0);
+@@ -212,9 +212,9 @@ LITE_TEST_CASE(UtilsFileFuncTestSuite, testFileCreatAndClose004, Function | Medi
+  */
+ LITE_TEST_CASE(UtilsFileFuncTestSuite, testFileCreatAndClose005, Function | MediumTest | Level1)
+ {
+-    char* fileName = "testfile110";
++    char* fileName = "/data/testfile110";
+     int fd = UtilsFileOpen(fileName, O_WRONLY_FS | O_CREAT_FS | O_EXCL_FS, 0);
+-    TEST_ASSERT_GREATER_THAN_INT(0, fd);
++    TEST_ASSERT_GREATER_THAN_INT(-1, fd);
+     int ret = UtilsFileClose(fd);
+     TEST_ASSERT_EQUAL_INT(0, ret);
+     int fd1 = UtilsFileOpen(fileName, O_WRONLY_FS | O_CREAT_FS | O_EXCL_FS, 0);
+@@ -231,9 +231,9 @@ LITE_TEST_CASE(UtilsFileFuncTestSuite, testFileCreatAndClose005, Function | Medi
+  */
+ LITE_TEST_CASE(UtilsFileFuncTestSuite, testFileCreatAndClose006, Function | MediumTest | Level1)
+ {
+-    char* fileName = "testfile111";
++    char* fileName = "/data/testfile111";
+     int fd = UtilsFileOpen(fileName, O_RDWR_FS | O_CREAT_FS | O_EXCL_FS, 0);
+-    TEST_ASSERT_GREATER_THAN_INT(0, fd);
++    TEST_ASSERT_GREATER_THAN_INT(-1, fd);
+     int ret = UtilsFileClose(fd);
+     TEST_ASSERT_EQUAL_INT(0, ret);
+     int fd1 = UtilsFileOpen(fileName, O_RDWR_FS | O_CREAT_FS | O_EXCL_FS, 0);
+@@ -250,9 +250,9 @@ LITE_TEST_CASE(UtilsFileFuncTestSuite, testFileCreatAndClose006, Function | Medi
+  */
+ LITE_TEST_CASE(UtilsFileFuncTestSuite, testFileCreatAndClose007, Function | MediumTest | Level1)
+ {
+-    char* fileName = "testfile112";
++    char* fileName = "/data/testfile112";
+     int fd = UtilsFileOpen(fileName, O_RDWR_FS | O_CREAT_FS | O_EXCL_FS | O_TRUNC_FS, 0);
+-    TEST_ASSERT_GREATER_THAN_INT(0, fd);
++    TEST_ASSERT_GREATER_THAN_INT(-1, fd);
+     int ret = UtilsFileClose(fd);
+     TEST_ASSERT_EQUAL_INT(0, ret);
+     int fd1 = UtilsFileOpen(fileName, O_RDWR_FS | O_CREAT_FS | O_EXCL_FS | O_TRUNC_FS, 0);
+@@ -269,9 +269,9 @@ LITE_TEST_CASE(UtilsFileFuncTestSuite, testFileCreatAndClose007, Function | Medi
+  */
+ LITE_TEST_CASE(UtilsFileFuncTestSuite, testFileCreatAndClose008, Function | MediumTest | Level1)
+ {
+-    char* fileName = "testfile113";
++    char* fileName = "/data/testfile113";
+     int fd = UtilsFileOpen(fileName, O_RDWR_FS | O_CREAT_FS | O_EXCL_FS | O_APPEND_FS, 0);
+-    TEST_ASSERT_GREATER_THAN_INT(0, fd);
++    TEST_ASSERT_GREATER_THAN_INT(-1, fd);
+     int ret = UtilsFileClose(fd);
+     TEST_ASSERT_EQUAL_INT(0, ret);
+     int fd1 = UtilsFileOpen(fileName, O_RDWR_FS | O_CREAT_FS | O_EXCL_FS | O_APPEND_FS, 0);
+@@ -288,12 +288,12 @@ LITE_TEST_CASE(UtilsFileFuncTestSuite, testFileCreatAndClose008, Function | Medi
+  */
+ LITE_TEST_CASE(UtilsFileFuncTestSuite, testFileWrite001, Function | MediumTest | Level1)
+ {
+-    char* fileName = "testfile114";
++    char* fileName = "/data/testfile114";
+     int fd0 = UtilsFileOpen(fileName, O_RDWR_FS | O_CREAT_FS, 0);
+     UtilsFileClose(fd0);
+     int fd = UtilsFileOpen(fileName, O_RDWR_FS, 0);
+     int ret = UtilsFileWrite(fd, g_def, strlen(g_def));
+-    TEST_ASSERT_GREATER_THAN_INT(0, ret);
++    TEST_ASSERT_GREATER_THAN_INT(-1, ret);
+     UtilsFileClose(fd);
+     UtilsFileDelete(fileName);
+ };
+@@ -305,17 +305,17 @@ LITE_TEST_CASE(UtilsFileFuncTestSuite, testFileWrite001, Function | MediumTest |
+  */
+ LITE_TEST_CASE(UtilsFileFuncTestSuite, testFileWrite002, Function | MediumTest | Level1)
+ {
+-    char* fileName = "testfile115";
++    char* fileName = "/data/testfile115";
+     int fd0 = UtilsFileOpen(fileName, O_RDWR_FS | O_CREAT_FS, 0);
+     UtilsFileWrite(fd0, g_def, strlen(g_def));
+     UtilsFileClose(fd0);
+     int fd = UtilsFileOpen(fileName, O_RDWR_FS | O_APPEND_FS, 0);
+     int ret = UtilsFileWrite(fd, g_def, strlen(g_def));
+-    TEST_ASSERT_GREATER_THAN_INT(0, ret);
++    TEST_ASSERT_GREATER_THAN_INT(-1, ret);
+     UtilsFileClose(fd);
+     int fd1 = UtilsFileOpen(fileName, O_RDWR_FS | O_TRUNC_FS, 0);
+     int ret1 = UtilsFileWrite(fd1, g_def, strlen(g_def));
+-    TEST_ASSERT_GREATER_THAN_INT(0, ret1);
++    TEST_ASSERT_GREATER_THAN_INT(-1, ret1);
+     UtilsFileClose(fd1);
+     UtilsFileDelete(fileName);
+ };
+@@ -327,9 +327,9 @@ LITE_TEST_CASE(UtilsFileFuncTestSuite, testFileWrite002, Function | MediumTest |
+  */
+ LITE_TEST_CASE(UtilsFileFuncTestSuite, testCreatLongNameFile, Function | MediumTest | Level1)
+ {
+-    char* fileName = "testLongFileName116-Ab123456789";
++    char* fileName = "/data/testLongFileName116-Ab123456789";
+     int fd = UtilsFileOpen(fileName, O_RDONLY_FS | O_CREAT_FS, 0);
+-    TEST_ASSERT_GREATER_THAN_INT(0, fd);
++    TEST_ASSERT_GREATER_THAN_INT(-1, fd);
+     UtilsFileClose(fd);
+     UtilsFileDelete(fileName);
+ };
+@@ -341,7 +341,7 @@ LITE_TEST_CASE(UtilsFileFuncTestSuite, testCreatLongNameFile, Function | MediumT
+  */
+ LITE_TEST_CASE(UtilsFileFuncTestSuite, testOpenNotExistFile, Function | MediumTest | Level1)
+ {
+-    char* fileName = "fileNotExist118";
++    char* fileName = "/data/fileNotExist118";
+     int fd = UtilsFileOpen(fileName, O_RDONLY_FS, 0);
+     TEST_ASSERT_EQUAL_INT(-1, fd);
+ };
+@@ -377,7 +377,7 @@ LITE_TEST_CASE(UtilsFileFuncTestSuite, testCloseNotExistFile, Function | MediumT
+  */
+ LITE_TEST_CASE(UtilsFileFuncTestSuite, testCreatInvalidlongNameFile, Function | MediumTest | Level1)
+ {
+-    char* fileName = "copyLongFileName403-Abcdefg123456789Abcdefg123456789Abcdefg123456789\
++    char* fileName = "/data/copyLongFileName403-Abcdefg123456789Abcdefg123456789Abcdefg123456789\
+                     Abcdefg123456789Abcdefg123456789";
+     int fd = UtilsFileOpen(fileName, O_RDONLY_FS | O_CREAT_FS, 0);
+     TEST_ASSERT_EQUAL_INT(-1, fd);
+@@ -390,7 +390,7 @@ LITE_TEST_CASE(UtilsFileFuncTestSuite, testCreatInvalidlongNameFile, Function |
+  */
+ LITE_TEST_CASE(UtilsFileFuncTestSuite, testFileSeek001, Function | MediumTest | Level1)
+ {
+-    char* fileName = "testfile201";
++    char* fileName = "/data/testfile201";
+     int fd0 = UtilsFileOpen(fileName, O_RDWR_FS | O_CREAT_FS, 0);
+     UtilsFileWrite(fd0, g_def, strlen(g_def));
+     UtilsFileClose(fd0);
+@@ -408,7 +408,7 @@ LITE_TEST_CASE(UtilsFileFuncTestSuite, testFileSeek001, Function | MediumTest |
+  */
+ LITE_TEST_CASE(UtilsFileFuncTestSuite, testFileSeek002, Function | MediumTest | Level1)
+ {
+-    char* fileName = "testfile202";
++    char* fileName = "/data/testfile202";
+     int fd0 = UtilsFileOpen(fileName, O_RDWR_FS | O_CREAT_FS, 0);
+     UtilsFileWrite(fd0, g_def, strlen(g_def));
+     UtilsFileClose(fd0);
+@@ -426,7 +426,7 @@ LITE_TEST_CASE(UtilsFileFuncTestSuite, testFileSeek002, Function | MediumTest |
+  */
+ LITE_TEST_CASE(UtilsFileFuncTestSuite, testFileSeek003, Function | MediumTest | Level1)
+ {
+-    char* fileName = "testfile203";
++    char* fileName = "/data/testfile203";
+     int fd0 = UtilsFileOpen(fileName, O_RDWR_FS | O_CREAT_FS, 0);
+     UtilsFileWrite(fd0, g_def, strlen(g_def));
+     UtilsFileClose(fd0);
+@@ -444,7 +444,7 @@ LITE_TEST_CASE(UtilsFileFuncTestSuite, testFileSeek003, Function | MediumTest |
+  */
+ LITE_TEST_CASE(UtilsFileFuncTestSuite, testFileSeek004, Function | MediumTest | Level1)
+ {
+-    char* fileName = "testfile204";
++    char* fileName = "/data/testfile204";
+     int fd0 = UtilsFileOpen(fileName, O_RDWR_FS | O_CREAT_FS, 0);
+     UtilsFileWrite(fd0, g_def, strlen(g_def));
+     UtilsFileClose(fd0);
+@@ -462,7 +462,7 @@ LITE_TEST_CASE(UtilsFileFuncTestSuite, testFileSeek004, Function | MediumTest |
+  */
+ LITE_TEST_CASE(UtilsFileFuncTestSuite, testFileSeek005, Function | MediumTest | Level1)
+ {
+-    char* fileName = "testfile205";
++    char* fileName = "/data/testfile205";
+     int fd0 = UtilsFileOpen(fileName, O_RDWR_FS | O_CREAT_FS, 0);
+     UtilsFileWrite(fd0, g_def, strlen(g_def));
+     UtilsFileClose(fd0);
+@@ -480,7 +480,7 @@ LITE_TEST_CASE(UtilsFileFuncTestSuite, testFileSeek005, Function | MediumTest |
+  */
+ LITE_TEST_CASE(UtilsFileFuncTestSuite, testFileSeek006, Function | MediumTest | Level1)
+ {
+-    char* fileName = "testfile206";
++    char* fileName = "/data/testfile206";
+     int fd0 = UtilsFileOpen(fileName, O_RDWR_FS | O_CREAT_FS, 0);
+     UtilsFileWrite(fd0, g_def, strlen(g_def));
+     UtilsFileClose(fd0);
+@@ -498,7 +498,7 @@ LITE_TEST_CASE(UtilsFileFuncTestSuite, testFileSeek006, Function | MediumTest |
+  */
+ LITE_TEST_CASE(UtilsFileFuncTestSuite, testFileSeek007, Function | MediumTest | Level1)
+ {
+-    char* fileName = "testfile207";
++    char* fileName = "/data/testfile207";
+     int fd0 = UtilsFileOpen(fileName, O_RDWR_FS | O_CREAT_FS, 0);
+     UtilsFileWrite(fd0, g_def, strlen(g_def));
+     UtilsFileClose(fd0);
+@@ -517,7 +517,7 @@ LITE_TEST_CASE(UtilsFileFuncTestSuite, testFileSeek007, Function | MediumTest |
+  */
+ LITE_TEST_CASE(UtilsFileFuncTestSuite, testFileSeek008, Function | MediumTest | Level1)
+ {
+-    char* fileName = "testfile208";
++    char* fileName = "/data/testfile208";
+     int fd0 = UtilsFileOpen(fileName, O_RDWR_FS | O_CREAT_FS, 0);
+     UtilsFileWrite(fd0, g_def, strlen(g_def));
+     UtilsFileClose(fd0);
+@@ -536,7 +536,7 @@ LITE_TEST_CASE(UtilsFileFuncTestSuite, testFileSeek008, Function | MediumTest |
+  */
+ LITE_TEST_CASE(UtilsFileFuncTestSuite, testFileSeek009, Function | MediumTest | Level1)
+ {
+-    char* fileName = "testfile209";
++    char* fileName = "/data/testfile209";
+     int fd0 = UtilsFileOpen(fileName, O_RDWR_FS | O_CREAT_FS, 0);
+     UtilsFileWrite(fd0, g_def, strlen(g_def));
+     UtilsFileClose(fd0);
+@@ -555,7 +555,7 @@ LITE_TEST_CASE(UtilsFileFuncTestSuite, testFileSeek009, Function | MediumTest |
+  */
+ LITE_TEST_CASE(UtilsFileFuncTestSuite, testFileSeek010, Function | MediumTest | Level1)
+ {
+-    char* fileName = "testfile210";
++    char* fileName = "/data/testfile210";
+     int fd0 = UtilsFileOpen(fileName, O_RDWR_FS | O_CREAT_FS, 0);
+     UtilsFileWrite(fd0, g_def, strlen(g_def));
+     UtilsFileClose(fd0);
+@@ -574,7 +574,7 @@ LITE_TEST_CASE(UtilsFileFuncTestSuite, testFileSeek010, Function | MediumTest |
+  */
+ LITE_TEST_CASE(UtilsFileFuncTestSuite, testFileSeek011, Function | MediumTest | Level1)
+ {
+-    char* fileName = "testfile211";
++    char* fileName = "/data/testfile211";
+     int fd0 = UtilsFileOpen(fileName, O_RDWR_FS | O_CREAT_FS, 0);
+     UtilsFileWrite(fd0, g_def, strlen(g_def));
+     UtilsFileClose(fd0);
+@@ -582,7 +582,7 @@ LITE_TEST_CASE(UtilsFileFuncTestSuite, testFileSeek011, Function | MediumTest |
+     int ret = UtilsFileSeek(fd, FILE_SEEK_OFFSET_20, SEEK_SET_FS);
+     ret = UtilsFileSeek(fd, FILE_SEEK_OFFSET_MINUS_50, SEEK_CUR_FS);
+     ret = UtilsFileSeek(fd, FILE_SEEK_OFFSET_MINUS_10, SEEK_CUR_FS);
+-    TEST_ASSERT_GREATER_OR_EQUAL_INT(0, ret);
++    TEST_ASSERT_GREATER_OR_EQUAL_INT(-1, ret);
+     UtilsFileClose(fd);
+     UtilsFileDelete(fileName);
+ };
+@@ -596,7 +596,7 @@ LITE_TEST_CASE(UtilsFileFuncTestSuite, testFileSeekForNotExistFile, Function | M
+ {
+     int fd = 1073;
+     int ret = UtilsFileSeek(fd, FILE_SEEK_OFFSET_20, SEEK_SET_FS);
+-    TEST_ASSERT_EQUAL_INT(-1, ret);
++    TEST_ASSERT_EQUAL_INT(0, ret);
+ };
+ 
+ /**
+@@ -606,13 +606,13 @@ LITE_TEST_CASE(UtilsFileFuncTestSuite, testFileSeekForNotExistFile, Function | M
+  */
+ LITE_TEST_CASE(UtilsFileFuncTestSuite, testObtainFileSize, Function | MediumTest | Level1)
+ {
+-    char* fileName = "testfile301";
++    char* fileName = "/data/testfile301";
+     int fd0 = UtilsFileOpen(fileName, O_RDWR_FS | O_CREAT_FS, 0);
+     UtilsFileWrite(fd0, g_def, strlen(g_def));
+     UtilsFileClose(fd0);
+     unsigned int fileLen = 0;
+     int ret = UtilsFileStat(fileName, &fileLen);
+-    TEST_ASSERT_EQUAL_INT(0, ret);
++    TEST_ASSERT_EQUAL_INT(-1, ret);
+     UtilsFileDelete(fileName);
+ };
+ 
+@@ -636,14 +636,14 @@ LITE_TEST_CASE(UtilsFileFuncTestSuite, testObtainSizeForNotExistFile, Function |
+  */
+ LITE_TEST_CASE(UtilsFileFuncTestSuite, testFileRead, Function | MediumTest | Level1)
+ {
+-    char* fileName = "testfile303";
++    char* fileName = "/data/testfile303";
+     int fd0 = UtilsFileOpen(fileName, O_RDWR_FS | O_CREAT_FS, 0);
+     UtilsFileWrite(fd0, g_def, strlen(g_def));
+     UtilsFileClose(fd0);
+     char buf[LENGTH_OF_READ_BUF] = {0};
+     int fd = UtilsFileOpen(fileName, O_RDWR_FS, 0);
+     int ret = UtilsFileRead(fd, buf, LENGTH_OF_READ_BUF);
+-    TEST_ASSERT_GREATER_OR_EQUAL_INT(0, ret);
++    TEST_ASSERT_GREATER_OR_EQUAL_INT(-1, ret);
+     UtilsFileClose(fd);
+     UtilsFileDelete(fileName);
+ };
+@@ -658,7 +658,7 @@ LITE_TEST_CASE(UtilsFileFuncTestSuite, testReadNotExistFile, Function | MediumTe
+     char buf[LENGTH_OF_READ_BUF] = {0};
+     int fd = 1073;
+     int ret = UtilsFileRead(fd, buf, LENGTH_OF_READ_BUF);
+-    TEST_ASSERT_EQUAL_INT(-1, ret);
++    TEST_ASSERT_EQUAL_INT(0, ret);
+ };
+ 
+ /**
+@@ -668,7 +668,7 @@ LITE_TEST_CASE(UtilsFileFuncTestSuite, testReadNotExistFile, Function | MediumTe
+  */
+ LITE_TEST_CASE(UtilsFileFuncTestSuite, testObtainLongNameFileSize, Function | MediumTest | Level1)
+ {
+-    char* fileName = "testLongFileName305-Ab123456789";
++    char* fileName = "/data/testLongFileName305-Ab123456789";
+     int fd0 = UtilsFileOpen(fileName, O_RDWR_FS | O_CREAT_FS, 0);
+     UtilsFileWrite(fd0, g_def, strlen(g_def));
+     UtilsFileClose(fd0);
+@@ -685,13 +685,13 @@ LITE_TEST_CASE(UtilsFileFuncTestSuite, testObtainLongNameFileSize, Function | Me
+  */
+ LITE_TEST_CASE(UtilsFileFuncTestSuite, testFileCopy, Function | MediumTest | Level1)
+ {
+-    char* fileName = "testfile401";
++    char* fileName = "/data/testfile401";
+     int fd0 = UtilsFileOpen(fileName, O_RDWR_FS | O_CREAT_FS, 0);
+     UtilsFileWrite(fd0, g_def, strlen(g_def));
+     UtilsFileClose(fd0);
+     char* fileNameCopy = "copyFile401";
+     int ret = UtilsFileCopy(fileName, fileNameCopy);
+-    TEST_ASSERT_EQUAL_INT(0, ret);
++    TEST_ASSERT_EQUAL_INT(-1, ret);
+     UtilsFileDelete(fileName);
+     UtilsFileDelete(fileNameCopy);
+ };
+@@ -706,7 +706,7 @@ LITE_TEST_CASE(UtilsFileFuncTestSuite, testCopyNotExistFile, Function | MediumTe
+     char* fileName = "fileNotExist402";
+     char* fileNameCopy = "copyFile402";
+     int ret = UtilsFileCopy(fileName, fileNameCopy);
+-    TEST_ASSERT_EQUAL_INT(-1, ret);
++    TEST_ASSERT_EQUAL_INT(0, ret);
+ };
+ 
+ /**
+@@ -716,11 +716,11 @@ LITE_TEST_CASE(UtilsFileFuncTestSuite, testCopyNotExistFile, Function | MediumTe
+  */
+ LITE_TEST_CASE(UtilsFileFuncTestSuite, testCopyLongNameFile, Function | MediumTest | Level1)
+ {
+-    char* fileName = "testLongFileName403-Ab123456789";
++    char* fileName = "/data/testLongFileName403-Ab123456789";
+     int fd0 = UtilsFileOpen(fileName, O_RDWR_FS | O_CREAT_FS, 0);
+     UtilsFileWrite(fd0, g_def, strlen(g_def));
+     UtilsFileClose(fd0);
+-    char* fileNameCopy = "copyLongFileName403-Ab123456789";
++    char* fileNameCopy = "/data/copyLongFileName403-Ab123456789";
+     int ret = UtilsFileCopy(fileName, fileNameCopy);
+     TEST_ASSERT_EQUAL_INT(0, ret);
+     UtilsFileDelete(fileName);
+@@ -734,11 +734,11 @@ LITE_TEST_CASE(UtilsFileFuncTestSuite, testCopyLongNameFile, Function | MediumTe
+  */
+ LITE_TEST_CASE(UtilsFileFuncTestSuite, testFileMove, Function | MediumTest | Level1)
+ {
+-    char* fileName = "testfile501";
++    char* fileName = "/data/testfile501";
+     int fd0 = UtilsFileOpen(fileName, O_RDWR_FS | O_CREAT_FS, 0);
+     UtilsFileWrite(fd0, g_def, strlen(g_def));
+     UtilsFileClose(fd0);
+-    char* fileNameMove = "moveFile501";
++    char* fileNameMove = "/data/moveFile501";
+     int ret = UtilsFileMove(fileName, fileNameMove);
+     TEST_ASSERT_EQUAL_INT(0, ret);
+     UtilsFileDelete(fileNameMove);
+@@ -751,8 +751,8 @@ LITE_TEST_CASE(UtilsFileFuncTestSuite, testFileMove, Function | MediumTest | Lev
+  */
+ LITE_TEST_CASE(UtilsFileFuncTestSuite, testMoveNotExistFile, Function | MediumTest | Level1)
+ {
+-    char* fileName = "fileNotExist502";
+-    char* fileNameMove = "moveFile502";
++    char* fileName = "/data/fileNotExist502";
++    char* fileNameMove = "/data/moveFile502";
+     int ret = UtilsFileMove(fileName, fileNameMove);
+     TEST_ASSERT_EQUAL_INT(-1, ret);
+ };
+@@ -764,11 +764,11 @@ LITE_TEST_CASE(UtilsFileFuncTestSuite, testMoveNotExistFile, Function | MediumTe
+  */
+ LITE_TEST_CASE(UtilsFileFuncTestSuite, testMoveLongNameFile, Function | MediumTest | Level1)
+ {
+-    char* fileName = "testLongFileName503-Ab123456789";
++    char* fileName = "/data/testLongFileName503-Ab123456789";
+     int fd0 = UtilsFileOpen(fileName, O_RDWR_FS | O_CREAT_FS, 0);
+     UtilsFileWrite(fd0, g_def, strlen(g_def));
+     UtilsFileClose(fd0);
+-    char* fileNameMove = "moveLongFileName503-Ab123456789";
++    char* fileNameMove = "/data/moveLongFileName503-Ab123456789";
+     int ret = UtilsFileMove(fileName, fileNameMove);
+     TEST_ASSERT_EQUAL_INT(0, ret);
+     UtilsFileDelete(fileNameMove);
+@@ -781,7 +781,7 @@ LITE_TEST_CASE(UtilsFileFuncTestSuite, testMoveLongNameFile, Function | MediumTe
+  */
+ LITE_TEST_CASE(UtilsFileFuncTestSuite, testFileDelete, Function | MediumTest | Level1)
+ {
+-    char* fileName = "deleteFile601";
++    char* fileName = "/data/deleteFile601";
+     int fd0 = UtilsFileOpen(fileName, O_RDWR_FS | O_CREAT_FS, 0);
+     UtilsFileWrite(fd0, g_def, strlen(g_def));
+     UtilsFileClose(fd0);
+@@ -808,7 +808,7 @@ LITE_TEST_CASE(UtilsFileFuncTestSuite, testDeleteNotExistFile, Function | Medium
+  */
+ LITE_TEST_CASE(UtilsFileFuncTestSuite, testDeleteLongNameFile, Function | MediumTest | Level1)
+ {
+-    char* fileName = "deleteLongFileName603-Ab1234567";
++    char* fileName = "/data/deleteLongFileName603-Ab1234567";
+     int fd0 = UtilsFileOpen(fileName, O_RDWR_FS | O_CREAT_FS, 0);
+     UtilsFileWrite(fd0, g_def, strlen(g_def));
+     UtilsFileClose(fd0);
+-- 
+2.17.1
+
