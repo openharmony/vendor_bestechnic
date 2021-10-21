@@ -23,3 +23,5 @@ third_party/unity:
   - vendor/bestechnic/xts_demo/patches/0001-feat-third_party-unity-fix-test-fail-macro.patch
 test/xts/tools/lite:
   - vendor/bestechnic/xts_demo/patches/0001-feat-test-xts-tools-lite-larger-HCTEST-stacksize.patch
+utils/native/lite:
+  -  vendor/bestechnic/xts_demo/patches/0001-feat-utils-native-lite-data.patch
