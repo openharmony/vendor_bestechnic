@@ -38,7 +38,7 @@ build/lite:
   - vendor/bestechnic/display_demo/patches/0001-feat-add-liteos_m-options.patch
 utils/native/lite:
   - vendor/bestechnic/display_demo/patches/0001-feat-build-utils-for-liteos_m.patch
-# foundation/multimedia/media_lite:
-#   - vendor/bestechnic/display_demo/patches/0001-feat-build-media_lite.patch
-# foundation/multimedia/utils/lite:
-#   - vendor/bestechnic/display_demo/patches/0001-feat-build-multimedia_utils.patch
+foundation/multimedia/media_lite:
+  - vendor/bestechnic/display_demo/patches/0001-feat-build-media_lite.patch
+foundation/multimedia/utils/lite:
+  - vendor/bestechnic/display_demo/patches/0001-feat-build-multimedia_utils.patch
