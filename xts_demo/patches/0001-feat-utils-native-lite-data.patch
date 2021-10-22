@@ -1,17 +1,17 @@
-From 4fa95c32682549824d4bb4ce09b7b60c54030ba7 Mon Sep 17 00:00:00 2001
+From 873bb236b58abb7509024611f936c0ac470a2b48 Mon Sep 17 00:00:00 2001
 From: yangjian <jianyang@bestechnic.com>
-Date: Fri, 22 Oct 2021 01:22:54 +0800
-Subject: [PATCH] feat: utils/native/lite /data
+Date: Fri, 22 Oct 2021 19:30:20 +0800
+Subject: [PATCH] feat:utils/native/lite /data
 
 Signed-off-by: yangjian <jianyang@bestechnic.com>
-Change-Id: I37798be4a3c8b376e15328972326fcd87f830e20
+Change-Id: Iebee339dc5318b61472205af5ad34aa356ee75f4
 ---
- file/src/file_impl_hal/file.c            | 28 +++++++++++++++++++-----
- kv_store/src/kvstore_impl_hal/kv_store.c | 11 +++++++---
- 2 files changed, 30 insertions(+), 9 deletions(-)
+ file/src/file_impl_hal/file.c            | 16 +++++++++++++---
+ kv_store/src/kvstore_impl_hal/kv_store.c |  3 ++-
+ 2 files changed, 15 insertions(+), 4 deletions(-)
 
 diff --git a/file/src/file_impl_hal/file.c b/file/src/file_impl_hal/file.c
-index 6bce29b..da9f20c 100755
+index 6bce29b..9889d5c 100755
 --- a/file/src/file_impl_hal/file.c
 +++ b/file/src/file_impl_hal/file.c
 @@ -22,10 +22,14 @@
@@ -47,101 +47,24 @@ index 6bce29b..da9f20c 100755
 +    char path_real[128] = {0};
 +    memcpy(path_real,DATA_PRE,strlen(DATA_PRE));
 +    memcpy(path_real+strlen(DATA_PRE),path,strlen(path));
-+    return HalFileStat(path, path_real);
++    return HalFileStat(path_real, fileSize);
  }
  
  int UtilsFileSeek(int fd, int offset, unsigned int whence)
-@@ -60,14 +70,20 @@ int UtilsFileSeek(int fd, int offset, unsigned int whence)
- 
- int UtilsFileCopy(const char* src, const char* dest)
- {
-+    char src_real[128] = {0};
-+    memcpy(src_real,DATA_PRE,strlen(DATA_PRE));
-+    memcpy(src_real+strlen(DATA_PRE),src,strlen(src));
-+    char dest_real[128] = {0};
-+    memcpy(dest_real,DATA_PRE,strlen(DATA_PRE));
-+    memcpy(dest_real+strlen(DATA_PRE),dest,strlen(dest));
-     if ((src == NULL) || (dest == NULL)) {
-         return EC_FAILURE;
-     }
--    int fpSrc = UtilsFileOpen(src, O_RDONLY_FS, 0);
-+    int fpSrc = UtilsFileOpen(src_real, O_RDONLY_FS, 0);
-     if (fpSrc < 0) {
-         return fpSrc;
-     }
--    int fpDest = UtilsFileOpen(dest, O_RDWR_FS | O_CREAT_FS | O_TRUNC_FS, 0);
-+    int fpDest = UtilsFileOpen(dest_real, O_RDWR_FS | O_CREAT_FS | O_TRUNC_FS, 0);
-     if (fpDest < 0) {
-         UtilsFileClose(fpSrc);
-         return fpDest;
-@@ -92,7 +108,7 @@ MALLOC_ERROR:
-     UtilsFileClose(fpSrc);
-     UtilsFileClose(fpDest);
-     if (copyFailed) {
--        UtilsFileDelete(dest);
-+        UtilsFileDelete(dest_real);
-         return EC_FAILURE;
-     }
-     return EC_SUCCESS;
 diff --git a/kv_store/src/kvstore_impl_hal/kv_store.c b/kv_store/src/kvstore_impl_hal/kv_store.c
-index 3d4985b..97cea35 100755
+index 3d4985b..758151a 100755
 --- a/kv_store/src/kvstore_impl_hal/kv_store.c
 +++ b/kv_store/src/kvstore_impl_hal/kv_store.c
-@@ -22,7 +22,7 @@
- #include "ohos_types.h"
- #include "utils_config.h"
- #include "utils_file.h"
--
-+#include "hal_trace.h"
- #define MAX_GET_VALUE_LEN  0x7FFFFFFF
- #define KV_SUM_FILE        "KV_FILE_SUM"
- #define KV_SUM_INDEX       4
-@@ -54,6 +54,7 @@ static int SetValueToFile(const char* key, const char* value)
- {
-     int fd = UtilsFileOpen(key, O_RDWR_FS | O_CREAT_FS | O_TRUNC_FS, 0);
-     if (fd < 0) {
-+        TRACE(0,"%s %d fd:%d",__func__,__LINE__,fd);
-         return EC_FAILURE;
+@@ -154,7 +154,8 @@ int UtilsDeleteValue(const char* key)
+ #endif
+     int ret = UtilsFileDelete(key);
+     if (ret == EC_SUCCESS) {
+-        ret = SetCurrentItem(GetCurrentItem() - 1);
++        if (GetCurrentItem() > 0)
++            ret = SetCurrentItem(GetCurrentItem() - 1);
      }
-     int ret = UtilsFileWrite(fd, value, strlen(value));
-@@ -64,8 +65,9 @@ static int SetValueToFile(const char* key, const char* value)
- 
- static int GetCurrentItem(void)
- {
--    int fd = UtilsFileOpen(KV_SUM_FILE, O_RDWR_FS, 0);
-+    int fd = UtilsFileOpen(KV_SUM_FILE, O_RDWR_FS | O_CREAT_FS, 0);
-     if (fd < 0) {
-+        TRACE(0,"%s %d fd:%d",__func__,__LINE__,fd);
-         return 0;
-     }
-     char value[KV_SUM_INDEX] = {0};
-@@ -83,6 +85,7 @@ static int SetCurrentItem(const int num)
-     }
-     int fd = UtilsFileOpen(KV_SUM_FILE, O_RDWR_FS | O_CREAT_FS, 0);
-     if (fd < 0) {
-+        TRACE(0,"%s %d fd:%d",__func__,__LINE__,fd);
-         return EC_FAILURE;
-     }
-     int ret = UtilsFileWrite(fd, value, KV_SUM_INDEX);
-@@ -93,8 +96,9 @@ static int SetCurrentItem(const int num)
- 
- static boolean NewItem(const char* key)
- {
--    int fd = UtilsFileOpen(key, O_RDONLY_FS, 0);
-+    int fd = UtilsFileOpen(key, O_RDONLY_FS | O_CREAT_FS, 0);
-     if (fd < 0) {
-+        TRACE(0,"%s %d fd:%d",__func__,__LINE__,fd);
-         return TRUE;
-     }
-     UtilsFileClose(fd);
-@@ -129,6 +133,7 @@ int UtilsSetValue(const char* key, const char* value)
-     int currentNum = GetCurrentItem();
-     boolean newItem = NewItem(key);
-     if ((currentNum >= MAX_KV_SUM) && newItem) {
-+        TRACE(0,"%s %d currentNum:%d",__func__,__LINE__,currentNum);
-         return EC_FAILURE;
-     }
-     int ret = SetValueToFile(key, value);
+     return ret;
+ }
 -- 
 2.17.1
 
