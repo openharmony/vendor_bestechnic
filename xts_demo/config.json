@@ -14,6 +14,8 @@
       "burn_name": "rtos_main",
       "enable": "true",
       "force_link_libs": [
+        "bootstrap",
+        "broadcast",
         "hdf_platform_lite",
         "sysparam",
         "hctest",
