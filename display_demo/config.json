@@ -42,7 +42,7 @@
     {
       "fs_name": "littlefs",
       "signature": "false",
-      "block_size": "32768",
+      "block_size": "4096",
       "fs_size": "4194304",
       "fs_src": "data",
       "burn_name": "littlefs",
