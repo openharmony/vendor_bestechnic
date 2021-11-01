@@ -16,6 +16,7 @@
       "force_link_libs": [
         "bootstrap",
         "abilityms",
+        "bundlems",
         "hdf_platform_lite",
         "fs_adapter",
         "example",
@@ -139,6 +140,14 @@
           "features": [
             "enable_ohos_appexecfwk_feature_ability = true"
           ]
+        }
+      ]
+    },
+    {
+      "subsystem": "appexecfwk",
+      "components": [
+        {
+          "component": "appexecfwk_lite"
         }
       ]
     },
