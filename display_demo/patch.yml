@@ -24,8 +24,6 @@ foundation/ace/ace_engine_lite:
   - vendor/bestechnic/display_demo/patches/0001-feat-porting-ace-to-liteos_m.patch
 foundation/aafwk/aafwk_lite:
   - vendor/bestechnic/display_demo/patches/0001-feat-porting-aafwk-to-liteos_m.patch
-foundation/appexecfwk/appexecfwk_lite:
-  - vendor/bestechnic/display_demo/patches/0001-feat-porting-appexecfwk_lite-to-liteos_m.patch
 foundation/distributedschedule/samgr_lite:
   - vendor/bestechnic/display_demo/patches/0001-fix-increase-default-task-size.patch
 base/global/i18n_lite:
