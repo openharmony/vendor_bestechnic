@@ -1,19 +1,18 @@
-From 83283212369cb00f11698151edd11395e3724889 Mon Sep 17 00:00:00 2001
-From: SimonLi <likailong@huawei.com>
-Date: Wed, 20 Oct 2021 23:19:25 +0800
-Subject: [PATCH] ace_engine_lite add audio plugin api
+From 3718380744d314d2425606ba7e4ac88686e831d6 Mon Sep 17 00:00:00 2001
+From: l00349068 <l00349068@notesmail.huawei.com>
+Date: Fri, 29 Oct 2021 18:09:00 +0800
+Subject: [PATCH] disable audio
 
-Change-Id: Ifa03355b822198bf709dac18f26716e66d6f2299
 ---
  frameworks/BUILD.gn                           | 57 +++++++++++++------
  frameworks/common/BUILD.gn                    | 14 ++++-
- frameworks/module_manager/BUILD.gn            | 30 +++++++---
+ frameworks/module_manager/BUILD.gn            | 32 +++++++----
  frameworks/native_engine/BUILD.gn             | 15 ++++-
  .../async/message_queue_utils.cpp             |  8 +--
  .../src/core/context/js_app_context.cpp       |  2 +-
- frameworks/targets/liteos_m/acelite_config.h  | 25 ++++----
+ frameworks/targets/liteos_m/acelite_config.h  | 24 ++++----
  frameworks/targets/platform_adapter.cpp       |  2 +-
- 8 files changed, 104 insertions(+), 49 deletions(-)
+ 8 files changed, 104 insertions(+), 50 deletions(-)
  mode change 100644 => 100755 frameworks/common/BUILD.gn
  mode change 100644 => 100755 frameworks/module_manager/BUILD.gn
  mode change 100644 => 100755 frameworks/native_engine/BUILD.gn
@@ -144,7 +143,7 @@ index d51cc4e..b424ca8
 diff --git a/frameworks/module_manager/BUILD.gn b/frameworks/module_manager/BUILD.gn
 old mode 100644
 new mode 100755
-index 0742812..eff1e8f
+index 0742812..34fd164
 --- a/frameworks/module_manager/BUILD.gn
 +++ b/frameworks/module_manager/BUILD.gn
 @@ -22,7 +22,13 @@ lite_component("ace_module_manager_lite") {
@@ -185,10 +184,10 @@ index 0742812..eff1e8f
      "$ace_frameworks_root/native_engine:ace_native_engine_lite",
 -    "${appexecfwk_lite_path}/interfaces/kits/bundle_lite/js/builtin:capability_api",
 -    "//base/security/huks/frameworks/crypto_lite/js/builtin:ace_kit_cipher",
-+    "//foundation/graphic/ui:ui",
-     "//foundation/multimedia/media_lite/interfaces/kits/player_lite/js/builtin:audio_lite_api",
+-    "//foundation/multimedia/media_lite/interfaces/kits/player_lite/js/builtin:audio_lite_api",
 -    "//third_party/bounds_checking_function:libsec_shared",
 -    "//third_party/jerryscript/jerry-core:jerry-core_shared",
++    "//foundation/graphic/ui:ui",
 +    "//third_party/bounds_checking_function:libsec_static",
 +    "//third_party/jerryscript:jerry_engine",
      "//utils/native/lite/js/builtin:ace_utils_kits",
@@ -196,6 +195,7 @@ index 0742812..eff1e8f
 +
 +  if (ohos_kernel_type != "liteos_m") {
 +    public_deps += [
++      "//foundation/multimedia/media_lite/interfaces/kits/player_lite/js/builtin:audio_lite_api",
 +      "${appexecfwk_lite_path}/interfaces/kits/bundle_lite/js/builtin:capability_api",
 +      "//base/security/huks/frameworks/crypto_lite/js/builtin:ace_kit_cipher",
 +      "//third_party/bounds_checking_function:libsec_shared",
@@ -299,7 +299,7 @@ index 87afbe1..c47373e 100755
  #endif
  #ifdef FEATURE_API_VERSION
 diff --git a/frameworks/targets/liteos_m/acelite_config.h b/frameworks/targets/liteos_m/acelite_config.h
-index ad16e44..2b71b49 100755
+index ad16e44..6468617 100755
 --- a/frameworks/targets/liteos_m/acelite_config.h
 +++ b/frameworks/targets/liteos_m/acelite_config.h
 @@ -29,9 +29,6 @@
@@ -333,7 +333,7 @@ index ad16e44..2b71b49 100755
  
  /**
   * support config for product JS modules
-@@ -140,22 +141,24 @@
+@@ -140,22 +141,23 @@
  /**
   * date time module
   */
@@ -348,7 +348,6 @@ index ad16e44..2b71b49 100755
 +// #define JS_ENGINE_STATIC_MULTI_CONTEXTS_ENABLED
 +#define FEATURE_MODULE_STORAGE
 +#define FEATURE_MODULE_DEVICE
-+#define FEATURE_MODULE_AUDIO
  /**
   * support js profiler
   */
@@ -381,5 +380,5 @@ index ef3d193..288a733
  #endif
  #include "ace_log.h"
 -- 
-2.17.1
+2.18.0
 
