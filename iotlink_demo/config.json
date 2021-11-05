@@ -21,7 +21,8 @@
         "flash",
         "gpio",
         "i2c",
-        "fs_test"
+        "lwip",
+        "wifi_test"
       ]
     }
   ],
@@ -104,7 +105,10 @@
             "enable_ohos_kernel_liteos_m_fs = true",
             "enable_ohos_kernel_liteos_m_fatfs = false",
             "enable_ohos_kernel_liteos_m_cmsis = false",
-            "enable_ohos_kernel_liteos_m_posix = true"
+            "enable_ohos_kernel_liteos_m_posix = true",
+            "enable_ohos_kernel_liteos_m_lwip = true",
+            "enable_ohos_kernel_liteos_m_shell = false",
+            "ohos_kernel_liteos_m_lwip_path = \"//device/bestechnic/bes2600w/components/net/lwip-2.1:lwip\""
           ]
         }
       ]
@@ -154,7 +158,7 @@
             "bes_drivers_i2c_enable = true",
             "bes_drivers_flash_enable = true",
             "bes_fs_enable = true",
-            "bes_fs_test = true"
+            "bes_wifi_test = true"
           ]
         }
       ]

@@ -7,9 +7,7 @@ root {
         display : delete {}
         input : delete {}
     }
-    platform {
-       mipi_dsi_config : delete {}
-    }
+    display : delete {}
     input : delete {}
     misc {
         fs_config {
