@@ -27,11 +27,11 @@
 #include "lwip/netif.h"
 #include "lwip/inet.h"
 
-#define STATIC_IP_ENABLE 0
 #define SELECT_WIFI_SSID "test_wifi"
 #define SELECT_WIFI_PASSWORD "12345678"
 #define SELECT_WIFI_SECURITYTYPE WIFI_SEC_TYPE_PSK
 
+#define STATIC_IP_ENABLE 0
 #if SCAN_OPTION
 #define SCAN_SUCCESS_FLAGS 1U
 osEventFlagsId_t eventId;
