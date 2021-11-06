@@ -49,4 +49,6 @@ static_library("example") {
     defines += [ "ABILITY_TEST" ]
     include_dirs += [ "ability" ]
   }
+  deps += [ "wifi:wifi_test" ]
+
 }
