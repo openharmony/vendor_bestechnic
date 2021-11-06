@@ -25,7 +25,9 @@
         "i2c",
         "mipi_dsi",
         "hal_display",
-        "touch"
+        "touch",
+        "wifi_test",
+        "lwip"
       ]
     },
     {
