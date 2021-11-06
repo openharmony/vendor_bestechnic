@@ -8,6 +8,7 @@ third_party/musl:
   - vendor/bestechnic/display_demo/patches/0001-fix-work-around-musl-for-arm-none-eabi.patch
 foundation/graphic/ui:
   - vendor/bestechnic/display_demo/patches/0001-feat-porting-graphic_ui-to-liteos_m.patch
+  - vendor/bestechnic/display_demo/patches/0001-feat-foundation_graphic_ui-ui_view-fix-build-issue.patch
 foundation/graphic/utils:
   - vendor/bestechnic/display_demo/patches/0001-feat-porting-graphic_utils-to-liteos_m.patch
 third_party/giflib:
