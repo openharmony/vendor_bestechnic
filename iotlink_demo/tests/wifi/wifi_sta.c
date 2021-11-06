@@ -12,26 +12,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include <stdlib.h>
-#include <string.h>
+
 #include "cmsis_os2.h"
 #include "hal_trace.h"
 #include "ohos_init.h"
 #include "wifi_device.h"
 #include "wifi_error_code.h"
-#ifndef LWIP_ETHERNETIF
-#define LWIP_ETHERNETIF 1
-#endif
-#include "bwifi_interface.h"
-#include "lwip/dhcp.h"
-#include "lwip/netif.h"
-#include "lwip/inet.h"
+#include <stdlib.h>
+#include <string.h>
 
-#define STATIC_IP_ENABLE 0
-#define SELECT_WIFI_SSID "test_wifi"
+#define SELECT_WIFI_SSID "bes_wifi"
 #define SELECT_WIFI_PASSWORD "12345678"
 #define SELECT_WIFI_SECURITYTYPE WIFI_SEC_TYPE_PSK
 
+#define SCAN_OPTION 1
 #if SCAN_OPTION
 #define SCAN_SUCCESS_FLAGS 1U
 osEventFlagsId_t eventId;
@@ -101,33 +95,6 @@ static int WifiScan(uint32_t timeoutMs)
 }
 #endif
 
-static void dhcp_timer_handler(void *arg)
-{
-    printf("dhcp timeout");
-}
-
-static osTimerId_t dhcp_timer;
-static void netif_link_callback(struct netif *netif)
-{
-    if (netif_is_up(netif) && !ip_addr_isany(&netif->ip_addr)) {
-        if (dhcp_timer) {
-            osTimerStop(dhcp_timer);
-        }
-#ifndef inet_ntoa
-#define inet_ntoa(addr) ip4addr_ntoa((const ip4_addr_t *)&(addr))
-#endif
-        printf("ip %s\n", inet_ntoa(netif->ip_addr));
-        printf("netmask %s\n", inet_ntoa(netif->netmask));
-        printf("gw %s\n", inet_ntoa(netif->gw));
-
-        struct ip_info ipinfo;
-        memcpy(&ipinfo.ip, &netif->ip_addr, 4);
-        memcpy(&ipinfo.gw, &netif->gw, 4);
-        memcpy(&ipinfo.netmask, &netif->netmask, 4);
-        bwifi_set_ip_addr(WIFI_IF_STATION, &ipinfo);
-    }
-}
-
 static void WifiSTATask(void)
 {
     WifiDeviceConfig select_ap_config = {0};
@@ -135,7 +102,7 @@ static void WifiSTATask(void)
     strcpy(select_ap_config.preSharedKey, SELECT_WIFI_PASSWORD);
     select_ap_config.securityType = SELECT_WIFI_SECURITYTYPE;
 
-    osDelay(3000);
+    osDelay(2000);
     printf("<--WifiSTATask Init-->\r\n");
 
     if (WiFiInit() != WIFI_SUCCESS) {
@@ -191,51 +158,6 @@ static void WifiSTATask(void)
     printf("Connecting to %s...\r\n", SELECT_WIFI_SSID);
     error = ConnectTo(result); ///< block and retry
     printf("WiFi connect %s!\r\n", (error == WIFI_SUCCESS) ? "succeed" : "failed");
-    if (error != WIFI_SUCCESS) {
-        printf("ConnectTo error\r\n");
-        return;
-    }
-#if STATIC_IP_ENABLE
-    printf("<--start dhcp-->\r\n");
-    struct netif *netif = bwifi_get_netif(WIFI_IF_STATION);
-    if (netif == NULL) {
-        printf("bwifi_get_netif error\r\n");
-        return;
-    }
-    printf("bwifi_get_netif %p\r\n", netif);
-    if (netif->hwaddr_len != 6) {
-        printf("netif->hwaddr_len %u error\r\n", netif->hwaddr_len);
-        return;
-    }
-    netif_set_default(netif);
-    netif_set_link_up(netif);
-    netif_set_up(netif);
-    netif_set_status_callback(netif, netif_link_callback);
-    dhcp_timer = osTimerNew(dhcp_timer_handler, osTimerOnce, NULL, NULL);
-    dhcp_start(netif);
-    osTimerStart(dhcp_timer, 30 * 1000);
-#else
-    printf("<-- use static ip -->\r\n");
-    struct netif *netif = bwifi_get_netif(WIFI_IF_STATION);
-    if (netif == NULL) {
-        printf("bwifi_get_netif error\r\n");
-        return;
-    }
-    printf("%s: netif %p, size %u, name %c%c, hwaddr_len %u, flags 0x%x\n", __func__,
-           netif, sizeof(struct netif), netif->name[0], netif->name[1], netif->hwaddr_len, netif->flags);
-    netif_set_default(netif);
-    netif_set_link_up(netif);
-    netif_set_up(netif);
-    ip4_addr_t ip, netmask, gw;
-    int ret = inet_aton("192.168.170.190", &ip);
-    ret += inet_aton("255.255.255.0", &netmask);
-    ret += inet_aton("192.168.170.1", &gw);
-    if (ret != 3) {
-        printf("inet_aton error\n");
-        return;
-    }
-    netif_set_addr(netif, &ip, &netmask, &gw);
-#endif
 
     for (;;) {
         osDelay(100);
@@ -246,10 +168,15 @@ static void WifiClientSTA(void)
 {
     printf("[%s:%d]: %s\n", __FILE__, __LINE__, __func__);
 
-    osThreadAttr_t attr = {0};
+    osThreadAttr_t attr;
     attr.name = "WifiSTATask";
+    attr.attr_bits = 0U;
+    attr.cb_mem = NULL;
+    attr.cb_size = 0U;
+    attr.stack_mem = NULL;
     attr.stack_size = 10240;
-    attr.priority = osPriorityNormal;
+    attr.priority = 24;
+
     if (osThreadNew((osThreadFunc_t)WifiSTATask, NULL, &attr) == NULL) {
         printf("Falied to create WifiSTATask!\n");
     }
