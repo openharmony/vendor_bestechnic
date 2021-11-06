@@ -25,8 +25,7 @@
         "i2c",
         "mipi_dsi",
         "hal_display",
-        "touch",
-        "wifi_test"
+        "touch"
       ]
     },
     {
@@ -219,8 +218,7 @@
             "bes_ability_enable = true",
             "bes_ability_test = true",
             "bes_histreamer_test = false",
-            "enable_histreamer_plugin_ffmpeg_adapter = false",
-            "bes_wifi_test = true"
+            "enable_histreamer_plugin_ffmpeg_adapter = false"
           ]
         }
       ]
