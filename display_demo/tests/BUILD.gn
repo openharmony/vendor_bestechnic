@@ -49,4 +49,8 @@ static_library("example") {
     defines += [ "ABILITY_TEST" ]
     include_dirs += [ "ability" ]
   }
+  if (bes_communication_wifi_lite_enable && bes_wifi_test) {
+    deps += [ "wifi:wifi_test" ]
+    defines += [ "WIFI_TEST" ]
+  }
 }
