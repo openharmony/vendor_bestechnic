@@ -20,7 +20,5 @@ static_library("wifi_test") {
   include_dirs = [
     "//utils/native/lite/include",
     "//foundation/communication/wifi_lite/interfaces/wifiservice/",
-    "//device/bestechnic/bes2600w/sdk_liteos/bsp/net/wifi",
-    "//third_party/lwip/src/include",
   ]
 }
