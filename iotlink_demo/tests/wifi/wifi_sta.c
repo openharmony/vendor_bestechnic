@@ -195,7 +195,7 @@ static void WifiSTATask(void)
         printf("ConnectTo error\r\n");
         return;
     }
-#if !STATIC_IP_ENABLE
+#if STATIC_IP_ENABLE
     printf("<--start dhcp-->\r\n");
     struct netif *netif = bwifi_get_netif(WIFI_IF_STATION);
     if (netif == NULL) {
