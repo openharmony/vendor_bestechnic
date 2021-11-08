@@ -1,0 +1,182 @@
+From 2a7bd27ba5b0d14d91609fde52d626c5f4c2bdf3 Mon Sep 17 00:00:00 2001
+From: SimonLi <likailong@huawei.com>
+Date: Wed, 20 Oct 2021 00:14:51 +0800
+Subject: [PATCH] build: porting media_utils_lite to mini system
+
+Signed-off-by: SimonLi <likailong@huawei.com>
+---
+ BUILD.gn                 | 41 +++++++++++++++++++++++++++++-----------
+ interfaces/kits/source.h |  6 ++++++
+ src/source.cpp           | 13 ++++++++++++-
+ 3 files changed, 48 insertions(+), 12 deletions(-)
+ mode change 100755 => 100644 BUILD.gn
+ mode change 100755 => 100644 interfaces/kits/source.h
+ mode change 100755 => 100644 src/source.cpp
+
+diff --git a/BUILD.gn b/BUILD.gn
+old mode 100755
+new mode 100644
+index dff89f1..35183a8
+--- a/BUILD.gn
++++ b/BUILD.gn
+@@ -11,22 +11,41 @@
+ # See the License for the specific language governing permissions and
+ # limitations under the License.
+ 
+-shared_library("media_common") {
++import("//build/lite/config/component/lite_component.gni")
++
++lite_library("media_common") {
++  if (ohos_kernel_type == "liteos_m") {
++    target_type = "static_library"
++  } else {
++    target_type = "shared_library"
++  }
+   sources = [
+     "src/format.cpp",
+     "src/source.cpp",
+   ]
+-  cflags = [ "-fPIC" ]
+-  cflags += [ "-Wall" ]
+-  cflags_cc = cflags
+   include_dirs = [
+     "interfaces/kits",
+-    "//third_party/bounds_checking_function/include",
+-  ]
+-  public_deps = [
+-    "$ohos_board_adapter_dir:hardware_media_sdk",
+-    "$ohos_board_adapter_dir/../modules/middleware:middleware_source_sdk",
+-    "//foundation/graphic/surface:lite_surface",
+-    "//third_party/bounds_checking_function:libsec_shared",
++    "//base/hiviewdfx/hilog_lite/interfaces/native/innerkits/hilog",
+   ]
++  if (ohos_kernel_type == "liteos_m") {
++    public_deps = [ "//third_party/bounds_checking_function:libsec_static" ]
++  } else {
++    public_deps = [ "//third_party/bounds_checking_function:libsec_shared" ]
++  }
++
++  if (ohos_kernel_type == "liteos_m") {
++    public_deps +=
++        [ "//base/hiviewdfx/hilog_lite/frameworks/featured:hilog_static" ]
++    public_configs = [ ":media_common_public_config" ]
++  } else {
++    public_deps += [
++      "$ohos_board_adapter_dir:hardware_media_sdk",
++      "$ohos_board_adapter_dir/../modules/middleware:middleware_source_sdk",
++      "//foundation/graphic/surface:lite_surface",
++    ]
++  }
++}
++
++config("media_common_public_config") {
++  defines = [ "SURFACE_DISABLED" ]
+ }
+diff --git a/interfaces/kits/source.h b/interfaces/kits/source.h
+old mode 100755
+new mode 100644
+index 5dd0045..c7673bc
+--- a/interfaces/kits/source.h
++++ b/interfaces/kits/source.h
+@@ -40,7 +40,9 @@
+ #include <map>
+ #include <string>
+ #include "format.h"
++#ifndef SURFACE_DISABLED
+ #include "surface.h"
++#endif
+ 
+ using std::shared_ptr;
+ 
+@@ -144,9 +146,11 @@ public:
+ 
+     virtual ~StreamSource(void);
+ 
++#ifndef SURFACE_DISABLED
+     void SetSurface(Surface* surface);
+ 
+     Surface* GetSurface(void);
++#endif
+ 
+     uint8_t* GetSharedBuffer(size_t& size);
+ 
+@@ -173,8 +177,10 @@ public:
+ 
+ private:
+ 
++#ifndef SURFACE_DISABLED
+     Surface* surface_;
+     SurfaceBuffer* curBuffer_;
++#endif
+ };
+ 
+ /**
+diff --git a/src/source.cpp b/src/source.cpp
+old mode 100755
+new mode 100644
+index 945d23f..1de2b3d
+--- a/src/source.cpp
++++ b/src/source.cpp
+@@ -61,18 +61,23 @@ const Format &Source::GetSourceStreamFormat() const
+ }
+ 
+ StreamSource::StreamSource()
++#ifndef SURFACE_DISABLED
+     : surface_(nullptr),
+       curBuffer_(nullptr)
++#endif
+ {}
+ 
+ StreamSource::~StreamSource()
+ {
+     MEDIA_ERR_LOG("[%s,%d] in", __func__, __LINE__);
++#ifndef SURFACE_DISABLED
+     if (surface_ != nullptr) {
+         delete surface_;
+     }
++#endif
+ }
+ 
++#ifndef SURFACE_DISABLED
+ void StreamSource::SetSurface(Surface* surface)
+ {
+     surface_ = surface;
+@@ -82,10 +87,11 @@ Surface* StreamSource::GetSurface(void)
+ {
+     return surface_;
+ }
+-
++#endif
+ 
+ uint8_t* StreamSource::GetSharedBuffer(size_t& size)
+ {
++#ifndef SURFACE_DISABLED
+     if ((surface_ == nullptr) || (curBuffer_ != nullptr)){
+         return nullptr;
+     }
+@@ -97,10 +103,14 @@ uint8_t* StreamSource::GetSharedBuffer(size_t& size)
+     } else {
+         return nullptr;
+     }
++#else
++  return nullptr;
++#endif
+ }
+ 
+ int StreamSource::QueueSharedBuffer(void* buffer, size_t size)
+ {
++#ifndef SURFACE_DISABLED
+     if ((surface_ == nullptr) || (buffer == nullptr) || (curBuffer_ == nullptr)){
+         return -1;
+     }
+@@ -115,6 +125,7 @@ int StreamSource::QueueSharedBuffer(void* buffer, size_t size)
+         return -1;
+     }
+     curBuffer_ = nullptr;
++#endif
+     return 0;
+ }
+ 
+-- 
+2.17.1
+

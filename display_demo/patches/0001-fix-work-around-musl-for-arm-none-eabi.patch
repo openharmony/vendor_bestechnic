@@ -1,35 +1,38 @@
-From cc4cf54218e9ea7ca4ece2e602cb87230ea73c43 Mon Sep 17 00:00:00 2001
-From: leihuang <leihuang@bestechnic.com>
-Date: Sat, 11 Sep 2021 10:17:17 +0800
-Subject: [PATCH] fix: work around musl for arm-none-eabi
+From 483dac6a951f4a23fbc14b1ffe08753b82adaf20 Mon Sep 17 00:00:00 2001
+From: SimonLi <likailong@huawei.com>
+Date: Wed, 20 Oct 2021 01:08:05 +0800
+Subject: [PATCH] build: porting musl to mini system
 
-Signed-off-by: leihuang <leihuang@bestechnic.com>
-Change-Id: Ia2b6c7e624d80d5303296f9688275419da329c9a
+Signed-off-by: SimonLi <likailong@huawei.com>
+Change-Id: Icb6746fd0a55d653d928bff7d888f87abd71cb98
 ---
- porting/liteos_m/kernel/BUILD.gn              | 22 +++++++++----------
- porting/liteos_m/kernel/include/ctype.h       | 12 ++++++++++
- porting/liteos_m/kernel/include/stddef.h      | 13 +++++++++++
- porting/liteos_m/kernel/include/stdlib.h      |  2 ++
- .../liteos_m/kernel/src/internal/stdio_impl.h |  5 +++++
- porting/liteos_m/kernel/src/stdio/clearerr.c  |  9 ++++++--
+ porting/liteos_m/kernel/BUILD.gn              | 25 +++---
+ porting/liteos_m/kernel/include/ctype.h       | 12 +++
+ porting/liteos_m/kernel/include/pthread.h     |  2 +-
+ porting/liteos_m/kernel/include/stddef.h      | 13 ++++
+ porting/liteos_m/kernel/include/stdlib.h      |  2 +
+ .../liteos_m/kernel/src/internal/stdio_impl.h |  5 ++
+ porting/liteos_m/kernel/src/misc/realpath.c   | 76 +++++++++++++++++++
+ porting/liteos_m/kernel/src/stdio/clearerr.c  |  9 ++-
  porting/liteos_m/kernel/src/stdio/fclose.c    |  2 +-
- porting/liteos_m/kernel/src/stdio/feof.c      | 11 +++++++---
+ porting/liteos_m/kernel/src/stdio/feof.c      | 11 ++-
  porting/liteos_m/kernel/src/stdio/fflush.c    |  2 +-
- porting/liteos_m/kernel/src/stdio/fgets.c     |  4 ++--
- porting/liteos_m/kernel/src/stdio/fileno.c    |  4 ++--
- porting/liteos_m/kernel/src/stdio/fopen.c     |  9 ++++++--
- porting/liteos_m/kernel/src/stdio/fputs.c     |  9 ++++++--
- porting/liteos_m/kernel/src/stdio/fread.c     | 11 +++++++---
+ porting/liteos_m/kernel/src/stdio/fgets.c     |  4 +-
+ porting/liteos_m/kernel/src/stdio/fileno.c    |  4 +-
+ porting/liteos_m/kernel/src/stdio/fopen.c     |  9 ++-
+ porting/liteos_m/kernel/src/stdio/fputs.c     |  9 ++-
+ porting/liteos_m/kernel/src/stdio/fread.c     | 11 ++-
  porting/liteos_m/kernel/src/stdio/fseek.c     |  2 +-
  porting/liteos_m/kernel/src/stdio/ftell.c     |  2 +-
- porting/liteos_m/kernel/src/stdio/fwrite.c    |  9 ++++++--
- porting/liteos_m/kernel/src/string/strdup.c   |  7 +++++-
- 18 files changed, 101 insertions(+), 34 deletions(-)
+ porting/liteos_m/kernel/src/stdio/fwrite.c    |  9 ++-
+ porting/liteos_m/kernel/src/string/strdup.c   |  7 +-
+ 20 files changed, 180 insertions(+), 36 deletions(-)
  mode change 100644 => 100755 porting/liteos_m/kernel/BUILD.gn
  mode change 100644 => 100755 porting/liteos_m/kernel/include/ctype.h
  mode change 100644 => 100755 porting/liteos_m/kernel/include/stddef.h
  mode change 100644 => 100755 porting/liteos_m/kernel/include/stdlib.h
  mode change 100644 => 100755 porting/liteos_m/kernel/src/internal/stdio_impl.h
+ create mode 100755 porting/liteos_m/kernel/src/misc/realpath.c
  mode change 100644 => 100755 porting/liteos_m/kernel/src/stdio/clearerr.c
  mode change 100644 => 100755 porting/liteos_m/kernel/src/stdio/fclose.c
  mode change 100644 => 100755 porting/liteos_m/kernel/src/stdio/feof.c
@@ -47,10 +50,10 @@ Change-Id: Ia2b6c7e624d80d5303296f9688275419da329c9a
 diff --git a/porting/liteos_m/kernel/BUILD.gn b/porting/liteos_m/kernel/BUILD.gn
 old mode 100644
 new mode 100755
-index b0cead99..ed390fb0
+index b0cead99..25a40945
 --- a/porting/liteos_m/kernel/BUILD.gn
 +++ b/porting/liteos_m/kernel/BUILD.gn
-@@ -58,10 +58,10 @@ static_library(libc) {
+@@ -58,10 +58,11 @@ static_library(libc) {
      "src/locale/c_locale.c",
      "src/locale/langinfo.c",
      "src/misc/dirname.c",
@@ -58,6 +61,7 @@ index b0cead99..ed390fb0
 -    "src/multibyte/mbtowc.c",
 -    "src/multibyte/wcrtomb.c",
 -    "src/multibyte/wctomb.c",
++    "src/misc/realpath.c",
 +    # "src/multibyte/internal.c",
 +    # "src/multibyte/mbtowc.c",
 +    # "src/multibyte/wcrtomb.c",
@@ -65,7 +69,7 @@ index b0cead99..ed390fb0
      "src/network/h_errno.c",
      "src/network/htonl.c",
      "src/network/htons.c",
-@@ -102,25 +102,25 @@ static_library(libc) {
+@@ -102,25 +103,25 @@ static_library(libc) {
      "src/stdio/perror.c",
      "src/stdio/remove.c",
      "src/stdio/rewind.c",
@@ -87,7 +91,8 @@ index b0cead99..ed390fb0
 -    #"src/stdlib/strtol.c",
 +    # "src/stdlib/strtol.c",
      "src/locale/iconv.c",
-     "src/stdio/ungetc.c",
+-    "src/stdio/ungetc.c",
++    # "src/stdio/ungetc.c",
      "src/stdlib/atol.c",
      "src/stdlib/atoll.c",
      "src/stdlib/bsearch.c",
@@ -97,7 +102,7 @@ index b0cead99..ed390fb0
      "src/string/memchr.c",
      "src/string/memcmp.c",
      "src/string/memcpy.c",
-@@ -138,7 +138,7 @@ static_library(libc) {
+@@ -138,7 +139,7 @@ static_library(libc) {
      "src/string/strlen.c",
      "src/string/strncasecmp.c",
      "src/string/strncmp.c",
@@ -131,6 +136,19 @@ index 61e826d0..05fe3b58
  #define _tolower(a) ((a)|0x20)
  #define _toupper(a) ((a)&0x5f)
  #define isascii(a) (0 ? isascii(a) : (unsigned)(a) < 128)
+diff --git a/porting/liteos_m/kernel/include/pthread.h b/porting/liteos_m/kernel/include/pthread.h
+index 8291cdef..cd68607b 100644
+--- a/porting/liteos_m/kernel/include/pthread.h
++++ b/porting/liteos_m/kernel/include/pthread.h
+@@ -62,7 +62,7 @@ extern "C" {
+ #define PTHREAD_RECURSIVE_MUTEX_INITIALIZER_NP { _MUX_MAGIC, _MUX_INVALID_HANDLE }
+ #endif
+ #define PTHREAD_RWLOCK_INITIALIZER {{{0}}}
+-#define PTHREAD_COND_INITIALIZER {{{0}}}
++#define PTHREAD_COND_INITIALIZER {0}
+ #define PTHREAD_ONCE_INIT 0
+ 
+ 
 diff --git a/porting/liteos_m/kernel/include/stddef.h b/porting/liteos_m/kernel/include/stddef.h
 old mode 100644
 new mode 100755
@@ -200,6 +218,88 @@ index fa94606a..d5f8598c
  
  #define UNGET 8
  
+diff --git a/porting/liteos_m/kernel/src/misc/realpath.c b/porting/liteos_m/kernel/src/misc/realpath.c
+new file mode 100755
+index 00000000..9c630cb6
+--- /dev/null
++++ b/porting/liteos_m/kernel/src/misc/realpath.c
+@@ -0,0 +1,76 @@
++/* realpath.c - Return the canonicalized absolute pathname */
++
++/* Written 2000 by Werner Almesberger */
++
++#include <stdlib.h>
++#include <unistd.h>
++#include <string.h>
++#include <limits.h>
++#include <errno.h>
++#include <sys/stat.h>
++
++/* FIXME: buffer overrun possible, loops forever on cyclic symlinks */
++
++/*
++ * Canonical name: never ends with a slash
++ */
++
++static int resolve_path(char *path, char *result, char *pos)
++{
++    if (*path == '/') {
++        *result = '/';
++        pos = result + 1;
++        path++;
++    }
++    *pos = 0;
++    if (!*path)
++        return 0;
++    while (1) {
++        char *slash;
++        struct stat st;
++
++        slash = *path ? strchr(path, '/') : NULL;
++        if (slash)
++            *slash = 0;
++        if (!path[0] || (path[0] == '.' &&
++                         (!path[1] || (path[1] == '.' && !path[2])))) {
++            pos--;
++            if (pos != result && path[0] && path[1])
++                while (*--pos != '/')
++                    ;
++        } else {
++            strcpy(pos, path);
++            if (stat(result, &st) < 0)
++                return -1;
++            // ignore link
++            pos = strchr(result, 0);
++        }
++        if (slash) {
++            *pos++ = '/';
++            path = slash + 1;
++        }
++        *pos = 0;
++        if (!slash)
++            break;
++    }
++    return 0;
++}
++
++char *realpath(const char *__restrict path, char *__restrict resolved_path)
++{
++    char *path_copy;
++    int res;
++
++    if (!*path) {
++        errno = ENOENT; /* SUSv2 */
++        return NULL;
++    }
++    path_copy = strdup(path);
++    if (!path_copy)
++        return NULL;
++    res = resolve_path(path_copy, resolved_path, resolved_path);
++    free(path_copy);
++    if (res)
++        return NULL;
++    return resolved_path;
++}
 diff --git a/porting/liteos_m/kernel/src/stdio/clearerr.c b/porting/liteos_m/kernel/src/stdio/clearerr.c
 old mode 100644
 new mode 100755

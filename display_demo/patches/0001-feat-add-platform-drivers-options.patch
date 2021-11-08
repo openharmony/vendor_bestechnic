@@ -1,21 +1,15 @@
-From b036a27ed36b62bbd83a8cc333d77970feaf9678 Mon Sep 17 00:00:00 2001
-From: leihuang <leihuang@bestechnic.com>
-Date: Sat, 11 Sep 2021 10:20:34 +0800
+From fb2564357313e51bbd615c8784b24ae46c158d8f Mon Sep 17 00:00:00 2001
+From: yangjian <jianyang@bestechnic.com>
+Date: Mon, 8 Nov 2021 21:11:00 +0800
 Subject: [PATCH] feat: add platform drivers options
 
-Signed-off-by: leihuang <leihuang@bestechnic.com>
-Change-Id: If3f3028b21c1b30e43bc8bf264b21198bed475a2
 ---
- khdf/liteos_m/BUILD.gn          | 4 ++--
- khdf/liteos_m/platform/BUILD.gn | 7 +++++++
- 2 files changed, 9 insertions(+), 2 deletions(-)
- mode change 100644 => 100755 khdf/liteos_m/BUILD.gn
- mode change 100644 => 100755 khdf/liteos_m/platform/BUILD.gn
+ khdf/liteos_m/BUILD.gn          |  4 ++--
+ khdf/liteos_m/platform/BUILD.gn | 33 ++++++++++++++++++++++++++-------
+ 2 files changed, 28 insertions(+), 9 deletions(-)
 
 diff --git a/khdf/liteos_m/BUILD.gn b/khdf/liteos_m/BUILD.gn
-old mode 100644
-new mode 100755
-index a72632b..18b178d
+index a72632b..18b178d 100644
 --- a/khdf/liteos_m/BUILD.gn
 +++ b/khdf/liteos_m/BUILD.gn
 @@ -30,9 +30,9 @@
@@ -31,32 +25,63 @@ index a72632b..18b178d
    ]
  }
 diff --git a/khdf/liteos_m/platform/BUILD.gn b/khdf/liteos_m/platform/BUILD.gn
-old mode 100644
-new mode 100755
-index 9c2625b..3c5071f
+index abb752e..faeaa9e 100644
 --- a/khdf/liteos_m/platform/BUILD.gn
 +++ b/khdf/liteos_m/platform/BUILD.gn
-@@ -34,6 +34,7 @@ config("libhdf_platform_pub_config") {
+@@ -25,7 +25,7 @@
+ # OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+ # WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+ # OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
+-# ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
++# ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ 
+ import("//drivers/adapter/khdf/liteos_m/hdf.gni")
+ 
+@@ -34,6 +34,14 @@ config("libhdf_platform_pub_config") {
    include_dirs = [
      "$hdf_fwk_path/include/platform",
      "$hdf_fwk_path/support/platform/include",
++    "$hdf_fwk_path/support/platform/include/mipi/",
++    "$hdf_fwk_path/support/platform/include/uart/",
 +    "$hdf_fwk_path/support/platform/include/common",
++    "$hdf_fwk_path/support/platform/include/fwk/",
++    "$hdf_fwk_path/support/platform/include/i2c/",
++    "$hdf_fwk_path/support/platform/include/pwm/",
++    "$hdf_fwk_path/support/platform/include/watchdog/",
++    "$hdf_fwk_path/support/platform/include/spi/",
    ]
  }
  
-@@ -46,6 +47,12 @@ static_library("hdf_platform_lite") {
-     "$hdf_fwk_path/support/platform/src/uart_core.c",
-     "$hdf_fwk_path/support/platform/src/uart_if.c",
-     "$hdf_fwk_path/support/platform/src/pwm_core.c",
-+    "$hdf_fwk_path/support/platform/src/mipi_dsi_core.c",
-+    "$hdf_fwk_path/support/platform/src/mipi_dsi_if.c",
-+    "$hdf_fwk_path/support/platform/src/spi_core.c",
-+    "$hdf_fwk_path/support/platform/src/spi_if.c",
-+    "$hdf_fwk_path/support/platform/src/watchdog_core.c",
-+    "$hdf_fwk_path/support/platform/src/watchdog_if.c",
-     "plat_common.c",
+@@ -41,12 +49,23 @@ static_library("hdf_platform_lite") {
+   sources = [
+     "$hdf_fwk_path/support/platform/src/gpio/gpio_core.c",
+     "$hdf_fwk_path/support/platform/src/gpio/gpio_if.c",
+-    "$hdf_fwk_path/support/platform/src/i2c_core.c",
+-    "$hdf_fwk_path/support/platform/src/i2c_if.c",
+-    "$hdf_fwk_path/support/platform/src/pwm_core.c",
+-    "$hdf_fwk_path/support/platform/src/uart_core.c",
+-    "$hdf_fwk_path/support/platform/src/uart_if.c",
+-    "plat_common.c",
++    "$hdf_fwk_path/support/platform/src/i2c/i2c_core.c",
++    "$hdf_fwk_path/support/platform/src/i2c/i2c_if.c",
++    "$hdf_fwk_path/support/platform/src/pwm/pwm_core.c",
++    "$hdf_fwk_path/support/platform/src/uart/uart_core.c",
++    "$hdf_fwk_path/support/platform/src/uart/uart_if.c",
++    "$hdf_fwk_path/support/platform/src/mipi/mipi_dsi_core.c",
++    "$hdf_fwk_path/support/platform/src/mipi/mipi_dsi_if.c",
++    "$hdf_fwk_path/support/platform/src/spi/spi_core.c",
++    "$hdf_fwk_path/support/platform/src/spi/spi_if.c",
++    "$hdf_fwk_path/support/platform/src/watchdog/watchdog_core.c",
++    "$hdf_fwk_path/support/platform/src/watchdog/watchdog_if.c",
++    # "plat_common.c",
++    "$hdf_fwk_path/support/platform/src/fwk/platform_device.c",
++    "$hdf_fwk_path/support/platform/src/fwk/platform_manager.c",
++    "$hdf_fwk_path/support/platform/src/fwk/platform_queue.c",
++    "$hdf_fwk_path/support/platform/src/fwk/platform_common.c"
++
    ]
    include_dirs = [ "kernel/liteos_m/kernel/arch/include" ]
+   public_configs = [ ":libhdf_platform_pub_config" ]
 -- 
 2.17.1
 

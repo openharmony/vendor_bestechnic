@@ -1,0 +1,117 @@
+# Copyright (c) 2021 bestechnic (Shanghai) Technologies CO., LIMITED.
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+Common:
+  BAUT_RATE: 1500000
+  BIN_DIR: ota_bin
+  COM: null
+  DLD_TOOLS_EXE: .\tools\dldtool.exe
+  DLD_VERBOSE_LOG: false
+  ERASE_WHOLE_FLASH: false
+  LOG_PRINT_DELAY_IN_MS: 100
+  LOG_SWITCH: true
+  MODE: WiFi 烧录工具
+  PIPE_BUFFER_SIZE: 2000000
+  PROGRAMMER: programmer2003.bin
+  PROGRESSBAR_SWITCH: false
+  REBOOT: false
+  REDIRECT_PIPE: true
+  SEC_BOOT_VER: 3
+  WAIT_PRESS_ENTER: true
+FILE_LIST:
+- BOOT1:
+    ADDR: null
+    FILE_NAME: ota_boot1.bin
+    SIZE: 65536
+    SWITCH: true
+- BOOT2A:
+    ADDR: 738263040
+    FILE_NAME: ota_boot2a.bin
+    REMAP_BOTH_SWITCH: true
+    REMAP_SWITCH: true
+    MAGIC: true
+    SIZE: 65536
+    SWITCH: true
+- BOOT2B:
+    ADDR: 738328576
+    FILE_NAME: ota_boot2b.bin
+    REMAP_BOTH_SWITCH: true
+    REMAP_SWITCH: true
+    MAGIC: true
+    SIZE: 65536
+    SWITCH: false
+- TRUSTZONEA:
+    ADDR: 738394112
+    FILE_NAME: trustzone_main.bin
+    MAGIC: true
+    SIZE: 155648
+    SWITCH: true
+- TRUSTZONEB:
+    ADDR: 738549760
+    FILE_NAME: trustzone_mini.bin
+    MAGIC: true
+    SIZE: 155648
+    SWITCH: true
+- TRUSTZONE_INFO:
+    ADDR: 738705408
+    FILE_NAME: trustzone_info.bin
+    MAGIC: true
+    SIZE: 16384
+    SWITCH: false
+- RTOSA:
+    ADDR: 738721792
+    FILE_NAME: rtos_main.bin
+    MAGIC: true
+    SIZE: 6291456
+    SWITCH: true
+- RTOSB:
+    ADDR: 745013248
+    FILE_NAME: rtos_mini.bin
+    MAGIC: true
+    SIZE: 6291456
+    SWITCH: true
+- RESOURCE:
+    ADDR: 751304704
+    FILE_NAME: resource.bin
+    SIZE: 524288
+    SWITCH: true
+- LOG:
+    ADDR: 752353280
+    FILE_NAME: log.bin
+    SIZE: 327680
+    SWITCH: true
+- DATA:
+    ADDR: 752680960
+    FILE_NAME: data.bin
+    SIZE: 2097152
+    SWITCH: true
+- MISC:
+    ADDR: 754778112
+    FILE_NAME: misc.bin
+    SIZE: 49152
+    SWITCH: false
+- USERDATA:
+    ADDR: 754827264
+    FILE_NAME: userdata.bin
+    SIZE: 16384
+    SWITCH: false
+- FACTORY:
+    ADDR: 754843648
+    FILE_NAME: factory.bin
+    SIZE: 65536
+    SWITCH: true
+- FACTORYBK:
+    ADDR: 754909184
+    FILE_NAME: factory.bin
+    SIZE: 65536
+    SWITCH: true

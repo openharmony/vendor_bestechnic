@@ -1,0 +1,26 @@
+From b6e0646e938a49e41fefe2eed426f46ba88068d0 Mon Sep 17 00:00:00 2001
+From: yangjian <jianyang@bestechnic.com>
+Date: Wed, 20 Oct 2021 11:06:08 +0800
+Subject: [PATCH] feat: test/xts/tools/lite/ larger HCTEST stacksize
+
+Signed-off-by: yangjian <jianyang@bestechnic.com>
+Change-Id: Ia55f9bbd59f7780b86a17afa83150fb342eefbc6
+---
+ hctest/src/hctest_service.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/hctest/src/hctest_service.c b/hctest/src/hctest_service.c
+index e997fbc..574089b 100644
+--- a/hctest/src/hctest_service.c
++++ b/hctest/src/hctest_service.c
+@@ -87,7 +87,7 @@ static BOOL MessageHandle(Service *service, Request *request)
+ 
+ static TaskConfig GetTaskConfig(Service *service)
+ {
+-    TaskConfig config = {LEVEL_MIDDLE, PRI_NORMAL, 0x1000, TASK_QUEUE_SIZE, SINGLE_TASK};
++    TaskConfig config = {LEVEL_MIDDLE, PRI_NORMAL, 0xF000, TASK_QUEUE_SIZE, SINGLE_TASK};
+     (void)service;
+     return config;
+ };
+-- 
+2.17.1

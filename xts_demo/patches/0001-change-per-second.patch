@@ -1,0 +1,27 @@
+From d83b160279eb11059439c9ec287180d4cc5d9be9 Mon Sep 17 00:00:00 2001
+From: keyehu <keyehu@bestechnic.com>
+Date: Wed, 20 Oct 2021 20:39:18 +0800
+Subject: [PATCH] change per second
+
+Signed-off-by: keyehu <keyehu@bestechnic.com>
+Change-Id: I49204c52426043b3c748809e3daa8e145872ed46
+---
+ communication_lite/wifiservice_hal/src/wifiservice_func_test.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/communication_lite/wifiservice_hal/src/wifiservice_func_test.c b/communication_lite/wifiservice_hal/src/wifiservice_func_test.c
+index d7d8b47..29132e4 100755
+--- a/communication_lite/wifiservice_hal/src/wifiservice_func_test.c
++++ b/communication_lite/wifiservice_hal/src/wifiservice_func_test.c
+@@ -21,7 +21,7 @@
+ #include <unistd.h>
+ 
+ #define DEF_TIMEOUT 15
+-#define ONE_SECOND 100
++#define ONE_SECOND 1000
+ #define LEVEL_ERROR (-1)
+ #define LEVEL_ONE 1
+ #define LEVEL_TWO 2
+-- 
+2.17.1
+

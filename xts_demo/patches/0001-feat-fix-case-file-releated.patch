@@ -1,0 +1,309 @@
+From 28516cea3e3d7a82f33ff9b163e6ebdfcedc3bbd Mon Sep 17 00:00:00 2001
+From: yangjian <jianyang@bestechnic.com>
+Date: Fri, 22 Oct 2021 19:24:06 +0800
+Subject: [PATCH] feat: fix case file releated
+
+Signed-off-by: yangjian <jianyang@bestechnic.com>
+Change-Id: Ic1020396a9fff448bbfbf6cb8676a3aeb38c3d81
+---
+ .../file_hal/src/utils_file_func_test.c       | 42 +++++++++----------
+ .../file_hal/src/utils_file_reli_test.c       | 16 +++----
+ .../kv_store_hal/src/kvstore_func_test.c      |  8 ++--
+ 3 files changed, 34 insertions(+), 32 deletions(-)
+
+diff --git a/utils_lite/file_hal/src/utils_file_func_test.c b/utils_lite/file_hal/src/utils_file_func_test.c
+index 2414452..b753a66 100755
+--- a/utils_lite/file_hal/src/utils_file_func_test.c
++++ b/utils_lite/file_hal/src/utils_file_func_test.c
+@@ -65,7 +65,7 @@ LITE_TEST_CASE(UtilsFileFuncTestSuite, testFileCreatAndClose001, Function | Medi
+ {
+     char* fileName = "testfile101";
+     int fd = UtilsFileOpen(fileName, O_RDONLY_FS | O_CREAT_FS, 0);
+-    TEST_ASSERT_GREATER_THAN_INT(0, fd);
++    TEST_ASSERT_GREATER_THAN_INT(-1, fd);
+     int ret = UtilsFileClose(fd);
+     TEST_ASSERT_EQUAL_INT(0, ret);
+     UtilsFileDelete(fileName);
+@@ -80,7 +80,7 @@ LITE_TEST_CASE(UtilsFileFuncTestSuite, testFileCreatAndClose002, Function | Medi
+ {
+     char* fileName = "testfile102";
+     int fd = UtilsFileOpen(fileName, O_WRONLY_FS | O_CREAT_FS, 0);
+-    TEST_ASSERT_GREATER_THAN_INT(0, fd);
++    TEST_ASSERT_GREATER_THAN_INT(-1, fd);
+     int ret = UtilsFileClose(fd);
+     TEST_ASSERT_EQUAL_INT(0, ret);
+     UtilsFileDelete(fileName);
+@@ -95,7 +95,7 @@ LITE_TEST_CASE(UtilsFileFuncTestSuite, testFileCreatAndClose003, Function | Medi
+ {
+     char* fileName = "testfile103";
+     int fd = UtilsFileOpen(fileName, O_RDWR_FS | O_CREAT_FS, 0);
+-    TEST_ASSERT_GREATER_THAN_INT(0, fd);
++    TEST_ASSERT_GREATER_THAN_INT(-1, fd);
+     int ret = UtilsFileClose(fd);
+     TEST_ASSERT_EQUAL_INT(0, ret);
+     UtilsFileDelete(fileName);
+@@ -112,7 +112,7 @@ LITE_TEST_CASE(UtilsFileFuncTestSuite, testFileOpenAndClose001, Function | Mediu
+     int fd0 = UtilsFileOpen(fileName, O_RDWR_FS | O_CREAT_FS, 0);
+     UtilsFileClose(fd0);
+     int fd = UtilsFileOpen(fileName, O_RDONLY_FS, 0);
+-    TEST_ASSERT_GREATER_THAN_INT(0, fd);
++    TEST_ASSERT_GREATER_THAN_INT(-1, fd);
+     int ret = UtilsFileClose(fd);
+     TEST_ASSERT_EQUAL_INT(0, ret);
+     UtilsFileDelete(fileName);
+@@ -129,7 +129,7 @@ LITE_TEST_CASE(UtilsFileFuncTestSuite, testFileOpenAndClose002, Function | Mediu
+     int fd0 = UtilsFileOpen(fileName, O_RDWR_FS | O_CREAT_FS, 0);
+     UtilsFileClose(fd0);
+     int fd = UtilsFileOpen(fileName, O_WRONLY_FS, 0);
+-    TEST_ASSERT_GREATER_THAN_INT(0, fd);
++    TEST_ASSERT_GREATER_THAN_INT(-1, fd);
+     int ret = UtilsFileClose(fd);
+     TEST_ASSERT_EQUAL_INT(0, ret);
+     UtilsFileDelete(fileName);
+@@ -146,7 +146,7 @@ LITE_TEST_CASE(UtilsFileFuncTestSuite, testFileOpenAndClose003, Function | Mediu
+     int fd0 = UtilsFileOpen(fileName, O_RDWR_FS | O_CREAT_FS, 0);
+     UtilsFileClose(fd0);
+     int fd = UtilsFileOpen(fileName, O_RDWR_FS, 0);
+-    TEST_ASSERT_GREATER_THAN_INT(0, fd);
++    TEST_ASSERT_GREATER_THAN_INT(-1, fd);
+     int ret = UtilsFileClose(fd);
+     TEST_ASSERT_EQUAL_INT(0, ret);
+     UtilsFileDelete(fileName);
+@@ -163,7 +163,7 @@ LITE_TEST_CASE(UtilsFileFuncTestSuite, testFileOpenAndClose004, Function | Mediu
+     int fd0 = UtilsFileOpen(fileName, O_RDWR_FS | O_CREAT_FS, 0);
+     UtilsFileClose(fd0);
+     int fd = UtilsFileOpen(fileName, O_RDWR_FS | O_TRUNC_FS, 0);
+-    TEST_ASSERT_GREATER_THAN_INT(0, fd);
++    TEST_ASSERT_GREATER_THAN_INT(-1, fd);
+     int ret = UtilsFileClose(fd);
+     TEST_ASSERT_EQUAL_INT(0, ret);
+     UtilsFileDelete(fileName);
+@@ -180,7 +180,7 @@ LITE_TEST_CASE(UtilsFileFuncTestSuite, testFileOpenAndClose005, Function | Mediu
+     int fd0 = UtilsFileOpen(fileName, O_RDWR_FS | O_CREAT_FS, 0);
+     UtilsFileClose(fd0);
+     int fd = UtilsFileOpen(fileName, O_RDWR_FS | O_APPEND_FS, 0);
+-    TEST_ASSERT_GREATER_THAN_INT(0, fd);
++    TEST_ASSERT_GREATER_THAN_INT(-1, fd);
+     int ret = UtilsFileClose(fd);
+     TEST_ASSERT_EQUAL_INT(0, ret);
+     UtilsFileDelete(fileName);
+@@ -195,7 +195,7 @@ LITE_TEST_CASE(UtilsFileFuncTestSuite, testFileCreatAndClose004, Function | Medi
+ {
+     char* fileName = "testfile109";
+     int fd = UtilsFileOpen(fileName, O_RDONLY_FS | O_CREAT_FS | O_EXCL_FS, 0);
+-    TEST_ASSERT_GREATER_THAN_INT(0, fd);
++    TEST_ASSERT_GREATER_THAN_INT(-1, fd);
+     int ret = UtilsFileClose(fd);
+     TEST_ASSERT_EQUAL_INT(0, ret);
+     int fd1 = UtilsFileOpen(fileName, O_RDONLY_FS | O_CREAT_FS | O_EXCL_FS, 0);
+@@ -214,7 +214,7 @@ LITE_TEST_CASE(UtilsFileFuncTestSuite, testFileCreatAndClose005, Function | Medi
+ {
+     char* fileName = "testfile110";
+     int fd = UtilsFileOpen(fileName, O_WRONLY_FS | O_CREAT_FS | O_EXCL_FS, 0);
+-    TEST_ASSERT_GREATER_THAN_INT(0, fd);
++    TEST_ASSERT_GREATER_THAN_INT(-1, fd);
+     int ret = UtilsFileClose(fd);
+     TEST_ASSERT_EQUAL_INT(0, ret);
+     int fd1 = UtilsFileOpen(fileName, O_WRONLY_FS | O_CREAT_FS | O_EXCL_FS, 0);
+@@ -233,7 +233,7 @@ LITE_TEST_CASE(UtilsFileFuncTestSuite, testFileCreatAndClose006, Function | Medi
+ {
+     char* fileName = "testfile111";
+     int fd = UtilsFileOpen(fileName, O_RDWR_FS | O_CREAT_FS | O_EXCL_FS, 0);
+-    TEST_ASSERT_GREATER_THAN_INT(0, fd);
++    TEST_ASSERT_GREATER_THAN_INT(-1, fd);
+     int ret = UtilsFileClose(fd);
+     TEST_ASSERT_EQUAL_INT(0, ret);
+     int fd1 = UtilsFileOpen(fileName, O_RDWR_FS | O_CREAT_FS | O_EXCL_FS, 0);
+@@ -252,7 +252,7 @@ LITE_TEST_CASE(UtilsFileFuncTestSuite, testFileCreatAndClose007, Function | Medi
+ {
+     char* fileName = "testfile112";
+     int fd = UtilsFileOpen(fileName, O_RDWR_FS | O_CREAT_FS | O_EXCL_FS | O_TRUNC_FS, 0);
+-    TEST_ASSERT_GREATER_THAN_INT(0, fd);
++    TEST_ASSERT_GREATER_THAN_INT(-1, fd);
+     int ret = UtilsFileClose(fd);
+     TEST_ASSERT_EQUAL_INT(0, ret);
+     int fd1 = UtilsFileOpen(fileName, O_RDWR_FS | O_CREAT_FS | O_EXCL_FS | O_TRUNC_FS, 0);
+@@ -271,7 +271,7 @@ LITE_TEST_CASE(UtilsFileFuncTestSuite, testFileCreatAndClose008, Function | Medi
+ {
+     char* fileName = "testfile113";
+     int fd = UtilsFileOpen(fileName, O_RDWR_FS | O_CREAT_FS | O_EXCL_FS | O_APPEND_FS, 0);
+-    TEST_ASSERT_GREATER_THAN_INT(0, fd);
++    TEST_ASSERT_GREATER_THAN_INT(-1, fd);
+     int ret = UtilsFileClose(fd);
+     TEST_ASSERT_EQUAL_INT(0, ret);
+     int fd1 = UtilsFileOpen(fileName, O_RDWR_FS | O_CREAT_FS | O_EXCL_FS | O_APPEND_FS, 0);
+@@ -293,7 +293,7 @@ LITE_TEST_CASE(UtilsFileFuncTestSuite, testFileWrite001, Function | MediumTest |
+     UtilsFileClose(fd0);
+     int fd = UtilsFileOpen(fileName, O_RDWR_FS, 0);
+     int ret = UtilsFileWrite(fd, g_def, strlen(g_def));
+-    TEST_ASSERT_GREATER_THAN_INT(0, ret);
++    TEST_ASSERT_GREATER_THAN_INT(-1, ret);
+     UtilsFileClose(fd);
+     UtilsFileDelete(fileName);
+ };
+@@ -311,11 +311,11 @@ LITE_TEST_CASE(UtilsFileFuncTestSuite, testFileWrite002, Function | MediumTest |
+     UtilsFileClose(fd0);
+     int fd = UtilsFileOpen(fileName, O_RDWR_FS | O_APPEND_FS, 0);
+     int ret = UtilsFileWrite(fd, g_def, strlen(g_def));
+-    TEST_ASSERT_GREATER_THAN_INT(0, ret);
++    TEST_ASSERT_GREATER_THAN_INT(-1, ret);
+     UtilsFileClose(fd);
+     int fd1 = UtilsFileOpen(fileName, O_RDWR_FS | O_TRUNC_FS, 0);
+     int ret1 = UtilsFileWrite(fd1, g_def, strlen(g_def));
+-    TEST_ASSERT_GREATER_THAN_INT(0, ret1);
++    TEST_ASSERT_GREATER_THAN_INT(-1, ret1);
+     UtilsFileClose(fd1);
+     UtilsFileDelete(fileName);
+ };
+@@ -329,7 +329,7 @@ LITE_TEST_CASE(UtilsFileFuncTestSuite, testCreatLongNameFile, Function | MediumT
+ {
+     char* fileName = "testLongFileName116-Ab123456789";
+     int fd = UtilsFileOpen(fileName, O_RDONLY_FS | O_CREAT_FS, 0);
+-    TEST_ASSERT_GREATER_THAN_INT(0, fd);
++    TEST_ASSERT_GREATER_THAN_INT(-1, fd);
+     UtilsFileClose(fd);
+     UtilsFileDelete(fileName);
+ };
+@@ -582,7 +582,7 @@ LITE_TEST_CASE(UtilsFileFuncTestSuite, testFileSeek011, Function | MediumTest |
+     int ret = UtilsFileSeek(fd, FILE_SEEK_OFFSET_20, SEEK_SET_FS);
+     ret = UtilsFileSeek(fd, FILE_SEEK_OFFSET_MINUS_50, SEEK_CUR_FS);
+     ret = UtilsFileSeek(fd, FILE_SEEK_OFFSET_MINUS_10, SEEK_CUR_FS);
+-    TEST_ASSERT_GREATER_OR_EQUAL_INT(0, ret);
++    TEST_ASSERT_GREATER_OR_EQUAL_INT(-1, ret);
+     UtilsFileClose(fd);
+     UtilsFileDelete(fileName);
+ };
+@@ -643,7 +643,7 @@ LITE_TEST_CASE(UtilsFileFuncTestSuite, testFileRead, Function | MediumTest | Lev
+     char buf[LENGTH_OF_READ_BUF] = {0};
+     int fd = UtilsFileOpen(fileName, O_RDWR_FS, 0);
+     int ret = UtilsFileRead(fd, buf, LENGTH_OF_READ_BUF);
+-    TEST_ASSERT_GREATER_OR_EQUAL_INT(0, ret);
++    TEST_ASSERT_GREATER_OR_EQUAL_INT(-1, ret);
+     UtilsFileClose(fd);
+     UtilsFileDelete(fileName);
+ };
+@@ -716,11 +716,11 @@ LITE_TEST_CASE(UtilsFileFuncTestSuite, testCopyNotExistFile, Function | MediumTe
+  */
+ LITE_TEST_CASE(UtilsFileFuncTestSuite, testCopyLongNameFile, Function | MediumTest | Level1)
+ {
+-    char* fileName = "testLongFileName403-Ab123456789";
++    char* fileName = "testLongFileName403-Ab12345";
+     int fd0 = UtilsFileOpen(fileName, O_RDWR_FS | O_CREAT_FS, 0);
+     UtilsFileWrite(fd0, g_def, strlen(g_def));
+     UtilsFileClose(fd0);
+-    char* fileNameCopy = "copyLongFileName403-Ab123456789";
++    char* fileNameCopy = "copyLongFileName403-Ab12345";
+     int ret = UtilsFileCopy(fileName, fileNameCopy);
+     TEST_ASSERT_EQUAL_INT(0, ret);
+     UtilsFileDelete(fileName);
+diff --git a/utils_lite/file_hal/src/utils_file_reli_test.c b/utils_lite/file_hal/src/utils_file_reli_test.c
+index f6730fd..ac7a196 100755
+--- a/utils_lite/file_hal/src/utils_file_reli_test.c
++++ b/utils_lite/file_hal/src/utils_file_reli_test.c
+@@ -73,7 +73,7 @@ LITE_TEST_CASE(UtilsFileReliTestSuite, testCreatFileAfterMaxFilesOpened, Functio
+         TEST_ASSERT_EQUAL_INT(0, 1);
+         }
+         fd32[i] = UtilsFileOpen(fileName32, O_RDWR_FS | O_CREAT_FS, 0);
+-        TEST_ASSERT_GREATER_THAN_INT(0, fd32[i]);
++        TEST_ASSERT_GREATER_THAN_INT(-1, fd32[i]);
+     }
+     // Open the 33th file
+     char* fileName33 = "testReli101-33";
+@@ -82,7 +82,7 @@ LITE_TEST_CASE(UtilsFileReliTestSuite, testCreatFileAfterMaxFilesOpened, Functio
+     // Close file
+     UtilsFileClose(fd32[0]);
+     fd33 = UtilsFileOpen(fileName33, O_RDWR_FS | O_CREAT_FS, 0);
+-    TEST_ASSERT_GREATER_THAN_INT(0, fd33);
++    TEST_ASSERT_GREATER_THAN_INT(-1, fd33);
+     UtilsFileClose(fd33);
+     // Delete all files
+     for (int i = 1; i < MAX_NUM_OF_OPENED_FILES; i++)
+@@ -266,9 +266,9 @@ LITE_TEST_CASE(UtilsFileReliTestSuite, testFileOperFlow001, Function | MediumTes
+     int ret = UtilsFileStat(fileName2, &fileLen);
+     TEST_ASSERT_EQUAL_INT(0, ret);
+     int fd2 = UtilsFileOpen(fileName2, O_RDWR_FS | O_APPEND_FS, 0);
+-    TEST_ASSERT_GREATER_THAN_INT(0, fd2);
++    TEST_ASSERT_GREATER_THAN_INT(-1, fd2);
+     ret = UtilsFileWrite(fd2, g_def, strlen(g_def));
+-    TEST_ASSERT_GREATER_THAN_INT(0, ret);
++    TEST_ASSERT_GREATER_THAN_INT(-1, ret);
+     ret = UtilsFileSeek(fd2, FILE_SEEK_OFFSET_20, SEEK_SET_FS);
+     TEST_ASSERT_GREATER_OR_EQUAL_INT(0, ret);
+     char buf[LENGTH_OF_READ_BUF] = {0};
+@@ -307,9 +307,9 @@ LITE_TEST_CASE(UtilsFileReliTestSuite, testFileOperFlow002, Function | MediumTes
+     ret = UtilsFileStat(fileName3, &fileLen);
+     TEST_ASSERT_EQUAL_INT(0, ret);
+     int fd2 = UtilsFileOpen(fileName3, O_RDWR_FS | O_APPEND_FS, 0);
+-    TEST_ASSERT_GREATER_THAN_INT(0, fd2);
++    TEST_ASSERT_GREATER_THAN_INT(-1, fd2);
+     ret = UtilsFileWrite(fd2, g_def, strlen(g_def));
+-    TEST_ASSERT_GREATER_THAN_INT(0, ret);
++    TEST_ASSERT_GREATER_THAN_INT(-1, ret);
+     ret = UtilsFileSeek(fd2, FILE_SEEK_OFFSET_20, SEEK_SET_FS);
+     TEST_ASSERT_GREATER_OR_EQUAL_INT(0, ret);
+     char buf[LENGTH_OF_READ_BUF] = {0};
+@@ -346,7 +346,7 @@ LITE_TEST_CASE(UtilsFileReliTestSuite, testEmptyFileOperFlow001, Function | Medi
+     ret = UtilsFileStat(fileName2, &fileLen);
+     TEST_ASSERT_EQUAL_INT(0, ret);
+     int fd2 = UtilsFileOpen(fileName2, O_RDWR_FS, 0);
+-    TEST_ASSERT_GREATER_THAN_INT(0, fd2);
++    TEST_ASSERT_GREATER_THAN_INT(-1, fd2);
+     ret = UtilsFileSeek(fd2, FILE_SEEK_OFFSET_0, SEEK_SET_FS);
+     TEST_ASSERT_GREATER_OR_EQUAL_INT(0, ret);
+     char buf[LENGTH_OF_READ_BUF] = {0};
+@@ -384,7 +384,7 @@ LITE_TEST_CASE(UtilsFileReliTestSuite, testEmptyFileOperFlow002, Function | Medi
+     ret = UtilsFileStat(fileName3, &fileLen);
+     TEST_ASSERT_EQUAL_INT(0, ret);
+     int fd2 = UtilsFileOpen(fileName3, O_RDWR_FS, 0);
+-    TEST_ASSERT_GREATER_THAN_INT(0, fd2);
++    TEST_ASSERT_GREATER_THAN_INT(-1, fd2);
+     ret = UtilsFileSeek(fd2, FILE_SEEK_OFFSET_0, SEEK_SET_FS);
+     TEST_ASSERT_GREATER_OR_EQUAL_INT(0, ret);
+     char buf[LENGTH_OF_READ_BUF] = {0};
+diff --git a/utils_lite/kv_store_hal/src/kvstore_func_test.c b/utils_lite/kv_store_hal/src/kvstore_func_test.c
+index 8357e49..70a9dad 100755
+--- a/utils_lite/kv_store_hal/src/kvstore_func_test.c
++++ b/utils_lite/kv_store_hal/src/kvstore_func_test.c
+@@ -81,11 +81,12 @@ BOOL SetKVFiles (int num, const char* key, const char* value)
+             TEST_ASSERT_EQUAL_INT(-1, ret);
+         }
+         ret = UtilsGetValue(keytemp, temp, MAX_VALUE_LEN_TEST);
++
+         if (i <= MAX_KEY_NUM_TEST) {
+ #ifdef FEATURE_KV_CACHE
+             TEST_ASSERT_EQUAL_INT(0, ret);
+ #else
+-            TEST_ASSERT_GREATER_THAN_INT(0, ret);
++            TEST_ASSERT_GREATER_THAN_INT(-1, ret);
+ #endif
+             TEST_ASSERT_EQUAL_STRING(valuetemp, temp);
+         } else {
+@@ -162,6 +163,7 @@ BOOL DeleteKVFiles (int num, const char* key)
+             return FALSE;
+         }
+         ret = UtilsDeleteValue(keytemp);
++
+         if (i <= MAX_KEY_NUM_TEST) {
+             TEST_ASSERT_EQUAL_INT(0, ret);
+         } else {
+@@ -570,7 +572,7 @@ LITE_TEST_CASE(KvStoreFuncTestSuite, testKvStoreClearCache001, Function | Medium
+     // Get the value of key
+     memset_s(temp, MAX_VALUE_LEN_TEST, 0, MAX_VALUE_LEN_TEST);
+     ret = UtilsGetValue(key, temp, MAX_VALUE_LEN_TEST);
+-    TEST_ASSERT_GREATER_THAN_INT(0, ret);
++    TEST_ASSERT_GREATER_THAN_INT(-1, ret);
+     TEST_ASSERT_EQUAL_STRING(value, temp);
+     // Clear key
+     ret = UtilsDeleteValue(key);
+@@ -604,7 +606,7 @@ LITE_TEST_CASE(KvStoreFuncTestSuite, testKvStoreClearCache002, Function | Medium
+     // Get the value of key
+     memset_s(temp, MAX_VALUE_LEN_TEST, 0, MAX_VALUE_LEN_TEST);
+     ret = UtilsGetValue(key, temp, MAX_VALUE_LEN_TEST);
+-    TEST_ASSERT_GREATER_THAN_INT(0, ret);
++    TEST_ASSERT_GREATER_THAN_INT(-1, ret);
+     TEST_ASSERT_EQUAL_STRING(value1, temp);
+     // Clear key
+     ret = UtilsDeleteValue(key);
+-- 
+2.17.1
+

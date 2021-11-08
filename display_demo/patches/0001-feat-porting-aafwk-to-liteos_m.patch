@@ -1,0 +1,672 @@
+From 2387b110c1719cd17ac050cbed8276c378dc72d0 Mon Sep 17 00:00:00 2001
+From: yangjian <jianyang@bestechnic.com>
+Date: Mon, 8 Nov 2021 21:16:05 +0800
+Subject: [PATCH] feat: porting aafwk to liteos_m
+
+---
+ frameworks/ability_lite/BUILD.gn              |  92 +++++++-----
+ frameworks/abilitymgr_lite/BUILD.gn           |  56 +++++---
+ .../src/slite/abilityms_slite_client.cpp      |  10 +-
+ frameworks/want_lite/BUILD.gn                 |  10 +-
+ services/abilitymgr_lite/BUILD.gn             | 134 +++++++++++-------
+ .../abilitymgr_lite/include/ability_record.h  |   2 +-
+ .../src/ability_mgr_service.cpp               |  10 +-
+ .../abilitymgr_lite/src/ability_service.cpp   |  47 +++---
+ services/abilitymgr_lite/src/js_app_host.cpp  |   6 +-
+ 9 files changed, 225 insertions(+), 142 deletions(-)
+ mode change 100644 => 100755 services/abilitymgr_lite/BUILD.gn
+
+diff --git a/frameworks/ability_lite/BUILD.gn b/frameworks/ability_lite/BUILD.gn
+index c57d378..7ed6368 100755
+--- a/frameworks/ability_lite/BUILD.gn
++++ b/frameworks/ability_lite/BUILD.gn
+@@ -23,43 +23,64 @@ generate_notice_file("ability_notice_file") {
+ }
+ 
+ lite_library("ability") {
+-  target_type = "shared_library"
++  if (ohos_kernel_type == "liteos_m") {
++    target_type = "static_library"
++
++    sources = [
++      "src/slite/lite_context.cpp",
++      "src/slite/slite_ability.cpp",
++    ]
++
++    public_deps = [
++      "${aafwk_lite_path}/frameworks/abilitymgr_lite:abilitymanager",
++      "//base/hiviewdfx/hilog_lite/frameworks/featured:hilog_static",
++      "//utils/native/lite/kv_store:kv_store",
++    ]
++
++    defines = []
++  } else {
++    target_type = "shared_library"
++
++    sources = [
++      "src/ability.cpp",
++      "src/ability_context.cpp",
++      "src/ability_env.cpp",
++      "src/ability_env_impl.cpp",
++      "src/ability_event_handler.cpp",
++      "src/ability_loader.cpp",
++      "src/ability_main.cpp",
++      "src/ability_scheduler.cpp",
++      "src/ability_thread.cpp",
++    ]
++
++    if (enable_ohos_appexecfwk_feature_ability == true) {
++      sources += [
++        "src/ability_slice.cpp",
++        "src/ability_slice_manager.cpp",
++        "src/ability_slice_route.cpp",
++        "src/ability_slice_scheduler.cpp",
++        "src/ability_slice_stack.cpp",
++        "src/ability_window.cpp",
++      ]
++    }
++
++    public_deps = [
++      "${aafwk_lite_path}/frameworks/abilitymgr_lite:abilitymanager",
++      "${appexecfwk_lite_path}/frameworks/bundle_lite:bundle",
++      "//base/hiviewdfx/hilog_lite/frameworks/featured:hilog_shared",
++      "//foundation/communication/ipc_lite:liteipc_adapter",
++      "//utils/native/lite/kv_store:kv_store",
++    ]
++
++    defines = [ "OHOS_APPEXECFWK_BMS_BUNDLEMANAGER" ]
++  }
++
+   cflags = [
+     "-Wall",
+     "-Wno-format",
+     "-Wno-format-extra-args",
+   ]
+   cflags_cc = cflags
+-  sources = [
+-    "src/ability.cpp",
+-    "src/ability_context.cpp",
+-    "src/ability_env.cpp",
+-    "src/ability_env_impl.cpp",
+-    "src/ability_event_handler.cpp",
+-    "src/ability_loader.cpp",
+-    "src/ability_main.cpp",
+-    "src/ability_scheduler.cpp",
+-    "src/ability_thread.cpp",
+-  ]
+-
+-  if (enable_ohos_appexecfwk_feature_ability == true) {
+-    sources += [
+-      "src/ability_slice.cpp",
+-      "src/ability_slice_manager.cpp",
+-      "src/ability_slice_route.cpp",
+-      "src/ability_slice_scheduler.cpp",
+-      "src/ability_slice_stack.cpp",
+-      "src/ability_window.cpp",
+-    ]
+-  }
+-
+-  public_deps = [
+-    "${aafwk_lite_path}/frameworks/abilitymgr_lite:abilitymanager",
+-    "${appexecfwk_lite_path}/frameworks/bundle_lite:bundle",
+-    "//base/hiviewdfx/hilog_lite/frameworks/featured:hilog_shared",
+-    "//foundation/communication/ipc_lite:liteipc_adapter",
+-    "//utils/native/lite/kv_store:kv_store",
+-  ]
+ 
+   if (enable_ohos_appexecfwk_feature_ability == true) {
+     public_deps += [ "//foundation/graphic/ui:lite_ui" ]
+@@ -71,6 +92,7 @@ lite_library("ability") {
+     "${aafwk_lite_path}/interfaces/innerkits/abilitymgr_lite",
+     "${aafwk_lite_path}/interfaces/kits/want_lite",
+     "${aafwk_lite_path}/interfaces/kits/ability_lite",
++    "${aafwk_lite_path}/interfaces/kits/ability_lite/slite",
+     "${appexecfwk_lite_path}/utils/bundle_lite",
+     "${appexecfwk_lite_path}/interfaces/kits/bundle_lite",
+     "${appexecfwk_lite_path}/frameworks/bundle_lite/include",
+@@ -79,6 +101,7 @@ lite_library("ability") {
+     "//foundation/distributedschedule/samgr_lite/interfaces/kits/registry",
+     "//foundation/distributedschedule/samgr_lite/interfaces/kits/samgr",
+     "//foundation/communication/ipc_lite/frameworks/liteipc/include",
++    "//foundation/communication/ipc_lite/interfaces/kits",
+     "//third_party/bounds_checking_function/include",
+     "//third_party/freetype/include",
+     "//utils/native/lite/kv_store/innerkits",
+@@ -87,8 +110,6 @@ lite_library("ability") {
+     "./",
+   ]
+ 
+-  defines = [ "OHOS_APPEXECFWK_BMS_BUNDLEMANAGER" ]
+-
+   if (board_name == "hispark_taurus") {
+     defines += [ "OPENHARMONY_FONT_PATH" ]
+   }
+@@ -111,6 +132,11 @@ config("abilitykit_config") {
+     "-lstdc++",
+     "-Wl,-rpath-link=$ohos_root_path/$root_out_dir",
+   ]
++  include_dirs = [
++    "${aafwk_lite_path}/interfaces/kits/want_lite",
++    "${aafwk_lite_path}/interfaces/kits/ability_lite",
++    "${aafwk_lite_path}/interfaces/kits/ability_lite/slite",
++  ]
+ }
+ 
+ ndk_lib("ability_notes") {
+diff --git a/frameworks/abilitymgr_lite/BUILD.gn b/frameworks/abilitymgr_lite/BUILD.gn
+index f49098d..6486a61 100755
+--- a/frameworks/abilitymgr_lite/BUILD.gn
++++ b/frameworks/abilitymgr_lite/BUILD.gn
+@@ -14,30 +14,53 @@ import("//build/lite/config/component/lite_component.gni")
+ import("//build/lite/config/subsystem/aafwk/config.gni")
+ 
+ lite_library("abilitymanager") {
+-  target_type = "shared_library"
+-  cflags = [ "-Wall" ]
+-  cflags_cc = cflags
++  if (ohos_kernel_type == "liteos_m") {
++    target_type = "static_library"
+ 
+-  sources = [
+-    "src/ability_callback_utils.cpp",
+-    "src/ability_manager.cpp",
+-    "src/ability_self_callback.cpp",
+-    "src/ability_service_manager.cpp",
+-    "src/abilityms_client.cpp",
+-  ]
++    sources = [
++      "src/slite/ability_manager.cpp",
++      "src/slite/ability_manager_inner.cpp",
++      "src/slite/abilityms_slite_client.cpp",
++    ]
+ 
+-  deps = [
+-    "${appexecfwk_lite_path}/frameworks/bundle_lite:bundle",
+-    "//base/hiviewdfx/hilog_lite/frameworks/featured:hilog_shared",
+-    "//foundation/communication/ipc_lite:liteipc_adapter",
+-  ]
++    deps = [
++      "${appexecfwk_lite_path}/frameworks/bundle_lite:bundle",
++      "//base/hiviewdfx/hilog_lite/frameworks/featured:hilog_static",
++      "//foundation/ace/ace_engine_lite/frameworks:ace_lite",
++    ]
++  } else {
++    target_type = "shared_library"
++
++    sources = [
++      "src/ability_callback_utils.cpp",
++      "src/ability_manager.cpp",
++      "src/ability_self_callback.cpp",
++      "src/ability_service_manager.cpp",
++      "src/abilityms_client.cpp",
++    ]
++
++    deps = [
++      "${appexecfwk_lite_path}/frameworks/bundle_lite:bundle",
++      "//base/hiviewdfx/hilog_lite/frameworks/featured:hilog_shared",
++      "//foundation/communication/ipc_lite:liteipc_adapter",
++    ]
++
++    defines = [ "OHOS_APPEXECFWK_BMS_BUNDLEMANAGER" ]
++  }
++
++  cflags = [ "-Wall" ]
++  cflags_cc = cflags
+ 
+   include_dirs = [
++    "${aafwk_lite_path}/services/abilitymgr_lite/include",
++    "${aafwk_lite_path}/services/abilitymgr_lite/include/util",
+     "${aafwk_lite_path}/frameworks/abilitymgr_lite/include",
+     "${aafwk_lite_path}/frameworks/want_lite/include",
+     "${aafwk_lite_path}/interfaces/innerkits/abilitymgr_lite",
++    "${aafwk_lite_path}/interfaces/innerkits/abilitymgr_lite/slite",
+     "${aafwk_lite_path}/interfaces/kits/want_lite",
+     "${aafwk_lite_path}/interfaces/kits/ability_lite",
++    "${aafwk_lite_path}/interfaces/kits/ability_lite/slite",
+     "${appexecfwk_lite_path}/utils/bundle_lite",
+     "${appexecfwk_lite_path}/interfaces/kits/bundle_lite",
+     "${appexecfwk_lite_path}/frameworks/bundle_lite/include",
+@@ -46,11 +69,10 @@ lite_library("abilitymanager") {
+     "//third_party/bounds_checking_function/include",
+     "//utils/native/lite/kv_store/innerkits",
+     "//utils/native/lite/include",
++    "//utils/native/lite/memory/include",
+     "./include",
+     "./",
+   ]
+-
+-  defines = [ "OHOS_APPEXECFWK_BMS_BUNDLEMANAGER" ]
+ }
+ 
+ lite_component("aafwk_abilityManager_lite") {
+diff --git a/frameworks/abilitymgr_lite/src/slite/abilityms_slite_client.cpp b/frameworks/abilitymgr_lite/src/slite/abilityms_slite_client.cpp
+index 5b07467..8c1340d 100755
+--- a/frameworks/abilitymgr_lite/src/slite/abilityms_slite_client.cpp
++++ b/frameworks/abilitymgr_lite/src/slite/abilityms_slite_client.cpp
+@@ -77,8 +77,8 @@ int AbilityMsClient::StartAbility(const Want *want) const
+     AbilityService::GetInstance().want_ = info;
+     Request request = {
+         .msgId = START_ABILITY,
+-        .data = nullptr,
+         .len = 0,
++        .data = nullptr,
+         .msgValue = 0,
+     };
+     return SAMGR_SendRequest(service->GetIdentity(), &request, nullptr);
+@@ -92,8 +92,8 @@ int AbilityMsClient::TerminateAbility(uint64_t token) const
+     }
+     Request request = {
+         .msgId = TERMINATE_ABILITY,
+-        .data = nullptr,
+         .len = 0,
++        .data = nullptr,
+         .msgValue = static_cast<uint32_t>(token & 0xFFFF),
+     };
+     return SAMGR_SendRequest(service->GetIdentity(), &request, nullptr);
+@@ -107,8 +107,8 @@ int AbilityMsClient::SchedulerLifecycleDone(uint64_t token, int state) const
+     }
+     Request request = {
+         .msgId = ABILITY_TRANSACTION_DONE,
+-        .data = nullptr,
+         .len = 0,
++        .data = nullptr,
+         .msgValue = static_cast<uint32_t>((token & 0xFF) | (state << 8)),
+     };
+     return SAMGR_SendRequest(service->GetIdentity(), &request, nullptr);
+@@ -122,8 +122,8 @@ int AbilityMsClient::ForceStopBundle(uint64_t token) const
+     }
+     Request request = {
+         .msgId = TERMINATE_APP,
+-        .data = nullptr,
+         .len = 0,
++        .data = nullptr,
+         .msgValue = static_cast<uint32_t>(token & 0xFFFF),
+     };
+     return SAMGR_SendRequest(service->GetIdentity(), &request, nullptr);
+@@ -146,8 +146,8 @@ int AbilityMsClient::ForceStop(char *bundlename) const
+     char* name = Utils::Strdup(bundlename);
+     Request request = {
+         .msgId = TERMINATE_APP_BY_BUNDLENAME,
++        .len = (int16)strlen(name),
+         .data = reinterpret_cast<void *>(name),
+-        .len = strlen(name),
+     };
+ 
+     return SAMGR_SendRequest(service->GetIdentity(), &request, nullptr);
+diff --git a/frameworks/want_lite/BUILD.gn b/frameworks/want_lite/BUILD.gn
+index 2731324..9388556 100755
+--- a/frameworks/want_lite/BUILD.gn
++++ b/frameworks/want_lite/BUILD.gn
+@@ -25,8 +25,6 @@ source_set("want") {
+   ]
+   cflags_cc = cflags
+ 
+-  deps = [ "//base/hiviewdfx/hilog_lite/frameworks/featured:hilog_shared" ]
+-
+   include_dirs = [
+     "include",
+     "//third_party/bounds_checking_function/include",
+@@ -36,7 +34,13 @@ source_set("want") {
+     "${appexecfwk_lite_path}/frameworks/bundle_lite/include",
+     "${appexecfwk_lite_path}/utils/bundle_lite",
+     "//foundation/communication/ipc_lite/interfaces/kits",
++    "//utils/native/lite/memory/include",
+   ]
+ 
+-  defines = [ "OHOS_APPEXECFWK_BMS_BUNDLEMANAGER" ]
++  if (ohos_kernel_type == "liteos_m") {
++    deps = [ "//base/hiviewdfx/hilog_lite/frameworks/featured:hilog_static" ]
++  } else {
++    defines = [ "OHOS_APPEXECFWK_BMS_BUNDLEMANAGER" ]
++    deps = [ "//base/hiviewdfx/hilog_lite/frameworks/featured:hilog_shared" ]
++  }
+ }
+diff --git a/services/abilitymgr_lite/BUILD.gn b/services/abilitymgr_lite/BUILD.gn
+old mode 100644
+new mode 100755
+index 9bfaa50..af1f860
+--- a/services/abilitymgr_lite/BUILD.gn
++++ b/services/abilitymgr_lite/BUILD.gn
+@@ -14,7 +14,79 @@ import("//build/lite/config/component/lite_component.gni")
+ import("//build/lite/config/subsystem/aafwk/config.gni")
+ 
+ lite_library("abilityms") {
+-  target_type = "shared_library"
++  if (ohos_kernel_type == "liteos_m") {
++    target_type = "static_library"
++
++    sources = [
++      "src/ability_list.cpp",
++      "src/ability_mgr_service.cpp",
++      "src/ability_mgr_slite_feature.cpp",
++      "src/ability_record.cpp",
++      "src/ability_service.cpp",
++      "src/ability_stack.cpp",
++      "src/js_app_host.cpp",
++    ]
++
++    deps = [
++      "//base/hiviewdfx/hilog_lite/frameworks/featured:hilog_static",
++      "//foundation/ace/ace_engine_lite/frameworks:ace_lite",
++      "//foundation/distributedschedule/samgr_lite/samgr:samgr",
++    ]
++  } else {
++    target_type = "shared_library"
++
++    sources = [
++      "src/ability_connect_mission.cpp",
++      "src/ability_inner_feature.cpp",
++      "src/ability_mgr_context.cpp",
++      "src/ability_mgr_feature.cpp",
++      "src/ability_mgr_handler.cpp",
++      "src/ability_mgr_service.cpp",
++      "src/ability_mission_record.cpp",
++      "src/ability_mission_stack.cpp",
++      "src/ability_stack_manager.cpp",
++      "src/ability_worker.cpp",
++      "src/app_manager.cpp",
++      "src/app_record.cpp",
++      "src/client/ability_dump_client.cpp",
++      "src/client/ability_thread_client.cpp",
++      "src/client/app_spawn_client.cpp",
++      "src/client/bundlems_client.cpp",
++      "src/client/wms_client.cpp",
++      "src/page_ability_record.cpp",
++      "src/task/ability_activate_task.cpp",
++      "src/task/ability_attach_task.cpp",
++      "src/task/ability_background_task.cpp",
++      "src/task/ability_connect_done_task.cpp",
++      "src/task/ability_connect_task.cpp",
++      "src/task/ability_disconnect_done_task.cpp",
++      "src/task/ability_disconnect_task.cpp",
++      "src/task/ability_dump_task.cpp",
++      "src/task/ability_inactivate_task.cpp",
++      "src/task/ability_start_task.cpp",
++      "src/task/ability_stop_task.cpp",
++      "src/task/ability_terminate_service_task.cpp",
++      "src/task/ability_terminate_task.cpp",
++      "src/task/app_restart_task.cpp",
++      "src/task/app_terminate_task.cpp",
++      "src/util/abilityms_helper.cpp",
++      "src/util/abilityms_status.cpp",
++    ]
++
++    deps = [
++      "${appexecfwk_lite_path}/frameworks/bundle_lite:bundle",
++      "//base/hiviewdfx/hilog_lite/frameworks/featured:hilog_shared",
++      "//foundation/communication/ipc_lite:liteipc_adapter",
++      "//foundation/distributedschedule/samgr_lite/samgr:samgr",
++    ]
++
++    defines = [ "OHOS_APPEXECFWK_BMS_BUNDLEMANAGER" ]
++
++    if (enable_ohos_appexecfwk_feature_ability == true) {
++      deps += [ "//foundation/graphic/surface" ]
++      defines += [ "ABILITY_WINDOW_SUPPORT" ]
++    }
++  }
+ 
+   cflags = [
+     "-Wall",
+@@ -29,50 +101,15 @@ lite_library("abilityms") {
+     "-ldl",
+   ]
+ 
+-  sources = [
+-    "src/ability_connect_mission.cpp",
+-    "src/ability_inner_feature.cpp",
+-    "src/ability_mgr_context.cpp",
+-    "src/ability_mgr_feature.cpp",
+-    "src/ability_mgr_handler.cpp",
+-    "src/ability_mgr_service.cpp",
+-    "src/ability_mission_record.cpp",
+-    "src/ability_mission_stack.cpp",
+-    "src/ability_stack_manager.cpp",
+-    "src/ability_worker.cpp",
+-    "src/app_manager.cpp",
+-    "src/app_record.cpp",
+-    "src/client/ability_dump_client.cpp",
+-    "src/client/ability_thread_client.cpp",
+-    "src/client/app_spawn_client.cpp",
+-    "src/client/bundlems_client.cpp",
+-    "src/client/wms_client.cpp",
+-    "src/page_ability_record.cpp",
+-    "src/task/ability_activate_task.cpp",
+-    "src/task/ability_attach_task.cpp",
+-    "src/task/ability_background_task.cpp",
+-    "src/task/ability_connect_done_task.cpp",
+-    "src/task/ability_connect_task.cpp",
+-    "src/task/ability_disconnect_done_task.cpp",
+-    "src/task/ability_disconnect_task.cpp",
+-    "src/task/ability_dump_task.cpp",
+-    "src/task/ability_inactivate_task.cpp",
+-    "src/task/ability_start_task.cpp",
+-    "src/task/ability_stop_task.cpp",
+-    "src/task/ability_terminate_service_task.cpp",
+-    "src/task/ability_terminate_task.cpp",
+-    "src/task/app_restart_task.cpp",
+-    "src/task/app_terminate_task.cpp",
+-    "src/util/abilityms_helper.cpp",
+-    "src/util/abilityms_status.cpp",
+-  ]
+-
+   include_dirs = [
+     "${aafwk_lite_path}/interfaces/kits/ability_lite",
++    "${aafwk_lite_path}/interfaces/kits/ability_lite/slite",
+     "${aafwk_lite_path}/interfaces/kits/want_lite",
+     "${aafwk_lite_path}/frameworks/want_lite/include",
+     "${aafwk_lite_path}/interfaces/innerkits/abilitymgr_lite",
++    "${aafwk_lite_path}/interfaces/innerkits/abilitymgr_lite/slite",
+     "${aafwk_lite_path}/frameworks/abilitymgr_lite/include",
++    "${aafwk_lite_path}/services/abilitymgr_lite/include/util",
+     "${appexecfwk_lite_path}/interfaces/kits/bundle_lite",
+     "${appexecfwk_lite_path}/utils/bundle_lite",
+     "${appexecfwk_lite_path}/interfaces/innerkits/bundlemgr_lite",
+@@ -87,24 +124,11 @@ lite_library("abilityms") {
+     "//base/security/permission/services/permission_lite/pms/include",
+     "//third_party/bounds_checking_function/include",
+     "//utils/native/lite/include",
++    "//utils/native/lite/memory/include",
+     "include",
+     "include/task",
+     "//third_party/cJSON",
+   ]
+-
+-  deps = [
+-    "${appexecfwk_lite_path}/frameworks/bundle_lite:bundle",
+-    "//base/hiviewdfx/hilog_lite/frameworks/featured:hilog_shared",
+-    "//foundation/communication/ipc_lite:liteipc_adapter",
+-    "//foundation/distributedschedule/samgr_lite/samgr:samgr",
+-  ]
+-
+-  defines = [ "OHOS_APPEXECFWK_BMS_BUNDLEMANAGER" ]
+-
+-  if (enable_ohos_appexecfwk_feature_ability == true) {
+-    deps += [ "//foundation/graphic/surface" ]
+-    defines += [ "ABILITY_WINDOW_SUPPORT" ]
+-  }
+ }
+ 
+ generate_notice_file("abilityms_notice_file") {
+@@ -118,7 +142,7 @@ generate_notice_file("abilityms_notice_file") {
+ lite_component("aafwk_services_lite") {
+   features = [
+     ":abilityms",
+-    "tools:aa",
+-    "unittest:ability_test",
++    # "tools:aa",
++    # "unittest:ability_test",
+   ]
+ }
+diff --git a/services/abilitymgr_lite/include/ability_record.h b/services/abilitymgr_lite/include/ability_record.h
+index f52d325..e9e3d87 100755
+--- a/services/abilitymgr_lite/include/ability_record.h
++++ b/services/abilitymgr_lite/include/ability_record.h
+@@ -16,7 +16,7 @@
+ #ifndef OHOS_ABILITY_RECORD_H
+ #define OHOS_ABILITY_RECORD_H
+ 
+-#ifdef APP_PLATFORM_WATCHGT
++#ifdef __LITEOS_M__
+ #include "cmsis_os.h"
+ #endif
+ #include "ability_info.h"
+diff --git a/services/abilitymgr_lite/src/ability_mgr_service.cpp b/services/abilitymgr_lite/src/ability_mgr_service.cpp
+index ccac550..5a5cf73 100755
+--- a/services/abilitymgr_lite/src/ability_mgr_service.cpp
++++ b/services/abilitymgr_lite/src/ability_mgr_service.cpp
+@@ -16,7 +16,7 @@
+ #include "ability_mgr_service.h"
+ 
+ #include "ability_errors.h"
+-#ifdef APP_PLATFORM_WATCHGT
++#ifdef __LITEOS_M__
+ #include "ability_service.h"
+ #endif
+ #include "ability_service_interface.h"
+@@ -26,11 +26,7 @@
+ #include "util/abilityms_log.h"
+ 
+ namespace OHOS {
+-#ifndef APP_PLATFORM_WATCHGT
+-const int STACK_SIZE = 0x800;
+-#else
+-const int STACK_SIZE = 0xE00;
+-#endif
++const int STACK_SIZE = 0x1000;
+ const int QUEUE_SIZE = 20;
+ const int BYTE_OFFSET = 8;
+ 
+@@ -77,7 +73,7 @@ BOOL AbilityMgrService::ServiceMessageHandle(Service *service, Request *request)
+     if (request == nullptr) {
+         return FALSE;
+     }
+-#ifdef APP_PLATFORM_WATCHGT
++#ifdef __LITEOS_M__
+     int ret = ERR_OK;
+     if (request->msgId == START_ABILITY) {
+         ret = AbilityService::GetInstance().StartAbility(AbilityService::GetInstance().want_);
+diff --git a/services/abilitymgr_lite/src/ability_service.cpp b/services/abilitymgr_lite/src/ability_service.cpp
+index 1dcde7e..044aff0 100755
+--- a/services/abilitymgr_lite/src/ability_service.cpp
++++ b/services/abilitymgr_lite/src/ability_service.cpp
+@@ -117,6 +117,7 @@ int32_t AbilityService::StartAbility(const Want *want)
+         info->path = nullptr;
+     } else {
+         // JS APP
++#ifdef OHOS_APPEXECFWK_BMS_BUNDLEMANAGER
+         AbilityInfo abilityInfo = { nullptr, nullptr };
+         QueryAbilityInfo(want, &abilityInfo);
+         if (!IsValidAbility(&abilityInfo)) {
+@@ -129,6 +130,11 @@ int32_t AbilityService::StartAbility(const Want *want)
+         info->bundleName = OHOS::Utils::Strdup(abilityInfo.bundleName);
+         info->path = OHOS::Utils::Strdup(abilityInfo.srcPath);
+         ClearAbilityInfo(&abilityInfo);
++#else
++        info->bundleName = Utils::Strdup(bundleName);
++        // Here users assign want->data with js app path.
++        info->path = Utils::Strdup((const char *)want->data);
++#endif
+     }
+ 
+     info->data = OHOS::Utils::Memdup(want->data, want->dataLength);
+@@ -273,18 +279,19 @@ int32_t AbilityService::ForceStop(char* bundlename)
+         AbilityRecord *topRecord = const_cast<AbilityRecord *>(abilityStack_.GetTopAbility());
+         HILOG_INFO(HILOG_MODULE_AAFWK, "ForceStop [%u]", topRecord->GetToken());
+         return TerminateAbility(topRecord->GetToken());
+-    } else {
+-        uint16_t size = abilityStack_.GetAllAbilities();
+-        HILOG_INFO(HILOG_MODULE_AAFWK, "ForceStop innerStack mumber is [%u]", size);
+-        //topAbility may be not the targert, need to search the abilityStack_
+-        AbilityRecord *jsAbilityRecord = const_cast<AbilityRecord *>(abilityStack_.GetAbility(bundlename));
+-        if (jsAbilityRecord != nullptr) {
+-            jsAbilityRecord->SetTerminated(true);
+-            // TerminateAbility top js
+-            return SchedulerLifecycleInner(topRecord, STATE_UNINITIALIZED);
+-        }
+-        HILOG_INFO(HILOG_MODULE_AAFWK, "ForceStop cannot find exact Js ability");
+     }
++    //  else {
++    //     uint16_t size = abilityStack_.GetAllAbilities();
++    //     HILOG_INFO(HILOG_MODULE_AAFWK, "ForceStop innerStack mumber is [%u]", size);
++    //     //topAbility may be not the targert, need to search the abilityStack_
++    //     AbilityRecord *jsAbilityRecord = const_cast<AbilityRecord *>(abilityStack_.GetAbility(bundlename));
++    //     if (jsAbilityRecord != nullptr) {
++    //         jsAbilityRecord->SetTerminated(true);
++    //         // TerminateAbility top js
++    //         return SchedulerLifecycleInner(topRecord, STATE_UNINITIALIZED);
++    //     }
++    //     HILOG_INFO(HILOG_MODULE_AAFWK, "ForceStop cannot find exact Js ability");
++    // }
+     return PARAM_CHECK_ERROR;
+ }
+ 
+@@ -389,15 +396,19 @@ int32_t AbilityService::CreateAppTask(AbilityRecord *record)
+     record->SetMessageQueueId(jsAppQueueId);
+     record->SetJsAppHost(jsAppHost);
+ 
+-    LoadPermissions(record->GetAppName(), appTaskId);
++    // LoadPermissions(record->GetAppName(), appTaskId);
+     record->SetState(SCHEDULE_INACTIVE);
+     abilityStack_.PushAbility(record);
+     APP_EVENT(MT_ACE_APP_START);
+-    if (SchedulerLifecycle(LAUNCHER_TOKEN, STATE_BACKGROUND) != 0) {
+-        APP_ERRCODE_EXTRA(EXCE_ACE_APP_START, EXCE_ACE_APP_START_LAUNCHER_EXIT_FAILED);
+-        HILOG_INFO(HILOG_MODULE_AAFWK, "CreateAppTask Fail to hide launcher");
+-        abilityStack_.PopAbility();
+-        return SCHEDULER_LIFECYCLE_ERROR;
++    if (nativeAbility_ != nullptr) {
++        if (SchedulerLifecycle(LAUNCHER_TOKEN, STATE_BACKGROUND) != 0) {
++            APP_ERRCODE_EXTRA(EXCE_ACE_APP_START, EXCE_ACE_APP_START_LAUNCHER_EXIT_FAILED);
++            HILOG_INFO(HILOG_MODULE_AAFWK, "CreateAppTask Fail to hide launcher");
++            abilityStack_.PopAbility();
++            return SCHEDULER_LIFECYCLE_ERROR;
++        }
++    } else {
++        SchedulerLifecycle(record->GetToken(), STATE_ACTIVE);
+     }
+     return ERR_OK;
+ }
+@@ -420,7 +431,7 @@ void AbilityService::DeleteRecordInfo(uint16_t token)
+     if (token != LAUNCHER_TOKEN) {
+         if (record->IsAttached()) {
+             UINT32 taskId = record->GetTaskId();
+-            UnLoadPermissions(taskId);
++            // UnLoadPermissions(taskId);
+             LOS_TaskDelete(taskId);
+             osMessageQueueId_t jsAppQueueId = record->GetMessageQueueId();
+             osMessageQueueDelete(jsAppQueueId);
+diff --git a/services/abilitymgr_lite/src/js_app_host.cpp b/services/abilitymgr_lite/src/js_app_host.cpp
+index 54dd628..f3e9d3e 100755
+--- a/services/abilitymgr_lite/src/js_app_host.cpp
++++ b/services/abilitymgr_lite/src/js_app_host.cpp
+@@ -53,7 +53,7 @@ void JsAppHost::JsAppTaskHandler(uint32_t uwArg)
+         if (ret != osOK) {
+             return;
+         }
+-        LP_TaskBegin();
++        // LP_TaskBegin();
+         switch ((uint32_t)innerMsg.msgId) {
+             case ACTIVE:
+                 jsappHost->OnActive(innerMsg.token, innerMsg.bundleName, innerMsg.path);
+@@ -65,7 +65,7 @@ void JsAppHost::JsAppTaskHandler(uint32_t uwArg)
+                 // cleanup the message queue id to present any new async message
+                 JsAsyncWork::SetAppQueueHandler(nullptr);
+                 jsappHost->OnDestroy(innerMsg.token);
+-                LP_TaskEnd();
++                // LP_TaskEnd();
+                 return; // here exit the loop, and abort all messages afterwards
+             case BACKPRESSED:
+                 jsappHost->BackPressed();
+@@ -81,7 +81,7 @@ void JsAppHost::JsAppTaskHandler(uint32_t uwArg)
+             default:
+                 break;
+         }
+-        LP_TaskEnd();
++        // LP_TaskEnd();
+     }
+ }
+ 
+-- 
+2.17.1
+

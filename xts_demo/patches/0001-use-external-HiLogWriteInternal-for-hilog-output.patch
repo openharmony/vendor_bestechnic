@@ -1,0 +1,44 @@
+From bf75790f0762711af73f7667c800999be8888dd7 Mon Sep 17 00:00:00 2001
+From: yangjian <jianyang@bestechnic.com>
+Date: Wed, 20 Oct 2021 12:40:14 +0800
+Subject: [PATCH] use external HiLogWriteInternal for hilog output
+
+Signed-off-by: yangjian <jianyang@bestechnic.com>
+Change-Id: Id0f9ec0f91413c2c1c0ae64595ea5791e72b31de
+---
+ frameworks/featured/BUILD.gn | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
+
+diff --git a/frameworks/featured/BUILD.gn b/frameworks/featured/BUILD.gn
+index 2056dbd..d069125 100755
+--- a/frameworks/featured/BUILD.gn
++++ b/frameworks/featured/BUILD.gn
+@@ -25,6 +25,7 @@ config("hilog_config") {
+         "//base/hiviewdfx/hilog_lite/interfaces/native/innerkits",
+         "//third_party/bounds_checking_function/include",
+     ]
++    defines = [ "LOSCFG_BASE_CORE_HILOG=1" ]
+ }
+ 
+ lite_library("hilog_static") {
+@@ -32,7 +33,7 @@ lite_library("hilog_static") {
+     sources = hilog_sources
+     public_configs = [":hilog_config"]
+     public_deps = [
+-        "//third_party/bounds_checking_function:libsec_shared",
++        "//third_party/bounds_checking_function:libsec_static",
+     ]
+     cflags = [ "-Wall" ]
+ }
+@@ -44,7 +45,7 @@ lite_library("hilog_shared") {
+     public_deps = [
+         "//third_party/bounds_checking_function:libsec_shared",
+     ]
+-    cflags = [ "-Wall" ]
++    # cflags = [ "-Wall" ]
+ }
+ 
+ ndk_lib("hilog_ndk") {
+-- 
+2.17.1
+

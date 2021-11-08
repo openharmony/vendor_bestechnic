@@ -11,37 +11,44 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-declare_args() {
-  fs_test = false
-  ui_test = true
-}
+import("//device/bestechnic/${board_name}/components/components.gni")
 
 static_library("example") {
-  sources = [ "example.c" ]
+  sources = [
+    "app.cpp",
+    "example.c",
+  ]
   defines = []
   deps = [
-    "//device/bestechnic/bes2600w/drivers:drivers",
-    "//device/bestechnic/bes2600w/sdk_liteos/fs_adapter:fs_adapter",
-  ]
-  include_dirs = [
-    "//utils/native/lite/include",
-    "//base/hiviewdfx/hilog_lite/interfaces/native/kits/",
-    "//third_party/musl/porting/liteos_m/kernel/include",
-    "//device/bestechnic/" + board_name + "/drivers/tests",
+    "//base/hiviewdfx/hilog_lite/frameworks/featured:hilog_static",
+    "//device/bestechnic/${board_name}/components/drivers:drivers_adapter",
+    "//device/bestechnic/${board_name}/components/fs:fs_adapter",
   ]
 
-  if (fs_test) {
-    sources += [ "fs_test.c" ]
-    defines += [ "FS_TEST" ]
-  } else if (ui_test) {
-    sources += [
-      "ui_animator_test.cpp",
-      "ui_basic_test.cpp",
-      "ui_image_test.cpp",
-      "ui_test.cpp",
-      "ui_view_test.cpp",
-    ]
-    defines += [ "UI_TEST" ]
-    deps += [ "../ui_adapter:ui_adapter" ]
+  include_dirs = [
+    "//utils/native/lite/include",
+    "//third_party/musl/porting/liteos_m/kernel/include",
+    "//device/bestechnic/${board_name}/components/ui",
+  ]
+
+  if (bes_histreamer_test) {
+    deps += [ "histreamer:histreamer_test" ]
+    defines += [ "HISTREAMER_TEST" ]
   }
+
+  if (bes_fs_enable && bes_fs_test) {
+    deps += [ "fs:fs_test" ]
+    defines += [ "FS_TEST" ]
+    include_dirs += [ "fs" ]
+  } else if (bes_ui_enable && bes_ui_test) {
+    deps += [ "ui:ui_test" ]
+    defines += [ "UI_TEST" ]
+    include_dirs += [ "ui" ]
+  } else if (bes_ability_enable && bes_ace_enable && bes_ability_test) {
+    deps += [ "ability:ability_test" ]
+    defines += [ "ABILITY_TEST" ]
+    include_dirs += [ "ability" ]
+  }
+  deps += [ "wifi:wifi_test" ]
+
 }
