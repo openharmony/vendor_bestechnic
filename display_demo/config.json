@@ -165,7 +165,7 @@
       ]
     },
     {
-      "subsystem": "distributed_schedule",
+      "subsystem": "distributedschedule",
       "components": [
         {
           "component": "samgr_lite"
