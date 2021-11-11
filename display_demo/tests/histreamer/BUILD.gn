@@ -12,29 +12,19 @@
 # limitations under the License.
 
 config("include") {
-  include_dirs = [
-    ".",
-  ]
+  include_dirs = [ "." ]
 }
 
 static_library("histreamer_test") {
-  sources = [
-    "audio_player.cpp",
-  ]
+  sources = [ "audio_player.cpp" ]
 
   deps = [
     "//base/hiviewdfx/hilog_lite/frameworks/featured:hilog_static",
-    "//device/bestechnic/${board_name}/components/drivers:drivers_adapter",
-    "//device/bestechnic/${board_name}/components/fs:fs_adapter",
-    "//device/bestechnic/${board_name}/components/ui:ui_adapter",
     "//foundation/multimedia/histreamer:histreamer",
     "//foundation/multimedia/histreamer/engine/player:histreamer_player",
   ]
 
-  include_dirs = [
-    "//utils/native/lite/include",
-  ]
+  include_dirs = [ "//utils/native/lite/include" ]
 
   public_configs = [ ":include" ]
 }
-

@@ -11,24 +11,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import("//device/bestechnic/${board_name}/components/components.gni")
-
 group("display_demo") {
-  deps = [
-    "config:hdf_hcs",
-    "hals/utils/sys_param:hal_sysparam",
-    "tests:example",
-  ]
-
-  if (bes_fs_enable) {
-    deps += [ "//device/bestechnic/${board_name}/components/fs:fs_adapter" ]
-  }
-
-  if (bes_ui_enable || bes_ace_enable || bes_ability_enable) {
-    deps += [ "//device/bestechnic/${board_name}/components/ui:ui_adapter" ]
-  }
-
-  if (bes_histreamer_test) {
-    deps += [ "//foundation/multimedia/histreamer:histreamer" ]
-  }
+  deps = [ "tests:example" ]
 }
