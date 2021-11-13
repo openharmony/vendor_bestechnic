@@ -11,7 +11,16 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import("//device/bestechnic/${board_name}/components/components.gni")
+declare_args() {
+  bes_fs_enable = true
+  bes_fs_test = false
+  bes_histreamer_test = false
+  bes_ui_enable = true
+  bes_ui_test = false
+  bes_ability_enable = false
+  bes_ace_enable = true
+  bes_ability_test = true
+}
 
 static_library("example") {
   sources = [
@@ -19,16 +28,12 @@ static_library("example") {
     "example.c",
   ]
   defines = []
-  deps = [
-    "//base/hiviewdfx/hilog_lite/frameworks/featured:hilog_static",
-    "//device/bestechnic/${board_name}/components/drivers:drivers_adapter",
-    "//device/bestechnic/${board_name}/components/fs:fs_adapter",
-  ]
+  deps = [ "//base/hiviewdfx/hilog_lite/frameworks/featured:hilog_static" ]
 
   include_dirs = [
     "//utils/native/lite/include",
     "//third_party/musl/porting/liteos_m/kernel/include",
-    "//device/bestechnic/${board_name}/components/ui",
+    "${device_path}/components/ui",
   ]
 
   if (bes_histreamer_test) {
@@ -50,5 +55,4 @@ static_library("example") {
     include_dirs += [ "ability" ]
   }
   deps += [ "wifi:wifi_test" ]
-
 }

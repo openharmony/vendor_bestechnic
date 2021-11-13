@@ -21,6 +21,4 @@ static_library("wifi_test") {
     "//utils/native/lite/include",
     "//foundation/communication/wifi_lite/interfaces/wifiservice/",
   ]
-
-  deps = [ "//device/bestechnic/bes2600w/components/net/lwip-2.1:lwip" ]
 }

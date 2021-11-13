@@ -18,12 +18,7 @@ static_library("ui_test") {
     "ui_image_test.cpp",
     "ui_view_test.cpp",
   ]
-  deps = [
-    "//base/hiviewdfx/hilog_lite/frameworks/featured:hilog_static",
-    "//device/bestechnic/${board_name}/components/drivers:drivers_adapter",
-    "//device/bestechnic/${board_name}/components/fs:fs_adapter",
-    "//device/bestechnic/${board_name}/components/ui:ui_adapter",
-  ]
+  deps = [ "//base/hiviewdfx/hilog_lite/frameworks/featured:hilog_static" ]
   include_dirs = [
     "//utils/native/lite/include",
     "//third_party/musl/porting/liteos_m/kernel/include",
