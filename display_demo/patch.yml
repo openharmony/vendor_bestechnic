@@ -14,6 +14,8 @@ third_party/qrcodegen:
   - vendor/bestechnic/display_demo/patches/0001-feat-build-libqrcodegen.a-for-liteos_m.patch
 third_party/jerryscript:
   - vendor/bestechnic/display_demo/patches/0001-feat-build-jerryscript-for-liteos_m.patch
+third_party/mbedtls:
+  - vendor/bestechnic/display_demo/patches/mbedtls.patch
 foundation/ace/ace_engine_lite:
   - vendor/bestechnic/display_demo/patches/0001-feat-porting-ace-to-liteos_m.patch
 foundation/aafwk/aafwk_lite:
