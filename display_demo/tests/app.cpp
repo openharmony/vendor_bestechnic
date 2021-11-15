@@ -32,7 +32,7 @@ void RunApp()
     AnimatorDemoStart();
 #elif defined(ABILITY_TEST)
     // StartLauncherApp();
-    StartJSApp();
+    // StartJSApp();
 #endif
 }
 

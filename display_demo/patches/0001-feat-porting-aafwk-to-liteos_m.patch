@@ -1,20 +1,20 @@
-From e2209882fc8ef378b6c1a898f383233b75ce6e0a Mon Sep 17 00:00:00 2001
-From: leihuang <leihuang@bestechnic.com>
-Date: Sun, 26 Sep 2021 02:22:53 +0800
+From 3f959e9f14cc8d04463f4ff95a577ec8d4a764d6 Mon Sep 17 00:00:00 2001
+From: yangjian <jianyang@bestechnic.com>
+Date: Sat, 13 Nov 2021 23:04:31 +0800
 Subject: [PATCH] feat: porting aafwk to liteos_m
 
-Signed-off-by: leihuang <leihuang@bestechnic.com>
-Change-Id: Iaed93d2dc6564bb5dc26137ea9312ac6222ce705
+Signed-off-by: yangjian <jianyang@bestechnic.com>
+Change-Id: Id63619c0fd91ea46b226ca3efaa359a67ec7130d
 ---
  frameworks/ability_lite/BUILD.gn              |  92 +++++++-----
  frameworks/abilitymgr_lite/BUILD.gn           |  56 +++++---
  .../src/slite/abilityms_slite_client.cpp      |  10 +-
- frameworks/want_lite/BUILD.gn                 |   8 +-
+ frameworks/want_lite/BUILD.gn                 |  10 +-
  services/abilitymgr_lite/BUILD.gn             | 134 +++++++++++-------
  .../abilitymgr_lite/include/ability_record.h  |   2 +-
  .../src/ability_mgr_service.cpp               |  10 +-
  .../abilitymgr_lite/src/ability_service.cpp   |  20 ++-
- 8 files changed, 208 insertions(+), 124 deletions(-)
+ 8 files changed, 208 insertions(+), 126 deletions(-)
  mode change 100644 => 100755 services/abilitymgr_lite/BUILD.gn
 
 diff --git a/frameworks/ability_lite/BUILD.gn b/frameworks/ability_lite/BUILD.gn
@@ -295,10 +295,19 @@ index 5b07467..8c1340d 100755
  
      return SAMGR_SendRequest(service->GetIdentity(), &request, nullptr);
 diff --git a/frameworks/want_lite/BUILD.gn b/frameworks/want_lite/BUILD.gn
-index 016cad7..9388556 100755
+index 2731324..9388556 100755
 --- a/frameworks/want_lite/BUILD.gn
 +++ b/frameworks/want_lite/BUILD.gn
-@@ -34,7 +34,13 @@ source_set("want") {
+@@ -25,8 +25,6 @@ source_set("want") {
+   ]
+   cflags_cc = cflags
+ 
+-  deps = [ "//base/hiviewdfx/hilog_lite/frameworks/featured:hilog_shared" ]
+-
+   include_dirs = [
+     "include",
+     "//third_party/bounds_checking_function/include",
+@@ -36,7 +34,13 @@ source_set("want") {
      "${appexecfwk_lite_path}/frameworks/bundle_lite/include",
      "${appexecfwk_lite_path}/utils/bundle_lite",
      "//foundation/communication/ipc_lite/interfaces/kits",
@@ -539,10 +548,10 @@ index ccac550..5a5cf73 100755
      if (request->msgId == START_ABILITY) {
          ret = AbilityService::GetInstance().StartAbility(AbilityService::GetInstance().want_);
 diff --git a/services/abilitymgr_lite/src/ability_service.cpp b/services/abilitymgr_lite/src/ability_service.cpp
-index 273ba21..acde08f 100755
+index 1dcde7e..ca22962 100755
 --- a/services/abilitymgr_lite/src/ability_service.cpp
 +++ b/services/abilitymgr_lite/src/ability_service.cpp
-@@ -116,6 +116,7 @@ int32_t AbilityService::StartAbility(const Want *want)
+@@ -117,6 +117,7 @@ int32_t AbilityService::StartAbility(const Want *want)
          info->path = nullptr;
      } else {
          // JS APP
@@ -550,7 +559,7 @@ index 273ba21..acde08f 100755
          AbilityInfo abilityInfo = { nullptr, nullptr };
          QueryAbilityInfo(want, &abilityInfo);
          if (!IsValidAbility(&abilityInfo)) {
-@@ -128,6 +129,11 @@ int32_t AbilityService::StartAbility(const Want *want)
+@@ -129,6 +130,11 @@ int32_t AbilityService::StartAbility(const Want *want)
          info->bundleName = OHOS::Utils::Strdup(abilityInfo.bundleName);
          info->path = OHOS::Utils::Strdup(abilityInfo.srcPath);
          ClearAbilityInfo(&abilityInfo);
@@ -562,7 +571,7 @@ index 273ba21..acde08f 100755
      }
  
      info->data = OHOS::Utils::Memdup(want->data, want->dataLength);
-@@ -382,11 +388,15 @@ int32_t AbilityService::CreateAppTask(AbilityRecord *record)
+@@ -393,11 +399,15 @@ int32_t AbilityService::CreateAppTask(AbilityRecord *record)
      record->SetState(SCHEDULE_INACTIVE);
      abilityStack_.PushAbility(record);
      APP_EVENT(MT_ACE_APP_START);
