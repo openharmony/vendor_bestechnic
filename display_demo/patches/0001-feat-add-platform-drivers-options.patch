@@ -1,28 +1,21 @@
-From d2fb9dfa06f94ea2b31e79b36719d3a3eceda3a4 Mon Sep 17 00:00:00 2001
-From: yangjian <jianyang@bestechnic.com>
-Date: Sat, 13 Nov 2021 22:31:08 +0800
-Subject: [PATCH] feat add platform drivers options
+From bac2debc5d8b06fa795035d6a78321d8ce2c6894 Mon Sep 17 00:00:00 2001
+From: SimonLi <likailong@huawei.com>
+Date: Mon, 15 Nov 2021 16:55:09 +0800
+Subject: [PATCH] drivers adapter
 
-Signed-off-by: yangjian <jianyang@bestechnic.com>
-Change-Id: I44f99edbdded821db0218dede8f69496d9aae0e0
+Change-Id: I0972edda96d0265b723a0ac1d06cc96644d84ebd
 ---
- khdf/liteos_m/BUILD.gn                    | 4 ++--
- khdf/liteos_m/core/BUILD.gn               | 2 ++
- khdf/liteos_m/network/BUILD.gn            | 2 +-
- khdf/liteos_m/osal/BUILD.gn               | 1 +
- khdf/liteos_m/platform/BUILD.gn           | 1 +
- khdf/liteos_m/test/sample_driver/BUILD.gn | 1 +
- 6 files changed, 8 insertions(+), 3 deletions(-)
+ khdf/liteos_m/BUILD.gn | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
  mode change 100644 => 100755 khdf/liteos_m/BUILD.gn
- mode change 100644 => 100755 khdf/liteos_m/platform/BUILD.gn
 
 diff --git a/khdf/liteos_m/BUILD.gn b/khdf/liteos_m/BUILD.gn
 old mode 100644
 new mode 100755
-index e59b191..1540e87
+index e8fd461..fa5f700
 --- a/khdf/liteos_m/BUILD.gn
 +++ b/khdf/liteos_m/BUILD.gn
-@@ -34,10 +34,10 @@ module_switch = defined(LOSCFG_DRIVERS_HDF)
+@@ -32,10 +32,10 @@ import("//drivers/adapter/khdf/liteos_m/hdf.gni")
  hdf_driver("hdf_lite") {
    deps = [
      "core",
@@ -35,70 +28,6 @@ index e59b191..1540e87
    ]
  }
  
-diff --git a/khdf/liteos_m/core/BUILD.gn b/khdf/liteos_m/core/BUILD.gn
-index f2fad23..645e200 100644
---- a/khdf/liteos_m/core/BUILD.gn
-+++ b/khdf/liteos_m/core/BUILD.gn
-@@ -29,6 +29,8 @@
- 
- import("//drivers/adapter/khdf/liteos_m/hdf.gni")
- 
-+module_switch = defined(LOSCFG_DRIVERS_HDF)
-+
- hdf_driver("hdf_core") {
-   sources = [
-     "$HDF_FRAMEWORKS_PATH/core/common/src/devlite_object_config.c",
-diff --git a/khdf/liteos_m/network/BUILD.gn b/khdf/liteos_m/network/BUILD.gn
-index b6ab11b..ff93c8e 100644
---- a/khdf/liteos_m/network/BUILD.gn
-+++ b/khdf/liteos_m/network/BUILD.gn
-@@ -29,7 +29,7 @@
- 
- import("//drivers/adapter/khdf/liteos_m/hdf.gni")
- 
--module_switch = defined(LOSCFG_NET_LWIP_SACK)
-+module_switch = defined(LOSCFG_NET_LWIP_SACK) && defined(LOSCFG_DRIVERS_HDF)
- hdf_driver("hdf_network") {
-   sources = [
-     "$HDF_FRAMEWORKS_PATH/model/network/common/netdevice/net_device.c",
-diff --git a/khdf/liteos_m/osal/BUILD.gn b/khdf/liteos_m/osal/BUILD.gn
-index 9dd42a6..da27ca1 100644
---- a/khdf/liteos_m/osal/BUILD.gn
-+++ b/khdf/liteos_m/osal/BUILD.gn
-@@ -29,6 +29,7 @@
- 
- import("//drivers/adapter/khdf/liteos_m/hdf.gni")
- 
-+module_switch = defined(LOSCFG_DRIVERS_HDF)
- hdf_driver("hdf_osal_lite") {
-   sources = [
-     "src/osal_mem.c",
-diff --git a/khdf/liteos_m/platform/BUILD.gn b/khdf/liteos_m/platform/BUILD.gn
-old mode 100644
-new mode 100755
-index 681a334..7ca1d5c
---- a/khdf/liteos_m/platform/BUILD.gn
-+++ b/khdf/liteos_m/platform/BUILD.gn
-@@ -29,6 +29,7 @@
- 
- import("//drivers/adapter/khdf/liteos_m/hdf.gni")
- 
-+module_switch = defined(LOSCFG_DRIVERS_HDF)
- hdf_driver("hdf_platform_lite") {
-   sources = [
-     "$HDF_FRAMEWORKS_PATH/support/platform/src/gpio/gpio_core.c",
-diff --git a/khdf/liteos_m/test/sample_driver/BUILD.gn b/khdf/liteos_m/test/sample_driver/BUILD.gn
-index 2c43726..9653587 100644
---- a/khdf/liteos_m/test/sample_driver/BUILD.gn
-+++ b/khdf/liteos_m/test/sample_driver/BUILD.gn
-@@ -29,6 +29,7 @@
- 
- import("//drivers/adapter/khdf/liteos_m/hdf.gni")
- 
-+module_switch = defined(LOSCFG_DRIVERS_HDF)
- hdf_driver("sample_driver") {
-   sources = [ "src/sample_driver.c" ]
-   include_dirs = [ "include" ]
 -- 
 2.17.1
 
