@@ -1,19 +1,19 @@
-From 609d44982b63f9c9e775921264fc6f14c9f68306 Mon Sep 17 00:00:00 2001
+From b7c249c2ed46a8d804d80a9af17414198690400a Mon Sep 17 00:00:00 2001
 From: SimonLi <likailong@huawei.com>
-Date: Sat, 13 Nov 2021 22:33:38 +0800
+Date: Mon, 15 Nov 2021 16:35:21 +0800
 Subject: [PATCH] foundation ace ace_engine_lite
 
-Change-Id: I559225cbb238285bb102f26ea41a21f5de743d5f
+Change-Id: I3aa39eb0440989dc7d6ce143a90253e9fac8eb6b
 ---
  frameworks/BUILD.gn                           | 57 +++++++++++++------
  frameworks/common/BUILD.gn                    | 14 ++++-
- frameworks/module_manager/BUILD.gn            | 32 +++++++----
+ frameworks/module_manager/BUILD.gn            | 34 +++++++----
  frameworks/native_engine/BUILD.gn             | 15 ++++-
  .../async/message_queue_utils.cpp             |  8 +--
  .../src/core/context/js_app_context.cpp       |  2 +-
  frameworks/targets/liteos_m/acelite_config.h  | 24 ++++----
  frameworks/targets/platform_adapter.cpp       |  2 +-
- 8 files changed, 104 insertions(+), 50 deletions(-)
+ 8 files changed, 105 insertions(+), 51 deletions(-)
  mode change 100644 => 100755 frameworks/common/BUILD.gn
  mode change 100644 => 100755 frameworks/module_manager/BUILD.gn
  mode change 100644 => 100755 frameworks/native_engine/BUILD.gn
@@ -144,7 +144,7 @@ index d51cc4e..b424ca8
 diff --git a/frameworks/module_manager/BUILD.gn b/frameworks/module_manager/BUILD.gn
 old mode 100644
 new mode 100755
-index f3441dc..43ac9ac
+index f3441dc..5ec0bf4
 --- a/frameworks/module_manager/BUILD.gn
 +++ b/frameworks/module_manager/BUILD.gn
 @@ -22,7 +22,13 @@ lite_component("ace_module_manager_lite") {
@@ -184,11 +184,12 @@ index f3441dc..43ac9ac
      "$ace_frameworks_root/common:ace_common_lite",
      "$ace_frameworks_root/native_engine:ace_native_engine_lite",
 -    "${appexecfwk_lite_path}/interfaces/kits/bundle_lite/js/builtin:capability_api",
-     "//base/powermgr/battery_lite/frameworks/js:ace_battery_kits",
+-    "//base/powermgr/battery_lite/frameworks/js:ace_battery_kits",
 -    "//base/security/huks/frameworks/crypto_lite/js/builtin:ace_kit_cipher",
 -    "//foundation/multimedia/media_lite/interfaces/kits/player_lite/js/builtin:audio_lite_api",
 -    "//third_party/bounds_checking_function:libsec_shared",
 -    "//third_party/jerryscript/jerry-core:jerry-core_shared",
++#"//base/powermgr/battery_lite/frameworks/js:ace_battery_kits",
 +    "//foundation/graphic/ui:ui",
 +    "//third_party/bounds_checking_function:libsec_static",
 +    "//third_party/jerryscript:jerry_engine",

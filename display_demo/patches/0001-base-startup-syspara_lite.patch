@@ -1,0 +1,48 @@
+From 5f091426851cb4328b16892c4e4f8e50bbaeebbc Mon Sep 17 00:00:00 2001
+From: SimonLi <likailong@huawei.com>
+Date: Mon, 15 Nov 2021 16:25:04 +0800
+Subject: [PATCH] base startup syspara_lite
+
+Change-Id: I87f7f8aabbe4b5314abf5817d06e996b2bbc904e
+---
+ frameworks/parameter/src/param_impl_hal/param_impl_hal.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
+
+diff --git a/frameworks/parameter/src/param_impl_hal/param_impl_hal.c b/frameworks/parameter/src/param_impl_hal/param_impl_hal.c
+index 1e62da0..e71abe7 100644
+--- a/frameworks/parameter/src/param_impl_hal/param_impl_hal.c
++++ b/frameworks/parameter/src/param_impl_hal/param_impl_hal.c
+@@ -51,6 +51,7 @@ static boolean IsValidKey(const char* key)
+ 
+ int GetSysParam(const char* key, char* value, unsigned int len)
+ {
++#if 0
+     if (!IsValidKey(key) || (value == NULL) || (len > MAX_GET_VALUE_LEN)) {
+         return EC_INVALID;
+     }
+@@ -74,10 +75,13 @@ int GetSysParam(const char* key, char* value, unsigned int len)
+     }
+     value[valueLen] = '\0';
+     return valueLen;
++#endif
++    return 0;
+ }
+ 
+ int SetSysParam(const char* key, const char* value)
+ {
++#if 0
+     if (!IsValidKey(key) || !IsValidValue(value, MAX_VALUE_LEN)) {
+         return EC_INVALID;
+     }
+@@ -90,6 +94,8 @@ int SetSysParam(const char* key, const char* value)
+     UtilsFileClose(fd);
+     fd = -1;
+     return (ret < 0) ? EC_FAILURE : EC_SUCCESS;
++#endif
++    return 0;
+ }
+ 
+ boolean CheckPermission(void)
+-- 
+2.17.1
+

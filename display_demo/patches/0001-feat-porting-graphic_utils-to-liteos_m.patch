@@ -1,14 +1,13 @@
-From 8c8c81163e2419027f00c6a70d2b260e87593d45 Mon Sep 17 00:00:00 2001
-From: leihuang <leihuang@bestechnic.com>
-Date: Wed, 3 Nov 2021 19:43:13 +0800
-Subject: [PATCH] feat: porting graphic_utils to liteos_m
+From fbc871cfd8809c3b03d93f131378ad7f0600823c Mon Sep 17 00:00:00 2001
+From: SimonLi <likailong@huawei.com>
+Date: Mon, 15 Nov 2021 16:41:00 +0800
+Subject: [PATCH] foundation graphic utils
 
-Signed-off-by: leihuang <leihuang@bestechnic.com>
-Change-Id: If9391145f7e39375d8c072262cd40c342f0530b9
+Change-Id: I3d6eb98ee1cc09fb843623e63c53e4b92177b731
 ---
  BUILD.gn                              | 76 ++++++++++++++++-----------
- interfaces/innerkits/graphic_config.h | 34 ++++++++----
- 2 files changed, 67 insertions(+), 43 deletions(-)
+ interfaces/innerkits/graphic_config.h | 32 +++++++----
+ 2 files changed, 66 insertions(+), 42 deletions(-)
  mode change 100644 => 100755 BUILD.gn
  mode change 100644 => 100755 interfaces/innerkits/graphic_config.h
 
@@ -120,7 +119,7 @@ index 0bfcf85..22bddc7
 diff --git a/interfaces/innerkits/graphic_config.h b/interfaces/innerkits/graphic_config.h
 old mode 100644
 new mode 100755
-index 9972437..e99e5a9
+index 9972437..d11160b
 --- a/interfaces/innerkits/graphic_config.h
 +++ b/interfaces/innerkits/graphic_config.h
 @@ -53,7 +53,7 @@ namespace OHOS {
@@ -174,15 +173,6 @@ index 9972437..e99e5a9
 +#define ENABLE_FPS_SUPPORT                1
  /**
   * @brief Anti-aliasing, which is enabled by default.
-  */
-@@ -224,7 +226,7 @@ namespace OHOS {
- /**
-  * @brief Log function of a graphics subsystem, which is disabled by default
-  */
--#define ENABLE_GRAPHIC_LOG                0
-+#define ENABLE_GRAPHIC_LOG                1
- /**
-  * @brief Performance tracking for debugging, which is disabled by default.
   */
 @@ -279,7 +281,7 @@ namespace OHOS {
   * @brief Defines the file name of default vector font.
