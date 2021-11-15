@@ -1,20 +1,106 @@
-From d4d7a89ee53ce6c93a19ebba42c1b61d8a465331 Mon Sep 17 00:00:00 2001
-From: yangjian <jianyang@bestechnic.com>
-Date: Sat, 13 Nov 2021 22:21:47 +0800
-Subject: [PATCH] fix work around fs for arm-none-eabi
+From c54b151a3f1e61ab0f91b882e0e51b8bcabbac55 Mon Sep 17 00:00:00 2001
+From: SimonLi <likailong@huawei.com>
+Date: Mon, 15 Nov 2021 17:02:54 +0800
+Subject: [PATCH] kernel liteos_m
 
-Signed-off-by: yangjian <jianyang@bestechnic.com>
-Change-Id: Ib5b11f4f2b848c094be7bb6c975f43102d4c8a3c
+Change-Id: I403f69cbb76225672988ffe59853f1255bfa9a8b
 ---
- components/fs/fs.c               | 46 ++++++++++++++++++--------------
- components/fs/littlefs/lfs_api.c | 31 +++++++++++++++++++++
- components/fs/littlefs/lfs_api.h |  2 ++
+ BUILD.gn                         | 78 ++++++++++++++++----------------
+ components/fs/fs.c               | 46 +++++++++++--------
+ components/fs/littlefs/lfs_api.c | 31 +++++++++++++
+ components/fs/littlefs/lfs_api.h |  2 +
  kal/posix/src/time.c             |  2 +-
- 4 files changed, 60 insertions(+), 21 deletions(-)
+ 5 files changed, 99 insertions(+), 60 deletions(-)
  mode change 100644 => 100755 components/fs/fs.c
  mode change 100644 => 100755 components/fs/littlefs/lfs_api.c
  mode change 100644 => 100755 components/fs/littlefs/lfs_api.h
 
+diff --git a/BUILD.gn b/BUILD.gn
+index 1841ea9..2684976 100644
+--- a/BUILD.gn
++++ b/BUILD.gn
+@@ -278,42 +278,42 @@ group("kernel") {
+ group("liteos_m") {
+ }
+ 
+-executable("liteos") {
+-  configs += [
+-    ":public",
+-    ":los_config",
+-  ]
+-
+-  ldflags = [
+-    "-static",
+-    "-Wl,--gc-sections",
+-    "-Wl,-Map=$liteos_name.map",
+-  ]
+-
+-  output_dir = target_out_dir
+-
+-  if (liteos_kernel_only) {
+-    deps = [ ":kernel" ]
+-  } else {
+-    deps = [ "//build/lite:ohos" ]
+-  }
+-}
+-
+-copy("copy_liteos") {
+-  deps = [ ":liteos" ]
+-  sources = [ "$target_out_dir/unstripped/bin/liteos" ]
+-  outputs = [ "$root_out_dir/$liteos_name" ]
+-}
+-
+-build_ext_component("build_kernel_image") {
+-  deps = [ ":copy_liteos" ]
+-  exec_path = rebase_path(root_out_dir)
+-
+-  objcopy = "${compile_prefix}objcopy$toolchain_cmd_suffix"
+-  objdump = "${compile_prefix}objdump$toolchain_cmd_suffix"
+-
+-  command = "$objcopy -O binary $liteos_name $liteos_name.bin"
+-  command +=
+-      " && sh -c '$objdump -t $liteos_name | sort >$liteos_name.sym.sorted'"
+-  command += " && sh -c '$objdump -d $liteos_name >$liteos_name.asm'"
+-}
++# executable("liteos") {
++#   configs += [
++#     ":public",
++#     ":los_config",
++#   ]
++# 
++#   ldflags = [
++#     "-static",
++#     "-Wl,--gc-sections",
++#     "-Wl,-Map=$liteos_name.map",
++#   ]
++# 
++#   output_dir = target_out_dir
++# 
++#   if (liteos_kernel_only) {
++#     deps = [ ":kernel" ]
++#   } else {
++#     deps = [ "//build/lite:ohos" ]
++#   }
++# }
++# 
++# copy("copy_liteos") {
++#   deps = [ ":liteos" ]
++#   sources = [ "$target_out_dir/unstripped/bin/liteos" ]
++#   outputs = [ "$root_out_dir/$liteos_name" ]
++# }
++# 
++# build_ext_component("build_kernel_image") {
++#   deps = [ ":copy_liteos" ]
++#   exec_path = rebase_path(root_out_dir)
++# 
++#   objcopy = "${compile_prefix}objcopy$toolchain_cmd_suffix"
++#   objdump = "${compile_prefix}objdump$toolchain_cmd_suffix"
++# 
++#   command = "$objcopy -O binary $liteos_name $liteos_name.bin"
++#   command +=
++#       " && sh -c '$objdump -t $liteos_name | sort >$liteos_name.sym.sorted'"
++#   command += " && sh -c '$objdump -d $liteos_name >$liteos_name.asm'"
++# }
 diff --git a/components/fs/fs.c b/components/fs/fs.c
 old mode 100644
 new mode 100755
