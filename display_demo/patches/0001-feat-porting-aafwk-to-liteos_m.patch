@@ -1,8 +1,10 @@
-From 2387b110c1719cd17ac050cbed8276c378dc72d0 Mon Sep 17 00:00:00 2001
+From 3f959e9f14cc8d04463f4ff95a577ec8d4a764d6 Mon Sep 17 00:00:00 2001
 From: yangjian <jianyang@bestechnic.com>
-Date: Mon, 8 Nov 2021 21:16:05 +0800
+Date: Sat, 13 Nov 2021 23:04:31 +0800
 Subject: [PATCH] feat: porting aafwk to liteos_m
 
+Signed-off-by: yangjian <jianyang@bestechnic.com>
+Change-Id: Id63619c0fd91ea46b226ca3efaa359a67ec7130d
 ---
  frameworks/ability_lite/BUILD.gn              |  92 +++++++-----
  frameworks/abilitymgr_lite/BUILD.gn           |  56 +++++---
@@ -11,9 +13,8 @@ Subject: [PATCH] feat: porting aafwk to liteos_m
  services/abilitymgr_lite/BUILD.gn             | 134 +++++++++++-------
  .../abilitymgr_lite/include/ability_record.h  |   2 +-
  .../src/ability_mgr_service.cpp               |  10 +-
- .../abilitymgr_lite/src/ability_service.cpp   |  47 +++---
- services/abilitymgr_lite/src/js_app_host.cpp  |   6 +-
- 9 files changed, 225 insertions(+), 142 deletions(-)
+ .../abilitymgr_lite/src/ability_service.cpp   |  20 ++-
+ 8 files changed, 208 insertions(+), 126 deletions(-)
  mode change 100644 => 100755 services/abilitymgr_lite/BUILD.gn
 
 diff --git a/frameworks/ability_lite/BUILD.gn b/frameworks/ability_lite/BUILD.gn
@@ -547,7 +548,7 @@ index ccac550..5a5cf73 100755
      if (request->msgId == START_ABILITY) {
          ret = AbilityService::GetInstance().StartAbility(AbilityService::GetInstance().want_);
 diff --git a/services/abilitymgr_lite/src/ability_service.cpp b/services/abilitymgr_lite/src/ability_service.cpp
-index 1dcde7e..044aff0 100755
+index 1dcde7e..ca22962 100755
 --- a/services/abilitymgr_lite/src/ability_service.cpp
 +++ b/services/abilitymgr_lite/src/ability_service.cpp
 @@ -117,6 +117,7 @@ int32_t AbilityService::StartAbility(const Want *want)
@@ -570,43 +571,7 @@ index 1dcde7e..044aff0 100755
      }
  
      info->data = OHOS::Utils::Memdup(want->data, want->dataLength);
-@@ -273,18 +279,19 @@ int32_t AbilityService::ForceStop(char* bundlename)
-         AbilityRecord *topRecord = const_cast<AbilityRecord *>(abilityStack_.GetTopAbility());
-         HILOG_INFO(HILOG_MODULE_AAFWK, "ForceStop [%u]", topRecord->GetToken());
-         return TerminateAbility(topRecord->GetToken());
--    } else {
--        uint16_t size = abilityStack_.GetAllAbilities();
--        HILOG_INFO(HILOG_MODULE_AAFWK, "ForceStop innerStack mumber is [%u]", size);
--        //topAbility may be not the targert, need to search the abilityStack_
--        AbilityRecord *jsAbilityRecord = const_cast<AbilityRecord *>(abilityStack_.GetAbility(bundlename));
--        if (jsAbilityRecord != nullptr) {
--            jsAbilityRecord->SetTerminated(true);
--            // TerminateAbility top js
--            return SchedulerLifecycleInner(topRecord, STATE_UNINITIALIZED);
--        }
--        HILOG_INFO(HILOG_MODULE_AAFWK, "ForceStop cannot find exact Js ability");
-     }
-+    //  else {
-+    //     uint16_t size = abilityStack_.GetAllAbilities();
-+    //     HILOG_INFO(HILOG_MODULE_AAFWK, "ForceStop innerStack mumber is [%u]", size);
-+    //     //topAbility may be not the targert, need to search the abilityStack_
-+    //     AbilityRecord *jsAbilityRecord = const_cast<AbilityRecord *>(abilityStack_.GetAbility(bundlename));
-+    //     if (jsAbilityRecord != nullptr) {
-+    //         jsAbilityRecord->SetTerminated(true);
-+    //         // TerminateAbility top js
-+    //         return SchedulerLifecycleInner(topRecord, STATE_UNINITIALIZED);
-+    //     }
-+    //     HILOG_INFO(HILOG_MODULE_AAFWK, "ForceStop cannot find exact Js ability");
-+    // }
-     return PARAM_CHECK_ERROR;
- }
- 
-@@ -389,15 +396,19 @@ int32_t AbilityService::CreateAppTask(AbilityRecord *record)
-     record->SetMessageQueueId(jsAppQueueId);
-     record->SetJsAppHost(jsAppHost);
- 
--    LoadPermissions(record->GetAppName(), appTaskId);
-+    // LoadPermissions(record->GetAppName(), appTaskId);
+@@ -393,11 +399,15 @@ int32_t AbilityService::CreateAppTask(AbilityRecord *record)
      record->SetState(SCHEDULE_INACTIVE);
      abilityStack_.PushAbility(record);
      APP_EVENT(MT_ACE_APP_START);
@@ -627,46 +592,6 @@ index 1dcde7e..044aff0 100755
      }
      return ERR_OK;
  }
-@@ -420,7 +431,7 @@ void AbilityService::DeleteRecordInfo(uint16_t token)
-     if (token != LAUNCHER_TOKEN) {
-         if (record->IsAttached()) {
-             UINT32 taskId = record->GetTaskId();
--            UnLoadPermissions(taskId);
-+            // UnLoadPermissions(taskId);
-             LOS_TaskDelete(taskId);
-             osMessageQueueId_t jsAppQueueId = record->GetMessageQueueId();
-             osMessageQueueDelete(jsAppQueueId);
-diff --git a/services/abilitymgr_lite/src/js_app_host.cpp b/services/abilitymgr_lite/src/js_app_host.cpp
-index 54dd628..f3e9d3e 100755
---- a/services/abilitymgr_lite/src/js_app_host.cpp
-+++ b/services/abilitymgr_lite/src/js_app_host.cpp
-@@ -53,7 +53,7 @@ void JsAppHost::JsAppTaskHandler(uint32_t uwArg)
-         if (ret != osOK) {
-             return;
-         }
--        LP_TaskBegin();
-+        // LP_TaskBegin();
-         switch ((uint32_t)innerMsg.msgId) {
-             case ACTIVE:
-                 jsappHost->OnActive(innerMsg.token, innerMsg.bundleName, innerMsg.path);
-@@ -65,7 +65,7 @@ void JsAppHost::JsAppTaskHandler(uint32_t uwArg)
-                 // cleanup the message queue id to present any new async message
-                 JsAsyncWork::SetAppQueueHandler(nullptr);
-                 jsappHost->OnDestroy(innerMsg.token);
--                LP_TaskEnd();
-+                // LP_TaskEnd();
-                 return; // here exit the loop, and abort all messages afterwards
-             case BACKPRESSED:
-                 jsappHost->BackPressed();
-@@ -81,7 +81,7 @@ void JsAppHost::JsAppTaskHandler(uint32_t uwArg)
-             default:
-                 break;
-         }
--        LP_TaskEnd();
-+        // LP_TaskEnd();
-     }
- }
- 
 -- 
 2.17.1
 

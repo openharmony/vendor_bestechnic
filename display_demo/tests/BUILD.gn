@@ -19,7 +19,7 @@ declare_args() {
   bes_ui_test = false
   bes_ability_enable = false
   bes_ace_enable = true
-  bes_ability_test = true
+  bes_ability_test = false
 }
 
 static_library("example") {

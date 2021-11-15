@@ -1,17 +1,18 @@
-From 4e1e8150662b9a0e17b2f1f2011f1d1db6d9c405 Mon Sep 17 00:00:00 2001
-From: yangjian <jianyang@bestechnic.com>
-Date: Mon, 8 Nov 2021 21:17:36 +0800
-Subject: [PATCH] feat: add liteos_m options
+From 89d883adb27e04114b4c23f899ee11f43354c71e Mon Sep 17 00:00:00 2001
+From: SimonLi <likailong@huawei.com>
+Date: Sat, 13 Nov 2021 22:22:25 +0800
+Subject: [PATCH] build lite
 
+Change-Id: I880ef72ebf655f14db5c7663d11841917a90496e
 ---
  components/aafwk.json      |  1 +
- components/ace.json        |  9 ++++-----
+ components/ace.json        | 19 +++++++++----------
  components/appexecfwk.json |  1 +
  components/global.json     | 10 ++++------
- components/graphic.json    |  8 ++++----
+ components/graphic.json    | 12 ++++++------
  components/utils.json      |  3 +++
  components/vendor.json     |  6 ++++++
- 7 files changed, 23 insertions(+), 15 deletions(-)
+ 7 files changed, 30 insertions(+), 22 deletions(-)
 
 diff --git a/components/aafwk.json b/components/aafwk.json
 index e71ad88..8ae543f 100755
@@ -26,7 +27,7 @@ index e71ad88..8ae543f 100755
        ],
        "features": [
 diff --git a/components/ace.json b/components/ace.json
-index 8103970..ff25826 100755
+index 8103970..e20e33e 100755
 --- a/components/ace.json
 +++ b/components/ace.json
 @@ -8,13 +8,12 @@
@@ -39,26 +40,42 @@ index 8103970..ff25826 100755
        ],
        "rom": "521KB",
        "ram": "~82KB",
-       "output": [ "libace_lite.so" ],
+-      "output": [ "libace_lite.so" ],
 -      "adapted_kernel": [ "liteos_a", "linux"],
++      "output": [ "libace_lite.a" ],
 +      "adapted_kernel": [ "liteos_a", "liteos_m", "linux"],
        "features": [],
        "deps": {
          "third_party": [
-@@ -58,7 +57,7 @@
+@@ -57,8 +56,8 @@
+       ],
        "rom": "9KB",
        "ram": "~2KB",
-       "output": [ "libace_common.so" ],
+-      "output": [ "libace_common.so" ],
 -      "adapted_kernel": [ "liteos_a", "linux"],
++      "output": [ "libace_common.a" ],
 +      "adapted_kernel": [ "liteos_a", "liteos_m", "linux"],
        "features": [],
        "deps": {
          "third_party": [
-@@ -84,7 +83,7 @@
+@@ -83,8 +82,8 @@
+       ],
        "rom": "32KB",
        "ram": "~5KB",
-       "output": [ "libace_native_engine.so" ],
+-      "output": [ "libace_native_engine.so" ],
 -      "adapted_kernel": [ "liteos_a", "linux"],
++      "output": [ "libace_native_engine.a" ],
++      "adapted_kernel": [ "liteos_a", "liteos_m", "linux"],
+       "features": [],
+       "deps": {
+         "third_party": [
+@@ -110,8 +109,8 @@
+       ],
+       "rom": "12KB",
+       "ram": "~2KB",
+-      "output": [ "libace_module_manager.so" ],
+-      "adapted_kernel": [ "liteos_a", "linux"],
++      "output": [ "libace_module_manager.a" ],
 +      "adapted_kernel": [ "liteos_a", "liteos_m", "linux"],
        "features": [],
        "deps": {
@@ -112,7 +129,7 @@ index 26ad50d..721857a 100644
        "deps": {
          "third_party": [
 diff --git a/components/graphic.json b/components/graphic.json
-index 135ea4d..7fd1c2a 100644
+index 135ea4d..f313782 100644
 --- a/components/graphic.json
 +++ b/components/graphic.json
 @@ -6,14 +6,14 @@
@@ -125,7 +142,8 @@ index 135ea4d..7fd1c2a 100644
        ],
        "rom": "",
        "ram": "",
-       "output": ["libgraphic_utils.so"],
+-      "output": ["libgraphic_utils.so"],
++      "output": ["libgraphic_utils.a"],
        "adapted_kernel": [
          "liteos_a",
 +        "liteos_m",
@@ -142,7 +160,8 @@ index 135ea4d..7fd1c2a 100644
        ],
        "rom": "900KB",
        "ram": "~90KB",
-       "output": ["libui.so"],
+-      "output": ["libui.so"],
++      "output": ["libui.a"],
        "adapted_kernel": [
          "liteos_a",
 +        "liteos_m",
