@@ -1,8 +1,8 @@
 {
   "product_name": "display_demo",
   "ohos_version": "OpenHarmony 2.3",
-  "device_company": "bestechnic",
-  "board": "bes2600w",
+  "device_company": "fnlink",
+  "board": "fgv200zrxx",
   "kernel_type": "liteos_m",
   "kernel_version": "3.0.0",
   "pack_burn": "true",
@@ -76,7 +76,7 @@
         {
           "component": "liteos_m",
           "features": [
-            "ohos_kernel_liteos_m_lwip_path = \"${device_path}/components/net/lwip-2.1\""
+            "ohos_kernel_liteos_m_lwip_path = \"//device/soc/bestechnic/bes2600/liteos_m/components/net/lwip-2.1\""
           ]
         }
       ]
