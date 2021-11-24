@@ -1,25 +1,23 @@
-From c54b151a3f1e61ab0f91b882e0e51b8bcabbac55 Mon Sep 17 00:00:00 2001
+From 3e0668868a1a72dfa86e9e57257496c441cd6d83 Mon Sep 17 00:00:00 2001
 From: SimonLi <likailong@huawei.com>
-Date: Mon, 15 Nov 2021 17:02:54 +0800
+Date: Wed, 24 Nov 2021 14:14:55 +0800
 Subject: [PATCH] kernel liteos_m
 
-Change-Id: I403f69cbb76225672988ffe59853f1255bfa9a8b
+Change-Id: Icd9fa2447b9bb8b95087a88ff1d0cbf7f7e11a01
 ---
  BUILD.gn                         | 78 ++++++++++++++++----------------
  components/fs/fs.c               | 46 +++++++++++--------
- components/fs/littlefs/lfs_api.c | 31 +++++++++++++
- components/fs/littlefs/lfs_api.h |  2 +
+ components/fs/littlefs/lfs_api.h |  0
  kal/posix/src/time.c             |  2 +-
- 5 files changed, 99 insertions(+), 60 deletions(-)
+ 4 files changed, 66 insertions(+), 60 deletions(-)
  mode change 100644 => 100755 components/fs/fs.c
- mode change 100644 => 100755 components/fs/littlefs/lfs_api.c
  mode change 100644 => 100755 components/fs/littlefs/lfs_api.h
 
 diff --git a/BUILD.gn b/BUILD.gn
-index 1841ea9..2684976 100644
+index d5dcfe3..17a414a 100644
 --- a/BUILD.gn
 +++ b/BUILD.gn
-@@ -278,42 +278,42 @@ group("kernel") {
+@@ -295,42 +295,42 @@ group("kernel") {
  group("liteos_m") {
  }
  
@@ -300,70 +298,9 @@ index b28f2ee..ab01df1
  {
      if (g_fs == NULL) {
          errno = ENODEV;
-diff --git a/components/fs/littlefs/lfs_api.c b/components/fs/littlefs/lfs_api.c
-old mode 100644
-new mode 100755
-index 67a2db9..043ffc0
---- a/components/fs/littlefs/lfs_api.c
-+++ b/components/fs/littlefs/lfs_api.c
-@@ -322,6 +322,7 @@ const struct FileOps g_lfsFops = {
-     .Rename = LfsRename,
-     .Getattr = LfsStat,
-     .Fsync = LfsFsync,
-+    .Fstat = LfsFstat,
- };
- 
- int LfsMount(const char *source, const char *target, const char *fileSystemType, unsigned long mountflags,
-@@ -772,3 +773,33 @@ int LfsFsync(int fd)
-     }
-     return ret;
- }
-+
-+int LfsFstat(int fd, struct stat *buf)
-+{
-+    int ret;
-+    struct lfs_info info;
-+
-+    if (buf == NULL) {
-+        errno = EFAULT;
-+        return FS_FAILURE;
-+    }
-+
-+    if (LfsFdIsValid(fd) == FALSE) {
-+        errno = EBADF;
-+        return VFS_ERROR;
-+    }
-+
-+    ret = lfs_stat(g_handle[fd].lfsHandle, g_handle[fd].pathName, &info);
-+    if (ret == 0) {
-+        buf->st_size = info.size;
-+        if (info.type == LFS_TYPE_REG) {
-+            buf->st_mode = S_IFREG;
-+        } else {
-+            buf->st_mode = S_IFDIR;
-+        }
-+    } else {
-+        errno = LittlefsErrno(ret);
-+        ret = VFS_ERROR;
-+    }
-+    return ret;
-+}
-\ No newline at end of file
 diff --git a/components/fs/littlefs/lfs_api.h b/components/fs/littlefs/lfs_api.h
 old mode 100644
 new mode 100755
-index 8aa8606..3839f75
---- a/components/fs/littlefs/lfs_api.h
-+++ b/components/fs/littlefs/lfs_api.h
-@@ -111,6 +111,8 @@ int LfsClose(int fd);
- int LfsRename(const char *oldName, const char *newName);
- int LfsStat(const char *path, struct stat *buf);
- int LfsFsync(int fd);
-+int LfsFstat(int fd, struct stat *buf);
-+
- int SetDefaultMountPath(int pathNameIndex, const char* target);
- 
- #endif /* _LFS_API_H_ */
 diff --git a/kal/posix/src/time.c b/kal/posix/src/time.c
 index 0f54fca..2c1caed 100644
 --- a/kal/posix/src/time.c
