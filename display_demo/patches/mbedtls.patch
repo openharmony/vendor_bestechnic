@@ -1,3 +1,15 @@
+From 9b738a9391d2d2bbf9fe4a9f3d3bd47525abc824 Mon Sep 17 00:00:00 2001
+From: yangjian <jianyang@bestechnic.com>
+Date: Wed, 24 Nov 2021 10:28:01 +0800
+Subject: [PATCH] mbedtls
+
+Signed-off-by: yangjian <jianyang@bestechnic.com>
+Change-Id: I306ef33a1d5d707f1a72c4d5c6b57b4e319829eb
+---
+ BUILD.gn                      |   2 +-
+ port/config/config_liteos_m.h | 116 +++++++++++++++++-----------------
+ 2 files changed, 60 insertions(+), 58 deletions(-)
+
 diff --git a/BUILD.gn b/BUILD.gn
 index 9ecb37a..6eb8472 100755
 --- a/BUILD.gn
@@ -19,7 +31,7 @@ index 9ecb37a..6eb8472 100755
        "library/pkcs11.c",
        "library/ssl_cache.c",
 diff --git a/port/config/config_liteos_m.h b/port/config/config_liteos_m.h
-index 5cf2ea8..ffa0b23 100755
+index c5e7e39..ffa0b23 100755
 --- a/port/config/config_liteos_m.h
 +++ b/port/config/config_liteos_m.h
 @@ -222,7 +222,7 @@
@@ -188,15 +200,6 @@ index 5cf2ea8..ffa0b23 100755
  
  /**
   * \def MBEDTLS_SSL_ALPN
-@@ -1617,7 +1617,7 @@
-  *
-  * Comment this macro to disable support for ALPN.
-  */
--// #define MBEDTLS_SSL_ALPN
-+#define MBEDTLS_SSL_ALPN
- 
- /**
-  * \def MBEDTLS_SSL_DTLS_ANTI_REPLAY
 @@ -1632,7 +1632,7 @@
   *
   * Comment this to disable anti-replay in DTLS.
@@ -518,3 +521,6 @@ index 5cf2ea8..ffa0b23 100755
  
  /**
   * Allow SHA-1 in the default TLS configuration for TLS 1.2 handshake
+-- 
+2.17.1
+
