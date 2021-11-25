@@ -1,17 +1,17 @@
-From 6b05369ba6d7991b5c46953c16cb16b3a3d85798 Mon Sep 17 00:00:00 2001
+From 7c1f2ed3f608ab2ca12d0a80fadcb2ea552f7cc6 Mon Sep 17 00:00:00 2001
 From: SimonLi <likailong@huawei.com>
-Date: Fri, 29 Oct 2021 10:49:48 +0800
-Subject: [PATCH] foundation graphic ui porting
+Date: Thu, 25 Nov 2021 17:13:58 +0800
+Subject: [PATCH] foundation graphic ui
 
-Change-Id: Ia538ca25920bf0cab9d4ac1ddd628064c35cb7cb
+Change-Id: I8ae147174aebdc1db9497b38eb79f63fc9fbeb87
 ---
  BUILD.gn                                   | 96 ++++++++++++++--------
  frameworks/common/image.cpp                |  2 +-
  frameworks/components/root_view.cpp        |  4 +-
- frameworks/components/ui_image_view.cpp    | 14 ++--
+ frameworks/components/ui_image_view.cpp    | 16 ++--
  frameworks/dock/pointer_input_device.cpp   |  2 +-
  interfaces/kits/components/ui_image_view.h |  4 +-
- 6 files changed, 72 insertions(+), 50 deletions(-)
+ 6 files changed, 73 insertions(+), 51 deletions(-)
 
 diff --git a/BUILD.gn b/BUILD.gn
 index 20d81b0..2c889d1 100755
@@ -159,7 +159,7 @@ index e88e5fc..53fe26d 100755
  
      uint8_t pixelByteSize = DrawUtils::GetPxSizeByColorMode(ARGB8888) >> 3; // 3: Shift right 3 bits
 diff --git a/frameworks/components/root_view.cpp b/frameworks/components/root_view.cpp
-index 4615fb0..91d00ec 100755
+index d908b9f..91a4390 100755
 --- a/frameworks/components/root_view.cpp
 +++ b/frameworks/components/root_view.cpp
 @@ -529,9 +529,7 @@ void RootView::Render()
@@ -174,7 +174,7 @@ index 4615fb0..91d00ec 100755
  #endif
  
 diff --git a/frameworks/components/ui_image_view.cpp b/frameworks/components/ui_image_view.cpp
-index ae8a9fe..7b7d57d 100644
+index ae8a9fe..f99e5b0 100644
 --- a/frameworks/components/ui_image_view.cpp
 +++ b/frameworks/components/ui_image_view.cpp
 @@ -23,12 +23,12 @@
@@ -192,6 +192,15 @@ index ae8a9fe..7b7d57d 100644
  class GifImageAnimator : public Animator, public AnimatorCallback {
  public:
      GifImageAnimator(UIView* view, const char* src)
+@@ -85,7 +85,7 @@ private:
+ 
+ const void GifImageAnimator::OpenGifFile(const char* src)
+ {
+-    int32_t error = D_GIF_SUCCEEDED;
++    int error = D_GIF_SUCCEEDED;
+     GifFileType* gifFileType = DGifOpenFileName(src, &error);
+     if (error != D_GIF_SUCCEEDED) {
+         return;
 @@ -231,7 +231,7 @@ UIImageView::UIImageView()
        reserve_(0)
  {

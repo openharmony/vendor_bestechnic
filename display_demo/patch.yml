@@ -30,3 +30,11 @@ base/startup/syspara_lite:
   - vendor/bestechnic/display_demo/patches/0001-base-startup-syspara_lite.patch
 foundation/communication/wifi_lite:
   - vendor/bestechnic/display_demo/patches/0001-foundation-communication-wifi_lite.patch
+device/board/fnlink:
+  - vendor/bestechnic/display_demo/patches/0001-device-board-fnlink.patch
+device/soc/bestechnic:
+  - vendor/bestechnic/display_demo/patches/0001-device-soc-bestechnic.patch
+foundation/appexecfwk/appexecfwk_lite:
+  - vendor/bestechnic/display_demo/patches/0001-foundation-appexecfwk-appexecfwk_lite.patch
+base/hiviewdfx/hiview_lite:
+  - vendor/bestechnic/display_demo/patches/0001-base-hiviewdfx-hiview_lite.patch

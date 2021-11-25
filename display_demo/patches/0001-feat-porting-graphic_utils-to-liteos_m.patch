@@ -1,20 +1,20 @@
-From fbc871cfd8809c3b03d93f131378ad7f0600823c Mon Sep 17 00:00:00 2001
+From 373564060e7d1cf0afc41a4509f0fbb3c6a112d0 Mon Sep 17 00:00:00 2001
 From: SimonLi <likailong@huawei.com>
-Date: Mon, 15 Nov 2021 16:41:00 +0800
-Subject: [PATCH] foundation graphic utils
+Date: Thu, 25 Nov 2021 18:48:40 +0800
+Subject: [PATCH] foundation/graphic/utils
 
-Change-Id: I3d6eb98ee1cc09fb843623e63c53e4b92177b731
+Change-Id: I8a47dde418f35f41b4d4fc0f100b1a0a2d96bef5
 ---
- BUILD.gn                              | 76 ++++++++++++++++-----------
- interfaces/innerkits/graphic_config.h | 32 +++++++----
- 2 files changed, 66 insertions(+), 42 deletions(-)
+ BUILD.gn                              | 75 +++++++++++++++------------
+ interfaces/innerkits/graphic_config.h | 32 ++++++++----
+ 2 files changed, 65 insertions(+), 42 deletions(-)
  mode change 100644 => 100755 BUILD.gn
  mode change 100644 => 100755 interfaces/innerkits/graphic_config.h
 
 diff --git a/BUILD.gn b/BUILD.gn
 old mode 100644
 new mode 100755
-index 0bfcf85..22bddc7
+index 0bfcf85..8b03ee8
 --- a/BUILD.gn
 +++ b/BUILD.gn
 @@ -24,18 +24,24 @@ ndk_lib("lite_graphic_utils_ndk") {
@@ -52,7 +52,7 @@ index 0bfcf85..22bddc7
    if (enable_graphic_dualcore == true) {
      defines = [ "HAL_CPU_NUM = 2" ]
    }
-@@ -57,11 +63,17 @@ shared_library("graphic_utils") {
+@@ -57,11 +63,16 @@ shared_library("graphic_utils") {
    ]
    include_dirs = [ "frameworks" ]
    public_configs = [ ":graphic_utils_public_config" ]
@@ -65,7 +65,6 @@ index 0bfcf85..22bddc7
 +    deps = [ "//third_party/bounds_checking_function:libsec_static" ]
 +    public_deps =
 +        [ "//base/hiviewdfx/hilog_lite/frameworks/featured:hilog_static" ]
-+    include_dirs += [ "//third_party/musl/porting/liteos_m/kernel/include" ]
 +  } else {
 +    deps = [ "//third_party/bounds_checking_function:libsec_shared" ]
 +    public_deps =
@@ -75,7 +74,7 @@ index 0bfcf85..22bddc7
    cflags_cc = cflags
  }
  
-@@ -72,23 +84,23 @@ config("graphic_utils_public_config") {
+@@ -72,23 +83,23 @@ config("graphic_utils_public_config") {
    ]
  }
  

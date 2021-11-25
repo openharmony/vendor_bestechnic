@@ -1,0 +1,31 @@
+From 749a3c5ba6477b8919f7c1fd90f8950df57e34e1 Mon Sep 17 00:00:00 2001
+From: SimonLi <likailong@huawei.com>
+Date: Thu, 25 Nov 2021 18:43:31 +0800
+Subject: [PATCH] base hiviewdfx hiview_lite
+
+Change-Id: If86b07b693278c6aca56e0b4e104ac340cc21dda
+---
+ BUILD.gn | 9 ---------
+ 1 file changed, 9 deletions(-)
+
+diff --git a/BUILD.gn b/BUILD.gn
+index fb7fe5a..78f9907 100755
+--- a/BUILD.gn
++++ b/BUILD.gn
+@@ -54,13 +54,4 @@ static_library("hiview_lite") {
+     defines += [ "OUTPUT_LEVEL = $ohos_hiviewdfx_hilog_lite_level_release" ]
+   }
+   public_configs = [ ":hiview_lite_config" ]
+-
+-  if (ohos_kernel_type == "liteos_m") {
+-    cflags += [
+-      "-nostdinc",
+-      "-nostdlib",
+-    ]
+-  } else {
+-    deps = []
+-  }
+ }
+-- 
+2.17.1
+

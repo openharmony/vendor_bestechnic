@@ -1,20 +1,21 @@
-From 0f2d59026bffbb7e1f100dd8d99a31a2679c7914 Mon Sep 17 00:00:00 2001
+From ee39f2da532a29cd464a7a2470c59cb1cf08439d Mon Sep 17 00:00:00 2001
 From: SimonLi <likailong@huawei.com>
-Date: Mon, 15 Nov 2021 16:31:30 +0800
+Date: Thu, 25 Nov 2021 17:07:45 +0800
 Subject: [PATCH] foundation aafwk aafwk_lite
 
-Change-Id: Ie05d87a6575bac7adbb9f8c0235b60c112835d97
+Change-Id: Icadb2bd327792433ed884d14b0683a3caf10e015
 ---
  frameworks/ability_lite/BUILD.gn              |  92 +++++++-----
  frameworks/abilitymgr_lite/BUILD.gn           |  56 +++++---
  .../src/slite/abilityms_slite_client.cpp      |  10 +-
  frameworks/want_lite/BUILD.gn                 |  10 +-
  services/abilitymgr_lite/BUILD.gn             | 134 +++++++++++-------
- .../abilitymgr_lite/include/ability_record.h  |   3 +-
+ .../abilitymgr_lite/include/ability_record.h  |   8 +-
  .../src/ability_mgr_service.cpp               |  10 +-
+ .../src/ability_mgr_slite_feature.cpp         |  10 +-
  .../abilitymgr_lite/src/ability_service.cpp   |  28 ++--
  services/abilitymgr_lite/src/js_app_host.cpp  |   6 +-
- 9 files changed, 217 insertions(+), 132 deletions(-)
+ 10 files changed, 224 insertions(+), 140 deletions(-)
  mode change 100644 => 100755 services/abilitymgr_lite/BUILD.gn
 
 diff --git a/frameworks/ability_lite/BUILD.gn b/frameworks/ability_lite/BUILD.gn
@@ -500,7 +501,7 @@ index 9bfaa50..af1f860
    ]
  }
 diff --git a/services/abilitymgr_lite/include/ability_record.h b/services/abilitymgr_lite/include/ability_record.h
-index f52d325..1c59991 100755
+index f52d325..d5fb7f0 100755
 --- a/services/abilitymgr_lite/include/ability_record.h
 +++ b/services/abilitymgr_lite/include/ability_record.h
 @@ -16,7 +16,7 @@
@@ -512,14 +513,30 @@ index f52d325..1c59991 100755
  #include "cmsis_os.h"
  #endif
  #include "ability_info.h"
-@@ -25,6 +25,7 @@ namespace OHOS {
- class JsAppHost;
+@@ -105,12 +105,12 @@ public:
+         return token_;
+     }
  
- constexpr int FAIL_CALLBACK_ERRORCODE = 200;
-+#define UINT32 uint32_t
+-    void SetTaskId(UINT32 taskId)
++    void SetTaskId(uint32_t taskId)
+     {
+         taskId_ = taskId;
+     }
  
- /* States-feedback from launcher to AMS */
- typedef enum {
+-    UINT32 GetTaskId() const
++    uint32_t GetTaskId() const
+     {
+         return taskId_;
+     }
+@@ -155,7 +155,7 @@ private:
+     uint16_t dataLength_ { 0 };
+     AbilityState state_ { SCHEDULE_STOP };
+     uint16_t token_ { 0 };
+-    UINT32 taskId_ { 0 };
++    uint32_t taskId_ { 0 };
+     osMessageQueueId_t jsAppQueueId_ { nullptr };
+     JsAppHost *jsAppHost_ { nullptr };
+     bool isTerminated_ = false;
 diff --git a/services/abilitymgr_lite/src/ability_mgr_service.cpp b/services/abilitymgr_lite/src/ability_mgr_service.cpp
 index ccac550..5a5cf73 100755
 --- a/services/abilitymgr_lite/src/ability_mgr_service.cpp
@@ -555,6 +572,41 @@ index ccac550..5a5cf73 100755
      int ret = ERR_OK;
      if (request->msgId == START_ABILITY) {
          ret = AbilityService::GetInstance().StartAbility(AbilityService::GetInstance().want_);
+diff --git a/services/abilitymgr_lite/src/ability_mgr_slite_feature.cpp b/services/abilitymgr_lite/src/ability_mgr_slite_feature.cpp
+index a17006a..164097a 100755
+--- a/services/abilitymgr_lite/src/ability_mgr_slite_feature.cpp
++++ b/services/abilitymgr_lite/src/ability_mgr_slite_feature.cpp
+@@ -90,25 +90,25 @@ BOOL AbilityMgrSliteFeature::OnFeatureMessage(Feature *feature, Request *request
+     return TRUE;
+ }
+ 
+-int32_t AbilityMgrSliteFeature::StartAbility(const Want *want)
++int32 AbilityMgrSliteFeature::StartAbility(const Want *want)
+ {
+-    int32_t ret = AbilityService::GetInstance().StartAbility(want);
++    int32 ret = AbilityService::GetInstance().StartAbility(want);
+     ClearWant(const_cast<Want *>(want));
+     return ret;
+ }
+ 
+-int32_t AbilityMgrSliteFeature::TerminateAbility(uint64_t token)
++int32 AbilityMgrSliteFeature::TerminateAbility(uint64_t token)
+ {
+     uint16_t slitToken = token & 0xFFFF;
+     return AbilityService::GetInstance().TerminateAbility(slitToken);
+ }
+ 
+-int32_t AbilityMgrSliteFeature::SchedulerLifecycleDone(uint64_t token, int state)
++int32 AbilityMgrSliteFeature::SchedulerLifecycleDone(uint64_t token, int state)
+ {
+     return AbilityService::GetInstance().SchedulerLifecycleDone(token, state);
+ }
+ 
+-int32_t AbilityMgrSliteFeature::ForceStopBundle(uint64_t token)
++int32 AbilityMgrSliteFeature::ForceStopBundle(uint64_t token)
+ {
+     uint16_t slitToken = token & 0xFFFF;
+     return AbilityService::GetInstance().ForceStopBundle(slitToken);
 diff --git a/services/abilitymgr_lite/src/ability_service.cpp b/services/abilitymgr_lite/src/ability_service.cpp
 index 1dcde7e..47277a9 100755
 --- a/services/abilitymgr_lite/src/ability_service.cpp

@@ -1,0 +1,26 @@
+From cabc5134f1f0265e8212a6e4463383a723a775ae Mon Sep 17 00:00:00 2001
+From: SimonLi <likailong@huawei.com>
+Date: Thu, 25 Nov 2021 17:11:40 +0800
+Subject: [PATCH] foundation appexecfwk appexecfwk_lite
+
+Change-Id: I15a257489596db323d65f31aa18a0c0217180b5e
+---
+ services/bundlemgr_lite/src/bundle_mgr_slite_feature.cpp | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/services/bundlemgr_lite/src/bundle_mgr_slite_feature.cpp b/services/bundlemgr_lite/src/bundle_mgr_slite_feature.cpp
+index 5772f79..7fc5cf5 100755
+--- a/services/bundlemgr_lite/src/bundle_mgr_slite_feature.cpp
++++ b/services/bundlemgr_lite/src/bundle_mgr_slite_feature.cpp
+@@ -121,7 +121,7 @@ uint8_t BundleMgrSliteFeature::GetBundleInfo(const char *bundleName, int32_t fla
+     return OHOS::GtManagerService::GetInstance().GetBundleInfo(bundleName, flags, *bundleInfo);
+ }
+ 
+-uint8_t BundleMgrSliteFeature::GetBundleInfos(const int flags, BundleInfo **bundleInfos, int32_t *len)
++uint8_t BundleMgrSliteFeature::GetBundleInfos(const int32_t flags, BundleInfo **bundleInfos, int32_t *len)
+ {
+     return OHOS::GtManagerService::GetInstance().GetBundleInfos(flags, bundleInfos, len);
+ }
+-- 
+2.17.1
+
