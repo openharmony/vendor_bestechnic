@@ -1,32 +1,32 @@
-From 483dac6a951f4a23fbc14b1ffe08753b82adaf20 Mon Sep 17 00:00:00 2001
+From 853947f47952e02b7c79930318a0f1ec7b341d4c Mon Sep 17 00:00:00 2001
 From: SimonLi <likailong@huawei.com>
-Date: Wed, 20 Oct 2021 01:08:05 +0800
-Subject: [PATCH] build: porting musl to mini system
+Date: Thu, 25 Nov 2021 17:16:47 +0800
+Subject: [PATCH] third_party musl
 
-Signed-off-by: SimonLi <likailong@huawei.com>
-Change-Id: Icb6746fd0a55d653d928bff7d888f87abd71cb98
+Change-Id: I7858fb559e3e8ed51c8a8332de12210e8d1ba493
 ---
- porting/liteos_m/kernel/BUILD.gn              | 25 +++---
- porting/liteos_m/kernel/include/ctype.h       | 12 +++
- porting/liteos_m/kernel/include/pthread.h     |  2 +-
- porting/liteos_m/kernel/include/stddef.h      | 13 ++++
- porting/liteos_m/kernel/include/stdlib.h      |  2 +
- .../liteos_m/kernel/src/internal/stdio_impl.h |  5 ++
- porting/liteos_m/kernel/src/misc/realpath.c   | 76 +++++++++++++++++++
- porting/liteos_m/kernel/src/stdio/clearerr.c  |  9 ++-
- porting/liteos_m/kernel/src/stdio/fclose.c    |  2 +-
- porting/liteos_m/kernel/src/stdio/feof.c      | 11 ++-
- porting/liteos_m/kernel/src/stdio/fflush.c    |  2 +-
- porting/liteos_m/kernel/src/stdio/fgets.c     |  4 +-
- porting/liteos_m/kernel/src/stdio/fileno.c    |  4 +-
- porting/liteos_m/kernel/src/stdio/fopen.c     |  9 ++-
- porting/liteos_m/kernel/src/stdio/fputs.c     |  9 ++-
- porting/liteos_m/kernel/src/stdio/fread.c     | 11 ++-
- porting/liteos_m/kernel/src/stdio/fseek.c     |  2 +-
- porting/liteos_m/kernel/src/stdio/ftell.c     |  2 +-
- porting/liteos_m/kernel/src/stdio/fwrite.c    |  9 ++-
- porting/liteos_m/kernel/src/string/strdup.c   |  7 +-
- 20 files changed, 180 insertions(+), 36 deletions(-)
+ porting/liteos_m/kernel/BUILD.gn              | 355 +++++++++---------
+ porting/liteos_m/kernel/include/ctype.h       |  12 +
+ porting/liteos_m/kernel/include/pthread.h     |   2 +-
+ porting/liteos_m/kernel/include/stddef.h      |  13 +
+ porting/liteos_m/kernel/include/stdlib.h      |   2 +
+ .../liteos_m/kernel/src/internal/stdio_impl.h |   5 +
+ porting/liteos_m/kernel/src/misc/realpath.c   |  76 ++++
+ porting/liteos_m/kernel/src/stdio/__fdopen.c  |   2 +-
+ porting/liteos_m/kernel/src/stdio/clearerr.c  |   9 +-
+ porting/liteos_m/kernel/src/stdio/fclose.c    |   2 +-
+ porting/liteos_m/kernel/src/stdio/feof.c      |  11 +-
+ porting/liteos_m/kernel/src/stdio/fflush.c    |   2 +-
+ porting/liteos_m/kernel/src/stdio/fgets.c     |   4 +-
+ porting/liteos_m/kernel/src/stdio/fileno.c    |   4 +-
+ porting/liteos_m/kernel/src/stdio/fopen.c     |   9 +-
+ porting/liteos_m/kernel/src/stdio/fputs.c     |   9 +-
+ porting/liteos_m/kernel/src/stdio/fread.c     |  11 +-
+ porting/liteos_m/kernel/src/stdio/fseek.c     |   2 +-
+ porting/liteos_m/kernel/src/stdio/ftell.c     |   2 +-
+ porting/liteos_m/kernel/src/stdio/fwrite.c    |   9 +-
+ porting/liteos_m/kernel/src/string/strdup.c   |   7 +-
+ 21 files changed, 346 insertions(+), 202 deletions(-)
  mode change 100644 => 100755 porting/liteos_m/kernel/BUILD.gn
  mode change 100644 => 100755 porting/liteos_m/kernel/include/ctype.h
  mode change 100644 => 100755 porting/liteos_m/kernel/include/stddef.h
@@ -50,71 +50,372 @@ Change-Id: Icb6746fd0a55d653d928bff7d888f87abd71cb98
 diff --git a/porting/liteos_m/kernel/BUILD.gn b/porting/liteos_m/kernel/BUILD.gn
 old mode 100644
 new mode 100755
-index b0cead99..25a40945
+index cbb1dc2..af3a426
 --- a/porting/liteos_m/kernel/BUILD.gn
 +++ b/porting/liteos_m/kernel/BUILD.gn
-@@ -58,10 +58,11 @@ static_library(libc) {
-     "src/locale/c_locale.c",
-     "src/locale/langinfo.c",
-     "src/misc/dirname.c",
+@@ -27,180 +27,181 @@
+ # OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
+ # ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ 
+-libc = "musl-c"
+-libm = "musl-m"
+-
+-config("include") {
+-  include_dirs = [ "include" ]
+-}
+-
+-static_library(libc) {
+-  sources = [
+-    "src/ctype/__ctype_get_mb_cur_max.c",
+-    "src/ctype/isalnum.c",
+-    "src/ctype/isascii.c",
+-    "src/ctype/isdigit.c",
+-    "src/ctype/islower.c",
+-    "src/ctype/isprint.c",
+-    "src/ctype/isspace.c",
+-    "src/ctype/isupper.c",
+-    "src/ctype/isxdigit.c",
+-    "src/ctype/tolower.c",
+-    "src/ctype/toupper.c",
+-    "src/env/__stack_chk_fail.c",
+-    "src/errno/strerror.c",
+-    "src/exit/abort.c",
+-    "src/exit/assert.c",
+-    "src/exit/atexit.c",
+-    "src/internal/floatscan.c",
+-    "src/internal/intscan.c",
+-    "src/internal/shgetc.c",
+-    "src/locale/__lctrans.c",
+-    "src/locale/c_locale.c",
+-    "src/locale/langinfo.c",
+-    "src/misc/dirname.c",
 -    "src/multibyte/internal.c",
 -    "src/multibyte/mbtowc.c",
 -    "src/multibyte/wcrtomb.c",
 -    "src/multibyte/wctomb.c",
-+    "src/misc/realpath.c",
-+    # "src/multibyte/internal.c",
-+    # "src/multibyte/mbtowc.c",
-+    # "src/multibyte/wcrtomb.c",
-+    # "src/multibyte/wctomb.c",
-     "src/network/h_errno.c",
-     "src/network/htonl.c",
-     "src/network/htons.c",
-@@ -102,25 +103,25 @@ static_library(libc) {
-     "src/stdio/perror.c",
-     "src/stdio/remove.c",
-     "src/stdio/rewind.c",
+-    "src/network/h_errno.c",
+-    "src/network/htonl.c",
+-    "src/network/htons.c",
+-    "src/network/ntohl.c",
+-    "src/network/ntohs.c",
+-    "src/prng/rand.c",
+-    "src/prng/random.c",
+-    "src/regex/regcomp.c",
+-    "src/regex/regexec.c",
+-    "src/regex/tre-mem.c",
+-    "src/stdio/__fdopen.c",
+-    "src/stdio/__fmodeflags.c",
+-    "src/stdio/__lockfile.c",
+-    "src/stdio/__overflow.c",
+-    "src/stdio/__stdio_close.c",
+-    "src/stdio/__stdio_read.c",
+-    "src/stdio/__stdio_seek.c",
+-    "src/stdio/__stdio_write.c",
+-    "src/stdio/__stdout_write.c",
+-    "src/stdio/__toread.c",
+-    "src/stdio/__towrite.c",
+-    "src/stdio/__uflow.c",
+-    "src/stdio/clearerr.c",
+-    "src/stdio/fclose.c",
+-    "src/stdio/feof.c",
+-    "src/stdio/fflush.c",
+-    "src/stdio/fgets.c",
+-    "src/stdio/fileno.c",
+-    "src/stdio/fopen.c",
+-    "src/stdio/fputc.c",
+-    "src/stdio/fputs.c",
+-    "src/stdio/fread.c",
+-    "src/stdio/fseek.c",
+-    "src/stdio/ftell.c",
+-    "src/stdio/fwrite.c",
+-    "src/stdio/ofl.c",
+-    "src/stdio/ofl_add.c",
+-    "src/stdio/perror.c",
+-    "src/stdio/remove.c",
+-    "src/stdio/rewind.c",
 -    "src/stdio/snprintf.c",
-+    # "src/stdio/snprintf.c",
-     "src/stdio/stderr.c",
-     "src/stdio/stdin.c",
-     "src/stdio/stdout.c",
+-    "src/stdio/stderr.c",
+-    "src/stdio/stdin.c",
+-    "src/stdio/stdout.c",
 -    "src/stdio/vfprintf.c",
 -    "src/stdio/vsnprintf.c",
 -    "src/stdio/vsprintf.c",
-+    # "src/stdio/vfprintf.c",
-+    # "src/stdio/vsnprintf.c",
-+    # "src/stdio/vsprintf.c",
-     "src/stdlib/abs.c",
-     "src/stdlib/atof.c",
-     "src/stdlib/atoi.c",
- 
+-    "src/stdlib/abs.c",
+-    "src/stdlib/atof.c",
+-    "src/stdlib/atoi.c",
+-
 -    #"src/stdlib/strtol.c",
-+    # "src/stdlib/strtol.c",
-     "src/locale/iconv.c",
+-    "src/locale/iconv.c",
 -    "src/stdio/ungetc.c",
-+    # "src/stdio/ungetc.c",
-     "src/stdlib/atol.c",
-     "src/stdlib/atoll.c",
-     "src/stdlib/bsearch.c",
-     "src/stdlib/llabs.c",
+-    "src/stdlib/atol.c",
+-    "src/stdlib/atoll.c",
+-    "src/stdlib/bsearch.c",
+-    "src/stdlib/llabs.c",
 -    "src/stdlib/strtod.c",
-+    # "src/stdlib/strtod.c",
-     "src/string/memchr.c",
-     "src/string/memcmp.c",
-     "src/string/memcpy.c",
-@@ -138,7 +139,7 @@ static_library(libc) {
-     "src/string/strlen.c",
-     "src/string/strncasecmp.c",
-     "src/string/strncmp.c",
+-    "src/string/memchr.c",
+-    "src/string/memcmp.c",
+-    "src/string/memcpy.c",
+-    "src/string/memmove.c",
+-    "src/string/memrchr.c",
+-    "src/string/memset.c",
+-    "src/string/stpcpy.c",
+-    "src/string/strcasecmp.c",
+-    "src/string/strcat.c",
+-    "src/string/strchr.c",
+-    "src/string/strchrnul.c",
+-    "src/string/strcmp.c",
+-    "src/string/strcspn.c",
+-    "src/string/strdup.c",
+-    "src/string/strlen.c",
+-    "src/string/strncasecmp.c",
+-    "src/string/strncmp.c",
 -    "src/string/strncpy.c",
-+    # "src/string/strncpy.c",
-     "src/string/strnlen.c",
-     "src/string/strrchr.c",
-     "src/string/strspn.c",
+-    "src/string/strnlen.c",
+-    "src/string/strrchr.c",
+-    "src/string/strspn.c",
+-    "src/string/strstr.c",
+-    "src/string/strtok.c",
+-    "src/string/wcschr.c",
+-    "src/string/wcslen.c",
+-    "src/time/__month_to_secs.c",
+-    "src/time/__secs_to_tm.c",
+-    "src/time/__tm_to_secs.c",
+-    "src/time/__tz.c",
+-    "src/time/__year_to_secs.c",
+-    "src/time/asctime.c",
+-    "src/time/asctime_r.c",
+-    "src/time/ctime.c",
+-    "src/time/strftime.c",
+-    "src/time/strptime.c",
+-  ]
+-
+-  include_dirs = [
+-    "src/include",
+-    "src/internal",
+-  ]
+-
+-  include_dirs += [
+-    "//kernel/liteos_m/kernel/arch/include",
+-    "//kernel/liteos_m/kernel/include",
+-    "//kernel/liteos_m/utils",
+-  ]
+-
+-  public_configs = [ ":include" ]
+-}
+-
+-static_library(libm) {
+-  sources = [
+-    "src/math/__fpclassify.c",
+-    "src/math/__fpclassifyl.c",
+-    "src/math/__signbit.c",
+-    "src/math/__signbitl.c",
+-    "src/math/exp_data.c",
+-    "src/math/frexp.c",
+-    "src/math/frexpl.c",
+-    "src/math/log.c",
+-    "src/math/log_data.c",
+-    "src/math/pow.c",
+-    "src/math/pow_data.c",
+-    "src/math/round.c",
+-    "src/math/sqrt.c",
+-  ]
+-
+-  include_dirs = [
+-    "src/include",
+-    "src/internal",
+-  ]
+-
+-  public_configs = [ ":include" ]
+-}
+-
+-group("kernel") {
+-  public_deps = [
+-    ":$libc",
+-    ":$libm",
+-  ]
+-}
++# libc = "musl-c"
++# libm = "musl-m"
++# 
++# config("include") {
++#   include_dirs = [ "include" ]
++# }
++# 
++# static_library(libc) {
++#   sources = [
++#     "src/ctype/__ctype_get_mb_cur_max.c",
++#     "src/ctype/isalnum.c",
++#     "src/ctype/isascii.c",
++#     "src/ctype/isdigit.c",
++#     "src/ctype/islower.c",
++#     "src/ctype/isprint.c",
++#     "src/ctype/isspace.c",
++#     "src/ctype/isupper.c",
++#     "src/ctype/isxdigit.c",
++#     "src/ctype/tolower.c",
++#     "src/ctype/toupper.c",
++#     "src/env/__stack_chk_fail.c",
++#     "src/errno/strerror.c",
++#     "src/exit/abort.c",
++#     "src/exit/assert.c",
++#     "src/exit/atexit.c",
++#     "src/internal/floatscan.c",
++#     "src/internal/intscan.c",
++#     "src/internal/shgetc.c",
++#     "src/locale/__lctrans.c",
++#     "src/locale/c_locale.c",
++#     "src/locale/langinfo.c",
++#     "src/misc/dirname.c",
++#     "src/misc/realpath.c",
++#     # "src/multibyte/internal.c",
++#     # "src/multibyte/mbtowc.c",
++#     # "src/multibyte/wcrtomb.c",
++#     # "src/multibyte/wctomb.c",
++#     "src/network/h_errno.c",
++#     "src/network/htonl.c",
++#     "src/network/htons.c",
++#     "src/network/ntohl.c",
++#     "src/network/ntohs.c",
++#     "src/prng/rand.c",
++#     "src/prng/random.c",
++#     "src/regex/regcomp.c",
++#     "src/regex/regexec.c",
++#     "src/regex/tre-mem.c",
++#     "src/stdio/__fdopen.c",
++#     "src/stdio/__fmodeflags.c",
++#     "src/stdio/__lockfile.c",
++#     "src/stdio/__overflow.c",
++#     "src/stdio/__stdio_close.c",
++#     "src/stdio/__stdio_read.c",
++#     "src/stdio/__stdio_seek.c",
++#     "src/stdio/__stdio_write.c",
++#     "src/stdio/__stdout_write.c",
++#     "src/stdio/__toread.c",
++#     "src/stdio/__towrite.c",
++#     "src/stdio/__uflow.c",
++#     "src/stdio/clearerr.c",
++#     "src/stdio/fclose.c",
++#     "src/stdio/feof.c",
++#     "src/stdio/fflush.c",
++#     "src/stdio/fgets.c",
++#     "src/stdio/fileno.c",
++#     "src/stdio/fopen.c",
++#     "src/stdio/fputc.c",
++#     "src/stdio/fputs.c",
++#     "src/stdio/fread.c",
++#     "src/stdio/fseek.c",
++#     "src/stdio/ftell.c",
++#     "src/stdio/fwrite.c",
++#     "src/stdio/ofl.c",
++#     "src/stdio/ofl_add.c",
++#     "src/stdio/perror.c",
++#     "src/stdio/remove.c",
++#     "src/stdio/rewind.c",
++#     # "src/stdio/snprintf.c",
++#     "src/stdio/stderr.c",
++#     "src/stdio/stdin.c",
++#     "src/stdio/stdout.c",
++#     # "src/stdio/vfprintf.c",
++#     # "src/stdio/vsnprintf.c",
++#     # "src/stdio/vsprintf.c",
++#     "src/stdlib/abs.c",
++#     "src/stdlib/atof.c",
++#     "src/stdlib/atoi.c",
++# 
++#     # "src/stdlib/strtol.c",
++#     "src/locale/iconv.c",
++#     # "src/stdio/ungetc.c",
++#     "src/stdlib/atol.c",
++#     "src/stdlib/atoll.c",
++#     "src/stdlib/bsearch.c",
++#     "src/stdlib/llabs.c",
++#     # "src/stdlib/strtod.c",
++#     "src/string/memchr.c",
++#     "src/string/memcmp.c",
++#     "src/string/memcpy.c",
++#     "src/string/memmove.c",
++#     "src/string/memrchr.c",
++#     "src/string/memset.c",
++#     "src/string/stpcpy.c",
++#     "src/string/strcasecmp.c",
++#     "src/string/strcat.c",
++#     "src/string/strchr.c",
++#     "src/string/strchrnul.c",
++#     "src/string/strcmp.c",
++#     "src/string/strcspn.c",
++#     "src/string/strdup.c",
++#     "src/string/strlen.c",
++#     "src/string/strncasecmp.c",
++#     "src/string/strncmp.c",
++#     # "src/string/strncpy.c",
++#     "src/string/strnlen.c",
++#     "src/string/strrchr.c",
++#     "src/string/strspn.c",
++#     "src/string/strstr.c",
++#     "src/string/strtok.c",
++#     "src/string/wcschr.c",
++#     "src/string/wcslen.c",
++#     "src/time/__month_to_secs.c",
++#     "src/time/__secs_to_tm.c",
++#     "src/time/__tm_to_secs.c",
++#     "src/time/__tz.c",
++#     "src/time/__year_to_secs.c",
++#     "src/time/asctime.c",
++#     "src/time/asctime_r.c",
++#     "src/time/ctime.c",
++#     "src/time/strftime.c",
++#     "src/time/strptime.c",
++#   ]
++# 
++#   include_dirs = [
++#     "src/include",
++#     "src/internal",
++#   ]
++# 
++#   include_dirs += [
++#     "//kernel/liteos_m/kernel/arch/include",
++#     "//kernel/liteos_m/kernel/include",
++#     "//kernel/liteos_m/utils",
++#   ]
++# 
++#   public_configs = [ ":include" ]
++# }
++# 
++# static_library(libm) {
++#   sources = [
++#     "src/math/__fpclassify.c",
++#     "src/math/__fpclassifyl.c",
++#     "src/math/__signbit.c",
++#     "src/math/__signbitl.c",
++#     "src/math/exp_data.c",
++#     "src/math/frexp.c",
++#     "src/math/frexpl.c",
++#     "src/math/log.c",
++#     "src/math/log_data.c",
++#     "src/math/pow.c",
++#     "src/math/pow_data.c",
++#     "src/math/round.c",
++#     "src/math/sqrt.c",
++#   ]
++# 
++#   include_dirs = [
++#     "src/include",
++#     "src/internal",
++#   ]
++# 
++#   public_configs = [ ":include" ]
++# }
++# 
++# group("kernel") {
++#   public_deps = [
++#     ":$libc",
++#     ":$libm",
++#   ]
++# }
 diff --git a/porting/liteos_m/kernel/include/ctype.h b/porting/liteos_m/kernel/include/ctype.h
 old mode 100644
 new mode 100755
-index 61e826d0..05fe3b58
+index 61e826d..05fe3b5
 --- a/porting/liteos_m/kernel/include/ctype.h
 +++ b/porting/liteos_m/kernel/include/ctype.h
 @@ -66,6 +66,18 @@ int   toupper_l(int, locale_t);
@@ -137,7 +438,7 @@ index 61e826d0..05fe3b58
  #define _toupper(a) ((a)&0x5f)
  #define isascii(a) (0 ? isascii(a) : (unsigned)(a) < 128)
 diff --git a/porting/liteos_m/kernel/include/pthread.h b/porting/liteos_m/kernel/include/pthread.h
-index 8291cdef..cd68607b 100644
+index 8291cde..cd68607 100644
 --- a/porting/liteos_m/kernel/include/pthread.h
 +++ b/porting/liteos_m/kernel/include/pthread.h
 @@ -62,7 +62,7 @@ extern "C" {
@@ -152,7 +453,7 @@ index 8291cdef..cd68607b 100644
 diff --git a/porting/liteos_m/kernel/include/stddef.h b/porting/liteos_m/kernel/include/stddef.h
 old mode 100644
 new mode 100755
-index 27b5a9ad..dbc7b64e
+index 27b5a9a..dbc7b64
 --- a/porting/liteos_m/kernel/include/stddef.h
 +++ b/porting/liteos_m/kernel/include/stddef.h
 @@ -17,9 +17,22 @@
@@ -181,7 +482,7 @@ index 27b5a9ad..dbc7b64e
 diff --git a/porting/liteos_m/kernel/include/stdlib.h b/porting/liteos_m/kernel/include/stdlib.h
 old mode 100644
 new mode 100755
-index d292fb0a..e665d446
+index d292fb0..e665d44
 --- a/porting/liteos_m/kernel/include/stdlib.h
 +++ b/porting/liteos_m/kernel/include/stdlib.h
 @@ -63,6 +63,7 @@ int abs (int);
@@ -203,7 +504,7 @@ index d292fb0a..e665d446
 diff --git a/porting/liteos_m/kernel/src/internal/stdio_impl.h b/porting/liteos_m/kernel/src/internal/stdio_impl.h
 old mode 100644
 new mode 100755
-index fa94606a..d5f8598c
+index fa94606..d5f8598
 --- a/porting/liteos_m/kernel/src/internal/stdio_impl.h
 +++ b/porting/liteos_m/kernel/src/internal/stdio_impl.h
 @@ -6,6 +6,11 @@
@@ -220,7 +521,7 @@ index fa94606a..d5f8598c
  
 diff --git a/porting/liteos_m/kernel/src/misc/realpath.c b/porting/liteos_m/kernel/src/misc/realpath.c
 new file mode 100755
-index 00000000..9c630cb6
+index 0000000..9c630cb
 --- /dev/null
 +++ b/porting/liteos_m/kernel/src/misc/realpath.c
 @@ -0,0 +1,76 @@
@@ -300,10 +601,23 @@ index 00000000..9c630cb6
 +        return NULL;
 +    return resolved_path;
 +}
+diff --git a/porting/liteos_m/kernel/src/stdio/__fdopen.c b/porting/liteos_m/kernel/src/stdio/__fdopen.c
+index bc50be7..eb4b3c9 100644
+--- a/porting/liteos_m/kernel/src/stdio/__fdopen.c
++++ b/porting/liteos_m/kernel/src/stdio/__fdopen.c
+@@ -5,7 +5,7 @@
+ #include <errno.h>
+ #include <string.h>
+ #include <pthread.h>
+-
++#error
+ int ioctl(int fd, int req, ...)
+ {
+ 	return 0;
 diff --git a/porting/liteos_m/kernel/src/stdio/clearerr.c b/porting/liteos_m/kernel/src/stdio/clearerr.c
 old mode 100644
 new mode 100755
-index 3bf94d30..aaaaf83f
+index 3bf94d3..aaaaf83
 --- a/porting/liteos_m/kernel/src/stdio/clearerr.c
 +++ b/porting/liteos_m/kernel/src/stdio/clearerr.c
 @@ -1,10 +1,15 @@
@@ -327,7 +641,7 @@ index 3bf94d30..aaaaf83f
 diff --git a/porting/liteos_m/kernel/src/stdio/fclose.c b/porting/liteos_m/kernel/src/stdio/fclose.c
 old mode 100644
 new mode 100755
-index 9569c8ff..d6dfcadd
+index 9569c8f..d6dfcad
 --- a/porting/liteos_m/kernel/src/stdio/fclose.c
 +++ b/porting/liteos_m/kernel/src/stdio/fclose.c
 @@ -38,7 +38,7 @@ int __fclose(FILE *f)
@@ -342,7 +656,7 @@ index 9569c8ff..d6dfcadd
 diff --git a/porting/liteos_m/kernel/src/stdio/feof.c b/porting/liteos_m/kernel/src/stdio/feof.c
 old mode 100644
 new mode 100755
-index 56da6b91..fafaeb15
+index 56da6b9..fafaeb1
 --- a/porting/liteos_m/kernel/src/stdio/feof.c
 +++ b/porting/liteos_m/kernel/src/stdio/feof.c
 @@ -2,7 +2,7 @@
@@ -370,7 +684,7 @@ index 56da6b91..fafaeb15
 diff --git a/porting/liteos_m/kernel/src/stdio/fflush.c b/porting/liteos_m/kernel/src/stdio/fflush.c
 old mode 100644
 new mode 100755
-index f2164eec..71999bc0
+index f2164ee..71999bc
 --- a/porting/liteos_m/kernel/src/stdio/fflush.c
 +++ b/porting/liteos_m/kernel/src/stdio/fflush.c
 @@ -47,7 +47,7 @@ int __fflush(FILE *f)
@@ -385,7 +699,7 @@ index f2164eec..71999bc0
 diff --git a/porting/liteos_m/kernel/src/stdio/fgets.c b/porting/liteos_m/kernel/src/stdio/fgets.c
 old mode 100644
 new mode 100755
-index d1109e75..26ef2b27
+index d1109e7..26ef2b2
 --- a/porting/liteos_m/kernel/src/stdio/fgets.c
 +++ b/porting/liteos_m/kernel/src/stdio/fgets.c
 @@ -3,7 +3,7 @@
@@ -407,7 +721,7 @@ index d1109e75..26ef2b27
 diff --git a/porting/liteos_m/kernel/src/stdio/fileno.c b/porting/liteos_m/kernel/src/stdio/fileno.c
 old mode 100644
 new mode 100755
-index e6e66908..5dee4215
+index e6e6690..5dee421
 --- a/porting/liteos_m/kernel/src/stdio/fileno.c
 +++ b/porting/liteos_m/kernel/src/stdio/fileno.c
 @@ -1,7 +1,7 @@
@@ -429,7 +743,7 @@ index e6e66908..5dee4215
 diff --git a/porting/liteos_m/kernel/src/stdio/fopen.c b/porting/liteos_m/kernel/src/stdio/fopen.c
 old mode 100644
 new mode 100755
-index 7dddf930..ebd89547
+index 7dddf93..ebd8954
 --- a/porting/liteos_m/kernel/src/stdio/fopen.c
 +++ b/porting/liteos_m/kernel/src/stdio/fopen.c
 @@ -5,7 +5,7 @@
@@ -455,7 +769,7 @@ index 7dddf930..ebd89547
 diff --git a/porting/liteos_m/kernel/src/stdio/fputs.c b/porting/liteos_m/kernel/src/stdio/fputs.c
 old mode 100644
 new mode 100755
-index 1cf344f2..50b6efd4
+index 1cf344f..50b6efd
 --- a/porting/liteos_m/kernel/src/stdio/fputs.c
 +++ b/porting/liteos_m/kernel/src/stdio/fputs.c
 @@ -1,10 +1,15 @@
@@ -479,7 +793,7 @@ index 1cf344f2..50b6efd4
 diff --git a/porting/liteos_m/kernel/src/stdio/fread.c b/porting/liteos_m/kernel/src/stdio/fread.c
 old mode 100644
 new mode 100755
-index a2116da6..858931a0
+index a2116da..858931a
 --- a/porting/liteos_m/kernel/src/stdio/fread.c
 +++ b/porting/liteos_m/kernel/src/stdio/fread.c
 @@ -3,12 +3,12 @@
@@ -511,7 +825,7 @@ index a2116da6..858931a0
 diff --git a/porting/liteos_m/kernel/src/stdio/fseek.c b/porting/liteos_m/kernel/src/stdio/fseek.c
 old mode 100644
 new mode 100755
-index 4731d8a0..0f10c2f6
+index 4731d8a..0f10c2f
 --- a/porting/liteos_m/kernel/src/stdio/fseek.c
 +++ b/porting/liteos_m/kernel/src/stdio/fseek.c
 @@ -33,7 +33,7 @@ int __fseeko(FILE *f, off_t off, int whence)
@@ -526,7 +840,7 @@ index 4731d8a0..0f10c2f6
 diff --git a/porting/liteos_m/kernel/src/stdio/ftell.c b/porting/liteos_m/kernel/src/stdio/ftell.c
 old mode 100644
 new mode 100755
-index d15cc665..d899dcfd
+index d15cc66..d899dcf
 --- a/porting/liteos_m/kernel/src/stdio/ftell.c
 +++ b/porting/liteos_m/kernel/src/stdio/ftell.c
 @@ -26,7 +26,7 @@ off_t __ftello(FILE *f)
@@ -541,7 +855,7 @@ index d15cc665..d899dcfd
 diff --git a/porting/liteos_m/kernel/src/stdio/fwrite.c b/porting/liteos_m/kernel/src/stdio/fwrite.c
 old mode 100644
 new mode 100755
-index 7a567b2c..5e3fb264
+index 7a567b2..5e3fb26
 --- a/porting/liteos_m/kernel/src/stdio/fwrite.c
 +++ b/porting/liteos_m/kernel/src/stdio/fwrite.c
 @@ -25,7 +25,7 @@ size_t __fwritex(const unsigned char *restrict s, size_t l, FILE *restrict f)
@@ -567,7 +881,7 @@ index 7a567b2c..5e3fb264
 diff --git a/porting/liteos_m/kernel/src/string/strdup.c b/porting/liteos_m/kernel/src/string/strdup.c
 old mode 100644
 new mode 100755
-index d4c27449..68682c8a
+index d4c2744..68682c8
 --- a/porting/liteos_m/kernel/src/string/strdup.c
 +++ b/porting/liteos_m/kernel/src/string/strdup.c
 @@ -1,7 +1,12 @@
