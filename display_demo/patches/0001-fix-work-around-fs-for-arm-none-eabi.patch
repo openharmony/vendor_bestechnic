@@ -1,11 +1,11 @@
-From a2ff2cacee69f7965ac92f1ed8cdf16e2a26e435 Mon Sep 17 00:00:00 2001
+From 7dfffc55b24860d96a7d300092c4b50428fb1ae6 Mon Sep 17 00:00:00 2001
 From: SimonLi <likailong@huawei.com>
-Date: Thu, 25 Nov 2021 18:47:38 +0800
-Subject: [PATCH] kernel liteos_m
+Date: Sat, 27 Nov 2021 14:27:09 +0800
+Subject: [PATCH] kernel/liteos_m
 
-Change-Id: Ic6b1106217d468d5b2053fa0fe328aea9a81a634
+Change-Id: I9562ce01e7a627aca1a770c4a929cff9d55320c7
 ---
- BUILD.gn                                      |   41 -
+ BUILD.gn                                      |   43 -
  Kconfig                                       |   42 +-
  arch/arm/cortex-m33/gcc/NTZ/los_interrupt.c   |    2 +-
  components/fs/BUILD.gn                        |   23 +-
@@ -35,7 +35,7 @@ Change-Id: Ic6b1106217d468d5b2053fa0fe328aea9a81a634
  components/fs/{ => vfs}/vfs_config.h          |   69 +-
  .../net/lwip-2.1/porting/include/arch/cc.h    |    4 -
  .../lwip-2.1/porting/src/sockets_porting.c    |    2 +-
- kal/BUILD.gn                                  |   13 +-
+ kal/BUILD.gn                                  |   15 +-
  kal/Kconfig                                   |   32 +
  kal/cmsis/Kconfig                             |   36 +
  kal/libc/BUILD.gn                             |   35 +
@@ -75,7 +75,7 @@ Change-Id: Ic6b1106217d468d5b2053fa0fe328aea9a81a634
  kal/posix/src/pthread_cond.c                  |   28 +-
  kal/posix/src/time.c                          |   49 +-
  kernel/src/los_init.c                         |    8 +
- 70 files changed, 6580 insertions(+), 1533 deletions(-)
+ 70 files changed, 6580 insertions(+), 1537 deletions(-)
  create mode 100644 components/fs/Kconfig
  delete mode 100644 components/fs/fs.c
  create mode 100644 components/fs/littlefs/Kconfig
@@ -132,26 +132,28 @@ Change-Id: Ic6b1106217d468d5b2053fa0fe328aea9a81a634
  create mode 100644 kal/posix/Kconfig
 
 diff --git a/BUILD.gn b/BUILD.gn
-index ffa056b..73f8a0c 100644
+index fa0ac5d..f912361 100644
 --- a/BUILD.gn
 +++ b/BUILD.gn
-@@ -247,7 +247,6 @@ config("public") {
- 
-   configs +=
-       [ "$LITEOSTHIRDPARTY/bounds_checking_function:libsec_public_config" ]
+@@ -244,8 +244,6 @@ config("public") {
+       configs += [ "$device_path:public" ]
+     }
+   }
+-
 -  configs += [ "$LITEOSTHIRDPARTY/musl/porting/liteos_m/kernel:include" ]
  }
  
  group("modules") {
-@@ -271,7 +270,6 @@ group("modules") {
+@@ -267,8 +265,6 @@ group("modules") {
+       deps += [ device_path ]
+     }
    }
- 
-   deps += [ "$LITEOSTHIRDPARTY/bounds_checking_function:libsec_static" ]
+-
 -  deps += [ "$LITEOSTHIRDPARTY/musl/porting/liteos_m/kernel" ]
  }
  
  # when HAVE_DEVICE_SDK is not reached, gn raises an error. so we just use it as
-@@ -296,42 +294,3 @@ group("kernel") {
+@@ -293,42 +289,3 @@ group("kernel") {
  group("liteos_m") {
  }
  
@@ -6257,26 +6259,28 @@ index 05c717e..daae472 100644
      /* allow it only on IPv6 sockets... */
      is_ipv6 = NETCONNTYPE_ISIPV6((unsigned int)(sock->conn->type));
 diff --git a/kal/BUILD.gn b/kal/BUILD.gn
-index 0850528..0ecd61e 100644
+index a4153d4..e1e7d66 100644
 --- a/kal/BUILD.gn
 +++ b/kal/BUILD.gn
-@@ -29,14 +29,7 @@
+@@ -29,16 +29,7 @@
  
  import("//kernel/liteos_m/liteos.gni")
  
 -group("kal") {
 -  deps = [ "cmsis" ]
 -  deps += [ "posix" ]
+-  deps += [ "libsec" ]
 -}
 -
 -config("public") {
 -  configs = [
 -    "cmsis:public",
 -    "posix:public",
+-    "libsec:public",
 -  ]
 +module_name = get_path_info(rebase_path("."), "name")
 +module_group(module_name) {
-+  modules = [ "cmsis", "libc", "posix" ]
++  modules = [ "cmsis", "libc", "libsec", "posix" ]
  }
 diff --git a/kal/Kconfig b/kal/Kconfig
 new file mode 100644
