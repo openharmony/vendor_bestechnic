@@ -28,7 +28,5 @@ build/lite:
   - vendor/bestechnic/display_demo/patches/0001-feat-add-liteos_m-options.patch
 utils/native/lite:
   - vendor/bestechnic/display_demo/patches/0001-feat-build-utils-for-liteos_m.patch
-device/board/fnlink:
-  - vendor/bestechnic/display_demo/patches/0001-device-board-fnlink.patch
 device/soc/bestechnic:
   - vendor/bestechnic/display_demo/patches/0001-device-soc-bestechnic.patch
