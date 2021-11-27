@@ -1,9 +1,10 @@
-From b242db0930e6263248abff7f4e6e7aae15a67a34 Mon Sep 17 00:00:00 2001
-From: SimonLi <likailong@huawei.com>
-Date: Sat, 27 Nov 2021 16:16:32 +0800
-Subject: [PATCH] kernel/liteos_m
+From 0fdf6a9075ffe7f81d37d58418f7a6bb67863c08 Mon Sep 17 00:00:00 2001
+From: yangjian <jianyang@bestechnic.com>
+Date: Sat, 27 Nov 2021 17:39:25 +0800
+Subject: [PATCH] kernel-bringup
 
-Change-Id: I4f5c8dfd1be73acf9c5a2851f1b0c418692f5628
+Signed-off-by: yangjian <jianyang@bestechnic.com>
+Change-Id: Ibe3486167ae9251cbea3ba2d3707821a38d493ae
 ---
  BUILD.gn                                      |   43 -
  Kconfig                                       |   42 +-
@@ -19,7 +20,7 @@ Change-Id: I4f5c8dfd1be73acf9c5a2851f1b0c418692f5628
  components/fs/littlefs/lfs_api.h              |    9 +-
  components/fs/vfs/BUILD.gn                    |   47 +
  components/fs/vfs/Kconfig                     |   34 +
- components/fs/vfs/fs.c                        | 1449 +++++++++++++++++
+ components/fs/vfs/fs.c                        | 1451 +++++++++++++++++
  components/fs/vfs/fs_conf.h                   |   47 +
  components/fs/vfs/fs_files.c                  |  108 ++
  components/fs/vfs/fs_files.h                  |  120 ++
@@ -69,7 +70,7 @@ Change-Id: I4f5c8dfd1be73acf9c5a2851f1b0c418692f5628
  kal/libc/newlib/porting/include/time.h        |   10 +
  kal/libc/newlib/porting/src/fs_adapt.c        |  146 ++
  kal/libc/newlib/porting/src/other_adapt.c     |  111 ++
- kal/libc/newlib/porting/src/printf.c          |  915 +++++++++++
+ kal/libc/newlib/porting/src/printf.c          |  917 +++++++++++
  kal/libc/newlib/porting/src/realpath.c        |   76 +
  kal/libc/newlib/porting/src/time_adapt.c      |   54 +
  kal/posix/BUILD.gn                            |   37 +-
@@ -77,7 +78,7 @@ Change-Id: I4f5c8dfd1be73acf9c5a2851f1b0c418692f5628
  kal/posix/src/pthread_cond.c                  |   28 +-
  kal/posix/src/time.c                          |   49 +-
  kernel/src/los_init.c                         |    8 +
- 72 files changed, 7613 insertions(+), 1537 deletions(-)
+ 72 files changed, 7617 insertions(+), 1537 deletions(-)
  create mode 100644 components/fs/Kconfig
  delete mode 100644 components/fs/fs.c
  create mode 100644 components/fs/littlefs/Kconfig
@@ -3325,10 +3326,10 @@ index 0000000..b51be4b
 +      Answer Y to enable LiteOS support VFS.
 diff --git a/components/fs/vfs/fs.c b/components/fs/vfs/fs.c
 new file mode 100644
-index 0000000..7048bb1
+index 0000000..77fdf6c
 --- /dev/null
 +++ b/components/fs/vfs/fs.c
-@@ -0,0 +1,1449 @@
+@@ -0,0 +1,1451 @@
 +/*
 + * Copyright (c) 2013-2019 Huawei Technologies Co., Ltd. All rights reserved.
 + * Copyright (c) 2020-2021 Huawei Device Co., Ltd. All rights reserved.
@@ -3541,6 +3542,8 @@ index 0000000..7048bb1
 +
 +    file = LOS_FileGet();
 +    mp = LOS_MpFind(path, &pathInMp);
++    if (NULL == mp || NULL == file)
++        return fd;
 +    if ((mp->mWriteEnable == FALSE) &&
 +        (flags & (O_CREAT | O_WRONLY | O_RDWR))) {
 +        /* can't create file in read only mp */
@@ -9596,10 +9599,10 @@ index 0000000..8084f7c
 +
 diff --git a/kal/libc/newlib/porting/src/printf.c b/kal/libc/newlib/porting/src/printf.c
 new file mode 100644
-index 0000000..3d8fa54
+index 0000000..34cffda
 --- /dev/null
 +++ b/kal/libc/newlib/porting/src/printf.c
-@@ -0,0 +1,915 @@
+@@ -0,0 +1,917 @@
 +///////////////////////////////////////////////////////////////////////////////
 +// \author (c) Marco Paland (info@paland.com)
 +//             2014-2019, PALANDesign Hannover, Germany
@@ -9747,13 +9750,15 @@ index 0000000..3d8fa54
 +enum HAL_UART_ID_T {
 +    HAL_UART_ID_0 = 0
 +};
-+extern int hal_uart_putc(enum HAL_UART_ID_T id, uint8_t c);
++#include "hal_trace.h"
++// extern int hal_uart_putc(enum HAL_UART_ID_T id, uint8_t c);
 +// internal _putchar wrapper
 +static inline void _out_char(char character, void* buffer, size_t idx, size_t maxlen)
 +{
 +  (void)buffer; (void)idx; (void)maxlen;
 +  if (character) {
-+    hal_uart_putc(0, character);
++    // hal_uart_putc(0, character);
++    hal_trace_printf_without_crlf_ts("%c",character);
 +  }
 +}
 +
