@@ -189,15 +189,7 @@
           "component": "timer_task"
         },
         {
-          "component": "kal_timer"
-        }
-      ]
-    },
-    {
-      "subsystem": "vendor",
-      "components": [
-        {
-          "component": "custom",
+          "component": "kal_timer",
           "features": [
             "bes_communication_wifi_lite_enable = true",
             "bes_drivers_gpio_enable = true",
