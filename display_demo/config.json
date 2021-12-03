@@ -204,7 +204,8 @@
             "bes_ability_enable = true",
             "bes_ability_test = true",
             "bes_histreamer_test = false",
-            "enable_histreamer_plugin_ffmpeg_adapter = false"
+            "enable_histreamer_plugin_ffmpeg_adapter = false",
+            "config_ohos_distributedschedule_samgr_lite_shared_task_size = 4096"
           ]
         }
       ]
