@@ -1,2 +1,0 @@
-kernel/liteos_m:
-  - vendor/bestechnic/display_demo/patches/0001-fix-work-around-fs-for-arm-none-eabi.patch
