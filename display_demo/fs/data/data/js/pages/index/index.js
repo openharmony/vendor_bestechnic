@@ -1,3 +1,17 @@
+/*
+ * Copyright (c) 2021 Bestechnic (Shanghai) Co., Ltd. All rights reserved.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -107,13 +121,13 @@ module.exports=new ViewModel(options);
 /* 4 */
 /***/ (function(module, exports) {
 
-module.exports = function (vm) { var _vm = vm || this; return _c('div', {'staticClass' : ["container"]} , [_c('div', {'staticClass' : ["header"]} , [_c('text', {'attrs' : {'value' : function () {return (_vm.time) + ' ' + (_vm.date) + ' ' + (_vm.week)}}} )] ),_c('div', {'staticClass' : ["body"]} , [_c('swiper', {'attrs' : {'index' : function () {return _vm.index}},'staticClass' : ["swiper"]} , [_c('div', {'staticClass' : ["swiper-item"]} , [_c('div', {'staticClass' : ["grid"]} , [_c('div', {'staticClass' : ["row2"]} , [_c('div', {'staticClass' : ["col","block-wrapper"],'on' : {'click' : _vm.OnScene0Clicked}} , [_c('image', {'attrs' : {'src' : function () {return _vm.image0}},'staticClass' : ["image"]} ),_c('text', {'attrs' : {'value' : "日常"}} )] ),_c('div', {'staticClass' : ["col","block-wrapper"],'on' : {'click' : _vm.OnScene1Clicked}} , [_c('image', {'attrs' : {'src' : function () {return _vm.image1}},'staticClass' : ["image"]} ),_c('text', {'attrs' : {'value' : "周末"}} )] )] ),_c('div', {'staticClass' : ["row2"]} , [_c('div', {'staticClass' : ["col","block-wrapper"],'on' : {'click' : _vm.OnScene2Clicked}} , [_c('image', {'attrs' : {'src' : function () {return _vm.image2}},'staticClass' : ["image"]} ),_c('text', {'attrs' : {'value' : "聚会"}} )] ),_c('div', {'staticClass' : ["col","block-wrapper"],'on' : {'click' : _vm.OnScene3Clicked}} , [_c('image', {'attrs' : {'src' : function () {return _vm.image3}},'staticClass' : ["image"]} ),_c('text', {'attrs' : {'value' : "烛光"}} )] )] )] )] ),_c('div', {'staticClass' : ["swiper-item"]} , [_c('div', {'staticClass' : ["grid"]} , [_c('div', {'staticClass' : ["row2"]} , [_c('div', {'staticClass' : ["col","block-wrapper"],'on' : {'click' : _vm.OnDev0Clicked}} , [_c('image', {'attrs' : {'src' : function () {return _vm.image4}},'staticClass' : ["image"]} ),_c('text', {'attrs' : {'value' : "空调"}} )] ),_c('div', {'staticClass' : ["col","block-wrapper"],'on' : {'click' : _vm.OnDev1Clicked}} , [_c('image', {'attrs' : {'src' : function () {return _vm.image5}},'staticClass' : ["image"]} ),_c('text', {'attrs' : {'value' : "冰箱"}} )] )] ),_c('div', {'staticClass' : ["row2"]} , [_c('div', {'staticClass' : ["col","block-wrapper"],'on' : {'click' : _vm.OnDev2Clicked}} , [_c('image', {'attrs' : {'src' : function () {return _vm.image6}},'staticClass' : ["image"]} ),_c('text', {'attrs' : {'value' : "窗帘"}} )] ),_c('div', {'staticClass' : ["col","block-wrapper"],'on' : {'click' : _vm.OnDev3Clicked}} , [_c('image', {'attrs' : {'src' : function () {return _vm.image7}},'staticClass' : ["image"]} ),_c('text', {'attrs' : {'value' : "灯光"}} )] )] )] )] )] )] ),_c('div', {'staticClass' : ["footer"]} , [_c('text', {'attrs' : {'value' : "。。"}} )] )] ) }
+module.exports = function (vm) { var _vm = vm || this; return _c('swiper', {'attrs' : {'index' : function () {return _vm.swiperPage},'duration' : 500},'staticClass' : ["container"],'on' : {'change' : _vm.swiperChange}} , [_c('stack', {'staticClass' : ["container"]} , [_c('text', {'attrs' : {'value' : function () {return _vm.airData[0].airQuality}},'staticClass' : ["airquality"],'dynamicStyle' :{'color' : function () {return _vm.textColor1}}} ),_c('text', {'attrs' : {'value' : function () {return _vm.airData[0].location}},'staticClass' : ["location-text"]} ),_c('progress', {'attrs' : {'type' : "arc",'percent' : function () {return _vm.percent1}},'staticClass' : ["circleProgress"],'dynamicStyle' :{'color' : function () {return _vm.textColor1},'background-Color' : function () {return _vm.bgColor1}},'on' : {'click' : _vm.openDetail}} ),_c('image', {'attrs' : {'src' : function () {return _vm.src1}},'staticClass' : ["image"]} ),_c('text', {'attrs' : {'value' : function () {return _vm.airData[0].detailData}},'staticClass' : ["pm25-value"]} ),_c('text', {'attrs' : {'value' : "AQI"},'staticClass' : ["pm25-name"]} )] ),_c('stack', {'staticClass' : ["container"]} , [_c('text', {'attrs' : {'value' : function () {return _vm.airData[1].airQuality}},'staticClass' : ["airquality"],'dynamicStyle' :{'color' : function () {return _vm.textColor2}}} ),_c('text', {'attrs' : {'value' : function () {return _vm.airData[1].location}},'staticClass' : ["location-text"]} ),_c('progress', {'attrs' : {'type' : "arc",'percent' : function () {return _vm.percent2}},'staticClass' : ["circleProgress"],'dynamicStyle' :{'color' : function () {return _vm.textColor2},'background-Color' : function () {return _vm.bgColor2}},'on' : {'click' : _vm.openDetail}} ),_c('image', {'attrs' : {'src' : function () {return _vm.src2}},'staticClass' : ["image"]} ),_c('text', {'attrs' : {'value' : function () {return _vm.airData[1].detailData}},'staticClass' : ["pm25-value"]} ),_c('text', {'attrs' : {'value' : "AQI"},'staticClass' : ["pm25-name"]} )] )] ) }
 
 /***/ }),
 /* 5 */
 /***/ (function(module, exports) {
 
-module.exports = {"classSelectors":{"container":{"flexDirection":"column","justifyContent":"center","alignItems":"center","left":0,"top":0,"width":454,"height":454,"marginTop":5,"marginRight":5,"marginBottom":5,"marginLeft":5},"header":{"flexDirection":"row","justifyContent":"center","alignItems":"center","width":"100%","height":"10%"},"body":{"width":"100%","height":"80%"},"footer":{"flexDirection":"row","justifyContent":"center","alignItems":"center","width":"100%","height":"10%"},"grid":{"flexDirection":"row","flexWrap":"wrap","width":"100%","height":"100%"},"row":{"width":"100%","flexDirection":"row"},"col":{"height":"100%","flexDirection":"column"},"row2":{"width":"100%","height":"50%"},"row3":{"width":"100%","height":"33.3%"},"row4":{"width":"100%","height":"25%"},"col2":{"width":"50%","height":"100%"},"col3":{"width":"33%","height":"100%"},"col4":{"width":"25%","height":"100%"},"swiper":{"width":"100%","height":"100%"},"swiper-item":{"width":"100%","height":"100%"},"block-wrapper":{"width":"50%","justifyContent":"center","alignItems":"center"},"image":{"width":64,"height":64}}}
+module.exports = {"classSelectors":{"pm25-value":{"textAlign":"center","fontSize":38,"color":15794175,"width":454,"height":50,"top":275},"pm25-name":{"textAlign":"center","color":10667170,"width":454,"height":50,"top":335},"location-text":{"textAlign":"center","color":15794175,"width":454,"height":50,"top":20},"container":{"height":454,"width":454},"circleProgress":{"centerX":227,"centerY":250,"radius":180,"startAngle":198,"totalAngle":320,"strokeWidth":45,"width":454,"height":454},"image":{"top":390,"left":217,"width":32,"height":32},"airquality":{"top":220,"textAlign":"center","width":454,"height":40}}}
 
 /***/ }),
 /* 6 */
@@ -131,134 +145,99 @@ exports["default"] = void 0;
 
 var _system = _interopRequireDefault(requireNative("system.router"));
 
-var _system2 = _interopRequireDefault(requireNative("system.device"));
-
-var _system3 = _interopRequireDefault(requireNative("system.storage"));
-
-var _system4 = _interopRequireDefault(requireNative("system.file"));
-
 var _default = {
   data: {
-    index: 0,
-    time: "",
-    date: "",
-    image0: "/common/icons8-workday-64.png",
-    image1: "/common/icons8-sun-64.png",
-    image2: "/common/icons8-myspace-64.png",
-    image3: "/common/icons8-candle-64.png",
-    image4: "/common/icons8-air-conditioner-64.png",
-    image5: "/common/icons8-fridge-64.png",
-    image6: "/common/icons8-curtains-64.png",
-    image7: "/common/icons8-light-64.png"
+    textColor1: "#00ff00",
+    textColor2: "#00ff00",
+    bgColor1: "#669966",
+    bgColor2: "#669966",
+    swiperPage: 0,
+    percent1: 0,
+    percent2: 0,
+    src1: "common/cloud_green.png",
+    src2: "common/cloud_green.png",
+    airData: [{
+      location: "HangZhou",
+      airQuality: "Good",
+      detailData: 10
+    }, {
+      location: "ShangHai",
+      airQuality: "Unhealth",
+      detailData: 90
+    }]
   },
   onInit: function onInit() {
-    var weeks = ["星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六"];
-    var date = new Date();
-    this.time = date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds();
-    this.date = date.toDateString();
-    this.week = weeks[date.getDay()];
-  },
-  OnScene0Clicked: function OnScene0Clicked() {
-    console.log("scene0 clicked");
-    this.GetDeviceInfo();
-  },
-  OnScene1Clicked: function OnScene1Clicked() {
-    console.log("scene1 clicked");
-    this.SetKey();
-  },
-  OnScene2Clicked: function OnScene2Clicked() {
-    console.log("scene2 clicked");
-    this.GetKey();
-  },
-  OnScene3Clicked: function OnScene3Clicked() {
-    console.log("scene3 clicked");
-    this.GetFileList();
-  },
-  OnDev0Clicked: function OnDev0Clicked() {
-    console.log("dev0 clicked");
+    this.airData[0].location = this.$t(this.airData[0].location);
+    this.airData[1].location = this.$t(this.airData[1].location);
+    this.airData[0].airQuality = this.$t(this.airData[0].airQuality);
+    this.airData[1].airQuality = this.$t(this.airData[1].airQuality);
 
-    _system["default"].replace({
-      uri: 'pages/air/air'
-    });
-  },
-  OnDev1Clicked: function OnDev1Clicked() {
-    console.log("dev1 clicked");
-  },
-  OnDev2Clicked: function OnDev2Clicked() {
-    console.log("dev2 clicked");
-  },
-  OnDev3Clicked: function OnDev3Clicked() {
-    console.log("dev3 clicked");
+    if (this.airData[0].detailData > 100) {
+      this.src1 = "common/cloud_red.png";
+      this.textColor1 = "#ff0000";
+      this.bgColor1 = "#9d7462";
+    } else if (50 < this.airData[0].detailData && this.airData[0].detailData <= 100) {
+      this.src1 = "common/cloud_yellow.png";
+      this.textColor1 = "#ecf19a";
+      this.bgColor1 = "#9d9d62";
+    }
 
+    if (this.airData[1].detailData > 100) {
+      this.src2 = "common/cloud_red.png";
+      this.textColor2 = "#ff0000";
+      this.bgColor2 = "#9d7462";
+    } else if (50 < this.airData[1].detailData && this.airData[1].detailData <= 100) {
+      this.src2 = "common/cloud_yellow.png";
+      this.textColor2 = "#ecf19a";
+      this.bgColor2 = "#9d9d62";
+    }
+
+    if (this.selectedCityIndex) {
+      this.swiperPage = this.selectedCityIndex;
+    }
+  },
+  onShow: function onShow() {
+    var self = this;
+    var time = 1000 / self.airData[self.swiperPage].detailData;
+
+    if (time == 0) {
+      time = 100;
+    }
+
+    var interval = setInterval(function () {
+      if ((self.swiperPage == 0 ? self.percent1 : self.percent2) >= self.airData[self.swiperPage].detailData) {
+        clearInterval(interval);
+        return;
+      }
+
+      self.swiperPage == 0 ? self.percent1++ : self.percent2++;
+    }, time);
+  },
+  openDetail: function openDetail() {
     _system["default"].replace({
-      uri: 'pages/light/light'
-    });
-  },
-  GetDeviceInfo: function GetDeviceInfo() {
-    _system2["default"].getInfo({
-      success: function success(data) {
-        console.log('Device information obtained successfully.');
-        console.log('brand:' + data.brand);
-        console.log('manufacturer:' + data.manufacturer);
-        console.log('model:' + data.model);
-        console.log('product:' + data.product);
-        console.log('language:' + data.language);
-        console.log('region:' + data.region);
-        console.log('windowWidth:' + data.windowWidth);
-        console.log('windowHeight:' + data.windowHeight);
-        console.log('screenDensity:' + data.screenDensity);
-        console.log('screenShape:' + data.screenShape);
-        console.log('apiVersion:' + data.apiVersion);
-        console.log('deviceType:' + data.deviceType);
-      },
-      fail: function fail(data, code) {
-        console.log('Failed to obtain device information. Error code:' + code + '; Error information: ' + data);
+      uri: "pages/detail/detail",
+      params: {
+        selectedCityIndex: this.swiperPage
       }
     });
   },
-  SetKey: function SetKey() {
-    _system3["default"].set({
-      key: 'storage_key',
-      value: 'storage value',
-      success: function success() {
-        console.log('call storage.set success.');
-      },
-      fail: function fail(data, code) {
-        console.log('call storage.set fail, code: ' + code + ', data: ' + data);
+  swiperChange: function swiperChange(e) {
+    this.swiperPage = e.index;
+    var self = this;
+    var time = 1000 / self.airData[self.swiperPage].detailData;
+
+    if (time == 0) {
+      time = 100;
+    }
+
+    var interval = setInterval(function () {
+      if ((self.swiperPage == 0 ? self.percent1 : self.percent2) >= self.airData[self.swiperPage].detailData) {
+        clearInterval(interval);
+        return;
       }
-    });
-  },
-  GetKey: function GetKey() {
-    _system3["default"].get({
-      key: 'storage_key',
-      success: function success(data) {
-        console.log('call storage.get success: ' + data);
-      },
-      fail: function fail(data, code) {
-        console.log('call storage.get fail, code: ' + code + ', data: ' + data);
-      },
-      complete: function complete() {
-        console.log('call complete');
-      }
-    });
-  },
-  GetFileList: function GetFileList() {
-    _system4["default"].list({
-      uri: 'internal://app/img',
-      success: function success(data) {
-        for (var i = 0; i < data.fileList.length; i++) {
-          console.log(i + ": {");
-          console.log("uri: " + data.fileList[i].uri);
-          console.log("lastModifiedTime: " + data.fileList[i].lastModifiedTime);
-          console.log("length: " + data.fileList[i].length);
-          console.log("type: " + data.fileList[i].type);
-          console.log("}");
-        }
-      },
-      fail: function fail(data, code) {
-        console.error('call fail callback fail, code: ' + code + ', data: ' + data);
-      }
-    });
+
+      self.swiperPage == 0 ? self.percent1++ : self.percent2++;
+    }, time);
   }
 };
 exports["default"] = _default;
@@ -277,3 +256,4 @@ module.exports = _interopRequireDefault;
 
 /***/ })
 /******/ ]);
+//# sourceMappingURL=index.js.map

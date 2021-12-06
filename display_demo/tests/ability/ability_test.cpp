@@ -20,9 +20,6 @@
 #include "launcher.h"
 #include "ability_test.h"
 
-#undef LOG_TAG
-#define LOG_TAG "AbilityTest"
-
 #define LAUNCHER_BUNDLE_NAME "com.huawei.launcher"
 #define JS_BUNDLE_NAME "com.app.example"
 #define JS_APP_PATH "/data/js"

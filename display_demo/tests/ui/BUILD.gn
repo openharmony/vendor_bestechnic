@@ -18,9 +18,13 @@ static_library("ui_test") {
     "ui_image_test.cpp",
     "ui_view_test.cpp",
   ]
-  deps = [ "//base/hiviewdfx/hilog_lite/frameworks/featured:hilog_static" ]
+  deps = [
+    "//base/hiviewdfx/hilog_lite/frameworks/featured:hilog_static",
+    "//foundation/graphic/ui:ui",
+  ]
   include_dirs = [
     "//utils/native/lite/include",
-    "//third_party/musl/porting/liteos_m/kernel/include",
+    "//foundation/graphic/ui/frameworks",
+    "//third_party/freetype/include",
   ]
 }

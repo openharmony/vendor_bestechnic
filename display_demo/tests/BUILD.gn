@@ -12,14 +12,11 @@
 # limitations under the License.
 
 declare_args() {
-  bes_fs_enable = true
-  bes_fs_test = false
+  bes_fs_test = true
   bes_histreamer_test = false
-  bes_ui_enable = true
   bes_ui_test = false
-  bes_ability_enable = false
-  bes_ace_enable = true
-  bes_ability_test = false
+  bes_ability_test = true
+  bes_wifi_test = false
 }
 
 static_library("example") {
@@ -32,8 +29,6 @@ static_library("example") {
 
   include_dirs = [
     "//utils/native/lite/include",
-    "//third_party/musl/porting/liteos_m/kernel/include",
-    "${device_path}/components/ui",
   ]
 
   if (bes_histreamer_test) {
@@ -41,18 +36,24 @@ static_library("example") {
     defines += [ "HISTREAMER_TEST" ]
   }
 
-  if (bes_fs_enable && bes_fs_test) {
+  if (bes_fs_test) {
     deps += [ "fs:fs_test" ]
     defines += [ "FS_TEST" ]
     include_dirs += [ "fs" ]
-  } else if (bes_ui_enable && bes_ui_test) {
+  }
+
+  if (bes_ui_test) {
     deps += [ "ui:ui_test" ]
     defines += [ "UI_TEST" ]
     include_dirs += [ "ui" ]
-  } else if (bes_ability_enable && bes_ace_enable && bes_ability_test) {
+  } else if (bes_ability_test) {
     deps += [ "ability:ability_test" ]
     defines += [ "ABILITY_TEST" ]
     include_dirs += [ "ability" ]
   }
-  deps += [ "wifi:wifi_test" ]
+
+  if (bes_wifi_test) {
+    deps += [ "wifi:wifi_test" ]
+    defines += [ "WIFI_TEST" ]
+  }
 }
