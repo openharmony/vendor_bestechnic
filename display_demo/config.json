@@ -17,7 +17,10 @@
         "bootstrap",
         "abilityms",
         "bundlems",
-        "example"
+        "example",
+        "kernel",
+        "ability_test",
+        "fs_test"
       ]
     },
     {
@@ -135,7 +138,8 @@
         {
           "component": "aafwk_lite",
           "features": [
-            "enable_ohos_appexecfwk_feature_ability = true"
+            "enable_ohos_appexecfwk_feature_ability = true",
+            "config_ohos_aafwk_ams_task_size = 4096"
           ]
         }
       ]
@@ -163,7 +167,10 @@
       "subsystem": "distributedschedule",
       "components": [
         {
-          "component": "samgr_lite"
+          "component": "samgr_lite",
+          "features": [
+            "config_ohos_distributedschedule_samgr_lite_shared_task_size = 4096"
+          ]
         }
       ]
     },
@@ -189,24 +196,7 @@
           "component": "timer_task"
         },
         {
-          "component": "kal_timer",
-          "features": [
-            "bes_communication_wifi_lite_enable = true",
-            "bes_drivers_gpio_enable = true",
-            "bes_drivers_i2c_enable = true",
-            "bes_drivers_flash_enable = true",
-            "bes_drivers_mipi_dsi_enable = true",
-            "bes_drivers_display_enable = true",
-            "bes_drivers_touch_enable = true",
-            "bes_fs_enable = true",
-            "bes_ui_enable = true",
-            "bes_ace_enable = true",
-            "bes_ability_enable = true",
-            "bes_ability_test = true",
-            "bes_histreamer_test = false",
-            "enable_histreamer_plugin_ffmpeg_adapter = false",
-            "config_ohos_distributedschedule_samgr_lite_shared_task_size = 4096"
-          ]
+          "component": "kal_timer"
         }
       ]
     }

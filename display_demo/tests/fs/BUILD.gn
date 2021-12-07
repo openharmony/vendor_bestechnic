@@ -20,6 +20,5 @@ static_library("fs_test") {
   include_dirs = [
     "//utils/native/lite/include",
     "//utils/native/lite/memory/include",
-    "//third_party/musl/porting/liteos_m/kernel/include",
   ]
 }

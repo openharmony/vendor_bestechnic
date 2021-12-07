@@ -1,3 +1,17 @@
+/*
+ * Copyright (c) 2021 Bestechnic (Shanghai) Co., Ltd. All rights reserved.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -81,7 +95,7 @@
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 8);
+/******/ 	return __webpack_require__(__webpack_require__.s = 12);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -104,12 +118,16 @@ function _interopRequireDefault(obj) {
 module.exports = _interopRequireDefault;
 
 /***/ }),
-/* 8 */
+/* 8 */,
+/* 9 */,
+/* 10 */,
+/* 11 */,
+/* 12 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var $app_template$ = __webpack_require__(9)
-var $app_style$ = __webpack_require__(10)
-var $app_script$ = __webpack_require__(11)
+var $app_template$ = __webpack_require__(13)
+var $app_style$ = __webpack_require__(14)
+var $app_script$ = __webpack_require__(15)
 var options=$app_script$
  if ($app_script$.__esModule) {
 
@@ -120,19 +138,19 @@ options.render=$app_template$;
 module.exports=new ViewModel(options);
 
 /***/ }),
-/* 9 */
+/* 13 */
 /***/ (function(module, exports) {
 
-module.exports = function (vm) { var _vm = vm || this; return _c('div', {'staticClass' : ["container"]} , [_c('div', {'staticClass' : ["header"],'on' : {'click' : _vm.back}} , [_c('text', {'attrs' : {'value' : function () {return _vm.title}},'staticClass' : ["title"]} )] ),_c('div', {'staticClass' : ["body"]} , [_c('div', {'staticClass' : ["grid"]} , [_c('div', {'staticClass' : ["row2"]} , [_c('div', {'attrs' : {'value' : ">"},'staticClass' : ["col","light-wrapper"],'on' : {'click' : _vm.Onlight0Changed}} , [_i((function () {return _vm.light0_on}),function(){return _c('image', {'attrs' : {'src' : function () {return _vm.light_image}},'staticClass' : ["light-on-image"]} )}),_i((function () {return !_vm.light0_on}),function(){return _c('image', {'attrs' : {'src' : function () {return _vm.light_image}},'staticClass' : ["light-off-image"]} )}),_c('text', {'attrs' : {'value' : "客厅灯"}} )] ),_c('div', {'staticClass' : ["col","light-wrapper"],'on' : {'click' : _vm.Onlight1Changed}} , [_i((function () {return _vm.light1_on}),function(){return _c('image', {'attrs' : {'src' : function () {return _vm.light_image}},'staticClass' : ["light-on-image"]} )}),_i((function () {return !_vm.light1_on}),function(){return _c('image', {'attrs' : {'src' : function () {return _vm.light_image}},'staticClass' : ["light-off-image"]} )}),_c('text', {'attrs' : {'value' : "厨房灯"}} )] )] ),_c('div', {'staticClass' : ["row2"]} , [_c('div', {'staticClass' : ["col","light-wrapper"],'on' : {'click' : _vm.Onlight2Changed}} , [_i((function () {return _vm.light2_on}),function(){return _c('image', {'attrs' : {'src' : function () {return _vm.light_image}},'staticClass' : ["light-on-image"]} )}),_i((function () {return !_vm.light2_on}),function(){return _c('image', {'attrs' : {'src' : function () {return _vm.light_image}},'staticClass' : ["light-off-image"]} )}),_c('text', {'attrs' : {'value' : "主卧灯"}} )] ),_c('div', {'staticClass' : ["col","light-wrapper"],'on' : {'click' : _vm.Onlight3Changed}} , [_i((function () {return _vm.light3_on}),function(){return _c('image', {'attrs' : {'src' : function () {return _vm.light_image}},'staticClass' : ["light-on-image"]} )}),_i((function () {return !_vm.light3_on}),function(){return _c('image', {'attrs' : {'src' : function () {return _vm.light_image}},'staticClass' : ["light-off-image"]} )}),_c('text', {'attrs' : {'value' : "次卧灯"}} )] )] )] )] )] ) }
+module.exports = function (vm) { var _vm = vm || this; return _c('list', {'staticStyle' : {'width' : 321,'height' : 321,'top' : 67,'left' : 67}, } , [_c('list-item', {'staticClass' : ["info-list-item"]} , [_c('div', {'staticStyle' : {'width' : 321,'height' : 80,'flexDirection' : "column",'alignItems' : "flex-start"}, } , [_c('text', {'attrs' : {'value' : function () {return _vm.historicalData}},'staticClass' : ["div-info-historical-data"]} )] )] ),_l((function () {return _vm.datasets}),function($item,$idx){return _c('list-item', {'staticStyle' : {'width' : 321,'height' : 160}, } , [_c('div', {'staticStyle' : {'width' : 321,'height' : 160,'flexDirection' : "column"}, } , [_c('div', {'staticStyle' : {'width' : 321,'height' : 2,'backgroundColor' : 16121850}, } ),_c('text', {'attrs' : {'value' : function () {return $item}},'staticClass' : ["gas-name"]} ),_c('div', {'staticStyle' : {'width' : 321,'height' : 100,'marginTop' : 4,'justifyContent' : "flex-start",'alignItems' : "flex-end"}, } , [_c('div', {'staticStyle' : {'width' : 21,'marginLeft' : 21,'height' : 10,'backgroundColor' : 65280}, } ),_c('div', {'staticStyle' : {'width' : 21,'marginLeft' : 21,'height' : 20,'backgroundColor' : 65280}, } ),_c('div', {'staticStyle' : {'width' : 21,'marginLeft' : 21,'height' : 90,'backgroundColor' : 16711680}, } ),_c('div', {'staticStyle' : {'width' : 21,'marginLeft' : 21,'height' : 80,'backgroundColor' : 16711680}, } ),_c('div', {'staticStyle' : {'width' : 21,'marginLeft' : 21,'height' : 60,'backgroundColor' : 10066329}, } ),_c('div', {'staticStyle' : {'width' : 21,'marginLeft' : 21,'height' : 50,'backgroundColor' : 10066329}, } ),_c('div', {'staticStyle' : {'width' : 21,'marginLeft' : 21,'height' : 100,'backgroundColor' : 16711680}, } )] ),_c('image', {'attrs' : {'src' : "common/week.png"},'staticStyle' : {'width' : 321,'height' : 20}, } )] )] )}),_c('list-item', {'staticClass' : ["info-list-item"]} , [_c('input', {'attrs' : {'type' : "button",'value' : "Back"},'staticStyle' : {'borderTopWidth' : 2,'borderRightWidth' : 2,'borderBottomWidth' : 2,'borderLeftWidth' : 2,'borderTopColor' : 9498256,'borderRightColor' : 9498256,'borderBottomColor' : 9498256,'borderLeftColor' : 9498256,'width' : 256,'height' : 60,'marginLeft' : 30,'marginTop' : 10}, 'on' : {'click' : _vm.backDetail}} )] )] ) }
 
 /***/ }),
-/* 10 */
+/* 14 */
 /***/ (function(module, exports) {
 
-module.exports = {"classSelectors":{"container":{"flexDirection":"column","justifyContent":"center","alignItems":"center","left":0,"top":0,"width":454,"height":454,"marginTop":5,"marginRight":5,"marginBottom":5,"marginLeft":5},"header":{"flexDirection":"row","justifyContent":"center","alignItems":"center","width":"100%","height":"10%"},"body":{"width":"100%","height":"80%"},"footer":{"flexDirection":"row","justifyContent":"center","alignItems":"center","width":"100%","height":"10%"},"grid":{"flexDirection":"row","flexWrap":"wrap","width":"100%","height":"100%"},"row":{"width":"100%","flexDirection":"row"},"col":{"height":"100%","flexDirection":"column"},"row2":{"width":"100%","height":"50%"},"row3":{"width":"100%","height":"33.3%"},"row4":{"width":"100%","height":"25%"},"col2":{"width":"50%","height":"100%"},"col3":{"width":"33%","height":"100%"},"col4":{"width":"25%","height":"100%"},"light-wrapper":{"width":"50%","justifyContent":"center","alignItems":"center"},"light-on-image":{"width":64,"height":64,"backgroundColor":16766720},"light-off-image":{"width":64,"height":64}}}
+module.exports = {"classSelectors":{"div-info-location":{"color":14474460,"width":321,"height":40},"div-info-historical-data":{"color":16121850,"width":321,"height":40},"gas-name":{"color":15794175,"textAlign":"right","width":321,"height":35},"info-list-item":{"width":321,"height":80}}}
 
 /***/ }),
-/* 11 */
+/* 15 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -149,32 +167,20 @@ var _system = _interopRequireDefault(requireNative("system.router"));
 
 var _default = {
   data: {
-    title: '< 灯光控制',
-    light_image: "/common/icons8-light-64.png",
-    light0_on: false,
-    light1_on: false,
-    light2_on: false,
-    light3_on: false
+    historicalData: "historicalData",
+    datasets: ["CO", "PM2.5", "NO2", "NO", "PM10", "SO2"]
   },
-  back: function back() {
+  onInit: function onInit() {
+    this.historicalData = this.$t(this.historicalData);
+  },
+  backDetail: function backDetail() {
     _system["default"].replace({
-      uri: "pages/index/index"
+      uri: "pages/detail/detail"
     });
-  },
-  Onlight0Changed: function Onlight0Changed() {
-    this.light0_on = !this.light0_on;
-  },
-  Onlight1Changed: function Onlight1Changed() {
-    this.light1_on = !this.light1_on;
-  },
-  Onlight2Changed: function Onlight2Changed() {
-    this.light2_on = !this.light2_on;
-  },
-  Onlight3Changed: function Onlight3Changed() {
-    this.light3_on = !this.light3_on;
   }
 };
 exports["default"] = _default;
 
 /***/ })
 /******/ ]);
+//# sourceMappingURL=history.js.map

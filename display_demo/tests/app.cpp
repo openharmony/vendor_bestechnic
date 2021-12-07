@@ -29,10 +29,13 @@
 void RunApp()
 {
 #ifdef UI_TEST
-    AnimatorDemoStart();
+    // AnimatorDemoStart();
+    // UiDemoStart();
+    // ImageDemoStart();
+    ViewDemoStart();
 #elif defined(ABILITY_TEST)
     // StartLauncherApp();
-    // StartJSApp();
+    StartJSApp();
 #endif
 }
 
