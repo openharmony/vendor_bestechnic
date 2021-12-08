@@ -12,7 +12,7 @@
 # limitations under the License.
 
 Common:
-  BAUT_RATE: 1500000
+  BAUT_RATE: 3000000
   BIN_DIR: ota_bin
   COM: null
   DLD_TOOLS_EXE: .\tools\dldtool.exe
@@ -65,7 +65,7 @@ FILE_LIST:
     FILE_NAME: rtos_mini.bin
     MAGIC: true
     SIZE: 3735552
-    SWITCH: false
+    SWITCH: true
 - LITTLEFS:
     ADDR: 750125056
     FILE_NAME: littlefs.bin
@@ -85,4 +85,4 @@ FILE_LIST:
     ADDR: 0
     FILE_NAME: pub_otp.bin
     SIZE: 1024
-    SWITCH: false
+    SWITCH: true

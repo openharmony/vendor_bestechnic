@@ -12,28 +12,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include "cmsis_os2.h"
-#include "ohos_init.h"
-#include "log.h"
-#include "fs_test.h"
 
+#ifndef PRODUCT_GRAPHIC_LITE_CONFIG_H
+#define PRODUCT_GRAPHIC_LITE_CONFIG_H
 
-static void DemoSdkTask(void *arg)
-{
-    (void)arg;
-    fs_test();
-}
+#define ENABLE_FRAME_BUFFER                 1
+#define ENABLE_JPEG_AND_PNG                 1
+#define ENABLE_GIF                          1
+#define ENABLE_HARDWARE_ACCELERATION        0
+#define ENABLE_FPS_SUPPORT                  1
+#define DEFAULT_VECTOR_FONT_FILENAME        "font.ttf"
+#define HORIZONTAL_RESOLUTION               480
+#define VERTICAL_RESOLUTION                 480
+#define VECTOR_FONT_DIR                     "/data/"
+#define IMG_CACHE_SIZE                      8
 
-void DemoSdkMain(void)
-{
-    HILOG_INFO(HILOG_MODULE_APP, "HILOG_INFO %s\r\n", __func__);
-    osThreadAttr_t attr = {0};
-    attr.stack_size = 4096;
-    attr.priority = osPriorityNormal;
-    attr.name = "DemoSdk";
-    if (osThreadNew((osThreadFunc_t)DemoSdkTask, NULL, &attr) == NULL) {
-        HILOG_ERROR(HILOG_MODULE_APP, "Failed to create DemoSdkTask\r\n");
-    }
-}
-
-SYS_RUN(DemoSdkMain);
+#endif // PRODUCT_GRAPHIC_LITE_CONFIG_H
