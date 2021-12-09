@@ -2,7 +2,7 @@
   "product_name": "display_demo",
   "ohos_version": "OpenHarmony 2.3",
   "device_company": "fnlink",
-  "board": "fgv200zrxx",
+  "board": "v200zr",
   "kernel_type": "liteos_m",
   "kernel_version": "3.0.0",
   "pack_burn": "true",
