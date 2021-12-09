@@ -16,7 +16,7 @@ import("//drivers/adapter/khdf/liteos_m/hdf.gni")
 module_name = "hdf_hcs"
 hdf_driver(module_name) {
   hcs_sources = [ "hdf.hcs" ]
-  visibility = [
+  visibility += [
     "$device_path",
     ".",
   ]
