@@ -12,18 +12,40 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#ifndef __FS_TEST_H__
-#define __FS_TEST_H__
-
-#ifdef __cplusplus
-extern "C" {
+#if defined(UI_TEST) || defined(ABILITY_TEST)
+#include "ohos_init.h"
+#include "ui_main.h"
+#if defined(UI_TEST)
+#include "ui_test.h"
+#elif defined(ABILITY_TEST)
+#include "ability_test.h"
 #endif
 
-void fs_test(void);
-void utils_file_test();
+#if defined(HISTREAMER_TEST)
+#include "audio_player.h"
+#endif
 
-#ifdef __cplusplus
+/* ui app entry */
+void RunApp()
+{
+#ifdef UI_TEST
+    // AnimatorDemoStart();
+    // UiDemoStart();
+    // ImageDemoStart();
+    ViewDemoStart();
+#elif defined(ABILITY_TEST)
+    // StartLauncherApp();
+    StartJSApp();
+#endif
 }
-#endif
 
+void AppEntry(void)
+{
+    UiMain();
+#if defined(HISTREAMER_TEST)
+    AudioPlayerStart();
+#endif
+}
+
+APP_FEATURE_INIT(AppEntry);
 #endif

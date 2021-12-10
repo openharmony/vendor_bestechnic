@@ -2,7 +2,7 @@
   "product_name": "xts_demo",
   "ohos_version": "OpenHarmony 2.3",
   "device_company": "fnlink",
-  "board": "fgv200zrxx",
+  "board": "v200zr",
   "kernel_type": "liteos_m",
   "kernel_version": "3.0.0",
   "pack_burn": "true",
@@ -226,7 +226,7 @@
     }
   ],
   "vendor_adapter_dir": "",
-  "product_adapter_dir": "//vendor/bestechnic/display_demo/hals",
+  "product_adapter_dir": "//vendor/bestechnic/xts_demo/hals",
   "third_party_dir": "",
   "flash_partition_dir": "fs"
 }

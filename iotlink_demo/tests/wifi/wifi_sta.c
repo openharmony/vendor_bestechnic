@@ -14,15 +14,14 @@
  */
 
 #include "cmsis_os2.h"
-#include "hal_trace.h"
 #include "ohos_init.h"
 #include "wifi_device.h"
 #include "wifi_error_code.h"
 #include <stdlib.h>
 #include <string.h>
 
-#define SELECT_WIFI_SSID "bes_wifi"
-#define SELECT_WIFI_PASSWORD "12345678"
+#define SELECT_WIFI_SSID "test_wifi"
+#define SELECT_WIFI_PASSWORD  "12345678"
 #define SELECT_WIFI_SECURITYTYPE WIFI_SEC_TYPE_PSK
 
 #define SCAN_OPTION 1

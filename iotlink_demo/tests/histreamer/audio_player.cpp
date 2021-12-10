@@ -12,20 +12,28 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include "driver_test.h"
-#include "touch_if.h"
 
-void touch_test()
+#include <unistd.h>
+#include "histreamer/hiplayer.h"
+
+using namespace OHOS::Media;
+
+std::string GetMusicUri()
 {
-    DevHandle dev = TouchOpen(0);
-    DBG_ASSERT(dev != NULL);
-    struct touch_msg msg;
-    const char *touch_events[] = {"", "TOUCH_EVENT_UP", "TOUCH_EVENT_DOWN", "TOUCH_EVENT_MOVE", "TOUCH_EVENT_EXIST"};
-    while (1) {
-        memset(&msg, 0, sizeof(msg));
-        if (TouchRead(dev, &msg, 100) == 0) {
-            LOG_I("%s, x %d, y %d", touch_events[msg.event % 5], msg.x, msg.y);
-        }
+    std::string uri = "/data/dream_it_possible.mp3";
+    return uri;
+}
+
+int AudioPlayerStart(void)
+{
+    auto player = OHOS::Media::CreateHiPlayer();
+    player->Init();
+    OHOS::Media::Source source(GetMusicUri());
+    player->SetSource(source);
+    player->SetLoop(true);
+    player->Play();
+    while(1) {
+        sleep(1);
     }
-    TouchClose(dev);
+    return 0;
 }

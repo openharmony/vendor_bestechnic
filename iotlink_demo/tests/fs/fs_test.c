@@ -42,7 +42,7 @@ static void dir_test(const char *path)
             continue;
         }
         struct stat st_buf = {0};
-        char realpath[128];
+        char realpath[260];
         snprintf(realpath, sizeof(realpath), "%s/%s", path, dp->d_name);
         if (stat(realpath, &st_buf) != 0) {
             LOG_E("can not access %s\n", realpath);
@@ -50,7 +50,7 @@ static void dir_test(const char *path)
             return;
         }
         if ((st_buf.st_mode & S_IFMT) == S_IFDIR) {
-            LOG_E("DIR %s\n", realpath);
+            LOG_I("DIR %s\n", realpath);
         } else {
             LOG_I("FILE %s, %ld bytes\n", realpath, st_buf.st_size);
         }
@@ -58,7 +58,7 @@ static void dir_test(const char *path)
     closedir(dir);
 }
 
-static void read_file(const char *file, bool print_str)
+static void read_test(const char *file, bool print_str)
 {
     int fd = open(file, O_RDONLY);
     if (fd < 0) {
@@ -85,7 +85,7 @@ static void read_file(const char *file, bool print_str)
     LOG_I("read file '%s' total bytes: %d\r\n", file, bytes);
 }
 
-static void fread_file(const char *file, bool print_str)
+static void fread_test(const char *file, bool print_str)
 {
     FILE *fp = fopen(file, "rb");
     if (fp == NULL) {
@@ -111,7 +111,7 @@ static void fread_file(const char *file, bool print_str)
     LOG_I("fread file '%s' total bytes: %d\r\n", file, bytes);
 }
 
-static void fwrite_file(const char *file, const char *data)
+static void fwrite_test(const char *file, const char *data)
 {
     FILE *fp = fopen(file, "w");
     if (fp == NULL) {
@@ -123,18 +123,46 @@ static void fwrite_file(const char *file, const char *data)
     LOG_I("fwrite file '%s' total bytes: %d, %s\r\n", file, bytes, data);
 }
 
+static void fstat_test(const char *path)
+{
+    int fd = open(path, O_RDONLY);
+    if (fd < 0) {
+        LOG_E("open file '%s' failed, %s\r\n", path, strerror(errno));
+        return;
+    }
+    struct stat st_buf = {0};
+    if (fstat(fd, &st_buf) != 0) {
+        LOG_E("can not access %s\n", path);
+        close(fd);
+        return;
+    }
+    close(fd);
+    if ((st_buf.st_mode & S_IFMT) == S_IFDIR) {
+        LOG_I("DIR %s\n", path);
+    } else {
+        LOG_I("FILE %s, %ld bytes\n", path, st_buf.st_size);
+    }
+}
+
+static void fseek_test(const char *path)
+{
+    FILE *fp = fopen(path, "rb");
+    if (fp == NULL) {
+        LOG_E("fopen file '%s' failed, %s\r\n", path, strerror(errno));
+        return;
+    }
+    fseek(fp, 0, SEEK_END);
+    uint32_t len = ftell(fp);
+    LOG_I("%s size %u bytes", path, len);
+    fclose(fp);
+}
+
 void fs_test(void)
 {
     dir_test("/data");
-    read_file("/data/test.txt", true);
-    fwrite_file("/data/test.txt", "fwrite data test");
-    fread_file("/data/test.txt", true);
-
-    dir_test("/log");
-    fwrite_file("/log/test.txt", "fwrite log test");
-    fread_file("/log/test.txt", true);
-
-    dir_test("/resource");
-    fwrite_file("/resource/test.txt", "fwrite resource test");
-    fread_file("/resource/test.txt", true);
+    read_test("/data/test.txt", true);
+    fwrite_test("/data/test.txt", "fwrite data test");
+    fread_test("/data/test.txt", true);
+    fstat_test("/data/font.ttf");
+    fseek_test("/data/font.ttf");
 }

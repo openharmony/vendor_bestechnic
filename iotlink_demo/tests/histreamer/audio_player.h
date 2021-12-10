@@ -12,18 +12,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#ifndef __FS_TEST_H__
-#define __FS_TEST_H__
 
-#ifdef __cplusplus
-extern "C" {
-#endif
+int AudioPlayerStart(void);
 
-void fs_test(void);
-void utils_file_test();
-
-#ifdef __cplusplus
-}
-#endif
-
-#endif
