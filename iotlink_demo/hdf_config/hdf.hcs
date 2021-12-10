@@ -1,4 +1,4 @@
-#include "../../../../device/bestechnic/bes2600w/components/config/hdf.hcs"
+#include "../../../../device/soc/bestechnic/bes2600/liteos_m/components/hdf_config/hdf.hcs"
 root {
     device_info {
         platform :: host {

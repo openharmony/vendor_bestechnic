@@ -1,4 +1,3 @@
-#!/bin/bash
 # Copyright (c) 2021 Bestechnic (Shanghai) Co., Ltd. All rights reserved.
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,25 +11,15 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# == area config a7 liteos bin begin == #
-OPT_BEST2600W_LITEOS_A7=" \
-"
-# == area config a7 liteos bin end   == #
+static_library("ability_test") {
+  sources = [
+    "ability_test.cpp",
+    "launcher.cpp",
+  ]
 
-# == area config liteos main bin begin == #
-OPT_BEST2600W_LITEOS_MAIN=" \
-LIBC_INIT_AFTER_OS_INIT=1   \
-"
-# == area config liteos main bin end   == #
-
-# == area config liteos cp bin begin == #
-OPT_BEST2600W_LITEOS_CP=" \
-"
-# == area config liteos cp bin end   == #
-
-
-# == area config liteos main mini bin begin == #
-OPT_BEST2600W_LITEOS_MAIN_MINI_SE=" \
-"
-# == area config liteos main mini bin end   == #
-
+  public_deps = [
+    "//base/hiviewdfx/hilog_lite/frameworks/featured:hilog_static",
+    "//foundation/aafwk/aafwk_lite/frameworks/ability_lite:aafwk_abilitykit_lite",
+    "//foundation/ace/ace_engine_lite/frameworks:ace_lite",
+  ]
+}

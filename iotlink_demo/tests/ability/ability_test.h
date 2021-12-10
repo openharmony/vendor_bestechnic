@@ -12,18 +12,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#ifndef __FS_TEST_H__
-#define __FS_TEST_H__
+#ifndef ABILITY_TEST_H
+#define ABILITY_TEST_H
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-void fs_test(void);
-void utils_file_test();
+void StartLauncherApp();
+void StartJSApp();
 
 #ifdef __cplusplus
 }
 #endif
-
 #endif

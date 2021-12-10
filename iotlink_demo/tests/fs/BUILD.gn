@@ -14,15 +14,11 @@
 static_library("fs_test") {
   sources = [
     "fs_test.c",
+    "utils_file_test.c",
   ]
-  deps = [
-    "//base/hiviewdfx/hilog_lite/frameworks/featured:hilog_static",
-    "//device/bestechnic/${board_name}/components/drivers:drivers_adapter",
-    "//device/bestechnic/${board_name}/components/fs:fs_adapter",
-  ]
+  deps = [ "//base/hiviewdfx/hilog_lite/frameworks/featured:hilog_static" ]
   include_dirs = [
     "//utils/native/lite/include",
     "//utils/native/lite/memory/include",
-    "//third_party/musl/porting/liteos_m/kernel/include",
   ]
 }
