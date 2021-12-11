@@ -1,0 +1,1 @@
+23:16:23 WARN  - OatPostAnalyser4Output	vendor_bestechnic/	LICENSEFILE	LICENSE	Apache-2.0	
