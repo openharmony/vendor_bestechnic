@@ -12,7 +12,7 @@
 # limitations under the License.
 
 Common:
-  BAUT_RATE: 1500000
+  BAUT_RATE: 3000000
   BIN_DIR: ota_bin
   COM: null
   DLD_TOOLS_EXE: .\tools\dldtool.exe

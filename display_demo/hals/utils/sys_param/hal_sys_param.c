@@ -29,6 +29,10 @@
 #define OHOS_ABI_LIST "****"
 #define OHOS_SERIAL "1234567890"
 #define OHOS_FIRST_API_VERSION  1
+#define ETH_ALEN 6
+typedef unsigned char               u8;
+
+static char mac_addr[ETH_ALEN];
 
 const char* HalGetDeviceType(void)
 {
@@ -77,7 +81,18 @@ const char* HalGetHardwareProfile(void)
 
 const char* HalGetSerial(void)
 {
-    return OHOS_SERIAL;
+    // as devboard has no production serial number, we just
+    // use wifi mac address as device serial number.
+    if (mac_addr[0] == '\0') {
+        extern int bwifi_get_own_mac(u8 *addr);
+        bwifi_get_own_mac(mac_addr);
+        for (int i = 0; i < ETH_ALEN; i++) {
+            if (mac_addr[i] == '\0') {
+                mac_addr[i] = mac_addr[i] + 3;
+            }
+        }
+    }
+    return mac_addr;
 }
 
 const char* HalGetBootloaderVersion(void)
