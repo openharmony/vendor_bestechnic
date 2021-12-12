@@ -33,6 +33,8 @@
 #define MAC_BITS 4
 #define MAC_HIGH_MASK 0xf0
 #define MAC_LOW_MASK 0x0f
+#define CHAR_NUM_OFFSET 0x30
+#define CHAR_CAPITAL_OFFSET 0x37
 #define STR_END_FLAG '\0'
 
 typedef unsigned char               u8;
@@ -84,6 +86,15 @@ const char* HalGetHardwareProfile(void)
     return OHOS_HARDWARE_PROFILE;
 }
 
+static char Hex2Char(u8 hex)
+{
+    if (hex < 0xa) {
+        return hex + CHAR_NUM_OFFSET;
+    } else {
+        return hex + CHAR_CAPITAL_OFFSET;
+    }
+}
+
 const char* HalGetSerial(void)
 {
     char macAddr[ETH_ALEN];
@@ -96,19 +107,10 @@ const char* HalGetSerial(void)
         for (int i = 0; i < ETH_ALEN; i++) {
             u8 lowFour, highFour;
             highFour = (macAddr[i] & MAC_HIGH_MASK) >> MAC_BITS;
-            if (highFour == STR_END_FLAG) {
-                serialNumber[j] = highFour + 1;
-            } else {
-                serialNumber[j] = highFour;
-            }
+            serialNumber[j] = Hex2Char(highFour);
             j++;
-
             lowFour = macAddr[i] & MAC_LOW_MASK;
-            if (lowFour == STR_END_FLAG) {
-                serialNumber[j] = lowFour + 1;
-            } else {
-                serialNumber[j] = lowFour;
-            }
+            serialNumber[j] = Hex2Char(lowFour);
             j++;
         }
     }
