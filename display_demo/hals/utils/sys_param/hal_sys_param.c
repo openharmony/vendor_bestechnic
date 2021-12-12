@@ -31,6 +31,7 @@
 #define OHOS_FIRST_API_VERSION  1
 #define ETH_ALEN 6
 #define MAC_BITS 4
+#define HEX_A 0xa
 #define MAC_HIGH_MASK 0xf0
 #define MAC_LOW_MASK 0x0f
 #define CHAR_NUM_OFFSET 0x30
@@ -88,7 +89,7 @@ const char* HalGetHardwareProfile(void)
 
 static char Hex2Char(u8 hex)
 {
-    if (hex < 0xa) {
+    if (hex < HEX_A) {
         return hex + CHAR_NUM_OFFSET;
     } else {
         return hex + CHAR_CAPITAL_OFFSET;
