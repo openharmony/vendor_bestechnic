@@ -30,9 +30,14 @@
 #define OHOS_SERIAL "1234567890"
 #define OHOS_FIRST_API_VERSION  1
 #define ETH_ALEN 6
+#define MAC_BITS 4
+#define MAC_HIGH_MASK 0xf0
+#define MAC_LOW_MASK 0x0f
+#define STR_END_FLAG '\0'
+
 typedef unsigned char               u8;
 
-static char mac_addr[ETH_ALEN];
+static char serialNumber[2*ETH_ALEN + 1];
 
 const char* HalGetDeviceType(void)
 {
@@ -81,18 +86,33 @@ const char* HalGetHardwareProfile(void)
 
 const char* HalGetSerial(void)
 {
+    char macAddr[ETH_ALEN];
     // as devboard has no production serial number, we just
     // use wifi mac address as device serial number.
-    if (mac_addr[0] == '\0') {
+    if (serialNumber[0] == STR_END_FLAG) {
         extern int bwifi_get_own_mac(u8 *addr);
-        bwifi_get_own_mac(mac_addr);
+        bwifi_get_own_mac(macAddr);
+        int j = 0;
         for (int i = 0; i < ETH_ALEN; i++) {
-            if (mac_addr[i] == '\0') {
-                mac_addr[i] = mac_addr[i] + 3;
+            u8 lowFour, highFour;
+            highFour = (macAddr[i] & MAC_HIGH_MASK) >> MAC_BITS;
+            if (highFour == STR_END_FLAG) {
+                serialNumber[j] = highFour + 1;
+            } else {
+                serialNumber[j] = highFour;
             }
+            j++;
+
+            lowFour = macAddr[i] & MAC_LOW_MASK;
+            if (lowFour == STR_END_FLAG) {
+                serialNumber[j] = lowFour + 1;
+            } else {
+                serialNumber[j] = lowFour;
+            }
+            j++;
         }
     }
-    return mac_addr;
+    return serialNumber;
 }
 
 const char* HalGetBootloaderVersion(void)
