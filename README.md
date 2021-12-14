@@ -13,16 +13,13 @@
 代码路径：
 
 ```
-device/                               --- 硬件单板相关仓库
-├── boards/fnlink                     --- 欧智通公司相关单板
-├── soc/bestechnic                    --- 恒玄相关SoC代码
 vendor/bestechnic/                    --- vendor_bestechnic 仓库路径
 └── display_demo                      --- 轻量带屏显示样例，智能开关面板
 ```
 
 ## 安装教程
 
-参考 [安装调试教程](https://gitee.com/openharmony-sig/device_bestechnic/blob/master/README.md)
+参考 [安装调试教程](https://gitee.com/openharmony-sig/device_soc_bestechnic/blob/master/README.md)
 
 ## 使用说明
 
@@ -35,5 +32,5 @@ vendor/bestechnic/                    --- vendor_bestechnic 仓库路径
 
 ## 相关仓
 
-[device\_bestechnic](https://gitee.com/openharmony/device_bestechnic/blob/HEAD/README_zh.md)
+[device/soc/bestechnic](https://gitee.com/openharmony/device_soc_bestechnic/blob/HEAD/README_zh.md)
 

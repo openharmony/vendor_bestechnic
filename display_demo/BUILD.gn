@@ -13,4 +13,5 @@
 
 group("display_demo") {
   deps = [ "tests:example" ]
+  deps += [ "//third_party/curl:libcurl_static" ]
 }
