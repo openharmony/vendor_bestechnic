@@ -1,6 +1,8 @@
 {
   "product_name": "display_demo",
   "ohos_version": "OpenHarmony 2.3",
+  "type": "mini",
+  "version": "3.0",
   "device_company": "fnlink",
   "board": "v200zr",
   "kernel_type": "liteos_m",
