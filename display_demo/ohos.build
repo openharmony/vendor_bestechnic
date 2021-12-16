@@ -1,0 +1,10 @@
+{
+  "parts": {
+    "product_display_demo": {
+      "module_list": [
+        "//vendor/bestechnic/display_demo:display_demo"
+      ]
+    }
+  },
+  "subsystem": "product_display_demo"
+}
