@@ -1,10 +1,10 @@
-From cc4cf54218e9ea7ca4ece2e602cb87230ea73c43 Mon Sep 17 00:00:00 2001
-From: leihuang <leihuang@bestechnic.com>
-Date: Sat, 11 Sep 2021 10:17:17 +0800
-Subject: [PATCH] fix: work around musl for arm-none-eabi
+From d2c5515a5a2762f8bfaa150e98613c9dd87a7693 Mon Sep 17 00:00:00 2001
+From: yangjian <jianyang@bestechnic.com>
+Date: Tue, 21 Dec 2021 01:12:05 +0800
+Subject: [PATCH] third_party/musl
 
-Signed-off-by: leihuang <leihuang@bestechnic.com>
-Change-Id: Ia2b6c7e624d80d5303296f9688275419da329c9a
+Signed-off-by: yangjian <jianyang@bestechnic.com>
+Change-Id: I14279fcc99133ce58f03a5145ee838c197cd1237
 ---
  porting/liteos_m/kernel/BUILD.gn              | 22 +++++++++----------
  porting/liteos_m/kernel/include/ctype.h       | 12 ++++++++++

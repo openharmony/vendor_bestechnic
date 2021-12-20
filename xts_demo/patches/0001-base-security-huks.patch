@@ -1,10 +1,10 @@
-From c18d7dd65c9058ac4bd395f9ee1938a0edf70a63 Mon Sep 17 00:00:00 2001
+From 3db5ca4b42cdd82aed437d8aebaab07e50a6e39c Mon Sep 17 00:00:00 2001
 From: yangjian <jianyang@bestechnic.com>
-Date: Mon, 18 Oct 2021 12:02:12 +0800
-Subject: [PATCH] feat:base/security/huks/ diable ED25519
+Date: Tue, 21 Dec 2021 01:09:54 +0800
+Subject: [PATCH] base/security/huks
 
 Signed-off-by: yangjian <jianyang@bestechnic.com>
-Change-Id: I4bab7ebdfad0aafe2124583bd69d679faeea841c
+Change-Id: I216fe565e6b37b5152b59db2d54ab83096b1480e
 ---
  frameworks/huks_standard/main/common/include/hks_config.h | 8 ++++----
  1 file changed, 4 insertions(+), 4 deletions(-)
