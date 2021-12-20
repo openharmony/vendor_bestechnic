@@ -1,10 +1,10 @@
-From 873bb236b58abb7509024611f936c0ac470a2b48 Mon Sep 17 00:00:00 2001
+From 96a228a6c0487a6dc8dc8901409ec533a3a6c4fe Mon Sep 17 00:00:00 2001
 From: yangjian <jianyang@bestechnic.com>
-Date: Fri, 22 Oct 2021 19:30:20 +0800
-Subject: [PATCH] feat:utils/native/lite /data
+Date: Tue, 21 Dec 2021 01:17:02 +0800
+Subject: [PATCH] utils/native/lite/
 
 Signed-off-by: yangjian <jianyang@bestechnic.com>
-Change-Id: Iebee339dc5318b61472205af5ad34aa356ee75f4
+Change-Id: Id25df916b11dc1cd78b0aad11b209d196acda922
 ---
  file/src/file_impl_hal/file.c            | 16 +++++++++++++---
  kv_store/src/kvstore_impl_hal/kv_store.c |  3 ++-

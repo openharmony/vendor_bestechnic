@@ -1,16 +1,30 @@
-From 28516cea3e3d7a82f33ff9b163e6ebdfcedc3bbd Mon Sep 17 00:00:00 2001
+From e0c6b1f0ac35441fc27c054604eee49dd410911b Mon Sep 17 00:00:00 2001
 From: yangjian <jianyang@bestechnic.com>
-Date: Fri, 22 Oct 2021 19:24:06 +0800
-Subject: [PATCH] feat: fix case file releated
+Date: Tue, 21 Dec 2021 01:14:57 +0800
+Subject: [PATCH] test/xts/acts/
 
 Signed-off-by: yangjian <jianyang@bestechnic.com>
-Change-Id: Ic1020396a9fff448bbfbf6cb8676a3aeb38c3d81
+Change-Id: I92fdd3f3d220c5d5259e84e74fcb3fca9129ce6a
 ---
+ hiviewdfx_lite/hilog_hal/src/dfx_hilog.c      |  2 +-
  .../file_hal/src/utils_file_func_test.c       | 42 +++++++++----------
  .../file_hal/src/utils_file_reli_test.c       | 16 +++----
  .../kv_store_hal/src/kvstore_func_test.c      |  8 ++--
- 3 files changed, 34 insertions(+), 32 deletions(-)
+ 4 files changed, 35 insertions(+), 33 deletions(-)
 
+diff --git a/hiviewdfx_lite/hilog_hal/src/dfx_hilog.c b/hiviewdfx_lite/hilog_hal/src/dfx_hilog.c
+index d592537..0d0e3c4 100755
+--- a/hiviewdfx_lite/hilog_hal/src/dfx_hilog.c
++++ b/hiviewdfx_lite/hilog_hal/src/dfx_hilog.c
+@@ -13,7 +13,7 @@
+  * limitations under the License.
+  */
+ 
+-
++#include <stdbool.h>
+ #include <hiview_util.h>
+ #include <securec.h>
+ #include <hiview_config.h>
 diff --git a/utils_lite/file_hal/src/utils_file_func_test.c b/utils_lite/file_hal/src/utils_file_func_test.c
 index 2414452..b753a66 100755
 --- a/utils_lite/file_hal/src/utils_file_func_test.c

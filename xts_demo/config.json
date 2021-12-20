@@ -5,6 +5,7 @@
   "board": "bes2600w",
   "kernel_type": "liteos_m",
   "kernel_version": "3.0.0",
+  "flash_size": "16",
   "pack_burn": "true",
   "bin_list": [
     {
@@ -22,16 +23,13 @@
         "fs_adapter",
         "flash",
         "module_ActsBootstrapTest",
-        "module_ActsLwipTest",
-        "module_ActsWifiServiceTest",
         "module_ActsParameterTest",
         "module_ActsDfxFuncTest",
         "module_ActsKvStoreTest",
         "module_ActsUpdaterFuncTest",
         "module_ActsSecurityDataTest",
         "module_ActsWifiIotTest",
-        "module_ActsSamgrTest",
-        "module_ActsUtilsFileTest"
+        "module_ActsSamgrTest"
       ]
     },
     {
@@ -129,14 +127,21 @@
         {
           "component": "hilog_lite",
           "optional": "true",
-          "features": []
+          "features": [
+            "ohos_hiviewdfx_hiview_lite_hiview_service_stack_size = 61440"
+          ]
         }
       ]
     },
     {
       "subsystem": "test",
       "components": [
-        { "component": "xts_acts", "features":[] },
+        { 
+          "component": "xts_acts", "features":
+          [
+            "ohos_test_xts_tools_lite_hctest_src_hctest_service_stack_size = 61440"
+          ] 
+        },
         { "component": "xts_tools", "features":[] }
        ]
      },
@@ -152,15 +157,6 @@
           "optional": "true",
           "features":[]
          }
-        ]
-      },
-      {
-        "subsystem": "communication",
-        "components": [
-          {
-            "component": "wifi_lite",
-            "optional": "true"
-          }
         ]
       },
       {

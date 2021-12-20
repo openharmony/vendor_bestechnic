@@ -1,19 +1,20 @@
-From 71306c6b5ccc5a62e7f242ea6f18b17efd14f64b Mon Sep 17 00:00:00 2001
-From: leihuang <leihuang@bestechnic.com>
-Date: Tue, 7 Sep 2021 14:19:39 +0800
-Subject: [PATCH] work around fs for arm-none-eabi
+From 341cca93eab49a0d2c535c46c9039f382cc6799e Mon Sep 17 00:00:00 2001
+From: yangjian <jianyang@bestechnic.com>
+Date: Tue, 21 Dec 2021 01:13:55 +0800
+Subject: [PATCH] kernel/liteos_m
 
-Signed-off-by: leihuang <leihuang@bestechnic.com>
-Change-Id: I79477061d4f309c9c8cf0aaba758bdfc5edbc54b
+Signed-off-by: yangjian <jianyang@bestechnic.com>
+Change-Id: Ia536ce5effc85149e7887bb1e2c096a53306de5a
 ---
- components/fs/fs.c | 46 +++++++++++++++++++++++++---------------------
- 1 file changed, 25 insertions(+), 21 deletions(-)
+ components/fs/fs.c               | 46 +++++++++++++++++---------------
+ components/fs/littlefs/lfs_api.h |  2 +-
+ 2 files changed, 26 insertions(+), 22 deletions(-)
  mode change 100644 => 100755 components/fs/fs.c
 
 diff --git a/components/fs/fs.c b/components/fs/fs.c
 old mode 100644
 new mode 100755
-index a06212a..635e072
+index 636667f..b9da5d9
 --- a/components/fs/fs.c
 +++ b/components/fs/fs.c
 @@ -44,7 +44,11 @@
@@ -209,6 +210,19 @@ index a06212a..635e072
  {
      if (g_fs == NULL) {
          errno = ENODEV;
+diff --git a/components/fs/littlefs/lfs_api.h b/components/fs/littlefs/lfs_api.h
+index 9d0ccbf..0bb0497 100644
+--- a/components/fs/littlefs/lfs_api.h
++++ b/components/fs/littlefs/lfs_api.h
+@@ -77,7 +77,7 @@ typedef struct {
+     lfs_dir_t dir;
+ } FileDirInfo;
+ 
+-#define LITTLE_FS_MAX_OPEN_FILES 100
++#define LITTLE_FS_MAX_OPEN_FILES 32
+ #define LITTLE_FS_STANDARD_NAME_LENGTH 50
+ #define LITTLE_FS_MAX_NAME_LEN 255
+ 
 -- 
 2.17.1
 

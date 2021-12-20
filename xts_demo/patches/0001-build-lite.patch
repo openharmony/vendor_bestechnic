@@ -1,10 +1,10 @@
-From 9b2968d78fb5641f9a1209a859e99585b029dabf Mon Sep 17 00:00:00 2001
-From: leihuang <leihuang@bestechnic.com>
-Date: Sun, 26 Sep 2021 16:41:05 +0800
-Subject: [PATCH] feat: add liteos_m options
+From 23b21192d362995e06a7543a2fe461d02ff9e0e8 Mon Sep 17 00:00:00 2001
+From: yangjian <jianyang@bestechnic.com>
+Date: Tue, 21 Dec 2021 01:10:40 +0800
+Subject: [PATCH] build/lite
 
-Signed-off-by: leihuang <leihuang@bestechnic.com>
-Change-Id: Ia261889ed553f779656d3fde11c538788aa2e11c
+Signed-off-by: yangjian <jianyang@bestechnic.com>
+Change-Id: Id03f09f2c5246b67bf7bb8906d16c1b1f0e94920
 ---
  components/aafwk.json      |  1 +
  components/ace.json        | 19 +++++++++----------
@@ -198,10 +198,10 @@ index 19cdb8b..972d477 100755
        ],
        "features": [],
 diff --git a/components/vendor.json b/components/vendor.json
-index a977c9e..12a9725 100755
+index 4e5c4e9..d012f85 100755
 --- a/components/vendor.json
 +++ b/components/vendor.json
-@@ -333,6 +333,12 @@
+@@ -277,6 +277,12 @@
            "utils_base"
          ]
        }

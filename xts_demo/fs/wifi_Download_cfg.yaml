@@ -12,7 +12,7 @@
 # limitations under the License.
 
 Common:
-  BAUT_RATE: 1500000
+  BAUT_RATE: 3000000
   BIN_DIR: ota_bin
   COM: null
   DLD_TOOLS_EXE: .\tools\dldtool.exe
@@ -26,7 +26,7 @@ Common:
   PROGRESSBAR_SWITCH: false
   REBOOT: false
   REDIRECT_PIPE: true
-  SEC_BOOT_VER: 3
+  SEC_BOOT_VER: 4
   WAIT_PRESS_ENTER: true
 FILE_LIST:
 - BOOT1:
