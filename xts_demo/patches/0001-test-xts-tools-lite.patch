@@ -1,0 +1,68 @@
+From 2c5bef17f2af0eb9f2fd6437f5d75d9af839db57 Mon Sep 17 00:00:00 2001
+From: yangjian <jianyang@bestechnic.com>
+Date: Tue, 21 Dec 2021 01:35:02 +0800
+Subject: [PATCH] /test/xts/tools/lite
+
+Signed-off-by: yangjian <jianyang@bestechnic.com>
+Change-Id: I1a4ce2a271d706442e2841d93c350fa9a701dd18
+---
+ build/utils.py              | 2 +-
+ hctest/BUILD.gn             | 9 +++++++++
+ hctest/src/hctest_service.c | 2 +-
+ 3 files changed, 11 insertions(+), 2 deletions(-)
+
+diff --git a/build/utils.py b/build/utils.py
+index 5f3bf25..d9e6429 100755
+--- a/build/utils.py
++++ b/build/utils.py
+@@ -64,7 +64,7 @@ _NO_FILTE_SUB_SYSTEM_LIST = [
+     "telephony",
+     "dcts",
+     "hiviewdfx",
+-    "communication",
++    # "communication",
+     "security",
+     "update",
+     "sstsutils",
+diff --git a/hctest/BUILD.gn b/hctest/BUILD.gn
+index e5f21f5..3ec5c02 100644
+--- a/hctest/BUILD.gn
++++ b/hctest/BUILD.gn
+@@ -10,6 +10,11 @@
+ # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ # See the License for the specific language governing permissions and
+ # limitations under the License.
++
++declare_args() {
++  ohos_test_xts_tools_lite_hctest_src_hctest_service_stack_size = 4096
++}
++
+ static_library("hctest") {
+   sources = [
+     "//third_party/unity/src/unity.c",
+@@ -32,5 +37,9 @@ static_library("hctest") {
+   ]
+ 
+   defines = [ "UNITY_INCLUDE_CONFIG_H" ]
++  if (defined(ohos_test_xts_tools_lite_hctest_src_hctest_service_stack_size) &&
++      ohos_test_xts_tools_lite_hctest_src_hctest_service_stack_size > 0) {
++    defines += [ "HCTEST_SERVICE_TASK_STACK_SIZE=$ohos_test_xts_tools_lite_hctest_src_hctest_service_stack_size" ]
++  }
+   cflags = [ "-Wno-error" ]
+ }
+diff --git a/hctest/src/hctest_service.c b/hctest/src/hctest_service.c
+index e997fbc..e2d6272 100644
+--- a/hctest/src/hctest_service.c
++++ b/hctest/src/hctest_service.c
+@@ -87,7 +87,7 @@ static BOOL MessageHandle(Service *service, Request *request)
+ 
+ static TaskConfig GetTaskConfig(Service *service)
+ {
+-    TaskConfig config = {LEVEL_MIDDLE, PRI_NORMAL, 0x1000, TASK_QUEUE_SIZE, SINGLE_TASK};
++    TaskConfig config = {LEVEL_MIDDLE, PRI_NORMAL, HCTEST_SERVICE_TASK_STACK_SIZE, TASK_QUEUE_SIZE, SINGLE_TASK};
+     (void)service;
+     return config;
+ };
+-- 
+2.17.1
+
