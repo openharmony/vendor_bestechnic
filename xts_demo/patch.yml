@@ -15,6 +15,6 @@ test/xts/acts:
 test/xts/tools/lite:
   - vendor/bestechnic/xts_demo/patches/0001-test-xts-tools-lite.patch
 third_party/unity:
-  - vendor/bestechnic/xts_demo/patches/0001-third_party-unity
+  - vendor/bestechnic/xts_demo/patches/0001-third_party-unity.patch
 utils/native/lite:
   - vendor/bestechnic/xts_demo/patches/0001-utils-native-lite.patch
