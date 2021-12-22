@@ -5,7 +5,7 @@
   "board": "bes2600w",
   "kernel_type": "liteos_m",
   "kernel_version": "3.0.0",
-  "flash_size": "16",
+  "flash_size": "32",
   "pack_burn": "true",
   "bin_list": [
     {
