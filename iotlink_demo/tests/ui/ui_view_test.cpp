@@ -119,10 +119,13 @@ UIView *ViewDemo::GetView()
 
 void ViewDemo::SetUpNav(const char *text, int x, int y, UIViewGroup *parent)
 {
+    int16_t width = 50;
+    int16_t height = 50;
+    int64_t value = 90;
     UILabelButton *btn = new UILabelButton();
     btn->SetText(text);
-    btn->SetPosition(x, y, 50, 50);
-    btn->SetStyle(STYLE_BORDER_RADIUS, 90);
+    btn->SetPosition(x, y, width, width);
+    btn->SetStyle(STYLE_BORDER_RADIUS, value);
     parent->Add(btn);
 }
 
@@ -168,18 +171,27 @@ void ViewDemo::GetView1()
 
 void ViewDemo::GetView2()
 {
+    int16_t x = 0;
+    int16_t y = 0;
+    int16_t width = 0;
+    int16_t height = 200;
+    int8_t size = 20;
     if (view2_ != nullptr) {
         return;
     }
     view2_ = new UIViewGroup();
-    view2_->SetPosition(0, g_height, Screen::GetInstance().GetWidth(), 200);
+    view2_->SetPosition(x, g_height, Screen::GetInstance().GetWidth(), height);
     g_height += view0_->GetHeight();
-    SetUpNav("3", 80, 0, view2_);
+    x = 80;
+    SetUpNav("3", x, y, view2_);
 
     UILabelButton *button_ = new UILabelButton();
-    button_->SetPosition(150, 0, 120, 64);
+    x = 150;
+    width = 120;
+    height = 64;
+    button_->SetPosition(x, y, width, height);
     button_->SetText("Play");
-    button_->SetFont(DEFAULT_VECTOR_FONT_FILENAME, 20);
+    button_->SetFont(DEFAULT_VECTOR_FONT_FILENAME, size);
     button_->SetOnClickListener(this);
     view2_->Add(button_);
     container_->Add(view2_);
@@ -223,6 +235,7 @@ private:
 
 void MyScrollView::SetUp()
 {
+    int16_t size = 0;
     BaseGfxEngine::GetInstance()->SetScreenShape(ScreenShape::CIRCLE);
 
     if (container_ == nullptr) {
@@ -232,7 +245,7 @@ void MyScrollView::SetUp()
     container_->SetPosition(0, 0, Screen::GetInstance().GetWidth(), Screen::GetInstance().GetHeight());
     container_->SetYScrollBarVisible(true);
     container_->SetHorizontalScrollState(false);
-    container_->SetReboundSize(50);
+    container_->SetReboundSize(size);
 }
 
 MyScrollView::~MyScrollView()
@@ -250,34 +263,47 @@ UIView *MyScrollView::GetView()
 void MyScrollView::GetScrollView()
 {
     int16_t g_height = 0;
+    int16_t x = 0;
+    int16_t y = 0;
+    int16_t width = 0;
+    int16_t height = 0;
+    int8_t value = 90;
     UILabelButton *button1 = new UILabelButton();
     container_->Add(button1);
-    button1->SetPosition(180, 100 + g_height, 100, 100);
-    button1->SetStyle(STYLE_BORDER_RADIUS, 90);
+    x = 180;
+    y = 100 + g_height;
+    width = 100;
+    height = 100;
+    button1->SetPosition(x, y, width, height);
+    button1->SetStyle(STYLE_BORDER_RADIUS, value);
     button1->SetText("button1");
 
     UILabelButton *button2 = new UILabelButton();
     container_->Add(button2);
-    button2->SetPosition(180, 250 + g_height, 100, 100);
-    button2->SetStyle(STYLE_BORDER_RADIUS, 90);
+    x = 180;
+    y = 250 + g_height;
+    button2->SetPosition(x, y, width, height);
+    button2->SetStyle(STYLE_BORDER_RADIUS, value);
     button2->SetText("button2");
-
+    y = 400 + g_height;
     UILabelButton *button3 = new UILabelButton();
     container_->Add(button3);
-    button3->SetPosition(180, 400 + g_height, 100, 100);
-    button3->SetStyle(STYLE_BORDER_RADIUS, 90);
+    button3->SetPosition(x, y, width, height);
+    button3->SetStyle(STYLE_BORDER_RADIUS, value);
     button3->SetText("button3");
 
     UILabelButton *button4 = new UILabelButton();
     container_->Add(button4);
-    button4->SetPosition(180, 550 + g_height, 100, 100);
-    button4->SetStyle(STYLE_BORDER_RADIUS, 90);
+    y = 550 + g_height;
+    button4->SetPosition(x, y, width, height);
+    button4->SetStyle(STYLE_BORDER_RADIUS, value);
     button4->SetText("button4");
 
     UILabelButton *button5 = new UILabelButton();
     container_->Add(button5);
-    button5->SetPosition(180, 700 + g_height, 100, 100);
-    button5->SetStyle(STYLE_BORDER_RADIUS, 90);
+    y = 700 + g_height;
+    button5->SetPosition(x, y, width, height);
+    button5->SetStyle(STYLE_BORDER_RADIUS, value);
     button5->SetText("button5");
 }
 
@@ -320,11 +346,13 @@ ViewSwitchDemo::~ViewSwitchDemo()
 
 void ViewSwitchDemo::SetUp()
 {
+    int x = 0;
+    int y = 0;
     if (container_ != nullptr) {
         return;
     }
     container_ = new UIViewGroup();
-    container_->SetPosition(0, 0, Screen::GetInstance().GetWidth(), Screen::GetInstance().GetHeight());
+    container_->SetPosition(x, y, Screen::GetInstance().GetWidth(), Screen::GetInstance().GetHeight());
 }
 
 UIView *ViewSwitchDemo::GetView()
@@ -336,13 +364,18 @@ UIView *ViewSwitchDemo::GetView()
 
 void ViewSwitchDemo::SetUpNav(UIViewGroup *container)
 {
+    int16_t x = 100;
+    int16_t y = 350;
+    int16_t width = 120;
+    int16_t height = 50;
     UILabelButton *btn1 = new UILabelButton();
-    btn1->SetPosition(100, 350, 120, 50);
+    btn1->SetPosition(x, y, width, height);
     btn1->SetText("上一页");
     btn1->SetOnClickListener(this);
 
     UILabelButton *btn2 = new UILabelButton();
-    btn2->SetPosition(250, 350, 120, 50);
+    x = 250;
+    btn2->SetPosition(x, y, width, height);
     btn2->SetText("下一页");
     btn2->SetOnClickListener(this);
 
@@ -352,17 +385,22 @@ void ViewSwitchDemo::SetUpNav(UIViewGroup *container)
 
 void ViewSwitchDemo::GetView0()
 {
+    int16_t x = 0;
+    int16_t y = 0;
+    int16_t width = 0;
+    int16_t height = 0;
+    int8_t size = 20;
     if (view0_ != nullptr) {
         return;
     }
     view0_ = new UIViewGroup();
-    view0_->SetPosition(0, 0, Screen::GetInstance().GetWidth(), Screen::GetInstance().GetHeight());
+    view0_->SetPosition(x, y, Screen::GetInstance().GetWidth(), Screen::GetInstance().GetHeight());
 
     UILabel *label_ = new UILabel();
-    label_->SetPosition(100, 100, 250, 64);
+    label_->SetPosition(x, y, width, height);
     label_->SetText("图形UI组件实现了一套系统级的图形引擎。");
     label_->SetLineBreakMode(UILabel::LINE_BREAK_WRAP);
-    label_->SetFont(DEFAULT_VECTOR_FONT_FILENAME, 20);
+    label_->SetFont(DEFAULT_VECTOR_FONT_FILENAME, size);
 
     view0_->Add(label_);
     SetUpNav(view0_);
@@ -370,18 +408,27 @@ void ViewSwitchDemo::GetView0()
 
 void ViewSwitchDemo::GetView1()
 {
+    int16_t x = 0;
+    int16_t y = 0;
+    int16_t width = 0;
+    int16_t height = 0;
+    uint8_t size = 20;
     if (view1_ != nullptr) {
         return;
     }
     view1_ = new UIViewGroup();
-    view1_->SetPosition(0, 0, Screen::GetInstance().GetWidth(), Screen::GetInstance().GetHeight());
+    view1_->SetPosition(x, y, Screen::GetInstance().GetWidth(), Screen::GetInstance().GetHeight());
 
     UILabel *label_ = new UILabel();
-    label_->SetPosition(100, 100, 250, 64);
+    x = 100;
+    y = 100;
+    width = 250;
+    height = 64;
+    label_->SetPosition(x, y, width, height);
     label_->SetText("该组件为应用开发提供UIKit接口，包括了动画、布局、图形转换、事件处理，以及丰富的UI组件。"
                     "组件内部直接调用HAL接口，或者使用WMS(Window Manager Service)提供的客户端与硬件交互，以完成事件响应、图像绘制等操作。");
     label_->SetLineBreakMode(UILabel::LINE_BREAK_WRAP);
-    label_->SetFont(DEFAULT_VECTOR_FONT_FILENAME, 20);
+    label_->SetFont(DEFAULT_VECTOR_FONT_FILENAME, size);
 
     view1_->Add(label_);
     SetUpNav(view1_);
@@ -389,19 +436,28 @@ void ViewSwitchDemo::GetView1()
 
 void ViewSwitchDemo::GetView2()
 {
+    int16_t x = 0;
+    int16_t y = 0;
+    int16_t width = 0;
+    int16_t height = 0;
+    int16_t size = 20;
     if (view2_ != nullptr) {
         return;
     }
     view2_ = new UIViewGroup();
-    view2_->SetPosition(0, 0, Screen::GetInstance().GetWidth(), Screen::GetInstance().GetHeight());
+    view2_->SetPosition(x, y, Screen::GetInstance().GetWidth(), Screen::GetInstance().GetHeight());
 
     UILabel *label_ = new UILabel();
-    label_->SetPosition(100, 100, 250, 64);
+    x = 100;
+    y = 100;
+    width = 250;
+    height = 64;
+    label_->SetPosition(x, y, width, height);
     label_->SetText("组件分为基础组件和容器组件"
                     "- 基础组件：仅实现组件自身单一功能，比如按钮、文字、图片等；"
                     "- 容器组件：可将其他组件作为自己的子组件，通过组合实现复杂功能。");
     label_->SetLineBreakMode(UILabel::LINE_BREAK_WRAP);
-    label_->SetFont(DEFAULT_VECTOR_FONT_FILENAME, 20);
+    label_->SetFont(DEFAULT_VECTOR_FONT_FILENAME, size);
 
     view2_->Add(label_);
     SetUpNav(view2_);
@@ -446,8 +502,10 @@ bool ViewSwitchDemo::OnClick(UIView &view, const ClickEvent &event)
 
 void ViewDemoStart(void)
 {
+    int16_t x = 0;
+    int16_t y = 0;
     RootView *rootView_ = RootView::GetInstance();
-    rootView_->SetPosition(0, 0, Screen::GetInstance().GetWidth(), Screen::GetInstance().GetHeight());
+    rootView_->SetPosition(x, y, Screen::GetInstance().GetWidth(), Screen::GetInstance().GetHeight());
     ViewDemo *view = ViewDemo::GetInstance();
     // MyScrollView *view = MyScrollView::GetInstance();
     // ViewSwitchDemo *view = ViewSwitchDemo::GetInstance();

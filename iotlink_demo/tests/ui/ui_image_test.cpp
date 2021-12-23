@@ -82,10 +82,14 @@ static void DeleteChildren(UIView *view)
 
 void ImageDemo::SetUp()
 {
+    int16_t x = 25;
+    int16_t y = 25;
+    int16_t width = Screen::GetInstance().GetWidth() - 50;
+    int16_t height = Screen::GetInstance().GetHeight() - 50;
     g_height = 0;
     if (container_ == nullptr) {
         container_ = new UIScrollView();
-        container_->SetPosition(25, 25, Screen::GetInstance().GetWidth() - 50, Screen::GetInstance().GetHeight() - 50);
+        container_->SetPosition(x, y, width, height);
         container_->SetHorizontalScrollState(false);
     }
 }
@@ -108,42 +112,59 @@ UIView *ImageDemo::GetView()
 
 void ImageDemo::CreateImageSwitch()
 {
+    int16_t x = 100;
+    int16_t y = g_height;
+    int16_t width = 200;
+    int16_t height = 29;
+    uint8_t size = 20;
     if (container_ == nullptr) {
         return;
     }
     UILabel *label = new UILabel();
     container_->Add(label);
-    label->SetPosition(100, g_height, 200, 29);
+    label->SetPosition(x, y, width, height);
     label->SetText("不同类型图片切换");
-    label->SetFont(DEFAULT_VECTOR_FONT_FILENAME, 20);
+    label->SetFont(DEFAULT_VECTOR_FONT_FILENAME, size);
     g_height += 30;
 
     gifImageView_ = new UIImageView();
-    gifImageView_->SetPosition(48, g_height);
+    x = 48;
+    y = g_height;
+    gifImageView_->SetPosition(x, y);
     gifImageView_->SetSrc(GIF_PATH1);
-    gifImageView_->Resize(100, 100);
+    width = 100;
+    height = 100;
+    gifImageView_->Resize(width, height);
     // gifImageView_->SetAutoEnable(false);
     container_->Add(gifImageView_);
     g_height += 150;
 
     gifToGif_ = new UILabelButton();
     SetUpButton(gifToGif_, "切换GIF");
-    gifToGif_->SetPosition(48, g_height + 10);
+    x = 48;
+    y = g_height + 10;
+    gifToGif_->SetPosition(x, y);
     gifToJpeg_ = new UILabelButton();
     SetUpButton(gifToJpeg_, "切换JPG");
-    gifToJpeg_->SetPosition(48 + 120, g_height + 10);
+    x = 48 + 120;
+    y = g_height + 10;
+    gifToJpeg_->SetPosition(x, y);
     gifToPng_ = new UILabelButton();
     SetUpButton(gifToPng_, "切换PNG");
-    gifToPng_->SetPosition(48 + 240, g_height + 10);
+    x = 48 + 240;
+    y = g_height + 10;
+    gifToPng_->SetPosition(x, y);
 }
 
 void ImageDemo::SetUpButton(UILabelButton *btn, const char *title)
 {
+    int16_t width = 100;
+    int16_t height = 50;
     if (btn == nullptr) {
         return;
     }
     container_->Add(btn);
-    btn->Resize(100, 50);
+    btn->Resize(width, height);
     btn->SetText(title);
     btn->SetOnClickListener(this);
 }
@@ -188,24 +209,36 @@ private:
 
 void QrcodeDemo::SetUp()
 {
+    int16_t x = 25;
+    int16_t y = 25;
+    int16_t width = Screen::GetInstance().GetWidth() - 50;
+    int16_t height = Screen::GetInstance().GetHeight() - 50;
     if (container_ == nullptr) {
         container_ = new UIScrollView();
-        container_->SetPosition(25, 25, Screen::GetInstance().GetWidth() - 50, Screen::GetInstance().GetHeight() - 50);
+        container_->SetPosition(x, y, width, height);
         container_->SetHorizontalScrollState(false);
     }
 }
 
 UIView *QrcodeDemo::GetView()
 {
+    int16_t x = 100;
+    int16_t y = 100;
+    int16_t width = 300;
+    int16_t height = 30;
     if (container_ == nullptr) {
         return nullptr;
     }
 
     UILabel *titleLabel = new UILabel();
-    titleLabel->SetPosition(100, 100, 300, 30);
+    titleLabel->SetPosition(x, y, width, height);
     titleLabel->SetText("qrcode");
 
     UIQrcode *qrcode = new UIQrcode();
+    x = 100;
+    y = 150;
+    width = 200;
+    height = 200;
     qrcode->SetPosition(100, 150, 200, 200);
     const char *str = "鸿蒙轻量级GUI";
     qrcode->SetQrcodeInfo(str);
@@ -217,8 +250,10 @@ UIView *QrcodeDemo::GetView()
 
 void ImageDemoStart()
 {
+    int16_t x = 0;
+    int16_t y = 0;
     RootView *rootView_ = RootView::GetInstance();
-    rootView_->SetPosition(0, 0, Screen::GetInstance().GetWidth(), Screen::GetInstance().GetHeight());
+    rootView_->SetPosition(x, y, Screen::GetInstance().GetWidth(), Screen::GetInstance().GetHeight());
 
     ImageDemo *view = ImageDemo::GetInstance();
     // QrcodeDemo *view = QrcodeDemo::GetInstance();
