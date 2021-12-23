@@ -100,25 +100,20 @@ static void WifiSTATask(void)
     strcpy(select_ap_config.ssid, SELECT_WIFI_SSID);
     strcpy(select_ap_config.preSharedKey, SELECT_WIFI_PASSWORD);
     select_ap_config.securityType = SELECT_WIFI_SECURITYTYPE;
-
     osDelay(2000);
     printf("<--WifiSTATask Init-->\r\n");
-
     if (WiFiInit() != WIFI_SUCCESS) {
         printf("WiFiInit failed!\r\n");
         return;
     }
-
     if (EnableWifi() != WIFI_SUCCESS) {
         printf("EnableWifi failed\r\n");
         return;
     }
-
     if (IsWifiActive() == WIFI_STA_NOT_ACTIVE) {
         printf("Wifi station is not actived.\n");
         return;
     }
-
 #if SCAN_OPTION
     eventId = osEventFlagsNew(NULL);
     if (eventId == NULL) {
@@ -135,20 +130,16 @@ static void WifiSTATask(void)
         printf("malloc failed\r\n");
         return;
     }
-    if (GetScanInfoList(info, &size) != WIFI_SUCCESS) ///< size = scan_result_len
-    {
+    if (GetScanInfoList(info, &size) != WIFI_SUCCESS) {
         printf("GetScanInfoList failed\r\n");
         free(info);
         return;
     }
-    printf("********************\r\n");
     for (unsigned int i = 0; i < size; i++) {
         printf("no:%03u, ssid:%-30s, rssi:%5d\r\n", i + 1, info[i].ssid, info[i].rssi);
     }
-    printf("********************\r\n");
     free(info);
 #endif
-
     int result;
     if (AddDeviceConfig(&select_ap_config, &result) != WIFI_SUCCESS) {
         printf("AddDeviceConfig failed!\r\n");
@@ -157,7 +148,6 @@ static void WifiSTATask(void)
     printf("Connecting to %s...\r\n", SELECT_WIFI_SSID);
     error = ConnectTo(result); ///< block and retry
     printf("WiFi connect %s!\r\n", (error == WIFI_SUCCESS) ? "succeed" : "failed");
-
     for (;;) {
         osDelay(100);
     }
