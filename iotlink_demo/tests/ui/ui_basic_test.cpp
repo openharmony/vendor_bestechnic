@@ -28,8 +28,7 @@
 
 using namespace OHOS;
 
-class UiDemo : public UIView::OnClickListener
-{
+class UiDemo : public UIView::OnClickListener {
 public:
     static UiDemo *GetInstance()
     {
@@ -39,7 +38,10 @@ public:
     void Start();
 
 private:
-    UiDemo() { srand(HALTick::GetInstance().GetTime()); }
+    UiDemo()
+    {
+        srand(HALTick::GetInstance().GetTime());
+    }
     ~UiDemo()
     {
         if (btn_ != nullptr) {

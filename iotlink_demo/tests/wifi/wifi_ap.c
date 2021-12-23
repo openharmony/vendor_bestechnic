@@ -24,6 +24,15 @@
 
 #define AP_SSID "test_wifi"
 #define AP_PSK "12345678"
+#define AP_TASK_STACK_SIZE  10240
+#define AP_TASK_PRIORITY    25
+#define CHANNEL_NUM         7
+#define BIT0                0
+#define BIT1                1
+#define BIT2                2
+#define BIT3                3
+#define BIT4                4
+#define BIT5                5
 
 static void OnHotspotStaJoinHandler(StationInfo *info);
 static void OnHotspotStateChangedHandler(int state);
@@ -53,7 +62,7 @@ static void WifiAPTask(void)
     strcpy(config.preSharedKey, AP_PSK);
     config.securityType = WIFI_SEC_TYPE_PSK;
     config.band = HOTSPOT_BAND_TYPE_2G;
-    config.channelNum = 7;
+    config.channelNum = CHANNEL_NUM;
 
     error = SetHotspotConfig(&config);
     if (error != WIFI_SUCCESS) {
@@ -95,7 +104,7 @@ static void OnHotspotStaJoinHandler(StationInfo *info)
     for (uint32_t i = 0; i < size; i++, sta_list_node++) {
         unsigned char *mac = sta_list_node->macAddress;
         printf("HotspotSta[%u]: macAddress=%02X:%02X:%02X:%02X:%02X:%02X\r\n", i,
-               mac[0], mac[1], mac[2], mac[3], mac[4], mac[5]);
+               mac[BIT0], mac[BIT1], mac[BIT2], mac[BIT3], mac[BIT4], mac[BIT5]);
     }
     g_apEnableSuccess++;
 }
@@ -108,7 +117,7 @@ static void OnHotspotStaLeaveHandler(StationInfo *info)
     }
     unsigned char *mac = info->macAddress;
     printf("HotspotStaLeave: macAddress=%02X:%02X:%02X:%02X:%02X:%02X, reason=%d.\r\n",
-           mac[0], mac[1], mac[2], mac[3], mac[4], mac[5],
+           mac[BIT0], mac[BIT1], mac[BIT2], mac[BIT3], mac[BIT4], mac[BIT5],
            info->disconnectedReason);
     g_apEnableSuccess--;
 }
@@ -133,8 +142,8 @@ static void Wifi_AP_Demo(void)
     attr.cb_mem = NULL;
     attr.cb_size = 0U;
     attr.stack_mem = NULL;
-    attr.stack_size = 10240;
-    attr.priority = 25;
+    attr.stack_size = AP_TASK_STACK_SIZE;
+    attr.priority = AP_TASK_PRIORITY;
 
     if (osThreadNew((osThreadFunc_t)WifiAPTask, NULL, &attr) == NULL) {
         printf("Falied to create WifiAPTask!\r\n");

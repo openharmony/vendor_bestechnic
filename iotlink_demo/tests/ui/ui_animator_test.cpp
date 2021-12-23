@@ -32,8 +32,7 @@
 
 using namespace OHOS;
 
-namespace
-{
+namespace {
 static constexpr uint16_t TITLE_LABEL_DEFAULT_HEIGHT = 29;
 static constexpr uint16_t FONT_DEFAULT_SIZE = 20;
 static constexpr uint16_t VIEW_DISTANCE_TO_LEFT_SIDE = 48;
@@ -80,8 +79,7 @@ static void DeleteChildren(UIView *view)
     }
 }
 
-class AnimatorDemoCallback : public AnimatorCallback
-{
+class AnimatorDemoCallback : public AnimatorCallback {
 public:
     AnimatorDemoCallback(UIView *uiView, int16_t startPos, int16_t endPos)
         : startPos_(startPos),
@@ -125,8 +123,7 @@ protected:
     Animator *animator_;
 };
 
-class AnimatorDemo : public UIView::OnClickListener, public SysInfo::OnFPSChangedListener
-{
+class AnimatorDemo : public UIView::OnClickListener, public SysInfo::OnFPSChangedListener {
 public:
     static AnimatorDemo *GetInstance()
     {
@@ -229,7 +226,6 @@ void AnimatorDemo::SetUp()
         positionX_ = 0;
     }
     RenderManager::GetInstance().RegisterFPSChangedListener(this);
-    // this->SetFPSCalculateType(SysInfo::FPS_CT_PRECISE_SAMPLING);
     this->SetFPSCalculateType(SysInfo::FPS_CT_FIXED_TIME);
 }
 
@@ -311,8 +307,8 @@ void AnimatorDemo::OnFPSChanged(float newFPS)
     }
     lastFPS = newFPS;
     char buf[32] = {0};
-    snprintf(buf, sizeof(buf), "动画效果 %.0f fps", newFPS);
-    HILOG_DEBUG(HILOG_MODULE_APP, "%.0f fps\n", newFPS);
+    int ret = snprintf_s(buf, sizeof(buf) + 1, sizeof(buf), "动画效果 %.0f fps", newFPS);
+    HILOG_DEBUG(HILOG_MODULE_APP, "%.0f fps ret:%d \n", newFPS, ret);
     label_->SetText(reinterpret_cast<char *>(buf));
     label_->Invalidate();
 }
@@ -320,8 +316,7 @@ void AnimatorDemo::OnFPSChanged(float newFPS)
 /**
  * UIScaleRotateDemo
  */
-class UIScaleRotateDemo : public AnimatorCallback
-{
+class UIScaleRotateDemo : public AnimatorCallback {
 public:
     static UIScaleRotateDemo *GetInstance()
     {
@@ -412,7 +407,6 @@ void AnimatorDemoStart(void)
     rootView_->SetPosition(0, 0, Screen::GetInstance().GetWidth(), Screen::GetInstance().GetHeight());
 
     AnimatorDemo *view = AnimatorDemo::GetInstance();
-    // UIScaleRotateDemo *view = UIScaleRotateDemo::GetInstance();
     view->SetUp();
     rootView_->Add(view->GetTestView());
     rootView_->Invalidate();
