@@ -19,8 +19,8 @@
 extern "C" {
 #endif
 
-void StartLauncherApp();
-void StartJSApp();
+void StartLauncherApp(void);
+void StartJSApp(void);
 
 #ifdef __cplusplus
 }

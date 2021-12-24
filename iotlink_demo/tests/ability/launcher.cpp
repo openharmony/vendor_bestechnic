@@ -15,10 +15,12 @@
 #include "launcher.h"
 #include "log.h"
 
-#define LAUNCHER_GIF_PATH "/data/img/launcher.gif"
+#define X_AXIS 25
+#define Y_AXIS 75
+#define POS_WIDTH 400
+#define POS_HEIGHT 300
 
-namespace OHOS
-{
+namespace OHOS {
 void Launcher::InitUI()
 {
     rootView_ = RootView::GetInstance();
@@ -26,8 +28,9 @@ void Launcher::InitUI()
     HILOG_DEBUG(HILOG_MODULE_APP, "rootView %d-%d", rootView_->GetWidth(), rootView_->GetHeight());
 
     gifImageView_ = new UIImageView();
-    gifImageView_->SetPosition(25, 75, 400, 300);
-    gifImageView_->SetSrc(LAUNCHER_GIF_PATH);
+    gifImageView_->SetPosition(X_AXIS, Y_AXIS, POS_WIDTH, POS_HEIGHT);
+    const char *launcherGifPath = "/data/img/launcher.gif";
+    gifImageView_->SetSrc(launcherGifPath);
     rootView_->Add(gifImageView_);
     rootView_->Invalidate();
 }

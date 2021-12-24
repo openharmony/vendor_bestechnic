@@ -12,62 +12,87 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#define _GNU_SOURCE
 #include <string.h>
 #include "utils_file.h"
 #define LOG_TAG "UtilsFile"
 #include "log.h"
 
-#define UtilsFileAssert(cond, expr)                                            \
-    do {                                                                       \
-        if (!(cond)) {                                                         \
-            HILOG_ERROR(HILOG_MODULE_APP, "%d: '%s' failed", __LINE__, #cond); \
-            expr;                                                              \
-        }                                                                      \
-    } while (0)
+#define SEEK_COUNT 3
+#define FILE_SIZE 64
+#define READ_SIZE 4
+#define SEEK_POS 2
 
-void utils_file_test()
+
+void utils_file_test(void)
 {
     const char *path = "/data/test.txt";
     const char *data = "utils_file_test";
     const int whence[3] = {SEEK_SET_FS, SEEK_CUR_FS, SEEK_END_FS};
-    char buf[64] = {0};
+    char buf[FILE_SIZE] = {0};
     unsigned int fileSize = 0;
 
     int ret;
     int fd = UtilsFileOpen(path, O_WRONLY_FS | O_CREAT_FS, 0664);
-    UtilsFileAssert(fd >= 0, return );
-
+    if (fd < 0) {
+        HILOG_ERROR(HILOG_MODULE_APP, "%d: UtilsFileOpen failed", __LINE__);
+        return;
+    }
     ret = UtilsFileWrite(fd, data, strlen(data));
-    UtilsFileAssert(ret == strlen(data), goto ERR);
+    if (ret != strlen(data)) {
+        HILOG_ERROR(HILOG_MODULE_APP, "%d: UtilsFileWrite failed", __LINE__);
+        return;
+    }
     ret = UtilsFileClose(fd);
-    UtilsFileAssert(ret == 0, return );
-
+    if (ret != 0) {
+        HILOG_ERROR(HILOG_MODULE_APP, "%d: UtilsFileClose failed", __LINE__);
+        return;
+    }
     fd = UtilsFileOpen(path, O_RDONLY_FS, 0);
-    UtilsFileAssert(fd >= 0, return );
+    if (fd < 0) {
+        HILOG_ERROR(HILOG_MODULE_APP, "%d: UtilsFileOpen failed", __LINE__);
+        return;
+    }
     ret = UtilsFileStat(path, &fileSize);
-    UtilsFileAssert(ret == 0, goto ERR);
+    if (ret != 0) {
+        HILOG_ERROR(HILOG_MODULE_APP, "%d: UtilsFileStat failed", __LINE__);
+        return;
+    }
     HILOG_DEBUG(HILOG_MODULE_APP, "fileSize %u", fileSize);
 
-    for (int i = 0; i < 3; i++) {
+    for (int i = 0; i < SEEK_COUNT; i++) {
         ret = UtilsFileSeek(fd, 0, whence[i]);
-        UtilsFileAssert(ret >= 0, goto ERR);
+        if (ret < 0) {
+            HILOG_ERROR(HILOG_MODULE_APP, "%d: UtilsFileSeek failed", __LINE__);
+            goto ERR;
+        }
     }
 
     UtilsFileSeek(fd, 0, SEEK_SET_FS);
-    ret = UtilsFileRead(fd, buf, 4);
-    UtilsFileAssert(ret == 4, goto ERR);
-    buf[4] = '\0';
+    ret = UtilsFileRead(fd, buf, READ_SIZE);
+    if (ret != READ_SIZE) {
+        HILOG_ERROR(HILOG_MODULE_APP, "%d: UtilsFileRead failed", __LINE__);
+        return;
+    }
+    buf[READ_SIZE] = '\0';
     HILOG_DEBUG(HILOG_MODULE_APP, "read: %s", buf);
-    UtilsFileSeek(fd, 2, SEEK_SET_FS);
-    ret = UtilsFileRead(fd, buf, 4);
-    UtilsFileAssert(ret == 4, goto ERR);
-    buf[4] = '\0';
+    UtilsFileSeek(fd, SEEK_POS, SEEK_SET_FS);
+    ret = UtilsFileRead(fd, buf, READ_SIZE);
+    if (ret != READ_SIZE) {
+        HILOG_ERROR(HILOG_MODULE_APP, "%d: UtilsFileRead failed", __LINE__);
+        return;
+    }
+    buf[READ_SIZE] = '\0';
     HILOG_DEBUG(HILOG_MODULE_APP, "read: %s", buf);
 
 ERR:
     ret = UtilsFileClose(fd);
-    UtilsFileAssert(ret == 0, return );
+    if (ret != 0) {
+        HILOG_ERROR(HILOG_MODULE_APP, "%d: UtilsFileClose failed", __LINE__);
+        return;
+    }
     ret = UtilsFileDelete(path);
-    UtilsFileAssert(ret == 0, return );
+    if (ret != 0) {
+        HILOG_ERROR(HILOG_MODULE_APP, "%d: UtilsFileDelete failed", __LINE__);
+        return;
+    }
 }

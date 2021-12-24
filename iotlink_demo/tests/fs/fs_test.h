@@ -20,7 +20,7 @@ extern "C" {
 #endif
 
 void fs_test(void);
-void utils_file_test();
+void utils_file_test(void);
 
 #ifdef __cplusplus
 }

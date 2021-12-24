@@ -23,8 +23,7 @@
 #include "components/root_view.h"
 #include "components/ui_image_view.h"
 
-namespace OHOS
-{
+namespace OHOS {
 class Launcher : public SliteAbility
 {
 public:

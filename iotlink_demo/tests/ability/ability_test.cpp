@@ -20,29 +20,28 @@
 #include "launcher.h"
 #include "ability_test.h"
 
-#define LAUNCHER_BUNDLE_NAME "com.huawei.launcher"
-#define JS_BUNDLE_NAME "com.app.example"
-#define JS_APP_PATH "/data/js"
-
-void StartLauncherApp()
+void StartLauncherApp(void)
 {
     InstallLauncher();
     Want want = {nullptr};
     ElementName element = {nullptr};
-    SetElementBundleName(&element, LAUNCHER_BUNDLE_NAME);
+    const char *launcherBundleName = "com.huawei.launcher";
+    SetElementBundleName(&element, launcherBundleName);
     SetWantElement(&want, element);
     StartAbility(&want);
     ClearElement(&element);
     ClearWant(&want);
 }
 
-void StartJSApp()
+void StartJSApp(void)
 {
     Want want = {nullptr};
     ElementName element = {nullptr};
-    SetElementBundleName(&element, JS_BUNDLE_NAME);
+    const char *jsBundleName = "com.app.example";
+    SetElementBundleName(&element, jsBundleName);
     SetWantElement(&want, element);
-    SetWantData(&want, JS_APP_PATH, strlen(JS_APP_PATH) + 1);
+    const char *jsAppPath = "/data/js";
+    SetWantData(&want, (const void *)jsAppPath, strlen(jsAppPath) + 1);
     StartAbility(&want);
     ClearElement(&element);
     ClearWant(&want);
