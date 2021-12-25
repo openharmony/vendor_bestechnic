@@ -1,35 +1,37 @@
-From d2c5515a5a2762f8bfaa150e98613c9dd87a7693 Mon Sep 17 00:00:00 2001
+From adbc852ed5f474b9dd7b4edb54b711bed5f3384c Mon Sep 17 00:00:00 2001
 From: yangjian <jianyang@bestechnic.com>
-Date: Tue, 21 Dec 2021 01:12:05 +0800
+Date: Sat, 25 Dec 2021 10:48:35 +0800
 Subject: [PATCH] third_party/musl
 
 Signed-off-by: yangjian <jianyang@bestechnic.com>
-Change-Id: I14279fcc99133ce58f03a5145ee838c197cd1237
+Change-Id: I2c517fc17401b3c9235f1979a476b1ad7b536794
 ---
- porting/liteos_m/kernel/BUILD.gn              | 22 +++++++++----------
- porting/liteos_m/kernel/include/ctype.h       | 12 ++++++++++
- porting/liteos_m/kernel/include/stddef.h      | 13 +++++++++++
- porting/liteos_m/kernel/include/stdlib.h      |  2 ++
- .../liteos_m/kernel/src/internal/stdio_impl.h |  5 +++++
- porting/liteos_m/kernel/src/stdio/clearerr.c  |  9 ++++++--
+ porting/liteos_m/kernel/BUILD.gn              | 23 ++---
+ porting/liteos_m/kernel/include/ctype.h       | 12 +++
+ porting/liteos_m/kernel/include/stddef.h      | 13 +++
+ porting/liteos_m/kernel/include/stdlib.h      |  2 +
+ .../liteos_m/kernel/src/internal/stdio_impl.h |  5 ++
+ porting/liteos_m/kernel/src/misc/realpath.c   | 85 +++++++++++++++++++
+ porting/liteos_m/kernel/src/stdio/clearerr.c  |  9 +-
  porting/liteos_m/kernel/src/stdio/fclose.c    |  2 +-
- porting/liteos_m/kernel/src/stdio/feof.c      | 11 +++++++---
+ porting/liteos_m/kernel/src/stdio/feof.c      | 11 ++-
  porting/liteos_m/kernel/src/stdio/fflush.c    |  2 +-
- porting/liteos_m/kernel/src/stdio/fgets.c     |  4 ++--
- porting/liteos_m/kernel/src/stdio/fileno.c    |  4 ++--
- porting/liteos_m/kernel/src/stdio/fopen.c     |  9 ++++++--
- porting/liteos_m/kernel/src/stdio/fputs.c     |  9 ++++++--
- porting/liteos_m/kernel/src/stdio/fread.c     | 11 +++++++---
+ porting/liteos_m/kernel/src/stdio/fgets.c     |  4 +-
+ porting/liteos_m/kernel/src/stdio/fileno.c    |  4 +-
+ porting/liteos_m/kernel/src/stdio/fopen.c     |  9 +-
+ porting/liteos_m/kernel/src/stdio/fputs.c     |  9 +-
+ porting/liteos_m/kernel/src/stdio/fread.c     | 11 ++-
  porting/liteos_m/kernel/src/stdio/fseek.c     |  2 +-
  porting/liteos_m/kernel/src/stdio/ftell.c     |  2 +-
- porting/liteos_m/kernel/src/stdio/fwrite.c    |  9 ++++++--
- porting/liteos_m/kernel/src/string/strdup.c   |  7 +++++-
- 18 files changed, 101 insertions(+), 34 deletions(-)
+ porting/liteos_m/kernel/src/stdio/fwrite.c    |  9 +-
+ porting/liteos_m/kernel/src/string/strdup.c   |  7 +-
+ 19 files changed, 187 insertions(+), 34 deletions(-)
  mode change 100644 => 100755 porting/liteos_m/kernel/BUILD.gn
  mode change 100644 => 100755 porting/liteos_m/kernel/include/ctype.h
  mode change 100644 => 100755 porting/liteos_m/kernel/include/stddef.h
  mode change 100644 => 100755 porting/liteos_m/kernel/include/stdlib.h
  mode change 100644 => 100755 porting/liteos_m/kernel/src/internal/stdio_impl.h
+ create mode 100755 porting/liteos_m/kernel/src/misc/realpath.c
  mode change 100644 => 100755 porting/liteos_m/kernel/src/stdio/clearerr.c
  mode change 100644 => 100755 porting/liteos_m/kernel/src/stdio/fclose.c
  mode change 100644 => 100755 porting/liteos_m/kernel/src/stdio/feof.c
@@ -47,10 +49,10 @@ Change-Id: I14279fcc99133ce58f03a5145ee838c197cd1237
 diff --git a/porting/liteos_m/kernel/BUILD.gn b/porting/liteos_m/kernel/BUILD.gn
 old mode 100644
 new mode 100755
-index b0cead99..ed390fb0
+index 664f9493..658f9054
 --- a/porting/liteos_m/kernel/BUILD.gn
 +++ b/porting/liteos_m/kernel/BUILD.gn
-@@ -58,10 +58,10 @@ static_library(libc) {
+@@ -58,10 +58,11 @@ static_library(libc) {
      "src/locale/c_locale.c",
      "src/locale/langinfo.c",
      "src/misc/dirname.c",
@@ -58,6 +60,7 @@ index b0cead99..ed390fb0
 -    "src/multibyte/mbtowc.c",
 -    "src/multibyte/wcrtomb.c",
 -    "src/multibyte/wctomb.c",
++    "src/misc/realpath.c",
 +    # "src/multibyte/internal.c",
 +    # "src/multibyte/mbtowc.c",
 +    # "src/multibyte/wcrtomb.c",
@@ -65,7 +68,7 @@ index b0cead99..ed390fb0
      "src/network/h_errno.c",
      "src/network/htonl.c",
      "src/network/htons.c",
-@@ -102,25 +102,25 @@ static_library(libc) {
+@@ -102,25 +103,25 @@ static_library(libc) {
      "src/stdio/perror.c",
      "src/stdio/remove.c",
      "src/stdio/rewind.c",
@@ -97,7 +100,7 @@ index b0cead99..ed390fb0
      "src/string/memchr.c",
      "src/string/memcmp.c",
      "src/string/memcpy.c",
-@@ -138,7 +138,7 @@ static_library(libc) {
+@@ -138,7 +139,7 @@ static_library(libc) {
      "src/string/strlen.c",
      "src/string/strncasecmp.c",
      "src/string/strncmp.c",
@@ -200,6 +203,97 @@ index fa94606a..d5f8598c
  
  #define UNGET 8
  
+diff --git a/porting/liteos_m/kernel/src/misc/realpath.c b/porting/liteos_m/kernel/src/misc/realpath.c
+new file mode 100755
+index 00000000..3a916b8b
+--- /dev/null
++++ b/porting/liteos_m/kernel/src/misc/realpath.c
+@@ -0,0 +1,85 @@
++/*
++ * Copyright (c) 2013-2019 Huawei Technologies Co., Ltd. All rights reserved.
++ * Copyright (c) 2020-2021 Huawei Device Co., Ltd. All rights reserved.
++ *
++ * Redistribution and use in source and binary forms, with or without modification,
++ * are permitted provided that the following conditions are met:
++ *
++ * 1. Redistributions of source code must retain the above copyright notice, this list of
++ *    conditions and the following disclaimer.
++ *
++ * 2. Redistributions in binary form must reproduce the above copyright notice, this list
++ *    of conditions and the following disclaimer in the documentation and/or other materials
++ *    provided with the distribution.
++ *
++ * 3. Neither the name of the copyright holder nor the names of its contributors may be used
++ *    to endorse or promote products derived from this software without specific prior written
++ *    permission.
++ *
++ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
++ * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
++ * THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
++ * PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR
++ * CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
++ * EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
++ * PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
++ * OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
++ * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
++ * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
++ * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
++ */
++
++#include <stdlib.h>
++#include <unistd.h>
++#include <string.h>
++#include <limits.h>
++#include <errno.h>
++#include <sys/stat.h>
++
++/*
++ * LiteOS-M file system uses abs path
++ */
++
++static unsigned int vfs_strnlen(const char *str, size_t maxlen)
++{
++    const char *p = NULL;
++
++    for (p = str; ((maxlen-- != 0) && (*p != '\0')); ++p) {}
++
++    return p - str;
++}
++
++char *realpath(const char *__restrict path, char *__restrict resolved_path)
++{
++    int namelen;
++    int res;
++    struct stat st;
++
++    if (!*path) {
++        errno = ENOENT;
++        return NULL;
++    }
++
++    namelen = vfs_strnlen(path, PATH_MAX);
++    if (!namelen) {
++        errno = EINVAL;
++        return NULL;
++    } else if (namelen >= PATH_MAX) {
++        errno = ENAMETOOLONG;
++        return NULL;
++    }
++
++    // LiteOS-M file system uses abs path, so we just stat path and strcpy it.
++    if (stat(path, &st) < 0) {
++        errno = ENOENT;
++        return NULL;
++    }
++
++    res = strcpy_s(resolved_path, PATH_MAX, path);
++    if (res != 0) {
++        errno = EINVAL;
++        return NULL;
++    } else {
++        return resolved_path;
++    }
++}
 diff --git a/porting/liteos_m/kernel/src/stdio/clearerr.c b/porting/liteos_m/kernel/src/stdio/clearerr.c
 old mode 100644
 new mode 100755
@@ -329,7 +423,7 @@ index e6e66908..5dee4215
 diff --git a/porting/liteos_m/kernel/src/stdio/fopen.c b/porting/liteos_m/kernel/src/stdio/fopen.c
 old mode 100644
 new mode 100755
-index 7dddf930..ebd89547
+index 56086846..c204270a
 --- a/porting/liteos_m/kernel/src/stdio/fopen.c
 +++ b/porting/liteos_m/kernel/src/stdio/fopen.c
 @@ -5,7 +5,7 @@

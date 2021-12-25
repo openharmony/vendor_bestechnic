@@ -1,29 +1,15 @@
-From 2c5bef17f2af0eb9f2fd6437f5d75d9af839db57 Mon Sep 17 00:00:00 2001
+From f2179a68afc68dfa5e0293760c97a4e5699946af Mon Sep 17 00:00:00 2001
 From: yangjian <jianyang@bestechnic.com>
-Date: Tue, 21 Dec 2021 01:35:02 +0800
-Subject: [PATCH] /test/xts/tools/lite
+Date: Sat, 25 Dec 2021 10:44:03 +0800
+Subject: [PATCH] test/xts/tools/lite
 
 Signed-off-by: yangjian <jianyang@bestechnic.com>
-Change-Id: I1a4ce2a271d706442e2841d93c350fa9a701dd18
+Change-Id: I1734c36ae7de9605f6b89064d68cb46147d3e9f8
 ---
- build/utils.py              | 2 +-
  hctest/BUILD.gn             | 9 +++++++++
  hctest/src/hctest_service.c | 2 +-
- 3 files changed, 11 insertions(+), 2 deletions(-)
+ 2 files changed, 10 insertions(+), 1 deletion(-)
 
-diff --git a/build/utils.py b/build/utils.py
-index 5f3bf25..d9e6429 100755
---- a/build/utils.py
-+++ b/build/utils.py
-@@ -64,7 +64,7 @@ _NO_FILTE_SUB_SYSTEM_LIST = [
-     "telephony",
-     "dcts",
-     "hiviewdfx",
--    "communication",
-+    # "communication",
-     "security",
-     "update",
-     "sstsutils",
 diff --git a/hctest/BUILD.gn b/hctest/BUILD.gn
 index e5f21f5..3ec5c02 100644
 --- a/hctest/BUILD.gn

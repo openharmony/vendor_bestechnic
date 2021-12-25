@@ -1,0 +1,110 @@
+From 4ffb48040fade785b18a7471d1d88b62316d4aca Mon Sep 17 00:00:00 2001
+From: yangjian <jianyang@bestechnic.com>
+Date: Sat, 25 Dec 2021 10:06:57 +0800
+Subject: [PATCH] base/startup/syspara_lite
+
+Signed-off-by: yangjian <jianyang@bestechnic.com>
+Change-Id: I94ca2e52f7e9daad95783662c7b1960e82b488e7
+---
+ frameworks/parameter/config.gni                  |  2 ++
+ frameworks/parameter/src/BUILD.gn                | 16 ++++++++++++----
+ .../src/param_impl_posix/param_impl_posix.c      | 15 +++++++++++++--
+ 3 files changed, 27 insertions(+), 6 deletions(-)
+ mode change 100644 => 100755 frameworks/parameter/src/BUILD.gn
+ mode change 100644 => 100755 frameworks/parameter/src/param_impl_posix/param_impl_posix.c
+
+diff --git a/frameworks/parameter/config.gni b/frameworks/parameter/config.gni
+index dd1602e..d2adf11 100755
+--- a/frameworks/parameter/config.gni
++++ b/frameworks/parameter/config.gni
+@@ -13,4 +13,6 @@
+ 
+ declare_args() {
+   enable_ohos_startup_syspara_lite_use_thirdparty_mbedtls = true
++  enable_ohos_startup_syspara_lite_use_posix_file_api = false
++  config_ohos_startup_syspara_lite_data_path = ""
+ }
+diff --git a/frameworks/parameter/src/BUILD.gn b/frameworks/parameter/src/BUILD.gn
+old mode 100644
+new mode 100755
+index 0d6f3ac..2c41b1f
+--- a/frameworks/parameter/src/BUILD.gn
++++ b/frameworks/parameter/src/BUILD.gn
+@@ -21,14 +21,21 @@ if (ohos_kernel_type == "liteos_m") {
+       "//base/startup/syspara_lite/hals",
+       "//third_party/mbedtls/include",
+     ]
+-    sources = [
+-      "param_impl_hal/param_impl_hal.c",
+-      "parameter_common.c",
+-    ]
++    sources = [ "parameter_common.c" ]
++    if (enable_ohos_startup_syspara_lite_use_posix_file_api) {
++      sources += [ "param_impl_posix/param_impl_posix.c" ]
++    } else {
++      sources += [ "param_impl_hal/param_impl_hal.c" ]
++    }
++
+     deps = [ "$ohos_product_adapter_dir/utils/sys_param:hal_sysparam" ]
+     if (enable_ohos_startup_syspara_lite_use_thirdparty_mbedtls) {
+       deps += [ "//third_party/mbedtls:mbedtls" ]
+     }
++
++    if (enable_ohos_startup_syspara_lite_use_posix_file_api) {
++      deps += [ "//third_party/bounds_checking_function:libsec_static" ]
++    }
+     defines = [
+       "INCREMENTAL_VERSION=\"${ohos_version}\"",
+       "BUILD_TYPE=\"${ohos_build_type}\"",
+@@ -37,6 +44,7 @@ if (ohos_kernel_type == "liteos_m") {
+       "BUILD_HOST=\"${ohos_build_host}\"",
+       "BUILD_ROOTHASH=\"${ohos_build_roothash}\"",
+       "USE_MBEDTLS",
++      "DATA_PATH=\"${config_ohos_startup_syspara_lite_data_path}\"",
+     ]
+   }
+ } else {
+diff --git a/frameworks/parameter/src/param_impl_posix/param_impl_posix.c b/frameworks/parameter/src/param_impl_posix/param_impl_posix.c
+old mode 100644
+new mode 100755
+index b87fae9..1ccfc26
+--- a/frameworks/parameter/src/param_impl_posix/param_impl_posix.c
++++ b/frameworks/parameter/src/param_impl_posix/param_impl_posix.c
+@@ -23,9 +23,16 @@
+ #include <unistd.h>
+ #include "ohos_errno.h"
+ 
++#ifndef __LITEOS_M__
+ #define DATA_PATH          "/storage/data/system/param/"
+-#define MAX_KEY_PATH       128
+ #define SYS_UID_INDEX      1000
++#else
++#ifndef DATA_PATH
++#define DATA_PATH          ""
++#endif
++#endif
++
++#define MAX_KEY_PATH       128
+ 
+ static boolean IsValidChar(const char ch)
+ {
+@@ -124,11 +131,15 @@ int SetSysParam(const char* key, const char* value)
+ 
+ boolean CheckPermission(void)
+ {
+-#if (!defined(_WIN32) && !defined(_WIN64))
++#if (!defined(_WIN32) && !defined(_WIN64) && !defined(__LITEOS_M__))
+     uid_t uid = getuid();
+     if (uid <= SYS_UID_INDEX) {
+         return TRUE;
+     }
+ #endif
++#if defined(__LITEOS_M__)
++    return TRUE;
++#else
+     return FALSE;
++#endif
+ }
+-- 
+2.17.1
+

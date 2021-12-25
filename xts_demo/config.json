@@ -22,14 +22,18 @@
         "hctest",
         "fs_adapter",
         "flash",
+        "wifi_test",
+        "module_ActsLwipTest",
+        "module_ActsWifiServiceTest",
         "module_ActsBootstrapTest",
         "module_ActsParameterTest",
         "module_ActsDfxFuncTest",
         "module_ActsKvStoreTest",
         "module_ActsUpdaterFuncTest",
-        "module_ActsSecurityDataTest",
         "module_ActsWifiIotTest",
-        "module_ActsSamgrTest"
+        "module_ActsSamgrTest",
+        "module_ActsSecurityDataTest",
+        "module_ActsHieventLiteTest"
       ]
     },
     {
@@ -106,7 +110,18 @@
     },
     {
       "subsystem": "startup",
-      "components": []
+      "components": [
+        {
+          "component": "bootstrap_lite"
+        },
+        {
+          "component": "syspara_lite",
+          "features": [
+            "enable_ohos_startup_syspara_lite_use_posix_file_api = true",
+            "config_ohos_startup_syspara_lite_data_path = \"/data/\""
+          ]
+        }
+      ]
     },
     {
       "subsystem": "graphic",
@@ -139,7 +154,9 @@
         { 
           "component": "xts_acts", "features":
           [
-            "ohos_test_xts_tools_lite_hctest_src_hctest_service_stack_size = 61440"
+            "ohos_test_xts_tools_lite_hctest_src_hctest_service_stack_size = 61440",
+            "config_ohos_xts_acts_utils_lite_kv_store_data_path = \"/data\"",
+            "enable_ohos_test_xts_acts_use_thirdparty_lwip = true"
           ] 
         },
         { "component": "xts_tools", "features":[] }
