@@ -30,7 +30,7 @@
 #define SCAN_SUCCESS_FLAGS 1U
 osEventFlagsId_t eventId;
 #endif
-WifiEvent g_wifiEventHandler = {0};
+static WifiEvent g_wifiEventHandler = {0};
 WifiErrorCode error;
 
 static void OnWifiScanStateChangedHandler(int state, int size)

@@ -34,4 +34,5 @@ static_library("example") {
   deps += [ "fs:fs_test" ]
   defines += [ "FS_TEST" ]
   include_dirs += [ "fs" ]
+  deps += [ "wifi:wifi_test" ]
 }

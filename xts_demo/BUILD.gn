@@ -23,7 +23,7 @@ group("xts_demo") {
 
   deps += [
     # "//test/xts/acts/communication_lite/lwip_hal:ActsLwipTest",
-    # "//test/xts/acts/communication_lite/wifiservice_hal:ActsWifiServiceTest",
+    "//test/xts/acts/communication_lite/wifiservice_hal:ActsWifiServiceTest",
     "//test/xts/acts/startup_lite/syspara_hal:ActsParameterTest",
     "//test/xts/acts/startup_lite/bootstrap_hal:ActsBootstrapTest",
     # "//test/xts/acts/utils_lite/file_hal:ActsUtilsFileTest",
@@ -35,5 +35,6 @@ group("xts_demo") {
     "//test/xts/acts/update_lite/dupdate_hal:ActsUpdaterFuncTest",
     "//test/xts/acts/hiviewdfx_lite/hilog_hal:ActsDfxFuncTest",
     "//test/xts/acts/hiviewdfx_lite/hievent_hal:ActsHieventLiteTest",
+    "//base/hiviewdfx/hievent_lite:hievent_lite"
   ]
 }

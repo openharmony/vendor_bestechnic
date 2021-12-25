@@ -6,6 +6,8 @@ third_party/musl:
   - vendor/bestechnic/xts_demo/patches/0001-third_party-musl.patch
 base/hiviewdfx/hiview_lite:
   - vendor/bestechnic/xts_demo/patches/0001-base-hiviewdfx-hiview_lite.patch
+base/startup/syspara_lite:
+  - vendor/bestechnic/xts_demo/patches/0001-base-startup-syspara_lite.patch
 build/lite:
   - vendor/bestechnic/xts_demo/patches/0001-build-lite.patch
 base/security/huks:
@@ -14,7 +16,5 @@ test/xts/acts:
   - vendor/bestechnic/xts_demo/patches/0001-test-xts-acts.patch
 test/xts/tools/lite:
   - vendor/bestechnic/xts_demo/patches/0001-test-xts-tools-lite.patch
-third_party/unity:
-  - vendor/bestechnic/xts_demo/patches/0001-third_party-unity.patch
 utils/native/lite:
   - vendor/bestechnic/xts_demo/patches/0001-utils-native-lite.patch
