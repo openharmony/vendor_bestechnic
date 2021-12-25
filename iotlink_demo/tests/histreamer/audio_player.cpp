@@ -18,7 +18,7 @@
 
 using namespace OHOS::Media;
 
-std::string GetMusicUri()
+static std::string GetMusicUri()
 {
     std::string uri = "/data/dream_it_possible.mp3";
     return uri;
@@ -32,7 +32,7 @@ int AudioPlayerStart(void)
     player->SetSource(source);
     player->SetLoop(true);
     player->Play();
-    while(1) {
+    while (1) {
         sleep(1);
     }
     return 0;
