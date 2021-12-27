@@ -1,5 +1,5 @@
 diff --git a/BUILD.gn b/BUILD.gn
-index 9ecb37a..6eb8472 100755
+index 196197d..c4a2335 100755
 --- a/BUILD.gn
 +++ b/BUILD.gn
 @@ -82,6 +82,7 @@ mbedtls_sources = [
@@ -10,7 +10,7 @@ index 9ecb37a..6eb8472 100755
  ]
  
  if (defined(ohos_lite)) {
-@@ -167,7 +168,6 @@ if (defined(ohos_lite)) {
+@@ -158,7 +159,6 @@ if (defined(ohos_lite)) {
      }
  
      mbedtls_sources += [
@@ -55,7 +55,7 @@ index d7062ea..f6722e3 100755
  }
  #endif
 diff --git a/port/config/config_liteos_m.h b/port/config/config_liteos_m.h
-index 5cf2ea8..ffa0b23 100755
+index 5cf2ea8..d2a1442 100755
 --- a/port/config/config_liteos_m.h
 +++ b/port/config/config_liteos_m.h
 @@ -222,7 +222,7 @@
@@ -122,7 +122,7 @@ index 5cf2ea8..ffa0b23 100755
   */
 -// #define MBEDTLS_KEY_EXCHANGE_DHE_PSK_ENABLED
 +#define MBEDTLS_KEY_EXCHANGE_DHE_PSK_ENABLED
- 
+
  /**
   * \def MBEDTLS_KEY_EXCHANGE_ECDHE_PSK_ENABLED
 @@ -973,7 +973,7 @@
@@ -131,16 +131,25 @@ index 5cf2ea8..ffa0b23 100755
   */
 -// #define MBEDTLS_KEY_EXCHANGE_ECDHE_PSK_ENABLED
 +#define MBEDTLS_KEY_EXCHANGE_ECDHE_PSK_ENABLED
- 
+
  /**
   * \def MBEDTLS_KEY_EXCHANGE_RSA_PSK_ENABLED
+@@ -998,7 +998,7 @@
+  *      MBEDTLS_TLS_RSA_PSK_WITH_3DES_EDE_CBC_SHA
+  *      MBEDTLS_TLS_RSA_PSK_WITH_RC4_128_SHA
+  */
+-// #define MBEDTLS_KEY_EXCHANGE_RSA_PSK_ENABLED
++#define MBEDTLS_KEY_EXCHANGE_RSA_PSK_ENABLED
+
+ /**
+  * \def MBEDTLS_KEY_EXCHANGE_RSA_ENABLED
 @@ -1026,7 +1026,7 @@
   *      MBEDTLS_TLS_RSA_WITH_RC4_128_SHA
   *      MBEDTLS_TLS_RSA_WITH_RC4_128_MD5
   */
 -// #define MBEDTLS_KEY_EXCHANGE_RSA_ENABLED
 +#define MBEDTLS_KEY_EXCHANGE_RSA_ENABLED
- 
+
  /**
   * \def MBEDTLS_KEY_EXCHANGE_DHE_RSA_ENABLED
 @@ -1059,7 +1059,7 @@
