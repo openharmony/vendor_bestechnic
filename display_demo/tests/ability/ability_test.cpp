@@ -22,7 +22,7 @@
 
 #define LAUNCHER_BUNDLE_NAME "com.huawei.launcher"
 #define JS_BUNDLE_NAME "com.app.example"
-#define JS_APP_PATH "/data/js"
+#define JS_APP_PATH "/data/panel" // "/data/js"
 
 void StartLauncherApp()
 {
