@@ -182,6 +182,10 @@
         {
           "component": "wifi_lite",
           "optional": "true"
+        },
+        {
+          "component": "rpc",
+          "optional": "true"
         }
       ]
     },
