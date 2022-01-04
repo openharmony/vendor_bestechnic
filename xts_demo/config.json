@@ -20,8 +20,6 @@
         "hdf_platform_lite",
         "sysparam",
         "hctest",
-        "fs_adapter",
-        "flash",
         "wifi_test",
         "module_ActsLwipTest",
         "module_ActsWifiServiceTest",
@@ -32,8 +30,11 @@
         "module_ActsUpdaterFuncTest",
         "module_ActsWifiIotTest",
         "module_ActsSamgrTest",
-        "module_ActsSecurityDataTest",
-        "module_ActsHieventLiteTest"
+        "module_ActsHieventLiteTest",
+        "fs_adapter",
+        "flash",
+        "huks_test_common",
+        "module_ActsHuksHalFunctionTest"
       ]
     },
     {
@@ -199,7 +200,15 @@
         "components": [
           {
             "component": "huks",
-            "optional": "true"
+            "optional": "true",
+            "features": [
+              "disable_huks_binary = false",
+              "disable_authenticate = false",
+              "huks_use_lite_storage = false",
+              "huks_use_hardware_root_key = false",
+              "huks_enable_log = true",
+              "huks_config_file = \"hks_config_lite.h\""
+            ]
           }
         ]
       },

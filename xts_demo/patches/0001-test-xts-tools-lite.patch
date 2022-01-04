@@ -1,14 +1,15 @@
-From f2179a68afc68dfa5e0293760c97a4e5699946af Mon Sep 17 00:00:00 2001
+From 82e06eea69b9843d958bacdfc00d5a843c5f0e50 Mon Sep 17 00:00:00 2001
 From: yangjian <jianyang@bestechnic.com>
-Date: Sat, 25 Dec 2021 10:44:03 +0800
+Date: Wed, 29 Dec 2021 15:35:20 +0800
 Subject: [PATCH] test/xts/tools/lite
 
 Signed-off-by: yangjian <jianyang@bestechnic.com>
-Change-Id: I1734c36ae7de9605f6b89064d68cb46147d3e9f8
+Change-Id: Id78ae0c00c909994a4db299792e12381f3a09a68
 ---
  hctest/BUILD.gn             | 9 +++++++++
+ hctest/src/hctest.c         | 1 +
  hctest/src/hctest_service.c | 2 +-
- 2 files changed, 10 insertions(+), 1 deletion(-)
+ 3 files changed, 11 insertions(+), 1 deletion(-)
 
 diff --git a/hctest/BUILD.gn b/hctest/BUILD.gn
 index e5f21f5..3ec5c02 100644
@@ -36,6 +37,18 @@ index e5f21f5..3ec5c02 100644
 +  }
    cflags = [ "-Wno-error" ]
  }
+diff --git a/hctest/src/hctest.c b/hctest/src/hctest.c
+index f309667..334896f 100755
+--- a/hctest/src/hctest.c
++++ b/hctest/src/hctest.c
+@@ -128,6 +128,7 @@ static BOOL g_isBreak = FALSE;
+ static void RunSingleTestCase(CTestCase* cTestCase,
+                               const char *caseName, const int32 flag)
+ {
++    printf("%s %d caseName:%s\r\n",__func__,__LINE__,caseName);
+     if (cTestCase != NULL) {
+         if (CompareInputType(cTestCase->case_name, caseName)
+             || (cTestCase->flag != flag)) {
 diff --git a/hctest/src/hctest_service.c b/hctest/src/hctest_service.c
 index e997fbc..e2d6272 100644
 --- a/hctest/src/hctest_service.c

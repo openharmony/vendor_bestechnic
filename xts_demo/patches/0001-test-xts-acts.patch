@@ -1,15 +1,48 @@
-From 67a7a4abaa6b52d87214d46c82c9c40ee8ca570e Mon Sep 17 00:00:00 2001
-From: yangjian <jianyang@bestechnic.com>
-Date: Sat, 25 Dec 2021 10:46:29 +0800
+From acd7ae69ed9ca860a3ee8d9b0c49ad90f87a3a8f Mon Sep 17 00:00:00 2001
+From: zetingxu <zetingxu@bestechnic.com>
+Date: Fri, 31 Dec 2021 17:03:09 +0800
 Subject: [PATCH] test/xts/acts
 
-Signed-off-by: yangjian <jianyang@bestechnic.com>
-Change-Id: I9a82d0c15630684b11d75608f379e49982800428
+Signed-off-by: zetingxu <zetingxu@bestechnic.com>
+Change-Id: I58410c78dda9bf6b46ad7671d85437e539318907
 ---
- hiviewdfx_lite/hilog_hal/src/dfx_hilog.c        | 2 +-
- utils_lite/kv_store_hal/BUILD.gn                | 6 ++++++
- utils_lite/kv_store_hal/src/kvstore_func_test.c | 5 +++++
- 3 files changed, 12 insertions(+), 1 deletion(-)
+ hiviewdfx_lite/hilog_hal/src/dfx_hilog.c      |   2 +-
+ .../huks/common/hks_test_file_operator.c      | 107 +++++++++++++++++-
+ .../huks/liteos_m_adapter/hks_aes_test.c      |  10 +-
+ .../liteos_m_adapter/hks_agreement_test.c     |   6 +-
+ .../liteos_m_adapter/hks_bn_exp_mod_test.c    |   2 +-
+ .../huks/liteos_m_adapter/hks_cipher_test.c   |  26 ++---
+ .../liteos_m_adapter/hks_curve25519_test.c    |  10 +-
+ .../huks/liteos_m_adapter/hks_delete_test.c   |   4 +-
+ .../huks/liteos_m_adapter/hks_derive_test.c   |   6 +-
+ .../huks/liteos_m_adapter/hks_exist_test.c    |   4 +-
+ .../liteos_m_adapter/hks_generate_key_test.c  |   4 +-
+ .../hks_generate_random_test.c                |   4 +-
+ .../huks/liteos_m_adapter/hks_hash_test.c     |   4 +-
+ .../huks/liteos_m_adapter/hks_mac_test.c      |   6 +-
+ .../liteos_m_adapter/hks_modify_key_test.c    |   4 +-
+ .../huks/liteos_m_adapter/hks_others_test.c   |  18 +--
+ .../hks_safe_cipher_key_test.c                |   2 +-
+ .../hks_safe_compare_key_test.c               |   6 +-
+ utils_lite/kv_store_hal/BUILD.gn              |   6 +
+ .../kv_store_hal/src/kvstore_func_test.c      |   5 +
+ 20 files changed, 175 insertions(+), 61 deletions(-)
+ mode change 100644 => 100755 security_lite/huks/liteos_m_adapter/hks_aes_test.c
+ mode change 100644 => 100755 security_lite/huks/liteos_m_adapter/hks_agreement_test.c
+ mode change 100644 => 100755 security_lite/huks/liteos_m_adapter/hks_bn_exp_mod_test.c
+ mode change 100644 => 100755 security_lite/huks/liteos_m_adapter/hks_cipher_test.c
+ mode change 100644 => 100755 security_lite/huks/liteos_m_adapter/hks_curve25519_test.c
+ mode change 100644 => 100755 security_lite/huks/liteos_m_adapter/hks_delete_test.c
+ mode change 100644 => 100755 security_lite/huks/liteos_m_adapter/hks_derive_test.c
+ mode change 100644 => 100755 security_lite/huks/liteos_m_adapter/hks_exist_test.c
+ mode change 100644 => 100755 security_lite/huks/liteos_m_adapter/hks_generate_key_test.c
+ mode change 100644 => 100755 security_lite/huks/liteos_m_adapter/hks_generate_random_test.c
+ mode change 100644 => 100755 security_lite/huks/liteos_m_adapter/hks_hash_test.c
+ mode change 100644 => 100755 security_lite/huks/liteos_m_adapter/hks_mac_test.c
+ mode change 100644 => 100755 security_lite/huks/liteos_m_adapter/hks_modify_key_test.c
+ mode change 100644 => 100755 security_lite/huks/liteos_m_adapter/hks_others_test.c
+ mode change 100644 => 100755 security_lite/huks/liteos_m_adapter/hks_safe_cipher_key_test.c
+ mode change 100644 => 100755 security_lite/huks/liteos_m_adapter/hks_safe_compare_key_test.c
 
 diff --git a/hiviewdfx_lite/hilog_hal/src/dfx_hilog.c b/hiviewdfx_lite/hilog_hal/src/dfx_hilog.c
 index d5925375..0d0e3c4d 100755
@@ -24,6 +57,758 @@ index d5925375..0d0e3c4d 100755
  #include <hiview_util.h>
  #include <securec.h>
  #include <hiview_config.h>
+diff --git a/security_lite/huks/common/hks_test_file_operator.c b/security_lite/huks/common/hks_test_file_operator.c
+index b2f8334d..66176917 100644
+--- a/security_lite/huks/common/hks_test_file_operator.c
++++ b/security_lite/huks/common/hks_test_file_operator.c
+@@ -27,9 +27,18 @@
+ /* use product definitions temporarily */
+ #define DEFAULT_FILE_PERMISSION 0666
+ #else
++#ifndef _STORAGE_LITE_
++#include <dirent.h>
++#include <errno.h>
++#include <fcntl.h>
++#include <limits.h>
++#include <stdint.h>
++#include <sys/stat.h>
++#include <unistd.h>
++#else
+ 
+ #include <utils_file.h>
+-
++#endif
+ #endif /* _STORAGE_LITE_ */
+ 
+ 
+@@ -198,6 +207,100 @@ int32_t HksIsFileExist(const char *path, const char *fileName)
+     HksTestFree(fullFileName);
+     return ret;
+ }
++#else
++#ifndef _STORAGE_LITE_
++
++static int32_t IsFileExist(const char *fileName)
++{
++    if (access(fileName, F_OK) != 0) {
++        return HKS_ERROR_NOT_EXIST;
++    }
++
++    return HKS_SUCCESS;
++}
++
++
++static uint32_t FileSize(const char *fileName)
++{
++    HKS_TEST_LOG_E("fileName:%s",fileName);
++    if (IsFileExist(fileName) != HKS_SUCCESS) {
++        return 0;
++    }
++
++    struct stat fileStat;
++    (void)memset_s(&fileStat, sizeof(fileStat), 0, sizeof(fileStat));
++    if (stat(fileName, &fileStat) != 0) {
++        HKS_TEST_LOG_E("file stat fail.");
++        return 0;
++    }
++
++    return fileStat.st_size;
++}
++
++static uint32_t FileRead(const char *fileName, uint32_t offset, uint8_t *buf, uint32_t len)
++{
++    (void)offset;
++    if (IsFileExist(fileName) != HKS_SUCCESS) {
++        return 0;
++    }
++
++    char filePath[PATH_MAX + 1] = {0};
++    (void)realpath(fileName, filePath);
++    if (strstr(filePath, "../") != NULL) {
++        HKS_TEST_LOG_E("invalid filePath, path %s", filePath);
++        return 0;
++    }
++
++    FILE *fp = fopen(filePath, "rb");
++    if (fp == NULL) {
++        HKS_TEST_LOG_E("failed to open file");
++        return 0;
++    }
++
++    uint32_t size = fread(buf, 1, len, fp);
++    if (fclose(fp) < 0) {
++        HKS_TEST_LOG_E("failed to close file");
++        return 0;
++    }
++
++    return size;
++}
++
++static int32_t FileWrite(const char *fileName, uint32_t offset, const uint8_t *buf, uint32_t len)
++{
++    (void)offset;
++    char filePath[PATH_MAX + 1] = {0};
++    if (memcpy_s(filePath, sizeof(filePath) - 1, fileName, strlen(fileName)) != EOK) {
++        return HKS_ERROR_BAD_STATE;
++    }
++    (void)realpath(fileName, filePath);
++    if (strstr(filePath, "../") != NULL) {
++        HKS_TEST_LOG_E("invalid filePath, path %s", filePath);
++        return HKS_ERROR_INVALID_KEY_FILE;
++    }
++
++    /* caller function ensures that the folder exists */
++    FILE *fp = fopen(filePath, "wb+");
++    if (fp == NULL) {
++        HKS_TEST_LOG_E("open file fail");
++        return HKS_ERROR_OPEN_FILE_FAIL;
++    }
++
++    uint32_t size = fwrite(buf, 1, len, fp);
++    if (size != len) {
++        HKS_TEST_LOG_E("write file size fail.");
++        fclose(fp);
++        return HKS_ERROR_WRITE_FILE_FAIL;
++    }
++
++    if (fclose(fp) < 0) {
++        HKS_TEST_LOG_E("failed to close file");
++        return HKS_ERROR_CLOSE_FILE_FAIL;
++    }
++
++    return HKS_SUCCESS;
++}
++
+ #else
+ static uint32_t FileRead(const char *fileName, uint32_t offset, uint8_t *buf, uint32_t len)
+ {
+@@ -283,7 +386,7 @@ int32_t HksTestFileRemove(const char *path, const char *fileName)
+ 
+     return UtilsFileDelete(fullFileName);
+ }
+-
++#endif
+ #endif
+ uint32_t HksTestFileRead(const char *path, const char *fileName, uint32_t offset, uint8_t *buf, uint32_t len)
+ {
+diff --git a/security_lite/huks/liteos_m_adapter/hks_aes_test.c b/security_lite/huks/liteos_m_adapter/hks_aes_test.c
+old mode 100644
+new mode 100755
+index 300681b8..ff686fcc
+--- a/security_lite/huks/liteos_m_adapter/hks_aes_test.c
++++ b/security_lite/huks/liteos_m_adapter/hks_aes_test.c
+@@ -39,7 +39,7 @@ static void ExecHksInitialize(void const *argument)
+     LiteTestPrint("HksInitialize Begin!\n");
+     TEST_ASSERT_TRUE(HksInitialize() == 0);
+     LiteTestPrint("HksInitialize End!\n");
+-    osThreadExit();
++    // osThreadExit();
+ }
+ /**
+  * @tc.setup: define a setup for test suit, format:"CalcMultiTest + SetUp"
+@@ -86,7 +86,7 @@ static void ExecHksAesTest001(void const *argument)
+     LiteTestPrint("HksAesTest001 Begin!\n");
+     TEST_ASSERT_TRUE(TestAes256ByAgree() == 0);
+     LiteTestPrint("HksAesTest001 End!\n");
+-    osThreadExit();
++    // osThreadExit();
+ }
+ 
+ static void ExecHksAesTest002(void const *argument)
+@@ -94,7 +94,7 @@ static void ExecHksAesTest002(void const *argument)
+     LiteTestPrint("HksAesTest002 Begin!\n");
+     TEST_ASSERT_TRUE(TestAes256ByAgree1() == 0);
+     LiteTestPrint("HksAesTest002 End!\n");
+-    osThreadExit();
++    // osThreadExit();
+ }
+ 
+ static void ExecHksAesTest003(void const *argument)
+@@ -102,7 +102,7 @@ static void ExecHksAesTest003(void const *argument)
+     LiteTestPrint("HksAesTest003 Begin!\n");
+     TEST_ASSERT_TRUE(TestAes256ByAgree2() == 0);
+     LiteTestPrint("HksAesTest003 End!\n");
+-    osThreadExit();
++    // osThreadExit();
+ }
+ 
+ static void ExecHksAesTest004(void const *argument)
+@@ -110,7 +110,7 @@ static void ExecHksAesTest004(void const *argument)
+     LiteTestPrint("HksAesTest004 Begin!\n");
+     TEST_ASSERT_EQUAL(TestAes256ByLocal(), 0);
+     LiteTestPrint("HksAesTest004 End!\n");
+-    osThreadExit();
++    // osThreadExit();
+ }
+ 
+ #ifndef _CUT_AUTHENTICATE_
+diff --git a/security_lite/huks/liteos_m_adapter/hks_agreement_test.c b/security_lite/huks/liteos_m_adapter/hks_agreement_test.c
+old mode 100644
+new mode 100755
+index db671695..4dbee2ae
+--- a/security_lite/huks/liteos_m_adapter/hks_agreement_test.c
++++ b/security_lite/huks/liteos_m_adapter/hks_agreement_test.c
+@@ -47,7 +47,7 @@ static void ExecHksInitialize(void const *argument)
+     LiteTestPrint("HksInitialize Begin!\n");
+     TEST_ASSERT_TRUE(HksInitialize() == 0);
+     LiteTestPrint("HksInitialize End!\n");
+-    osThreadExit();
++    // osThreadExit();
+ }
+ 
+ /**
+@@ -167,7 +167,7 @@ static void ExecHksAgreementTest001(void const *argument)
+     TEST_ASSERT_TRUE(ret == 0);
+     
+     LiteTestPrint("HksAgreementTest001 End!\n");
+-    osThreadExit();
++    // osThreadExit();
+ }
+ 
+ static void ExecHksAgreementTest002(void const *argument)
+@@ -216,7 +216,7 @@ static void ExecHksAgreementTest002(void const *argument)
+     TEST_ASSERT_TRUE(ret == 0);
+     
+     LiteTestPrint("HksAgreementTest002 End!\n");
+-    osThreadExit();
++    // osThreadExit();
+ }
+ 
+ /**
+diff --git a/security_lite/huks/liteos_m_adapter/hks_bn_exp_mod_test.c b/security_lite/huks/liteos_m_adapter/hks_bn_exp_mod_test.c
+old mode 100644
+new mode 100755
+index 84cb8483..a4d21caf
+--- a/security_lite/huks/liteos_m_adapter/hks_bn_exp_mod_test.c
++++ b/security_lite/huks/liteos_m_adapter/hks_bn_exp_mod_test.c
+@@ -43,7 +43,7 @@ static void ExecHksInitialize(void const *argument)
+     LiteTestPrint("HksInitialize Begin!\n");
+     TEST_ASSERT_TRUE(HksInitialize() == 0);
+     LiteTestPrint("HksInitialize End!\n");
+-    osThreadExit();
++    // osThreadExit();
+ }
+ /**
+  * @tc.setup: define a setup for test suit, format:"CalcMultiTest + SetUp"
+diff --git a/security_lite/huks/liteos_m_adapter/hks_cipher_test.c b/security_lite/huks/liteos_m_adapter/hks_cipher_test.c
+old mode 100644
+new mode 100755
+index 5e33dd7f..535f9e8e
+--- a/security_lite/huks/liteos_m_adapter/hks_cipher_test.c
++++ b/security_lite/huks/liteos_m_adapter/hks_cipher_test.c
+@@ -47,7 +47,7 @@ static void ExecHksInitialize(void const *argument)
+     LiteTestPrint("HksInitialize Begin!\n");
+     TEST_ASSERT_TRUE(HksInitialize() == 0);
+     LiteTestPrint("HksInitialize End!\n");
+-    osThreadExit();
++    // osThreadExit();
+ }
+ 
+ /**
+@@ -90,7 +90,7 @@ static void ExecHksCipherTest001(void const *argument)
+     LiteTestPrint("HksCipherTest001 Begin!\n");
+     TEST_ASSERT_TRUE(BaseTestCipher(1, TEST_INDEX_0, 1) == 0);
+     LiteTestPrint("HksCipherTest001 End!\n");
+-    osThreadExit();
++    // osThreadExit();
+ }
+ 
+ static void ExecHksCipherTest002(void const *argument)
+@@ -98,7 +98,7 @@ static void ExecHksCipherTest002(void const *argument)
+     LiteTestPrint("HksCipherTest002 Begin!\n");
+     TEST_ASSERT_TRUE(BaseTestCipher(1, TEST_INDEX_0, 1) == 0);
+     LiteTestPrint("HksCipherTest002 End!\n");
+-    osThreadExit();
++    // osThreadExit();
+ }
+ 
+ static void ExecHksCipherTest003(void const *argument)
+@@ -106,7 +106,7 @@ static void ExecHksCipherTest003(void const *argument)
+     LiteTestPrint("HksCipherTest003 Begin!\n");
+     TEST_ASSERT_TRUE(BaseTestEncrypt(1, TEST_INDEX_0, 1) == 0);
+     LiteTestPrint("HksCipherTest003 End!\n");
+-    osThreadExit();
++    // osThreadExit();
+ }
+ 
+ static void ExecHksCipherTest004(void const *argument)
+@@ -114,7 +114,7 @@ static void ExecHksCipherTest004(void const *argument)
+     LiteTestPrint("HksCipherTest004 Begin!\n");
+     TEST_ASSERT_TRUE(BaseTestEncrypt(1, TEST_INDEX_1, 1) == 0);
+     LiteTestPrint("HksCipherTest004 End!\n");
+-    osThreadExit();
++    // osThreadExit();
+ }
+ 
+ static void ExecHksCipherTest005(void const *argument)
+@@ -122,7 +122,7 @@ static void ExecHksCipherTest005(void const *argument)
+     LiteTestPrint("HksCipherTest005 Begin!\n");
+     TEST_ASSERT_TRUE(BaseTestEncrypt(1, TEST_INDEX_2, 1) == 0);
+     LiteTestPrint("HksCipherTest005 End!\n");
+-    osThreadExit();
++    // osThreadExit();
+ }
+ 
+ static void ExecHksCipherTest006(void const *argument)
+@@ -130,7 +130,7 @@ static void ExecHksCipherTest006(void const *argument)
+     LiteTestPrint("HksCipherTest006 Begin!\n");
+     TEST_ASSERT_TRUE(BaseTestEncrypt(1, TEST_INDEX_3, 1) == 0);
+     LiteTestPrint("HksCipherTest006 End!\n");
+-    osThreadExit();
++    // osThreadExit();
+ }
+ 
+ static void ExecHksCipherTest007(void const *argument)
+@@ -138,7 +138,7 @@ static void ExecHksCipherTest007(void const *argument)
+     LiteTestPrint("HksCipherTest007 Begin!\n");
+     TEST_ASSERT_TRUE(BaseTestEncrypt(1, TEST_INDEX_4, 1) == 0);
+     LiteTestPrint("HksCipherTest007 End!\n");
+-    osThreadExit();
++    // osThreadExit();
+ }
+ 
+ static void ExecHksCipherTest008(void const *argument)
+@@ -146,7 +146,7 @@ static void ExecHksCipherTest008(void const *argument)
+     LiteTestPrint("HksCipherTest008 Begin!\n");
+     TEST_ASSERT_TRUE(BaseTestDecrypt(1, TEST_INDEX_0, 1) == 0);
+     LiteTestPrint("HksCipherTest008 End!\n");
+-    osThreadExit();
++    // osThreadExit();
+ }
+ 
+ static void ExecHksCipherTest009(void const *argument)
+@@ -154,7 +154,7 @@ static void ExecHksCipherTest009(void const *argument)
+     LiteTestPrint("HksCipherTest009 Begin!\n");
+     TEST_ASSERT_TRUE(BaseTestDecrypt(1, TEST_INDEX_1, 1) == 0);
+     LiteTestPrint("HksCipherTest009 End!\n");
+-    osThreadExit();
++    // osThreadExit();
+ }
+ 
+ static void ExecHksCipherTest010(void const *argument)
+@@ -162,7 +162,7 @@ static void ExecHksCipherTest010(void const *argument)
+     LiteTestPrint("HksCipherTest010 Begin!\n");
+     TEST_ASSERT_TRUE(BaseTestDecrypt(1, TEST_INDEX_2, 1) == 0);
+     LiteTestPrint("HksCipherTest010 End!\n");
+-    osThreadExit();
++    // osThreadExit();
+ }
+ 
+ static void ExecHksCipherTest011(void const *argument)
+@@ -170,7 +170,7 @@ static void ExecHksCipherTest011(void const *argument)
+     LiteTestPrint("HksCipherTest011 Begin!\n");
+     TEST_ASSERT_TRUE(BaseTestDecrypt(1, TEST_INDEX_3, 1) == 0);
+     LiteTestPrint("HksCipherTest011 End!\n");
+-    osThreadExit();
++    // osThreadExit();
+ }
+ 
+ static void ExecHksCipherTest012(void const *argument)
+@@ -178,7 +178,7 @@ static void ExecHksCipherTest012(void const *argument)
+     LiteTestPrint("HksCipherTest012 Begin!\n");
+     TEST_ASSERT_TRUE(BaseTestDecrypt(1, TEST_INDEX_4, 1) == 0);
+     LiteTestPrint("HksCipherTest012 End!\n");
+-    osThreadExit();
++    // osThreadExit();
+ }
+ 
+ 
+diff --git a/security_lite/huks/liteos_m_adapter/hks_curve25519_test.c b/security_lite/huks/liteos_m_adapter/hks_curve25519_test.c
+old mode 100644
+new mode 100755
+index 61b87bd6..b05e88c8
+--- a/security_lite/huks/liteos_m_adapter/hks_curve25519_test.c
++++ b/security_lite/huks/liteos_m_adapter/hks_curve25519_test.c
+@@ -47,7 +47,7 @@ static void ExecHksInitialize(void const *argument)
+     LiteTestPrint("HksInitialize Begin!\n");
+     TEST_ASSERT_TRUE(HksInitialize() == 0);
+     LiteTestPrint("HksInitialize End!\n");
+-    osThreadExit();
++    // osThreadExit();
+ }
+ /**
+  * @tc.setup: define a setup for test suit, format:"CalcMultiTest + SetUp"
+@@ -89,7 +89,7 @@ static void LocalHksCurve25519Test001(void const *argument)
+     LiteTestPrint("HksCurve25519Test001 Begin!\n");
+     TEST_ASSERT_TRUE(TestCurve25519All() == 0);
+     LiteTestPrint("HksCurve25519Test001 End!\n");
+-    osThreadExit();
++    // osThreadExit();
+ }
+ 
+ static void LocalHksCurve25519Test002(void const *argument)
+@@ -97,7 +97,7 @@ static void LocalHksCurve25519Test002(void const *argument)
+     LiteTestPrint("HksCurve25519Test002 Begin!\n");
+     TEST_ASSERT_TRUE(TestEd25519SignTeeVerifyLocal() == 0);
+     LiteTestPrint("HksCurve25519Test002 End!\n");
+-    osThreadExit();
++    // osThreadExit();
+ }
+ 
+ static void LocalHksCurve25519Test003(void const *argument)
+@@ -105,7 +105,7 @@ static void LocalHksCurve25519Test003(void const *argument)
+     LiteTestPrint("HksCurve25519Test003 Begin!\n");
+     TEST_ASSERT_TRUE(TestCurve25519SignWrong() == 0);
+     LiteTestPrint("HksCurve25519Test003 End!\n");
+-    osThreadExit();
++    // osThreadExit();
+ }
+ 
+ static void LocalHksCurve25519Test004(void const *argument)
+@@ -113,7 +113,7 @@ static void LocalHksCurve25519Test004(void const *argument)
+     LiteTestPrint("HksCurve25519Test004 Begin!\n");
+     TEST_ASSERT_TRUE(TestCurve25519verifyWrong() == 0);
+     LiteTestPrint("HksCurve25519Test004 End!\n");
+-    osThreadExit();
++    // osThreadExit();
+ }
+ 
+ /**
+diff --git a/security_lite/huks/liteos_m_adapter/hks_delete_test.c b/security_lite/huks/liteos_m_adapter/hks_delete_test.c
+old mode 100644
+new mode 100755
+index 9b1cbce5..8bcccf96
+--- a/security_lite/huks/liteos_m_adapter/hks_delete_test.c
++++ b/security_lite/huks/liteos_m_adapter/hks_delete_test.c
+@@ -48,7 +48,7 @@ static void ExecHksInitialize(void const *argument)
+     LiteTestPrint("HksInitialize Begin!\n");
+     TEST_ASSERT_TRUE(HksInitialize() == 0);
+     LiteTestPrint("HksInitialize End!\n");
+-    osThreadExit();
++    // osThreadExit();
+ }
+ 
+ static void ExecHksDeleteTest001(void const *argument)
+@@ -73,7 +73,7 @@ static void ExecHksDeleteTest001(void const *argument)
+     TestFreeBlob(&keyAlias);
+     TEST_ASSERT_TRUE(ret == 0);
+     LiteTestPrint("HksDeleteTest001 End!\n");
+-    osThreadExit();
++    // osThreadExit();
+ }
+ /**
+  * @tc.setup: define a setup for test suit, format:"CalcMultiTest + SetUp"
+diff --git a/security_lite/huks/liteos_m_adapter/hks_derive_test.c b/security_lite/huks/liteos_m_adapter/hks_derive_test.c
+old mode 100644
+new mode 100755
+index b77d5543..b2586ff5
+--- a/security_lite/huks/liteos_m_adapter/hks_derive_test.c
++++ b/security_lite/huks/liteos_m_adapter/hks_derive_test.c
+@@ -47,7 +47,7 @@ static void ExecHksInitialize(void const *argument)
+     LiteTestPrint("HksInitialize Begin!\n");
+     TEST_ASSERT_TRUE(HksInitialize() == 0);
+     LiteTestPrint("HksInitialize End!\n");
+-    osThreadExit();
++    // osThreadExit();
+ }
+ /**
+  * @tc.setup: define a setup for test suit, format:"CalcMultiTest + SetUp"
+@@ -231,7 +231,7 @@ static void ExecHksDeriveTest001(void const *argument)
+     int32_t ret = BaseTestDerive(0);
+     TEST_ASSERT_TRUE(ret == 0);
+     LiteTestPrint("HksDeriveTest001 End!\n");
+-    osThreadExit();
++    // osThreadExit();
+ }
+ 
+ static void ExecHksDeriveTest002(void const *argument)
+@@ -240,7 +240,7 @@ static void ExecHksDeriveTest002(void const *argument)
+     int32_t ret = BaseTestDerive(1);
+     TEST_ASSERT_TRUE(ret == 0);
+     LiteTestPrint("HksDeriveTest002 End!\n");
+-    osThreadExit();
++    // osThreadExit();
+ }
+ 
+ #ifndef _CUT_AUTHENTICATE_
+diff --git a/security_lite/huks/liteos_m_adapter/hks_exist_test.c b/security_lite/huks/liteos_m_adapter/hks_exist_test.c
+old mode 100644
+new mode 100755
+index 39f15377..11fe0ef4
+--- a/security_lite/huks/liteos_m_adapter/hks_exist_test.c
++++ b/security_lite/huks/liteos_m_adapter/hks_exist_test.c
+@@ -50,7 +50,7 @@ static void ExecHksInitialize(void const *argument)
+     LiteTestPrint("HksInitialize Begin!\n");
+     TEST_ASSERT_TRUE(HksInitialize() == 0);
+     LiteTestPrint("HksInitialize End!\n");
+-    osThreadExit();
++    // osThreadExit();
+ }
+ 
+ static void ExecHksExistTest001(void const *argument)
+@@ -80,7 +80,7 @@ static void ExecHksExistTest001(void const *argument)
+     TEST_ASSERT_TRUE(ret == 0);
+ 
+     LiteTestPrint("HksExistTest001 End!\n");
+-    osThreadExit();
++    // osThreadExit();
+ }
+ /**
+  * @tc.setup: define a setup for test suit, format:"CalcMultiTest + SetUp"
+diff --git a/security_lite/huks/liteos_m_adapter/hks_generate_key_test.c b/security_lite/huks/liteos_m_adapter/hks_generate_key_test.c
+old mode 100644
+new mode 100755
+index c7581b25..2800de3f
+--- a/security_lite/huks/liteos_m_adapter/hks_generate_key_test.c
++++ b/security_lite/huks/liteos_m_adapter/hks_generate_key_test.c
+@@ -46,7 +46,7 @@ static void ExecHksInitialize(void const *argument)
+     LiteTestPrint("HksInitialize Begin!\n");
+     TEST_ASSERT_TRUE(HksInitialize() == 0);
+     LiteTestPrint("HksInitialize End!\n");
+-    osThreadExit();
++    // osThreadExit();
+ }
+ 
+ /**
+@@ -153,7 +153,7 @@ static void ExecHksGenerateKeyTest001(void const *argument)
+     TEST_ASSERT_TRUE(ret == 0);
+     
+     LiteTestPrint("HksGenerateKeyTest001 End!\n");
+-    osThreadExit();
++    // osThreadExit();
+ }
+ 
+ /**
+diff --git a/security_lite/huks/liteos_m_adapter/hks_generate_random_test.c b/security_lite/huks/liteos_m_adapter/hks_generate_random_test.c
+old mode 100644
+new mode 100755
+index cf00fada..74409f66
+--- a/security_lite/huks/liteos_m_adapter/hks_generate_random_test.c
++++ b/security_lite/huks/liteos_m_adapter/hks_generate_random_test.c
+@@ -44,7 +44,7 @@ static void ExecHksInitialize(void const *argument)
+     LiteTestPrint("HksInitialize Begin!\n");
+     TEST_ASSERT_TRUE(HksInitialize() == 0);
+     LiteTestPrint("HksInitialize End!\n");
+-    osThreadExit();
++    // osThreadExit();
+ }
+ 
+ /**
+@@ -110,7 +110,7 @@ static void ExecHksGenerateRandomTest001(void const *argument)
+     TEST_ASSERT_TRUE(ret == 0);
+     
+     LiteTestPrint("HksGenerateRandomTest001 End!\n");
+-    osThreadExit();
++    // osThreadExit();
+ }
+ 
+ /**
+diff --git a/security_lite/huks/liteos_m_adapter/hks_hash_test.c b/security_lite/huks/liteos_m_adapter/hks_hash_test.c
+old mode 100644
+new mode 100755
+index 558e045c..0afa5af4
+--- a/security_lite/huks/liteos_m_adapter/hks_hash_test.c
++++ b/security_lite/huks/liteos_m_adapter/hks_hash_test.c
+@@ -48,7 +48,7 @@ static void ExecHksInitialize(void const *argument)
+     LiteTestPrint("HksInitialize Begin!\n");
+     TEST_ASSERT_TRUE(HksInitialize() == 0);
+     LiteTestPrint("HksInitialize End!\n");
+-    osThreadExit();
++    // osThreadExit();
+ }
+ 
+ /**
+@@ -134,7 +134,7 @@ static void ExecHksHashTest001(void const *argument)
+     TEST_ASSERT_TRUE(ret == 0);
+     
+     LiteTestPrint("HksMacTest001 End!\n");
+-    osThreadExit();
++    // osThreadExit();
+ }
+ 
+ /**
+diff --git a/security_lite/huks/liteos_m_adapter/hks_mac_test.c b/security_lite/huks/liteos_m_adapter/hks_mac_test.c
+old mode 100644
+new mode 100755
+index 2eaaad90..d20f0972
+--- a/security_lite/huks/liteos_m_adapter/hks_mac_test.c
++++ b/security_lite/huks/liteos_m_adapter/hks_mac_test.c
+@@ -69,7 +69,7 @@ static void ExecHksInitialize(void const *argument)
+     LiteTestPrint("HksInitialize Begin!\n");
+     TEST_ASSERT_TRUE(HksInitialize() == 0);
+     LiteTestPrint("HksInitialize End!\n");
+-    osThreadExit();
++    // osThreadExit();
+ }
+ 
+ /**
+@@ -212,7 +212,7 @@ static void ExecHksMacTest001(void const *argument)
+     int32_t ret = BaseTestMac(0);
+     TEST_ASSERT_TRUE(ret == 0);
+     LiteTestPrint("HksMacTest001 End!\n");
+-    osThreadExit();
++    // osThreadExit();
+ }
+ 
+ static void ExecHksMacTest002(void const *argument)
+@@ -221,7 +221,7 @@ static void ExecHksMacTest002(void const *argument)
+     int32_t ret = BaseTestMac(1);
+     TEST_ASSERT_TRUE(ret == 0);
+     LiteTestPrint("HksMacTest002 End!\n");
+-    osThreadExit();
++    // osThreadExit();
+ }
+ 
+ /**
+diff --git a/security_lite/huks/liteos_m_adapter/hks_modify_key_test.c b/security_lite/huks/liteos_m_adapter/hks_modify_key_test.c
+old mode 100644
+new mode 100755
+index e346989f..601befbe
+--- a/security_lite/huks/liteos_m_adapter/hks_modify_key_test.c
++++ b/security_lite/huks/liteos_m_adapter/hks_modify_key_test.c
+@@ -97,7 +97,7 @@ static void ExecHksInitialize(void const *argument)
+     LiteTestPrint("HksInitialize Begin!\n");
+     TEST_ASSERT_TRUE(HksInitialize() == 0);
+     LiteTestPrint("HksInitialize End!\n");
+-    osThreadExit();
++    // osThreadExit();
+ }
+ 
+ /**
+@@ -388,7 +388,7 @@ static void ExecHksModifyKeyTest001(void const *argument)
+     TEST_ASSERT_TRUE(ret != 0);
+ 
+     LiteTestPrint("HksModifyKeyTest001 End!\n");
+-    osThreadExit();
++    // osThreadExit();
+ }
+ 
+ /**
+diff --git a/security_lite/huks/liteos_m_adapter/hks_others_test.c b/security_lite/huks/liteos_m_adapter/hks_others_test.c
+old mode 100644
+new mode 100755
+index c6888abd..100ade4c
+--- a/security_lite/huks/liteos_m_adapter/hks_others_test.c
++++ b/security_lite/huks/liteos_m_adapter/hks_others_test.c
+@@ -44,7 +44,7 @@ static void ExecHksInitialize(void const *argument)
+     LiteTestPrint("HksInitialize Begin!\n");
+     TEST_ASSERT_TRUE(HksInitialize() == 0);
+     LiteTestPrint("HksInitialize End!\n");
+-    osThreadExit();
++    // osThreadExit();
+ }
+ /**
+  * @tc.setup: define a setup for test suit, format:"CalcMultiTest + SetUp"
+@@ -87,7 +87,7 @@ static void ExcHksOthersTest001(void const *argument)
+     int32_t ret = HksGetKeyParamSet(NULL, NULL, NULL);
+     TEST_ASSERT_TRUE(ret == HKS_ERROR_NULL_POINTER);
+     LiteTestPrint("HksOthersTest001 End!\n");
+-    osThreadExit();
++    // osThreadExit();
+ }
+ 
+ static void ExcHksOthersTest002(void const *argument)
+@@ -96,7 +96,7 @@ static void ExcHksOthersTest002(void const *argument)
+     int32_t ret = HksGetKeyInfoList(NULL, NULL, NULL);
+     TEST_ASSERT_TRUE(ret == HKS_ERROR_NULL_POINTER);
+     LiteTestPrint("HksOthersTest002 End!\n");
+-    osThreadExit();
++    // osThreadExit();
+ }
+ 
+ static void ExcHksOthersTest003(void const *argument)
+@@ -105,7 +105,7 @@ static void ExcHksOthersTest003(void const *argument)
+     int32_t ret = HksAttestKey(NULL, NULL, NULL);
+     TEST_ASSERT_TRUE(ret == HKS_ERROR_NOT_SUPPORTED);
+     LiteTestPrint("HksOthersTest003 End!\n");
+-    osThreadExit();
++    // osThreadExit();
+ }
+ 
+ static void ExcHksOthersTest004(void const *argument)
+@@ -114,7 +114,7 @@ static void ExcHksOthersTest004(void const *argument)
+     int32_t ret = HksGetCertificateChain(NULL, NULL, NULL);
+     TEST_ASSERT_TRUE(ret == HKS_ERROR_NOT_SUPPORTED);
+     LiteTestPrint("HksOthersTest004 End!\n");
+-    osThreadExit();
++    // osThreadExit();
+ }
+ 
+ static void ExcHksOthersTest005(void const *argument)
+@@ -123,7 +123,7 @@ static void ExcHksOthersTest005(void const *argument)
+     int32_t ret = HksGetCertificateChain(NULL, NULL, NULL);
+     TEST_ASSERT_TRUE(ret == HKS_ERROR_NOT_SUPPORTED);
+     LiteTestPrint("HksOthersTest005 End!\n");
+-    osThreadExit();
++    // osThreadExit();
+ }
+ 
+ static void ExcHksOthersTest006(void const *argument)
+@@ -132,7 +132,7 @@ static void ExcHksOthersTest006(void const *argument)
+     int32_t ret = HksUnwrapKey(NULL, NULL, NULL, NULL);
+     TEST_ASSERT_TRUE(ret == HKS_ERROR_NOT_SUPPORTED);
+     LiteTestPrint("HksOthersTest006 End!\n");
+-    osThreadExit();
++    // osThreadExit();
+ }
+ 
+ static void ExcHksOthersTest007(void const *argument)
+@@ -141,7 +141,7 @@ static void ExcHksOthersTest007(void const *argument)
+     int32_t ret = HksGetSdkVersion(NULL);
+     TEST_ASSERT_TRUE(ret == HKS_ERROR_NULL_POINTER);
+     LiteTestPrint("HksOthersTest007 End!\n");
+-    osThreadExit();
++    // osThreadExit();
+ }
+ 
+ static void ExcHksOthersTest008(void const *argument)
+@@ -150,7 +150,7 @@ static void ExcHksOthersTest008(void const *argument)
+     int32_t ret = HksInitialize();
+     TEST_ASSERT_TRUE(ret == HKS_SUCCESS);
+     LiteTestPrint("HksOthersTest008 End!\n");
+-    osThreadExit();
++    // osThreadExit();
+ }
+ 
+ /**
+diff --git a/security_lite/huks/liteos_m_adapter/hks_safe_cipher_key_test.c b/security_lite/huks/liteos_m_adapter/hks_safe_cipher_key_test.c
+old mode 100644
+new mode 100755
+index 7044e626..796340e3
+--- a/security_lite/huks/liteos_m_adapter/hks_safe_cipher_key_test.c
++++ b/security_lite/huks/liteos_m_adapter/hks_safe_cipher_key_test.c
+@@ -48,7 +48,7 @@ static void ExecHksInitialize(void const *argument)
+     LiteTestPrint("HksInitialize Begin!\n");
+     TEST_ASSERT_TRUE(HksInitialize() == 0);
+     LiteTestPrint("HksInitialize End!\n");
+-    osThreadExit();
++    // osThreadExit();
+ }
+ 
+ /**
+diff --git a/security_lite/huks/liteos_m_adapter/hks_safe_compare_key_test.c b/security_lite/huks/liteos_m_adapter/hks_safe_compare_key_test.c
+old mode 100644
+new mode 100755
+index a68eafab..0c50ca14
+--- a/security_lite/huks/liteos_m_adapter/hks_safe_compare_key_test.c
++++ b/security_lite/huks/liteos_m_adapter/hks_safe_compare_key_test.c
+@@ -30,7 +30,7 @@
+ #include "cmsis_os2.h"
+ #include "ohos_types.h"
+ 
+-static const char *g_storePath = "/storage/";
++static const char *g_storePath = "/data/storage/";
+ static const char *g_testOne = "TestOne";
+ static const char *g_testTwo = "TestTwo";
+ 
+@@ -56,7 +56,7 @@ static void ExecHksInitialize(void const *argument)
+     LiteTestPrint("HksInitialize Begin!\n");
+     TEST_ASSERT_TRUE(HksInitialize() == 0);
+     LiteTestPrint("HksInitialize End!\n");
+-    osThreadExit();
++    //osThreadExit();
+ }
+  
+ static BOOL HksSafeCompareKeyTestSetUp()
+@@ -231,7 +231,7 @@ static void ExcHksSafeCompareKeyTest001(void const *argument)
+     HKS_TEST_ASSERT(ret != 0);
+     TEST_ASSERT_TRUE(ret != 0);
+     LiteTestPrint("HksSafeCompareKeyTest001 End!\n");
+-    osThreadExit();
++    //osThreadExit();
+ }
+ 
+ /**
 diff --git a/utils_lite/kv_store_hal/BUILD.gn b/utils_lite/kv_store_hal/BUILD.gn
 index e2f63672..0dbaaf55 100755
 --- a/utils_lite/kv_store_hal/BUILD.gn

@@ -1,10 +1,10 @@
-From 9c24c4e68a082a28527d27814a6e9a6e796f7c8b Mon Sep 17 00:00:00 2001
+From 2f2664e067a0201bd7d22b9154dc0214b48c34eb Mon Sep 17 00:00:00 2001
 From: yangjian <jianyang@bestechnic.com>
-Date: Sat, 25 Dec 2021 10:05:20 +0800
+Date: Tue, 28 Dec 2021 10:31:08 +0800
 Subject: [PATCH] base/hiviewdfx/hiview_lite
 
 Signed-off-by: yangjian <jianyang@bestechnic.com>
-Change-Id: Ib478c338ff5520c1058956b5dd1847993bb48743
+Change-Id: I47ad028bf6f0587bb2f99e72df7377bb65f71fda
 ---
  BUILD.gn         | 5 +++++
  hiview_service.c | 2 +-
