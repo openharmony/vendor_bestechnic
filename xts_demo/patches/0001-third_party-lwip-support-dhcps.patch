@@ -1,0 +1,41 @@
+From 728cac8045778fed95f3f4eb82a3f387e8cce664 Mon Sep 17 00:00:00 2001
+From: zetingxu <zetingxu@bestechnic.com>
+Date: Tue, 4 Jan 2022 17:20:02 +0800
+Subject: [PATCH] third_party lwip support dhcps
+
+Signed-off-by: zetingxu <zetingxu@bestechnic.com>
+Change-Id: Ic4427c579a36af7b2ce1f15d8b4c85edd7c58f4e
+---
+ src/include/lwip/priv/api_msg.h | 13 +++++++++++++
+ 1 file changed, 13 insertions(+)
+ mode change 100644 => 100755 src/include/lwip/priv/api_msg.h
+
+diff --git a/src/include/lwip/priv/api_msg.h b/src/include/lwip/priv/api_msg.h
+old mode 100644
+new mode 100755
+index 9e8ffc9..e14c811
+--- a/src/include/lwip/priv/api_msg.h
++++ b/src/include/lwip/priv/api_msg.h
+@@ -252,6 +252,19 @@ struct netifapi_msg {
+       netifapi_void_fn voidfunc;
+       netifapi_errt_fn errtfunc;
+     } common;
++#if LWIP_DHCPS
++    struct {
++      char *start_ip;
++      u16_t ip_num;
++    } dhcp_start_params;
++#if LWIP_NETIFAPI_DHCPS_IP
++    struct {
++      u8_t *mac;
++      u8_t maclen;
++      ip_addr_t *ip;
++    } dhcp_get_ip_params;
++#endif
++#endif
+     struct {
+ #if LWIP_MPU_COMPATIBLE
+       char name[NETIF_NAMESIZE];
+-- 
+2.17.1
+
