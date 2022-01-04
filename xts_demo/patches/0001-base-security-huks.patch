@@ -1,39 +1,13 @@
-From 66e202a695864e06a4f267ca6ab032c2e38cde00 Mon Sep 17 00:00:00 2001
+From ec209399d2075562a81a1275b80cefa3f29441de Mon Sep 17 00:00:00 2001
 From: yangjian <jianyang@bestechnic.com>
-Date: Wed, 29 Dec 2021 15:32:23 +0800
+Date: Wed, 5 Jan 2022 01:13:40 +0800
 Subject: [PATCH] base/security/huks
 
-Signed-off-by: yangjian <jianyang@bestechnic.com>
-Change-Id: I108a1b3390f2a5dd86bd8291e780313beae50641
 ---
- .../huks_standard/main/os_dependency/log/hks_log_lite.c      | 5 +++--
- .../huks_service/main/core/include/hks_file_operator.h       | 4 ++--
- .../huks_service/main/core/src/hks_client_service.c          | 4 ++--
- 3 files changed, 7 insertions(+), 6 deletions(-)
+ .../huks_service/main/core/include/hks_file_operator.h        | 4 ++--
+ .../huks_service/main/core/src/hks_client_service.c           | 4 ++--
+ 2 files changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/frameworks/huks_standard/main/os_dependency/log/hks_log_lite.c b/frameworks/huks_standard/main/os_dependency/log/hks_log_lite.c
-index a87e593..4d28609 100644
---- a/frameworks/huks_standard/main/os_dependency/log/hks_log_lite.c
-+++ b/frameworks/huks_standard/main/os_dependency/log/hks_log_lite.c
-@@ -41,7 +41,8 @@ void HksLog(uint32_t logLevel, const char *funcName, uint32_t lineNo, const char
-         HKS_FREE_PTR(buf);
-         return;
-     }
--
-+    printf("[huks] %s\r\n",buf);
-+#if 0
-     switch (logLevel) {
-         case HKS_LOG_LEVEL_I:
- #if defined(__LINUX__)
-@@ -76,6 +77,6 @@ void HksLog(uint32_t logLevel, const char *funcName, uint32_t lineNo, const char
-             HKS_FREE_PTR(buf);
-             return;
-     }
--
-+#endif
-     HKS_FREE_PTR(buf);
- }
-\ No newline at end of file
 diff --git a/services/huks_standard/huks_service/main/core/include/hks_file_operator.h b/services/huks_standard/huks_service/main/core/include/hks_file_operator.h
 index 5486468..5e5d47a 100755
 --- a/services/huks_standard/huks_service/main/core/include/hks_file_operator.h
