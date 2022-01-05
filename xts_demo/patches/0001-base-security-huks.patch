@@ -1,28 +1,14 @@
-From ec209399d2075562a81a1275b80cefa3f29441de Mon Sep 17 00:00:00 2001
+From 8c0f5f2974c5fd8aff752b2a9c7d32608f19e0ae Mon Sep 17 00:00:00 2001
 From: yangjian <jianyang@bestechnic.com>
-Date: Wed, 5 Jan 2022 01:13:40 +0800
+Date: Wed, 5 Jan 2022 10:32:09 +0800
 Subject: [PATCH] base/security/huks
 
+Signed-off-by: yangjian <jianyang@bestechnic.com>
+Change-Id: I29563909a549a336edfa9ecb815bbd7b29f6708a
 ---
- .../huks_service/main/core/include/hks_file_operator.h        | 4 ++--
  .../huks_service/main/core/src/hks_client_service.c           | 4 ++--
- 2 files changed, 4 insertions(+), 4 deletions(-)
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/services/huks_standard/huks_service/main/core/include/hks_file_operator.h b/services/huks_standard/huks_service/main/core/include/hks_file_operator.h
-index 5486468..5e5d47a 100755
---- a/services/huks_standard/huks_service/main/core/include/hks_file_operator.h
-+++ b/services/huks_standard/huks_service/main/core/include/hks_file_operator.h
-@@ -27,8 +27,8 @@
-         #define HKS_KEY_STORE_PATH            "/data/data/maindata"
-         #define HKS_KEY_STORE_BAK_PATH        "/data/data/bakdata"
-     #else
--        #define HKS_KEY_STORE_PATH            "/storage/maindata"
--        #define HKS_KEY_STORE_BAK_PATH        "/storage/bakdata"
-+        #define HKS_KEY_STORE_PATH            "/data/maindata"
-+        #define HKS_KEY_STORE_BAK_PATH        "/data/bakdata"
-     #endif
- #endif
- #define HKS_KEY_STORE_KEY_PATH        "key"
 diff --git a/services/huks_standard/huks_service/main/core/src/hks_client_service.c b/services/huks_standard/huks_service/main/core/src/hks_client_service.c
 index 4e4de69..95bbaaa 100755
 --- a/services/huks_standard/huks_service/main/core/src/hks_client_service.c
