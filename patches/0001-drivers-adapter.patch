@@ -1,10 +1,10 @@
-From f830e79d993a86f1f1a7485d638c3bc022b269bf Mon Sep 17 00:00:00 2001
+From 08e3b25e10c318d981056abff9d73e2810931cc9 Mon Sep 17 00:00:00 2001
 From: yangjian <jianyang@bestechnic.com>
-Date: Tue, 21 Dec 2021 01:12:56 +0800
+Date: Sun, 9 Jan 2022 17:48:13 +0800
 Subject: [PATCH] drivers/adapter/
 
 Signed-off-by: yangjian <jianyang@bestechnic.com>
-Change-Id: I5dbb25d25d66730d1034eb8aab9da54e8428a0fc
+Change-Id: If2f20a31d324852fd8a1b3ad51b6239952565edb
 ---
  khdf/liteos_m/BUILD.gn          | 4 ++--
  khdf/liteos_m/platform/BUILD.gn | 9 ++++++++-

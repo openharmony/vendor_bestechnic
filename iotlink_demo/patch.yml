@@ -1,12 +1,10 @@
-base/hiviewdfx/hilog_lite:
-  - vendor/bestechnic/display_demo/patches/0001-use-external-HiLogWriteInternal-for-hilog-output.patch
 kernel/liteos_m:
-  - vendor/bestechnic/display_demo/patches/0001-fix-work-around-fs-for-arm-none-eabi.patch
+  - vendor/bestechnic/patches/0001-kernel-liteos_m.patch
 drivers/adapter:
-  - vendor/bestechnic/display_demo/patches/0001-feat-add-platform-drivers-options.patch
+  - vendor/bestechnic/patches/0001-drivers-adapter.patch
 third_party/musl:
-  - vendor/bestechnic/display_demo/patches/0001-fix-work-around-musl-for-arm-none-eabi.patch
+  - vendor/bestechnic/patches/0001-third_party-musl.patch
 foundation/distributedschedule/samgr_lite:
-  - vendor/bestechnic/display_demo/patches/0001-fix-increase-default-task-size.patch
+  - vendor/bestechnic/patches/0001-foundation-distributedschedule-samgr_lite.patch
 build/lite:
-  - vendor/bestechnic/display_demo/patches/0001-feat-add-liteos_m-options.patch
+  - vendor/bestechnic/patches/0001-build-lite.patch

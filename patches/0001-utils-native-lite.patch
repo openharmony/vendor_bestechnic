@@ -1,0 +1,247 @@
+From 6341ac5ab9f02d96b6d27dcba2ef20b4834cdf7a Mon Sep 17 00:00:00 2001
+From: yangjian <jianyang@bestechnic.com>
+Date: Sun, 9 Jan 2022 17:55:43 +0800
+Subject: [PATCH] utils/native/lite/
+
+Signed-off-by: yangjian <jianyang@bestechnic.com>
+Change-Id: I4e78ff5397bc4c68dcc2bc6d22d2e672f840c962
+---
+ file/src/file_impl_hal/file.c            | 16 +++++++++++++---
+ js/builtin/common/BUILD.gn               |  9 ++++++++-
+ js/builtin/deviceinfokit/BUILD.gn        | 10 ++++++++--
+ js/builtin/filekit/BUILD.gn              |  8 +++++++-
+ js/builtin/kvstorekit/BUILD.gn           |  8 +++++++-
+ kal/timer/BUILD.gn                       |  9 ++++++++-
+ kv_store/src/BUILD.gn                    | 15 +++++++++++----
+ kv_store/src/kvstore_impl_hal/kv_store.c | 10 ++++++++--
+ timer_task/BUILD.gn                      |  9 ++++++++-
+ 9 files changed, 78 insertions(+), 16 deletions(-)
+
+diff --git a/file/src/file_impl_hal/file.c b/file/src/file_impl_hal/file.c
+index 6bce29b..9889d5c 100755
+--- a/file/src/file_impl_hal/file.c
++++ b/file/src/file_impl_hal/file.c
+@@ -22,10 +22,14 @@
+ #include <stdbool.h>
+ 
+ #define BUFFER_SIZE 128
++#define DATA_PRE "/data/"
+ 
+ int UtilsFileOpen(const char* path, int oflag, int mode)
+ {
+-    return HalFileOpen(path, oflag, mode);
++    char path_real[128] = {0};
++    memcpy(path_real,DATA_PRE,strlen(DATA_PRE));
++    memcpy(path_real+strlen(DATA_PRE),path,strlen(path));
++    return HalFileOpen(path_real, oflag, mode);
+ }
+ 
+ int UtilsFileClose(int fd)
+@@ -45,12 +49,18 @@ int UtilsFileWrite(int fd, const char* buf, unsigned int len)
+ 
+ int UtilsFileDelete(const char* path)
+ {
+-    return HalFileDelete(path);
++    char path_real[128] = {0};
++    memcpy(path_real,DATA_PRE,strlen(DATA_PRE));
++    memcpy(path_real+strlen(DATA_PRE),path,strlen(path));
++    return HalFileDelete(path_real);
+ }
+ 
+ int UtilsFileStat(const char* path, unsigned int* fileSize)
+ {
+-    return HalFileStat(path, fileSize);
++    char path_real[128] = {0};
++    memcpy(path_real,DATA_PRE,strlen(DATA_PRE));
++    memcpy(path_real+strlen(DATA_PRE),path,strlen(path));
++    return HalFileStat(path_real, fileSize);
+ }
+ 
+ int UtilsFileSeek(int fd, int offset, unsigned int whence)
+diff --git a/js/builtin/common/BUILD.gn b/js/builtin/common/BUILD.gn
+index dd8f39a..699965e 100755
+--- a/js/builtin/common/BUILD.gn
++++ b/js/builtin/common/BUILD.gn
+@@ -13,7 +13,14 @@
+ # limitations under the License.
+ #
+ 
+-shared_library("ace_kit_common") {
++import("//build/lite/config/component/lite_component.gni")
++
++lite_library("ace_kit_common") {
++  if (ohos_kernel_type == "liteos_m") {
++    target_type = "static_library"
++  } else {
++    target_type = "shared_library"
++  }
+   sources = [ "src/nativeapi_common.cpp" ]
+   cflags = [ "-Wall" ]
+   cflags_cc = cflags
+diff --git a/js/builtin/deviceinfokit/BUILD.gn b/js/builtin/deviceinfokit/BUILD.gn
+index 19e76ea..2103dce 100755
+--- a/js/builtin/deviceinfokit/BUILD.gn
++++ b/js/builtin/deviceinfokit/BUILD.gn
+@@ -13,11 +13,17 @@
+ # limitations under the License.
+ #
+ 
+-shared_library("ace_kit_deviceinfo") {
++import("//build/lite/config/component/lite_component.gni")
++
++lite_library("ace_kit_deviceinfo") {
++  if (ohos_kernel_type == "liteos_m") {
++    target_type = "static_library"
++  } else {
++    target_type = "shared_library"
++  }
+   sources = [ "src/nativeapi_deviceinfo.cpp" ]
+   cflags = [ "-Wall" ]
+   cflags_cc = cflags
+-  ldflags = [ "-shared" ]
+ 
+   include_dirs = [
+     "include",
+diff --git a/js/builtin/filekit/BUILD.gn b/js/builtin/filekit/BUILD.gn
+index d61d9b1..9979cef 100755
+--- a/js/builtin/filekit/BUILD.gn
++++ b/js/builtin/filekit/BUILD.gn
+@@ -13,9 +13,15 @@
+ # limitations under the License.
+ #
+ 
++import("//build/lite/config/component/lite_component.gni")
+ import("//build/lite/config/subsystem/aafwk/path.gni")
+ 
+-shared_library("ace_kit_file") {
++lite_library("ace_kit_file") {
++  if (ohos_kernel_type == "liteos_m") {
++    target_type = "static_library"
++  } else {
++    target_type = "shared_library"
++  }
+   sources = [
+     "src/nativeapi_fs.cpp",
+     "src/nativeapi_fs_impl.c",
+diff --git a/js/builtin/kvstorekit/BUILD.gn b/js/builtin/kvstorekit/BUILD.gn
+index ddea7a3..65cae60 100755
+--- a/js/builtin/kvstorekit/BUILD.gn
++++ b/js/builtin/kvstorekit/BUILD.gn
+@@ -13,9 +13,15 @@
+ # limitations under the License.
+ #
+ 
++import("//build/lite/config/component/lite_component.gni")
+ import("//build/lite/config/subsystem/aafwk/path.gni")
+ 
+-shared_library("ace_kit_kvstore") {
++lite_library("ace_kit_kvstore") {
++  if (ohos_kernel_type == "liteos_m") {
++    target_type = "static_library"
++  } else {
++    target_type = "shared_library"
++  }
+   sources = [
+     "src/nativeapi_kv.cpp",
+     "src/nativeapi_kv_impl.c",
+diff --git a/kal/timer/BUILD.gn b/kal/timer/BUILD.gn
+index 7b75e4c..8dacc97 100755
+--- a/kal/timer/BUILD.gn
++++ b/kal/timer/BUILD.gn
+@@ -11,7 +11,14 @@
+ # See the License for the specific language governing permissions and
+ # limitations under the License.
+ 
+-shared_library("kal_timer") {
++import("//build/lite/config/component/lite_component.gni")
++
++lite_library("kal_timer") {
++    if (ohos_kernel_type == "liteos_m") {
++        target_type = "static_library"
++    } else {
++        target_type = "shared_library"
++    }
+     sources = [
+         "src/kal.c",
+     ]
+diff --git a/kv_store/src/BUILD.gn b/kv_store/src/BUILD.gn
+index c2ce943..10fca70 100755
+--- a/kv_store/src/BUILD.gn
++++ b/kv_store/src/BUILD.gn
+@@ -11,15 +11,22 @@
+ # See the License for the specific language governing permissions and
+ # limitations under the License.
+ 
++declare_args() {
++  enable_ohos_utils_native_lite_kv_store_use_posix_kv_api = true
++}
++
+ if (ohos_kernel_type == "liteos_m") {
+   static_library("utils_kv_store") {
+-    sources = [
+-      "kvstore_common/kvstore_common.c",
+-      "kvstore_impl_hal/kv_store.c",
+-    ]
++    sources = [ "kvstore_common/kvstore_common.c" ]
++    if (enable_ohos_utils_native_lite_kv_store_use_posix_kv_api) {
++      sources += [ "kvstore_impl_posix/kv_store.c" ]
++    } else {
++      sources += [ "kvstore_impl_hal/kv_store.c" ]
++    }
+     include_dirs = [
+       "//utils/native/lite/include",
+       "kvstore_common",
++      "//utils/native/lite/kv_store/innerkits",
+     ]
+   }
+ } else {
+diff --git a/kv_store/src/kvstore_impl_hal/kv_store.c b/kv_store/src/kvstore_impl_hal/kv_store.c
+index 3d4985b..d3096b3 100755
+--- a/kv_store/src/kvstore_impl_hal/kv_store.c
++++ b/kv_store/src/kvstore_impl_hal/kv_store.c
+@@ -154,7 +154,8 @@ int UtilsDeleteValue(const char* key)
+ #endif
+     int ret = UtilsFileDelete(key);
+     if (ret == EC_SUCCESS) {
+-        ret = SetCurrentItem(GetCurrentItem() - 1);
++        if (GetCurrentItem() > 0)
++            ret = SetCurrentItem(GetCurrentItem() - 1);
+     }
+     return ret;
+ }
+@@ -164,4 +165,9 @@ int ClearKVCache(void)
+ {
+     return ClearKVCacheInner();
+ }
+-#endif
+\ No newline at end of file
++#endif
++
++int UtilsSetEnv(const char* path)
++{
++    return EC_SUCCESS;
++}
+\ No newline at end of file
+diff --git a/timer_task/BUILD.gn b/timer_task/BUILD.gn
+index 16e95ab..b0bed03 100755
+--- a/timer_task/BUILD.gn
++++ b/timer_task/BUILD.gn
+@@ -11,7 +11,14 @@
+ # See the License for the specific language governing permissions and
+ # limitations under the License.
+ 
+-shared_library("ace_kit_timer") {
++import("//build/lite/config/component/lite_component.gni")
++
++lite_library("ace_kit_timer") {
++    if (ohos_kernel_type == "liteos_m") {
++        target_type = "static_library"
++    } else {
++        target_type = "shared_library"
++    }
+     sources = [
+         "src/nativeapi_timer_task.c",
+     ]
+-- 
+2.17.1
+

@@ -1,40 +1,42 @@
 kernel/liteos_m:
-  - vendor/bestechnic/display_demo/patches/0001-fix-work-around-fs-for-arm-none-eabi.patch
+  - vendor/bestechnic/patches/0001-kernel-liteos_m.patch
 drivers/adapter:
-  - vendor/bestechnic/display_demo/patches/0001-feat-add-platform-drivers-options.patch
+  - vendor/bestechnic/patches/0001-drivers-adapter.patch
 third_party/musl:
-  - vendor/bestechnic/display_demo/patches/0001-fix-work-around-musl-for-arm-none-eabi.patch
+  - vendor/bestechnic/patches/0001-third_party-musl.patch
 foundation/graphic/ui:
-  - vendor/bestechnic/display_demo/patches/0001-feat-porting-graphic_ui-to-liteos_m.patch
+  - vendor/bestechnic/patches/0001-foundation-graphic-ui.patch
 foundation/graphic/utils:
-  - vendor/bestechnic/display_demo/patches/0001-feat-porting-graphic_utils-to-liteos_m.patch
+  - vendor/bestechnic/patches/0001-foundation-graphic-utils.patch
 third_party/giflib:
-  - vendor/bestechnic/display_demo/patches/0001-feat-build-libgif.a-for-liteos_m.patch
+  - vendor/bestechnic/patches/0001-third_party-giflib.patch
 third_party/libjpeg:
-  - vendor/bestechnic/display_demo/patches/0001-feat-build-libjpeg.a-for-liteos_m.patch
+  - vendor/bestechnic/patches/0001-third_party-libjpeg.patch
 third_party/libpng:
-  - vendor/bestechnic/display_demo/patches/0001-feat-build-libpng.a-for-liteos_m.patch
+  - vendor/bestechnic/patches/0001-third_party-libpng.patch
 third_party/qrcodegen:
-  - vendor/bestechnic/display_demo/patches/0001-feat-build-libqrcodegen.a-for-liteos_m.patch
+  - vendor/bestechnic/patches/0001-third_party-qrcodegen.patch
 third_party/jerryscript:
-  - vendor/bestechnic/display_demo/patches/0001-feat-build-jerryscript-for-liteos_m.patch
+  - vendor/bestechnic/patches/0001-third_party-jerryscript.patch
 third_party/mbedtls:
-  - vendor/bestechnic/display_demo/patches/mbedtls.patch
+  - vendor/bestechnic/patches/0001-third_party-mbedtls.patch
 foundation/ace/ace_engine_lite:
-  - vendor/bestechnic/display_demo/patches/0001-feat-porting-ace-to-liteos_m.patch
+  - vendor/bestechnic/patches/0001-foundation-ace-ace_engine_lite.patch
 foundation/aafwk/aafwk_lite:
-  - vendor/bestechnic/display_demo/patches/0001-feat-porting-aafwk-to-liteos_m.patch
+  - vendor/bestechnic/patches/0001-foundation-aafwk-aafwk_lite.patch
 foundation/distributedschedule/samgr_lite:
-  - vendor/bestechnic/display_demo/patches/0001-fix-increase-default-task-size.patch
+  - vendor/bestechnic/patches/0001-foundation-distributedschedule-samgr_lite.patch
 base/global/i18n_lite:
-  - vendor/bestechnic/display_demo/patches/0001-feat-build-libglobal_i18n.a-for-liteos_m.patch
+  - vendor/bestechnic/patches/0001-base-global-i18n_lite.patch
 base/global/resmgr_lite:
-  - vendor/bestechnic/display_demo/patches/0001-feat-build-libglobal_resmgr.a-for-liteos_m.patch
+  - vendor/bestechnic/patches/0001-base-global-resmgr_lite.patch
 build/lite:
-  - vendor/bestechnic/display_demo/patches/0001-feat-add-liteos_m-options.patch
+  - vendor/bestechnic/patches/0001-build-lite.patch
 utils/native/lite:
-  - vendor/bestechnic/display_demo/patches/0001-feat-build-utils-for-liteos_m.patch
+  - vendor/bestechnic/patches/0001-utils-native-lite.patch
 foundation/multimedia/media_lite:
-  - vendor/bestechnic/display_demo/patches/0001-feat-build-media_lite.patch
+  - vendor/bestechnic/patches/0001-foundation-multimedia-media_lite.patch
 foundation/multimedia/utils/lite:
-  - vendor/bestechnic/display_demo/patches/0001-feat-build-multimedia_utils.patch
+  - vendor/bestechnic/patches/0001-foundation-multimedia-utils-lite.patch
+third_party/lwip:
+  - vendor/bestechnic/patches/0001-third_party-lwip.patch

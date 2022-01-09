@@ -1,9 +1,10 @@
-From 2a7bd27ba5b0d14d91609fde52d626c5f4c2bdf3 Mon Sep 17 00:00:00 2001
-From: SimonLi <likailong@huawei.com>
-Date: Wed, 20 Oct 2021 00:14:51 +0800
-Subject: [PATCH] build: porting media_utils_lite to mini system
+From b83328ae1645d10b35c04d457118a8a041ba207c Mon Sep 17 00:00:00 2001
+From: yangjian <jianyang@bestechnic.com>
+Date: Sun, 9 Jan 2022 17:53:53 +0800
+Subject: [PATCH] foundation/multimedia/utils/lite/
 
-Signed-off-by: SimonLi <likailong@huawei.com>
+Signed-off-by: yangjian <jianyang@bestechnic.com>
+Change-Id: I40fd20a4adad012655910c898ec891d8dd459095
 ---
  BUILD.gn                 | 41 +++++++++++++++++++++++++++++-----------
  interfaces/kits/source.h |  6 ++++++

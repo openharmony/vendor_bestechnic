@@ -1,5 +1,18 @@
+From 95259a75db376ce9105907fc06996e69589b048c Mon Sep 17 00:00:00 2001
+From: yangjian <jianyang@bestechnic.com>
+Date: Sun, 9 Jan 2022 18:01:26 +0800
+Subject: [PATCH] third_party/mbedtls/
+
+Signed-off-by: yangjian <jianyang@bestechnic.com>
+Change-Id: I59a9ad57183cada9e8201254cf32ac7c3da535b7
+---
+ BUILD.gn                      |   2 +-
+ library/entropy_poll.c        |  25 ++++---
+ port/config/config_liteos_m.h | 120 +++++++++++++++++-----------------
+ 3 files changed, 77 insertions(+), 70 deletions(-)
+
 diff --git a/BUILD.gn b/BUILD.gn
-index 196197d..c4a2335 100755
+index 9ecb37a..6eb8472 100755
 --- a/BUILD.gn
 +++ b/BUILD.gn
 @@ -82,6 +82,7 @@ mbedtls_sources = [
@@ -10,7 +23,7 @@ index 196197d..c4a2335 100755
  ]
  
  if (defined(ohos_lite)) {
-@@ -158,7 +159,6 @@ if (defined(ohos_lite)) {
+@@ -167,7 +168,6 @@ if (defined(ohos_lite)) {
      }
  
      mbedtls_sources += [
@@ -19,10 +32,10 @@ index 196197d..c4a2335 100755
        "library/pkcs11.c",
        "library/ssl_cache.c",
 diff --git a/library/entropy_poll.c b/library/entropy_poll.c
-index d7062ea..f6722e3 100755
+index d7062ea..ef074a4 100755
 --- a/library/entropy_poll.c
 +++ b/library/entropy_poll.c
-@@ -185,18 +185,25 @@ int mbedtls_platform_entropy_poll( void *data,
+@@ -185,19 +185,24 @@ int mbedtls_platform_entropy_poll( void *data,
  #endif /* !MBEDTLS_NO_PLATFORM_ENTROPY */
  
  #if defined(MBEDTLS_TEST_NULL_ENTROPY)
@@ -31,15 +44,17 @@ index d7062ea..f6722e3 100755
  int mbedtls_null_entropy_poll( void *data,
                      unsigned char *output, size_t len, size_t *olen )
  {
-     ((void) data);
-     ((void) output);
+-    ((void) data);
+-    ((void) output);
 -    *olen = 0;
 -
 -    if( len < sizeof(unsigned char) )
 -        return( 0 );
 -
 -    *olen = sizeof(unsigned char);
-+    int ret;
+-
+-    return( 0 );
++    int ret = -1;
 +    uint32_t i;
 +
 +    len = len > HAL_TRNG_DATA_LEN ? HAL_TRNG_DATA_LEN : len;
@@ -49,11 +64,12 @@ index d7062ea..f6722e3 100755
 +            output[i] = rand() & 0xFF;
 +        }
 +    }
- 
++ 
 +    *olen = len;
-     return( 0 );
++     return 0;
  }
  #endif
+ 
 diff --git a/port/config/config_liteos_m.h b/port/config/config_liteos_m.h
 index 5cf2ea8..d2a1442 100755
 --- a/port/config/config_liteos_m.h
@@ -122,7 +138,7 @@ index 5cf2ea8..d2a1442 100755
   */
 -// #define MBEDTLS_KEY_EXCHANGE_DHE_PSK_ENABLED
 +#define MBEDTLS_KEY_EXCHANGE_DHE_PSK_ENABLED
-
+ 
  /**
   * \def MBEDTLS_KEY_EXCHANGE_ECDHE_PSK_ENABLED
 @@ -973,7 +973,7 @@
@@ -131,7 +147,7 @@ index 5cf2ea8..d2a1442 100755
   */
 -// #define MBEDTLS_KEY_EXCHANGE_ECDHE_PSK_ENABLED
 +#define MBEDTLS_KEY_EXCHANGE_ECDHE_PSK_ENABLED
-
+ 
  /**
   * \def MBEDTLS_KEY_EXCHANGE_RSA_PSK_ENABLED
 @@ -998,7 +998,7 @@
@@ -140,7 +156,7 @@ index 5cf2ea8..d2a1442 100755
   */
 -// #define MBEDTLS_KEY_EXCHANGE_RSA_PSK_ENABLED
 +#define MBEDTLS_KEY_EXCHANGE_RSA_PSK_ENABLED
-
+ 
  /**
   * \def MBEDTLS_KEY_EXCHANGE_RSA_ENABLED
 @@ -1026,7 +1026,7 @@
@@ -149,7 +165,7 @@ index 5cf2ea8..d2a1442 100755
   */
 -// #define MBEDTLS_KEY_EXCHANGE_RSA_ENABLED
 +#define MBEDTLS_KEY_EXCHANGE_RSA_ENABLED
-
+ 
  /**
   * \def MBEDTLS_KEY_EXCHANGE_DHE_RSA_ENABLED
 @@ -1059,7 +1059,7 @@
@@ -563,3 +579,6 @@ index 5cf2ea8..d2a1442 100755
  
  /**
   * Allow SHA-1 in the default TLS configuration for TLS 1.2 handshake
+-- 
+2.17.1
+

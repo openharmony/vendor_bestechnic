@@ -1,10 +1,10 @@
-From 9dab56955bf159ab64075dfd7ef48f03422798e2 Mon Sep 17 00:00:00 2001
-From: leihuang <leihuang@bestechnic.com>
-Date: Sun, 19 Sep 2021 14:24:37 +0800
-Subject: [PATCH] feat: build libglobal_i18n.a for liteos_m
+From 45be54faed54e389fd0ac467c38d50e7d0180327 Mon Sep 17 00:00:00 2001
+From: yangjian <jianyang@bestechnic.com>
+Date: Sun, 9 Jan 2022 17:43:36 +0800
+Subject: [PATCH] base/global/i18n_lite
 
-Signed-off-by: leihuang <leihuang@bestechnic.com>
-Change-Id: Id3a98aab7f6fb92a310dd8909b2eb541f5fc53a6
+Signed-off-by: yangjian <jianyang@bestechnic.com>
+Change-Id: I457b16d1d5ecb5ef888da2d5a917bb3a70b675b4
 ---
  frameworks/i18n/BUILD.gn | 25 ++++++++++++++++++-------
  1 file changed, 18 insertions(+), 7 deletions(-)

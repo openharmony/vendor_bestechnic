@@ -1,12 +1,12 @@
-From adbc852ed5f474b9dd7b4edb54b711bed5f3384c Mon Sep 17 00:00:00 2001
+From a3fc9c001ebf702cff66be7ee2f8955b309d6ad6 Mon Sep 17 00:00:00 2001
 From: yangjian <jianyang@bestechnic.com>
-Date: Sat, 25 Dec 2021 10:48:35 +0800
-Subject: [PATCH] third_party/musl
+Date: Sun, 9 Jan 2022 18:02:42 +0800
+Subject: [PATCH] third_party/musl/
 
 Signed-off-by: yangjian <jianyang@bestechnic.com>
-Change-Id: I2c517fc17401b3c9235f1979a476b1ad7b536794
+Change-Id: Ia36e38cc61a63c9bf7437477e913675623389058
 ---
- porting/liteos_m/kernel/BUILD.gn              | 23 ++---
+ porting/liteos_m/kernel/BUILD.gn              | 25 +++---
  porting/liteos_m/kernel/include/ctype.h       | 12 +++
  porting/liteos_m/kernel/include/stddef.h      | 13 +++
  porting/liteos_m/kernel/include/stdlib.h      |  2 +
@@ -25,31 +25,11 @@ Change-Id: I2c517fc17401b3c9235f1979a476b1ad7b536794
  porting/liteos_m/kernel/src/stdio/ftell.c     |  2 +-
  porting/liteos_m/kernel/src/stdio/fwrite.c    |  9 +-
  porting/liteos_m/kernel/src/string/strdup.c   |  7 +-
- 19 files changed, 187 insertions(+), 34 deletions(-)
- mode change 100644 => 100755 porting/liteos_m/kernel/BUILD.gn
- mode change 100644 => 100755 porting/liteos_m/kernel/include/ctype.h
- mode change 100644 => 100755 porting/liteos_m/kernel/include/stddef.h
- mode change 100644 => 100755 porting/liteos_m/kernel/include/stdlib.h
- mode change 100644 => 100755 porting/liteos_m/kernel/src/internal/stdio_impl.h
- create mode 100755 porting/liteos_m/kernel/src/misc/realpath.c
- mode change 100644 => 100755 porting/liteos_m/kernel/src/stdio/clearerr.c
- mode change 100644 => 100755 porting/liteos_m/kernel/src/stdio/fclose.c
- mode change 100644 => 100755 porting/liteos_m/kernel/src/stdio/feof.c
- mode change 100644 => 100755 porting/liteos_m/kernel/src/stdio/fflush.c
- mode change 100644 => 100755 porting/liteos_m/kernel/src/stdio/fgets.c
- mode change 100644 => 100755 porting/liteos_m/kernel/src/stdio/fileno.c
- mode change 100644 => 100755 porting/liteos_m/kernel/src/stdio/fopen.c
- mode change 100644 => 100755 porting/liteos_m/kernel/src/stdio/fputs.c
- mode change 100644 => 100755 porting/liteos_m/kernel/src/stdio/fread.c
- mode change 100644 => 100755 porting/liteos_m/kernel/src/stdio/fseek.c
- mode change 100644 => 100755 porting/liteos_m/kernel/src/stdio/ftell.c
- mode change 100644 => 100755 porting/liteos_m/kernel/src/stdio/fwrite.c
- mode change 100644 => 100755 porting/liteos_m/kernel/src/string/strdup.c
+ 19 files changed, 188 insertions(+), 35 deletions(-)
+ create mode 100644 porting/liteos_m/kernel/src/misc/realpath.c
 
 diff --git a/porting/liteos_m/kernel/BUILD.gn b/porting/liteos_m/kernel/BUILD.gn
-old mode 100644
-new mode 100755
-index 664f9493..658f9054
+index 664f9493..08c45be1 100644
 --- a/porting/liteos_m/kernel/BUILD.gn
 +++ b/porting/liteos_m/kernel/BUILD.gn
 @@ -58,10 +58,11 @@ static_library(libc) {
@@ -90,7 +70,8 @@ index 664f9493..658f9054
 -    #"src/stdlib/strtol.c",
 +    # "src/stdlib/strtol.c",
      "src/locale/iconv.c",
-     "src/stdio/ungetc.c",
+-    "src/stdio/ungetc.c",
++    # "src/stdio/ungetc.c",
      "src/stdlib/atol.c",
      "src/stdlib/atoll.c",
      "src/stdlib/bsearch.c",
@@ -110,9 +91,7 @@ index 664f9493..658f9054
      "src/string/strrchr.c",
      "src/string/strspn.c",
 diff --git a/porting/liteos_m/kernel/include/ctype.h b/porting/liteos_m/kernel/include/ctype.h
-old mode 100644
-new mode 100755
-index 61e826d0..05fe3b58
+index 61e826d0..05fe3b58 100644
 --- a/porting/liteos_m/kernel/include/ctype.h
 +++ b/porting/liteos_m/kernel/include/ctype.h
 @@ -66,6 +66,18 @@ int   toupper_l(int, locale_t);
@@ -135,9 +114,7 @@ index 61e826d0..05fe3b58
  #define _toupper(a) ((a)&0x5f)
  #define isascii(a) (0 ? isascii(a) : (unsigned)(a) < 128)
 diff --git a/porting/liteos_m/kernel/include/stddef.h b/porting/liteos_m/kernel/include/stddef.h
-old mode 100644
-new mode 100755
-index 27b5a9ad..dbc7b64e
+index 27b5a9ad..dbc7b64e 100644
 --- a/porting/liteos_m/kernel/include/stddef.h
 +++ b/porting/liteos_m/kernel/include/stddef.h
 @@ -17,9 +17,22 @@
@@ -164,9 +141,7 @@ index 27b5a9ad..dbc7b64e
  #define offsetof(type, member) __builtin_offsetof(type, member)
  #else
 diff --git a/porting/liteos_m/kernel/include/stdlib.h b/porting/liteos_m/kernel/include/stdlib.h
-old mode 100644
-new mode 100755
-index d292fb0a..e665d446
+index d292fb0a..e665d446 100644
 --- a/porting/liteos_m/kernel/include/stdlib.h
 +++ b/porting/liteos_m/kernel/include/stdlib.h
 @@ -63,6 +63,7 @@ int abs (int);
@@ -186,9 +161,7 @@ index d292fb0a..e665d446
  int mblen (const char *, size_t);
  int mbtowc (wchar_t *__restrict, const char *__restrict, size_t);
 diff --git a/porting/liteos_m/kernel/src/internal/stdio_impl.h b/porting/liteos_m/kernel/src/internal/stdio_impl.h
-old mode 100644
-new mode 100755
-index fa94606a..d5f8598c
+index fa94606a..d5f8598c 100644
 --- a/porting/liteos_m/kernel/src/internal/stdio_impl.h
 +++ b/porting/liteos_m/kernel/src/internal/stdio_impl.h
 @@ -6,6 +6,11 @@
@@ -204,7 +177,7 @@ index fa94606a..d5f8598c
  #define UNGET 8
  
 diff --git a/porting/liteos_m/kernel/src/misc/realpath.c b/porting/liteos_m/kernel/src/misc/realpath.c
-new file mode 100755
+new file mode 100644
 index 00000000..3a916b8b
 --- /dev/null
 +++ b/porting/liteos_m/kernel/src/misc/realpath.c
@@ -295,9 +268,7 @@ index 00000000..3a916b8b
 +    }
 +}
 diff --git a/porting/liteos_m/kernel/src/stdio/clearerr.c b/porting/liteos_m/kernel/src/stdio/clearerr.c
-old mode 100644
-new mode 100755
-index 3bf94d30..aaaaf83f
+index 3bf94d30..aaaaf83f 100644
 --- a/porting/liteos_m/kernel/src/stdio/clearerr.c
 +++ b/porting/liteos_m/kernel/src/stdio/clearerr.c
 @@ -1,10 +1,15 @@
@@ -319,9 +290,7 @@ index 3bf94d30..aaaaf83f
 +	__clearerr(f);
 +}
 diff --git a/porting/liteos_m/kernel/src/stdio/fclose.c b/porting/liteos_m/kernel/src/stdio/fclose.c
-old mode 100644
-new mode 100755
-index 9569c8ff..d6dfcadd
+index 9569c8ff..d6dfcadd 100644
 --- a/porting/liteos_m/kernel/src/stdio/fclose.c
 +++ b/porting/liteos_m/kernel/src/stdio/fclose.c
 @@ -38,7 +38,7 @@ int __fclose(FILE *f)
@@ -334,9 +303,7 @@ index 9569c8ff..d6dfcadd
      return __fclose(f);
  }
 diff --git a/porting/liteos_m/kernel/src/stdio/feof.c b/porting/liteos_m/kernel/src/stdio/feof.c
-old mode 100644
-new mode 100755
-index 56da6b91..fafaeb15
+index 56da6b91..fafaeb15 100644
 --- a/porting/liteos_m/kernel/src/stdio/feof.c
 +++ b/porting/liteos_m/kernel/src/stdio/feof.c
 @@ -2,7 +2,7 @@
@@ -362,9 +329,7 @@ index 56da6b91..fafaeb15
 +	return __feof(f);
 +}
 diff --git a/porting/liteos_m/kernel/src/stdio/fflush.c b/porting/liteos_m/kernel/src/stdio/fflush.c
-old mode 100644
-new mode 100755
-index f2164eec..71999bc0
+index f2164eec..71999bc0 100644
 --- a/porting/liteos_m/kernel/src/stdio/fflush.c
 +++ b/porting/liteos_m/kernel/src/stdio/fflush.c
 @@ -47,7 +47,7 @@ int __fflush(FILE *f)
@@ -377,9 +342,7 @@ index f2164eec..71999bc0
      return __fflush(f);
  }
 diff --git a/porting/liteos_m/kernel/src/stdio/fgets.c b/porting/liteos_m/kernel/src/stdio/fgets.c
-old mode 100644
-new mode 100755
-index d1109e75..26ef2b27
+index d1109e75..26ef2b27 100644
 --- a/porting/liteos_m/kernel/src/stdio/fgets.c
 +++ b/porting/liteos_m/kernel/src/stdio/fgets.c
 @@ -3,7 +3,7 @@
@@ -399,9 +362,7 @@ index d1109e75..26ef2b27
 \ No newline at end of file
 +}
 diff --git a/porting/liteos_m/kernel/src/stdio/fileno.c b/porting/liteos_m/kernel/src/stdio/fileno.c
-old mode 100644
-new mode 100755
-index e6e66908..5dee4215
+index e6e66908..5dee4215 100644
 --- a/porting/liteos_m/kernel/src/stdio/fileno.c
 +++ b/porting/liteos_m/kernel/src/stdio/fileno.c
 @@ -1,7 +1,7 @@
@@ -421,9 +382,7 @@ index e6e66908..5dee4215
 \ No newline at end of file
 +}
 diff --git a/porting/liteos_m/kernel/src/stdio/fopen.c b/porting/liteos_m/kernel/src/stdio/fopen.c
-old mode 100644
-new mode 100755
-index 56086846..c204270a
+index 56086846..c204270a 100644
 --- a/porting/liteos_m/kernel/src/stdio/fopen.c
 +++ b/porting/liteos_m/kernel/src/stdio/fopen.c
 @@ -5,7 +5,7 @@
@@ -447,9 +406,7 @@ index 56086846..c204270a
 +	return __fopen(filename, mode);
 +}
 diff --git a/porting/liteos_m/kernel/src/stdio/fputs.c b/porting/liteos_m/kernel/src/stdio/fputs.c
-old mode 100644
-new mode 100755
-index 1cf344f2..50b6efd4
+index 1cf344f2..50b6efd4 100644
 --- a/porting/liteos_m/kernel/src/stdio/fputs.c
 +++ b/porting/liteos_m/kernel/src/stdio/fputs.c
 @@ -1,10 +1,15 @@
@@ -471,9 +428,7 @@ index 1cf344f2..50b6efd4
 +	return __fputs(s, f);
 +}
 diff --git a/porting/liteos_m/kernel/src/stdio/fread.c b/porting/liteos_m/kernel/src/stdio/fread.c
-old mode 100644
-new mode 100755
-index a2116da6..858931a0
+index a2116da6..858931a0 100644
 --- a/porting/liteos_m/kernel/src/stdio/fread.c
 +++ b/porting/liteos_m/kernel/src/stdio/fread.c
 @@ -3,12 +3,12 @@
@@ -503,9 +458,7 @@ index a2116da6..858931a0
 +	return __fread(destv, size, nmemb, f);
 +}
 diff --git a/porting/liteos_m/kernel/src/stdio/fseek.c b/porting/liteos_m/kernel/src/stdio/fseek.c
-old mode 100644
-new mode 100755
-index 4731d8a0..0f10c2f6
+index 4731d8a0..0f10c2f6 100644
 --- a/porting/liteos_m/kernel/src/stdio/fseek.c
 +++ b/porting/liteos_m/kernel/src/stdio/fseek.c
 @@ -33,7 +33,7 @@ int __fseeko(FILE *f, off_t off, int whence)
@@ -518,9 +471,7 @@ index 4731d8a0..0f10c2f6
  	return __fseeko(f, off, whence);
  }
 diff --git a/porting/liteos_m/kernel/src/stdio/ftell.c b/porting/liteos_m/kernel/src/stdio/ftell.c
-old mode 100644
-new mode 100755
-index d15cc665..d899dcfd
+index d15cc665..d899dcfd 100644
 --- a/porting/liteos_m/kernel/src/stdio/ftell.c
 +++ b/porting/liteos_m/kernel/src/stdio/ftell.c
 @@ -26,7 +26,7 @@ off_t __ftello(FILE *f)
@@ -533,9 +484,7 @@ index d15cc665..d899dcfd
  	off_t pos = __ftello(f);
  	if (pos > LONG_MAX) {
 diff --git a/porting/liteos_m/kernel/src/stdio/fwrite.c b/porting/liteos_m/kernel/src/stdio/fwrite.c
-old mode 100644
-new mode 100755
-index 7a567b2c..5e3fb264
+index 7a567b2c..5e3fb264 100644
 --- a/porting/liteos_m/kernel/src/stdio/fwrite.c
 +++ b/porting/liteos_m/kernel/src/stdio/fwrite.c
 @@ -25,7 +25,7 @@ size_t __fwritex(const unsigned char *restrict s, size_t l, FILE *restrict f)
@@ -559,9 +508,7 @@ index 7a567b2c..5e3fb264
 +	return __fwrite(src, size, nmemb, f);
 +}
 diff --git a/porting/liteos_m/kernel/src/string/strdup.c b/porting/liteos_m/kernel/src/string/strdup.c
-old mode 100644
-new mode 100755
-index d4c27449..68682c8a
+index d4c27449..68682c8a 100644
 --- a/porting/liteos_m/kernel/src/string/strdup.c
 +++ b/porting/liteos_m/kernel/src/string/strdup.c
 @@ -1,7 +1,12 @@

@@ -1,10 +1,10 @@
-From 4ffb48040fade785b18a7471d1d88b62316d4aca Mon Sep 17 00:00:00 2001
+From 25b9538a41b79324851cf82e453e34c4eb000b9b Mon Sep 17 00:00:00 2001
 From: yangjian <jianyang@bestechnic.com>
-Date: Sat, 25 Dec 2021 10:06:57 +0800
-Subject: [PATCH] base/startup/syspara_lite
+Date: Sun, 9 Jan 2022 17:46:32 +0800
+Subject: [PATCH] base/startup/syspara_lite/
 
 Signed-off-by: yangjian <jianyang@bestechnic.com>
-Change-Id: I94ca2e52f7e9daad95783662c7b1960e82b488e7
+Change-Id: Ief5d48aca06ce64d0181e1a0c1649e2a44929732
 ---
  frameworks/parameter/config.gni                  |  2 ++
  frameworks/parameter/src/BUILD.gn                | 16 ++++++++++++----

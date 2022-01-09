@@ -1,10 +1,10 @@
-From 8e6f698c61bbb666250902c0e1f4137cb68eb670 Mon Sep 17 00:00:00 2001
-From: leihuang <leihuang@bestechnic.com>
-Date: Thu, 9 Sep 2021 10:18:27 +0800
-Subject: [PATCH] feat: build libgif.a for liteos_m
+From 38085ec76735631cb4b8e7c8c8a97a69db5b8cf5 Mon Sep 17 00:00:00 2001
+From: yangjian <jianyang@bestechnic.com>
+Date: Sun, 9 Jan 2022 17:57:33 +0800
+Subject: [PATCH] third_party/giflib/
 
-Signed-off-by: leihuang <leihuang@bestechnic.com>
-Change-Id: Ic0928f910ab9def12f9a89932876afae719865a2
+Signed-off-by: yangjian <jianyang@bestechnic.com>
+Change-Id: I8ed6c77ffa5f3ee4a3081fc2e63be169873fef7d
 ---
  BUILD.gn | 6 +++++-
  1 file changed, 5 insertions(+), 1 deletion(-)
