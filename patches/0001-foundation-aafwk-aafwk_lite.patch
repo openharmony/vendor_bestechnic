@@ -1,10 +1,10 @@
-From e2209882fc8ef378b6c1a898f383233b75ce6e0a Mon Sep 17 00:00:00 2001
-From: leihuang <leihuang@bestechnic.com>
-Date: Sun, 26 Sep 2021 02:22:53 +0800
-Subject: [PATCH] feat: porting aafwk to liteos_m
+From f4609b79b10672deb2241a8a8397c427a5d8dd05 Mon Sep 17 00:00:00 2001
+From: yangjian <jianyang@bestechnic.com>
+Date: Sun, 9 Jan 2022 17:48:50 +0800
+Subject: [PATCH] foundation/aafwk/aafwk_lite/
 
-Signed-off-by: leihuang <leihuang@bestechnic.com>
-Change-Id: Iaed93d2dc6564bb5dc26137ea9312ac6222ce705
+Signed-off-by: yangjian <jianyang@bestechnic.com>
+Change-Id: I9812ef812f1e8714c308838f9ccb79c0a1a10c0a
 ---
  frameworks/ability_lite/BUILD.gn              |  92 +++++++-----
  frameworks/abilitymgr_lite/BUILD.gn           |  56 +++++---

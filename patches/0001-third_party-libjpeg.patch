@@ -1,12 +1,10 @@
-From a37d27100005dba8de60aa6479241ddb8021d987 Mon Sep 17 00:00:00 2001
-From: leihuang <leihuang@bestechnic.com>
-Date: Wed, 8 Sep 2021 19:39:04 +0800
-Subject: [PATCH] feat: build libjpeg.a for liteos_m
+From 369ce647a3e614bc2d6d7c30f0d2d118956027a0 Mon Sep 17 00:00:00 2001
+From: yangjian <jianyang@bestechnic.com>
+Date: Sun, 9 Jan 2022 17:59:01 +0800
+Subject: [PATCH] third_party/libjpeg/
 
-fix: fix INT32 conflict with liteos_m
-
-Signed-off-by: leihuang <leihuang@bestechnic.com>
-Change-Id: I2f03a6479165d9b0982b93e6200a5437184e129c
+Signed-off-by: yangjian <jianyang@bestechnic.com>
+Change-Id: I191fd6e29effe2ebb7db89febafb9423e2806f38
 ---
  BUILD.gn   | 6 +++++-
  jmorecfg.h | 2 +-

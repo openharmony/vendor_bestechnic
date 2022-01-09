@@ -1,10 +1,10 @@
-From 57001837633e234583e35aa3953e745f1ba3d370 Mon Sep 17 00:00:00 2001
-From: leihuang <leihuang@bestechnic.com>
-Date: Sun, 19 Sep 2021 14:33:58 +0800
-Subject: [PATCH] feat: build jerryscript for liteos_m
+From c552b50021359f6526e2f6cf812dc9d00b777a9e Mon Sep 17 00:00:00 2001
+From: yangjian <jianyang@bestechnic.com>
+Date: Sun, 9 Jan 2022 17:58:17 +0800
+Subject: [PATCH] third_party/jerryscript/
 
-Signed-off-by: leihuang <leihuang@bestechnic.com>
-Change-Id: Ifdf9a33e8dcfe7db558a45f2d50d467246fced35
+Signed-off-by: yangjian <jianyang@bestechnic.com>
+Change-Id: I637a7938b065b347fbc79f78aca7cb57eb67e3ee
 ---
  jerry-core/BUILD.gn         | 14 +++++++-------
  jerry-ext/BUILD.gn          | 12 ++++++------

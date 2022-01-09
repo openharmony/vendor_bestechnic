@@ -1,16 +1,16 @@
-From 2466a1e8e3fbc6d699e1c64d3cca37d0c0a39e5a Mon Sep 17 00:00:00 2001
-From: leihuang <leihuang@bestechnic.com>
-Date: Thu, 9 Sep 2021 10:23:42 +0800
-Subject: [PATCH] feat: build libpng.a for liteos_m
+From 22a061ebf64f2738993c11f6ba8595231c388bfc Mon Sep 17 00:00:00 2001
+From: yangjian <jianyang@bestechnic.com>
+Date: Sun, 9 Jan 2022 17:59:56 +0800
+Subject: [PATCH] third_party/libpng/
 
-Signed-off-by: leihuang <leihuang@bestechnic.com>
-Change-Id: Ifd37e70e7f956f7d474e3b284bceaeeb81753c9a
+Signed-off-by: yangjian <jianyang@bestechnic.com>
+Change-Id: Ic08ed22d9dd3e0bf06b270b1c16905030cf4fd08
 ---
  BUILD.gn | 12 ++++++++----
  1 file changed, 8 insertions(+), 4 deletions(-)
 
 diff --git a/BUILD.gn b/BUILD.gn
-index 7035c41fd..f9f0c5910 100755
+index e986ee1b2..423ebeac5 100755
 --- a/BUILD.gn
 +++ b/BUILD.gn
 @@ -29,12 +29,16 @@ if (defined(ohos_lite)) {

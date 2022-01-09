@@ -1,8 +1,10 @@
-From 3718380744d314d2425606ba7e4ac88686e831d6 Mon Sep 17 00:00:00 2001
-From: l00349068 <l00349068@notesmail.huawei.com>
-Date: Fri, 29 Oct 2021 18:09:00 +0800
-Subject: [PATCH] disable audio
+From c80c96c7a1f61d095def1e07c64e76a8a13342f5 Mon Sep 17 00:00:00 2001
+From: yangjian <jianyang@bestechnic.com>
+Date: Sun, 9 Jan 2022 17:49:44 +0800
+Subject: [PATCH] foundation/ace/ace_engine_lite/
 
+Signed-off-by: yangjian <jianyang@bestechnic.com>
+Change-Id: I10de45cc42611fb342bf168fb2fe4aa508aebac7
 ---
  frameworks/BUILD.gn                           | 57 +++++++++++++------
  frameworks/common/BUILD.gn                    | 14 ++++-
@@ -380,5 +382,5 @@ index ef3d193..288a733
  #endif
  #include "ace_log.h"
 -- 
-2.18.0
+2.17.1
 

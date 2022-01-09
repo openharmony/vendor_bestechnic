@@ -1,10 +1,10 @@
-From c8ce9d9e008560e98b127763bfcc93b03e2a1adf Mon Sep 17 00:00:00 2001
-From: SimonLi <likailong@huawei.com>
-Date: Wed, 20 Oct 2021 00:34:34 +0800
-Subject: [PATCH] build: porting media_lite to mini system
+From dd9dd8649c74bcf6069c0f336608b091ea75c9d1 Mon Sep 17 00:00:00 2001
+From: yangjian <jianyang@bestechnic.com>
+Date: Sun, 9 Jan 2022 17:52:55 +0800
+Subject: [PATCH] foundation/multimedia/media_lite/
 
-Signed-off-by: SimonLi <likailong@huawei.com>
-Change-Id: Id5688c470da982af73c0610b0947df03e983aead
+Signed-off-by: yangjian <jianyang@bestechnic.com>
+Change-Id: I64ca72203795fc510b814aba0e26cdd436c007d5
 ---
  frameworks/player_lite/BUILD.gn               | 221 +++++++++-------
  .../buffersource/include/buffer_source.h      |   0
