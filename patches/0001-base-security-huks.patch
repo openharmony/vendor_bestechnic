@@ -1,10 +1,10 @@
-From 8c0f5f2974c5fd8aff752b2a9c7d32608f19e0ae Mon Sep 17 00:00:00 2001
+From a26ff91ec473074dec3b435e5087285517477282 Mon Sep 17 00:00:00 2001
 From: yangjian <jianyang@bestechnic.com>
-Date: Wed, 5 Jan 2022 10:32:09 +0800
-Subject: [PATCH] base/security/huks
+Date: Sun, 9 Jan 2022 17:45:40 +0800
+Subject: [PATCH] base/security/huks/
 
 Signed-off-by: yangjian <jianyang@bestechnic.com>
-Change-Id: I29563909a549a336edfa9ecb815bbd7b29f6708a
+Change-Id: I92b079f9448f66b1b20ea15099bf1b11390a9dc0
 ---
  .../huks_service/main/core/src/hks_client_service.c           | 4 ++--
  1 file changed, 2 insertions(+), 2 deletions(-)

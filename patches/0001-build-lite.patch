@@ -1,15 +1,10 @@
-From 3da5be7fe2b45c0460c46154d95428c0e740b818 Mon Sep 17 00:00:00 2001
-From: SimonLi <likailong@huawei.com>
-Date: Tue, 19 Oct 2021 15:55:30 +0800
-Subject: [PATCH] =?UTF-8?q?feat(patch):=20=E5=90=88=E5=B9=B6=E7=BB=84?=
- =?UTF-8?q?=E4=BB=B6=E9=85=8D=E7=BD=AEpatch=E5=92=8Cmultimedia=E7=9A=84pat?=
- =?UTF-8?q?ch?=
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+From 0945071182729aa92e09ee9a4d3c1935a8cde416 Mon Sep 17 00:00:00 2001
+From: yangjian <jianyang@bestechnic.com>
+Date: Sun, 9 Jan 2022 17:47:23 +0800
+Subject: [PATCH] build/lite/
 
-Signed-off-by: SimonLi <likailong@huawei.com>
-Change-Id: Ie4041299b39d29c9f46b27b512e9ed7decbf21fa
+Signed-off-by: yangjian <jianyang@bestechnic.com>
+Change-Id: Id33ba27b6960b3875a1223172762c98bf954520f
 ---
  components/aafwk.json                  |  1 +
  components/ace.json                    | 19 +++++++++----------
@@ -20,7 +15,7 @@ Change-Id: Ie4041299b39d29c9f46b27b512e9ed7decbf21fa
  components/vendor.json                 |  6 ++++++
  config/subsystem/multimedia/config.gni | 22 ++++++++++++++++++++++
  8 files changed, 52 insertions(+), 22 deletions(-)
- create mode 100755 config/subsystem/multimedia/config.gni
+ create mode 100644 config/subsystem/multimedia/config.gni
 
 diff --git a/components/aafwk.json b/components/aafwk.json
 index e71ad88..8ae543f 100755
@@ -222,8 +217,8 @@ index 4e5c4e9..d012f85 100755
    ]
  }
 diff --git a/config/subsystem/multimedia/config.gni b/config/subsystem/multimedia/config.gni
-new file mode 100755
-index 0000000..8825281
+new file mode 100644
+index 0000000..d7df134
 --- /dev/null
 +++ b/config/subsystem/multimedia/config.gni
 @@ -0,0 +1,22 @@
@@ -249,6 +244,7 @@ index 0000000..8825281
 +  enable_histreamer_plugin_file_source = true
 +  enable_histreamer_plugin_stream_source = true
 +}
+\ No newline at end of file
 -- 
 2.17.1
 

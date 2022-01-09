@@ -1,10 +1,10 @@
-From 82e06eea69b9843d958bacdfc00d5a843c5f0e50 Mon Sep 17 00:00:00 2001
+From 5e01d10a56449222edffbc35f35496b231c931e3 Mon Sep 17 00:00:00 2001
 From: yangjian <jianyang@bestechnic.com>
-Date: Wed, 29 Dec 2021 15:35:20 +0800
-Subject: [PATCH] test/xts/tools/lite
+Date: Sun, 9 Jan 2022 17:56:47 +0800
+Subject: [PATCH] test/xts/tools/lite/
 
 Signed-off-by: yangjian <jianyang@bestechnic.com>
-Change-Id: Id78ae0c00c909994a4db299792e12381f3a09a68
+Change-Id: Ied682310e14f2c4f28d35c5d2eedad8719e3ad0b
 ---
  hctest/BUILD.gn             | 9 +++++++++
  hctest/src/hctest.c         | 1 +

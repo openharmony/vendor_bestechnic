@@ -1,10 +1,10 @@
-From 8c8c81163e2419027f00c6a70d2b260e87593d45 Mon Sep 17 00:00:00 2001
-From: leihuang <leihuang@bestechnic.com>
-Date: Wed, 3 Nov 2021 19:43:13 +0800
-Subject: [PATCH] feat: porting graphic_utils to liteos_m
+From 289dfbc6ac5af6d7b53d7ad959efd90007add6b9 Mon Sep 17 00:00:00 2001
+From: yangjian <jianyang@bestechnic.com>
+Date: Sun, 9 Jan 2022 17:52:14 +0800
+Subject: [PATCH] foundation/graphic/utils/
 
-Signed-off-by: leihuang <leihuang@bestechnic.com>
-Change-Id: If9391145f7e39375d8c072262cd40c342f0530b9
+Signed-off-by: yangjian <jianyang@bestechnic.com>
+Change-Id: Ic12062ad17fb3cb5a5ade671f456c624908f1aa8
 ---
  BUILD.gn                              | 76 ++++++++++++++++-----------
  interfaces/innerkits/graphic_config.h | 34 ++++++++----

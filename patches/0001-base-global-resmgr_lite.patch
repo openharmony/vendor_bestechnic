@@ -1,10 +1,10 @@
-From 1719ea05f9e2734e7450bf4ec0e79fc612c71023 Mon Sep 17 00:00:00 2001
-From: leihuang <leihuang@bestechnic.com>
-Date: Sun, 19 Sep 2021 14:25:37 +0800
-Subject: [PATCH] feat: build libglobal_resmgr.a for liteos_m
+From 187af0f0d13eec9d70cbcd9fbf583c4bc96667a9 Mon Sep 17 00:00:00 2001
+From: yangjian <jianyang@bestechnic.com>
+Date: Sun, 9 Jan 2022 17:44:38 +0800
+Subject: [PATCH] base/global/resmgr_lite/
 
-Signed-off-by: leihuang <leihuang@bestechnic.com>
-Change-Id: Id3f3891622ec396332d26b4e0179c36813fbbc7f
+Signed-off-by: yangjian <jianyang@bestechnic.com>
+Change-Id: I888c44da40431e6396d311f647c992d156c4c909
 ---
  frameworks/resmgr_lite/BUILD.gn | 29 +++++++++++++++++++----------
  1 file changed, 19 insertions(+), 10 deletions(-)
