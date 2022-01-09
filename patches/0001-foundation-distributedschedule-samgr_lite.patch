@@ -1,15 +1,28 @@
-From 060cfb3c65e5ac654369953bfaf95e5d39a33efa Mon Sep 17 00:00:00 2001
-From: leihuang <leihuang@bestechnic.com>
-Date: Sun, 19 Sep 2021 14:32:25 +0800
-Subject: [PATCH] fix: increase default task size
+From 505d92a9880b536f32965e622853cbc0a17c8730 Mon Sep 17 00:00:00 2001
+From: yangjian <jianyang@bestechnic.com>
+Date: Sun, 9 Jan 2022 17:50:31 +0800
+Subject: [PATCH] foundation/distributedschedule/samgr_lite/
 
-Signed-off-by: leihuang <leihuang@bestechnic.com>
-Change-Id: Ibc7bd709fc5211117276e3a42aab8e8b76068352
+Signed-off-by: yangjian <jianyang@bestechnic.com>
+Change-Id: I598c9685af9f30f897fd98af9ccf710c982c1941
 ---
- samgr/BUILD.gn                  | 4 +---
- samgr/source/samgr_lite_inner.h | 2 +-
- 2 files changed, 2 insertions(+), 4 deletions(-)
+ communication/broadcast/source/broadcast_service.c | 2 +-
+ samgr/BUILD.gn                                     | 4 +---
+ samgr/source/samgr_lite_inner.h                    | 2 +-
+ 3 files changed, 3 insertions(+), 5 deletions(-)
 
+diff --git a/communication/broadcast/source/broadcast_service.c b/communication/broadcast/source/broadcast_service.c
+index 467126f..5de3e1f 100755
+--- a/communication/broadcast/source/broadcast_service.c
++++ b/communication/broadcast/source/broadcast_service.c
+@@ -66,6 +66,6 @@ static BOOL MessageHandle(Service *service, Request *request)
+ static TaskConfig GetTaskConfig(Service *service)
+ {
+     (void)service;
+-    TaskConfig config = {LEVEL_HIGH, PRI_ABOVE_NORMAL, 0x800, 40, SPECIFIED_TASK};
++    TaskConfig config = {LEVEL_HIGH, PRI_ABOVE_NORMAL, 0xF000, 40, SPECIFIED_TASK};
+     return config;
+ }
 diff --git a/samgr/BUILD.gn b/samgr/BUILD.gn
 index 351fb6f..c84fff0 100755
 --- a/samgr/BUILD.gn

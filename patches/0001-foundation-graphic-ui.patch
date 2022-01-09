@@ -1,9 +1,10 @@
-From 6b05369ba6d7991b5c46953c16cb16b3a3d85798 Mon Sep 17 00:00:00 2001
-From: SimonLi <likailong@huawei.com>
-Date: Fri, 29 Oct 2021 10:49:48 +0800
-Subject: [PATCH] foundation graphic ui porting
+From 259cdc6af64d4c6b55a53f2b2111af3b12a2ad40 Mon Sep 17 00:00:00 2001
+From: yangjian <jianyang@bestechnic.com>
+Date: Sun, 9 Jan 2022 17:51:13 +0800
+Subject: [PATCH] foundation/graphic/ui/
 
-Change-Id: Ia538ca25920bf0cab9d4ac1ddd628064c35cb7cb
+Signed-off-by: yangjian <jianyang@bestechnic.com>
+Change-Id: I94c6a1682c68a69eed7868b9bbea6286139145a2
 ---
  BUILD.gn                                   | 96 ++++++++++++++--------
  frameworks/common/image.cpp                |  2 +-
@@ -159,7 +160,7 @@ index e88e5fc..53fe26d 100755
  
      uint8_t pixelByteSize = DrawUtils::GetPxSizeByColorMode(ARGB8888) >> 3; // 3: Shift right 3 bits
 diff --git a/frameworks/components/root_view.cpp b/frameworks/components/root_view.cpp
-index 4615fb0..91d00ec 100755
+index d908b9f..91a4390 100755
 --- a/frameworks/components/root_view.cpp
 +++ b/frameworks/components/root_view.cpp
 @@ -529,9 +529,7 @@ void RootView::Render()

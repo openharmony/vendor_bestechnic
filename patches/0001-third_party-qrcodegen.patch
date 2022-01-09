@@ -1,10 +1,10 @@
-From 1ec373d6c1cb2221ce7460d034d6fdad0cdf3369 Mon Sep 17 00:00:00 2001
-From: leihuang <leihuang@bestechnic.com>
-Date: Thu, 9 Sep 2021 11:53:55 +0800
-Subject: [PATCH] feat: build libqrcodegen.a for liteos_m
+From 07acec4305e1a62da86d60b5725f87f07870ed09 Mon Sep 17 00:00:00 2001
+From: yangjian <jianyang@bestechnic.com>
+Date: Sun, 9 Jan 2022 18:40:02 +0800
+Subject: [PATCH] third_party/qrcodegen
 
-Signed-off-by: leihuang <leihuang@bestechnic.com>
-Change-Id: I47d2099d41e7acf314940e09d49f6242c6e673e7
+Signed-off-by: yangjian <jianyang@bestechnic.com>
+Change-Id: I9e1b79f901f1de20bdd772014d86e79b6d5518fa
 ---
  BUILD.gn | 12 +++++++-----
  1 file changed, 7 insertions(+), 5 deletions(-)

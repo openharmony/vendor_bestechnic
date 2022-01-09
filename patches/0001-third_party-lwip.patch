@@ -1,10 +1,10 @@
-From 728cac8045778fed95f3f4eb82a3f387e8cce664 Mon Sep 17 00:00:00 2001
-From: zetingxu <zetingxu@bestechnic.com>
-Date: Tue, 4 Jan 2022 17:20:02 +0800
-Subject: [PATCH] third_party lwip support dhcps
+From a3a325b79ed2b2c1f4129af1fed9a58c8bd86234 Mon Sep 17 00:00:00 2001
+From: yangjian <jianyang@bestechnic.com>
+Date: Sun, 9 Jan 2022 18:00:45 +0800
+Subject: [PATCH] third_party/lwip/
 
-Signed-off-by: zetingxu <zetingxu@bestechnic.com>
-Change-Id: Ic4427c579a36af7b2ce1f15d8b4c85edd7c58f4e
+Signed-off-by: yangjian <jianyang@bestechnic.com>
+Change-Id: Iba98d2028fbd3368e28688974425d4145ff92fd6
 ---
  src/include/lwip/priv/api_msg.h | 13 +++++++++++++
  1 file changed, 13 insertions(+)
