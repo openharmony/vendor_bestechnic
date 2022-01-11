@@ -16,7 +16,7 @@ declare_args() {
   bes_histreamer_test = false
   bes_ui_test = false
   bes_ability_test = true
-  bes_wifi_test = false
+  bes_wifi_test = true
 }
 
 static_library("example") {
@@ -27,9 +27,7 @@ static_library("example") {
   defines = []
   deps = [ "//base/hiviewdfx/hilog_lite/frameworks/featured:hilog_static" ]
 
-  include_dirs = [
-    "//utils/native/lite/include",
-  ]
+  include_dirs = [ "//utils/native/lite/include" ]
 
   if (bes_histreamer_test) {
     deps += [ "histreamer:histreamer_test" ]
