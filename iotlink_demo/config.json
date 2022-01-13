@@ -123,7 +123,10 @@
       "components": [
         {
           "component": "hilog_lite",
-          "optional": "true"
+          "optional": "true",
+          "features": [
+            "ohos_hiviewdfx_hiview_lite_hiview_service_stack_size = 61440"
+          ]
         }
       ]
     },
