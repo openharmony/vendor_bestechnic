@@ -17,6 +17,7 @@ declare_args() {
   bes_ui_test = false
   bes_ability_test = true
   bes_wifi_test = true
+  bes_rpc_test = false
 }
 
 static_library("example") {
@@ -53,5 +54,10 @@ static_library("example") {
   if (bes_wifi_test) {
     deps += [ "wifi:wifi_test" ]
     defines += [ "WIFI_TEST" ]
+  }
+
+  if (bes_rpc_test) {
+    deps += [ "rpc:rpc_test" ]
+    defines += [ "RPC_TEST" ]
   }
 }
