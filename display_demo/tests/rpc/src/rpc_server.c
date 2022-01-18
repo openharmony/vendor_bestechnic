@@ -30,6 +30,8 @@
 #define DEFAULT_THREAD_STACK_SIZE 10240
 #define TEST_DELAY_MILLISECONDS 20000
 #define TEST_SERVER_DELAY_MILLISECONDS 4000
+#define IPC_LENGTH 64
+#define IPC_LENGTH_LONG 128
 
 enum {
     OP_ADD = 1,
@@ -49,7 +51,6 @@ static int32_t RemoteRequestOne(uint32_t code, IpcIo *data, IpcIo *reply, Messag
             int32_t b;
             ReadInt32(data, &b);
             RPC_LOG_INFO("RemoteRequestOne add called a = %d, b = %d", a, b);
-            sleep(1);
             WriteInt32(reply, a + b);
             break;
         }
@@ -94,13 +95,20 @@ static void RpcServerMain(void)
     printf("RpcServerMain func %x\n", objectStubOne->func);
     sleep(1);
 
+    IpcIo data;
+    uint8_t tmpData[IPC_LENGTH_LONG];
+    IpcIoInit(&data, tmpData, IPC_LENGTH_LONG, 0);
     SvcIdentity svcOne = {
         .handle = -1,
         .token  = (uintptr_t)objectStubOne,
         .cookie = (uintptr_t)objectStubOne
     };
+    WriteUint32(&data, SAID);
+    WriteRemoteObject(&data, &svcOne);
+    data.bufferCur = data.bufferBase;
+    data.offsetsCur = data.offsetsBase;
 
-    if (AddRemoteSystemAbility(SAID, &svcOne) != ERR_NONE) {
+    if (AddRemoteSystemAbility(&data) != ERR_NONE) {
         RPC_LOG_INFO("AddRemoteSystemAbility failed");
         return;
     }
