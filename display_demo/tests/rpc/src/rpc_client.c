@@ -34,7 +34,8 @@
 #define NUMBER_A 12
 #define NUMBER_B 17
 
-static const uint32_t IPC_LENGTH = 64;
+#define IPC_LENGTH 64
+#define IPC_LENGTH_LONG 128
 
 enum {
     OP_ADD = 1,
@@ -47,11 +48,16 @@ static void RpcClientMain(void)
     osDelay(TEST_CLIENT_DELAY_MILLISECONDS);
     RPC_LOG_INFO("RpcClientMain start");
 
-    SvcIdentity svc;
-    if (GetRemoteSystemAbility(SAID, DEVICEID, &svc) != ERR_NONE) {
+    IpcIo reply;
+    uint8_t tmpData[IPC_LENGTH_LONG];
+    IpcIoInit(&reply, tmpData, IPC_LENGTH_LONG, 0);
+    if (GetRemoteSystemAbility(SAID, DEVICEID, &reply) != ERR_NONE) {
         RPC_LOG_INFO("GetRemoteSystemAbility failed");
         return;
     }
+
+    SvcIdentity svc;
+    ReadRemoteObject(&reply, &svc);
 
     IpcIo data2;
     uint8_t tmpData2[IPC_LENGTH];
