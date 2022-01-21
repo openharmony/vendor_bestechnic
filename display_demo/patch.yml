@@ -38,3 +38,5 @@ build/lite:
   - vendor/bestechnic/display_demo/patches/0001-feat-add-liteos_m-options.patch
 utils/native/lite:
   - vendor/bestechnic/display_demo/patches/0001-feat-build-utils-for-liteos_m.patch
+base/startup/syspara_lite:
+  - vendor/bestechnic/display_demo/patches/0001-base-startup-syspara_lite.patch
