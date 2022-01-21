@@ -1,10 +1,10 @@
-From 6810fc1168195db720b9187770e48157db016eae Mon Sep 17 00:00:00 2001
-From: leihuang <leihuang@bestechnic.com>
-Date: Sun, 19 Sep 2021 17:29:46 +0800
-Subject: [PATCH] feat: porting aafwk to liteos_m
+From 4fcdb5bb3c9253e87a1974d331931fb3673b70cb Mon Sep 17 00:00:00 2001
+From: yangjian <jianyang@bestechnic.com>
+Date: Fri, 21 Jan 2022 19:04:22 +0800
+Subject: [PATCH] feat porting aafwk to liteos_m
 
-Signed-off-by: leihuang <leihuang@bestechnic.com>
-Change-Id: I72c025d0215106d231ff35d58af3f8bca72b5dce
+Signed-off-by: yangjian <jianyang@bestechnic.com>
+Change-Id: I171313511dd417f0860ad934f95db58af9196b65
 ---
  frameworks/ability_lite/BUILD.gn              |  92 +++++++-----
  frameworks/abilitymgr_lite/BUILD.gn           |  56 +++++---
@@ -13,8 +13,8 @@ Change-Id: I72c025d0215106d231ff35d58af3f8bca72b5dce
  services/abilitymgr_lite/BUILD.gn             | 134 +++++++++++-------
  .../abilitymgr_lite/include/ability_record.h  |   2 +-
  .../src/ability_mgr_service.cpp               |  10 +-
- .../abilitymgr_lite/src/ability_service.cpp   |  20 ++-
- 8 files changed, 208 insertions(+), 126 deletions(-)
+ .../abilitymgr_lite/src/ability_service.cpp   |  24 +++-
+ 8 files changed, 210 insertions(+), 128 deletions(-)
  mode change 100644 => 100755 services/abilitymgr_lite/BUILD.gn
 
 diff --git a/frameworks/ability_lite/BUILD.gn b/frameworks/ability_lite/BUILD.gn
@@ -548,10 +548,10 @@ index ccac550..5a5cf73 100755
      if (request->msgId == START_ABILITY) {
          ret = AbilityService::GetInstance().StartAbility(AbilityService::GetInstance().want_);
 diff --git a/services/abilitymgr_lite/src/ability_service.cpp b/services/abilitymgr_lite/src/ability_service.cpp
-index 709d71e..ba53a91 100755
+index 5d832b7..2dbdb00 100755
 --- a/services/abilitymgr_lite/src/ability_service.cpp
 +++ b/services/abilitymgr_lite/src/ability_service.cpp
-@@ -95,6 +95,7 @@ int32_t AbilityService::StartAbility(const Want *want)
+@@ -96,6 +96,7 @@ int32_t AbilityService::StartAbility(const Want *want)
          info->path = nullptr;
      } else {
          // JS APP
@@ -559,7 +559,7 @@ index 709d71e..ba53a91 100755
          AbilityInfo abilityInfo = { nullptr, nullptr };
          QueryAbilityInfo(want, &abilityInfo);
          if ((abilityInfo.bundleName == nullptr) || (strlen(abilityInfo.bundleName) == 0) ||
-@@ -108,6 +109,11 @@ int32_t AbilityService::StartAbility(const Want *want)
+@@ -109,6 +110,11 @@ int32_t AbilityService::StartAbility(const Want *want)
          info->bundleName = OHOS::Utils::Strdup(abilityInfo.bundleName);
          info->path = OHOS::Utils::Strdup(abilityInfo.srcPath);
          ClearAbilityInfo(&abilityInfo);
@@ -571,7 +571,12 @@ index 709d71e..ba53a91 100755
      }
  
      info->data = OHOS::Utils::Memdup(want->data, want->dataLength);
-@@ -358,11 +364,15 @@ int32_t AbilityService::CreateAppTask(AbilityRecord *record)
+@@ -364,15 +370,19 @@ int32_t AbilityService::CreateAppTask(AbilityRecord *record)
+     record->SetMessageQueueId(jsAppQueueId);
+     record->SetJsAppHost(jsAppHost);
+ 
+-    LoadPermissions(record->GetAppName(), appTaskId);
++    // LoadPermissions(record->GetAppName(), appTaskId);
      record->SetState(SCHEDULE_INACTIVE);
      abilityStack_.PushAbility(record);
      APP_EVENT(MT_ACE_APP_START);
@@ -592,6 +597,15 @@ index 709d71e..ba53a91 100755
      }
      return ERR_OK;
  }
+@@ -395,7 +405,7 @@ void AbilityService::DeleteRecordInfo(uint16_t token)
+     if (token != LAUNCHER_TOKEN) {
+         if (record->IsAttached()) {
+             UINT32 taskId = record->GetTaskId();
+-            UnLoadPermissions(taskId);
++            // UnLoadPermissions(taskId);
+             LOS_TaskDelete(taskId);
+             osMessageQueueId_t jsAppQueueId = record->GetMessageQueueId();
+             osMessageQueueDelete(jsAppQueueId);
 -- 
 2.17.1
 
