@@ -1,21 +1,20 @@
-From 5bbed1e0a7e900affbce9bf0eb4631f847e7a0d8 Mon Sep 17 00:00:00 2001
-From: leihuang <leihuang@bestechnic.com>
-Date: Thu, 9 Sep 2021 10:29:20 +0800
-Subject: [PATCH] feat: porting graphic_ui to liteos_m
+From cb5d0cde1831ba249da9db2f477190d93a81a843 Mon Sep 17 00:00:00 2001
+From: yangjian <jianyang@bestechnic.com>
+Date: Fri, 21 Jan 2022 18:58:53 +0800
+Subject: [PATCH] feat porting graphic_ui to liteos_m
 
-Signed-off-by: leihuang <leihuang@bestechnic.com>
-Change-Id: Ife659a68175d112b381f175d7fea965a39a0e9a5
+Signed-off-by: yangjian <jianyang@bestechnic.com>
+Change-Id: I525737af64210bbf6f3398133f2ba719a1f83c54
 ---
- BUILD.gn                                   | 102 +++++++++++++--------
- frameworks/common/image.cpp                |   2 +-
- frameworks/components/root_view.cpp        |   1 +
- frameworks/components/ui_image_view.cpp    |  14 +--
- frameworks/dock/pointer_input_device.cpp   |   2 +-
- interfaces/kits/components/ui_image_view.h |   4 +-
- 6 files changed, 75 insertions(+), 50 deletions(-)
+ BUILD.gn                                   | 97 +++++++++++++---------
+ frameworks/common/image.cpp                |  2 +-
+ frameworks/components/ui_image_view.cpp    | 14 ++--
+ frameworks/dock/pointer_input_device.cpp   |  2 +-
+ interfaces/kits/components/ui_image_view.h |  4 +-
+ 5 files changed, 70 insertions(+), 49 deletions(-)
 
 diff --git a/BUILD.gn b/BUILD.gn
-index 20d81b0..6b26acc 100755
+index 20d81b0..98abf01 100755
 --- a/BUILD.gn
 +++ b/BUILD.gn
 @@ -28,22 +28,24 @@ config("graphic_define_config") {
@@ -56,7 +55,7 @@ index 20d81b0..6b26acc 100755
  }
  
  if (enable_graphic_font) {
-@@ -56,15 +58,15 @@ if (enable_graphic_font) {
+@@ -56,7 +58,7 @@ if (enable_graphic_font) {
    }
  }
  
@@ -65,32 +64,13 @@ index 20d81b0..6b26acc 100755
    sources = [
      "frameworks/animator/animator.cpp",
      "frameworks/animator/animator_manager.cpp",
-     "frameworks/animator/easing_equation.cpp",
-     "frameworks/animator/interpolation.cpp",
-     "frameworks/common/graphic_startup.cpp",
--    "frameworks/common/image_decode_ability.cpp",
-     "frameworks/common/image.cpp",
-+    "frameworks/common/image_decode_ability.cpp",
-     "frameworks/common/input_device_manager.cpp",
-     "frameworks/common/screen.cpp",
-     "frameworks/common/task.cpp",
-@@ -135,6 +137,8 @@ shared_library("ui") {
-     "frameworks/draw/draw_rect.cpp",
-     "frameworks/draw/draw_triangle.cpp",
-     "frameworks/draw/draw_utils.cpp",
-+    "frameworks/engines/gfx/gfx_engine_manager.cpp",
-+    "frameworks/engines/gfx/hi3516/hi3516_engine.cpp",
-     "frameworks/events/event.cpp",
-     "frameworks/font/base_font.cpp",
-     "frameworks/font/glyphs_manager.cpp",
-@@ -158,34 +162,55 @@ shared_library("ui") {
-     "frameworks/themes/theme_manager.cpp",
+@@ -159,35 +161,54 @@ shared_library("ui") {
      "frameworks/window/window.cpp",
      "frameworks/window/window_impl.cpp",
--    "frameworks/engines/gfx/gfx_engine_manager.cpp",
+     "frameworks/engines/gfx/gfx_engine_manager.cpp",
 -    "frameworks/engines/gfx/hi3516/hi3516_engine.cpp",
--  ]
--
+   ]
+ 
 -  include_dirs = [ "//foundation/graphic/ui/frameworks" ]
 -  deps = [
 -    "//build/lite/config/component/cJSON:cjson_shared",
@@ -104,8 +84,8 @@ index 20d81b0..6b26acc 100755
 -    "//third_party/libjpeg:libjpeg",
 -    "//third_party/libpng:libpng",
 -    "//third_party/qrcodegen:qrcodegen",
-   ]
- 
+-  ]
+-
 -  if (enable_video_component) {
 -    defines += [ "ENABLE_VIDEO_COMPONENT=1" ]
 -    source += [
@@ -116,23 +96,22 @@ index 20d81b0..6b26acc 100755
 +      "frameworks/components/ui_surface_view.cpp",
 +      "frameworks/dfx/ui_dump_dom_tree.cpp",
 +      "frameworks/dfx/ui_screenshot.cpp",
-+      "frameworks/engines/gfx/hi3516/hi3516_engine.cpp",
 +      "frameworks/window/window.cpp",
 +      "frameworks/window/window_impl.cpp",
      ]
+ 
+-    deps += [
+-      "//foundation/multimedia/media_lite/frameworks/player_lite:player_lite",
 +    deps = [
 +      "//build/lite/config/component/cJSON:cjson_static",
 +      "//third_party/bounds_checking_function:libsec_static",
 +      "//third_party/freetype:freetype",
 +      "//third_party/giflib:libgif",
- 
--    deps += [
--      "//foundation/multimedia/media_lite/frameworks/player_lite:player_lite",
-+      # "//third_party/icu/icu4c/source/common:icu_font",
 +      "//third_party/libjpeg:libjpeg",
 +      "//third_party/libpng:libpng",
 +      "//third_party/qrcodegen:qrcodegen",
-+    ]
+     ]
+-  }
 +  } else {
 +    target_type = "shared_library"
 +    deps = [
@@ -147,26 +126,28 @@ index 20d81b0..6b26acc 100755
 +      "//third_party/libjpeg:libjpeg",
 +      "//third_party/libpng:libpng",
 +      "//third_party/qrcodegen:qrcodegen",
-     ]
++    ]
 +
 +    if (enable_video_component) {
 +      defines += [ "ENABLE_VIDEO_COMPONENT=1" ]
 +      source += [ "frameworks/components/ui_video.cpp" ]
-+
+ 
 +      deps += [
 +        "//foundation/multimedia/media_lite/frameworks/player_lite:player_lite",
 +      ]
 +    }
 +
 +    ldflags = [ "-Wl,-rpath-link=$ohos_root_path/$root_out_dir" ]
-   }
- 
++  }
    public_deps = [ "//foundation/graphic/utils:lite_graphic_utils" ]
-@@ -195,5 +220,4 @@ shared_library("ui") {
+   public_configs = [ ":graphic_define_config" ]
+   cflags = [
+@@ -195,5 +216,5 @@ shared_library("ui") {
      "-fno-exceptions",
    ]
    cflags_cc = cflags
 -  ldflags = [ "-Wl,-rpath-link=$ohos_root_path/$root_out_dir" ]
++  # ldflags = [ "-Wl,-rpath-link=$ohos_root_path/$root_out_dir" ]
  }
 diff --git a/frameworks/common/image.cpp b/frameworks/common/image.cpp
 index e88e5fc..53fe26d 100755
@@ -181,20 +162,8 @@ index e88e5fc..53fe26d 100755
      jpeg_start_decompress(&cinfo);
  
      uint8_t pixelByteSize = DrawUtils::GetPxSizeByColorMode(ARGB8888) >> 3; // 3: Shift right 3 bits
-diff --git a/frameworks/components/root_view.cpp b/frameworks/components/root_view.cpp
-index fe1dedd..4e27119 100755
---- a/frameworks/components/root_view.cpp
-+++ b/frameworks/components/root_view.cpp
-@@ -487,6 +487,7 @@ void RootView::Render()
-         invalidateMap_.clear();
- #else
-     if (renderFlagTmp) {
-+        invalidRectTmp = GetScreenRect(); // draw all views, avoid fb memcpy
-         RenderManager::RenderRect(invalidRectTmp, this);
- #endif
- 
 diff --git a/frameworks/components/ui_image_view.cpp b/frameworks/components/ui_image_view.cpp
-index 565a9e8..1fcdcf1 100755
+index 565a9e8..2a5297a 100755
 --- a/frameworks/components/ui_image_view.cpp
 +++ b/frameworks/components/ui_image_view.cpp
 @@ -23,12 +23,12 @@
@@ -202,13 +171,13 @@ index 565a9e8..1fcdcf1 100755
  #include "gfx_utils/mem_api.h"
  #include "imgdecode/cache_manager.h"
 -#ifndef VERSION_LITE
-+#ifdef ENABLE_GIF
++#ifndef ENABLE_GIF
  #include "gif_lib.h"
  #endif
  
  namespace OHOS {
 -#ifndef VERSION_LITE
-+#ifdef ENABLE_GIF
++#ifndef ENABLE_GIF
  class GifImageAnimator : public Animator, public AnimatorCallback {
  public:
      GifImageAnimator(UIView* view, const char* src)
@@ -217,7 +186,7 @@ index 565a9e8..1fcdcf1 100755
  {
      style_ = &(StyleDefault::GetBackgroundTransparentStyle());
 -#ifndef VERSION_LITE
-+#ifdef ENABLE_GIF
++#ifndef ENABLE_GIF
      gifImageAnimator_ = nullptr;
      gifFrameFlag_ = false;
  #endif
@@ -226,7 +195,7 @@ index 565a9e8..1fcdcf1 100755
  UIImageView::~UIImageView()
  {
 -#ifndef VERSION_LITE
-+#ifdef ENABLE_GIF
++#ifndef ENABLE_GIF
      RemoveAndStopGifAnimator();
  #endif
  }
@@ -235,7 +204,7 @@ index 565a9e8..1fcdcf1 100755
  void UIImageView::SetSrc(const char* src)
  {
 -#ifndef VERSION_LITE
-+#ifdef ENABLE_GIF
++#ifndef ENABLE_GIF
      if (src == nullptr) {
          return;
      }
@@ -244,7 +213,7 @@ index 565a9e8..1fcdcf1 100755
  void UIImageView::SetSrc(const ImageInfo* src)
  {
 -#ifndef VERSION_LITE
-+#ifdef ENABLE_GIF
++#ifndef ENABLE_GIF
      if (!gifFrameFlag_ && (gifImageAnimator_ != nullptr)) {
          RemoveAndStopGifAnimator();
      }
@@ -253,15 +222,15 @@ index 565a9e8..1fcdcf1 100755
  }
  
 -#ifndef VERSION_LITE
-+#ifdef ENABLE_GIF
++#ifndef ENABLE_GIF
  void UIImageView::AddAndStartGifAnimator()
  {
      if (gifImageAnimator_ != nullptr) {
 diff --git a/frameworks/dock/pointer_input_device.cpp b/frameworks/dock/pointer_input_device.cpp
-index 3ebd8e7..9cf2f0f 100755
+index d6032a5..a12e900 100755
 --- a/frameworks/dock/pointer_input_device.cpp
 +++ b/frameworks/dock/pointer_input_device.cpp
-@@ -76,7 +76,7 @@ void PointerInputDevice::DispatchPressEvent(UIViewGroup* rootView)
+@@ -74,7 +74,7 @@ void PointerInputDevice::DispatchPressEvent(UIViewGroup* rootView)
      if (!pressState_) {
          rootView->GetTargetView(curPos_, &touchableView_, &targetView_);
          if (touchableView_ == nullptr) {
@@ -271,7 +240,7 @@ index 3ebd8e7..9cf2f0f 100755
          }
          draggableView_ = GetDraggableView(touchableView_);
 diff --git a/interfaces/kits/components/ui_image_view.h b/interfaces/kits/components/ui_image_view.h
-index 204f2a7..143b7fb 100755
+index 06b0766..5043f34 100755
 --- a/interfaces/kits/components/ui_image_view.h
 +++ b/interfaces/kits/components/ui_image_view.h
 @@ -38,7 +38,7 @@
@@ -279,16 +248,16 @@ index 204f2a7..143b7fb 100755
  #include "components/ui_view.h"
  #include "gfx_utils/graphic_types.h"
 -#ifndef VERSION_LITE
-+#ifdef ENABLE_GIF
++#ifndef ENABLE_GIF
  #include "animator/animator.h"
  #endif
  
-@@ -293,7 +293,7 @@ protected:
- 
+@@ -292,7 +292,7 @@ protected:
+     Image image_;
  private:
      void ReMeasure() override;
 -#ifndef VERSION_LITE
-+#ifdef ENABLE_GIF
++#ifndef ENABLE_GIF
      friend class GifImageAnimator;
      void AddAndStartGifAnimator();
      void RemoveAndStopGifAnimator();
