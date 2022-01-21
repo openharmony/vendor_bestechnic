@@ -1,0 +1,26 @@
+From d6729314a3f0a2002ca521f261d88e3aebd65e1d Mon Sep 17 00:00:00 2001
+From: yangjian <jianyang@bestechnic.com>
+Date: Fri, 21 Jan 2022 20:56:03 +0800
+Subject: [PATCH] base/startup/syspara_lite
+
+Signed-off-by: yangjian <jianyang@bestechnic.com>
+Change-Id: I9eff3305a33f4a7ab89374f7855fb9b6f40f0edd
+---
+ frameworks/parameter/src/BUILD.gn | 1 -
+ 1 file changed, 1 deletion(-)
+
+diff --git a/frameworks/parameter/src/BUILD.gn b/frameworks/parameter/src/BUILD.gn
+index 39a4403..10bb91b 100644
+--- a/frameworks/parameter/src/BUILD.gn
++++ b/frameworks/parameter/src/BUILD.gn
+@@ -32,7 +32,6 @@ if (ohos_kernel_type == "liteos_m") {
+       "BUILD_TIME=\"${ohos_build_time}\"",
+       "BUILD_HOST=\"${ohos_build_host}\"",
+       "BUILD_ROOTHASH=\"${ohos_build_roothash}\"",
+-      "USE_MBEDTLS",
+     ]
+   }
+ } else {
+-- 
+2.17.1
+
