@@ -186,6 +186,9 @@
           "optional": "true"
         },
         {
+          "component": "dsoftbus"
+        },
+        {
           "component": "rpc",
           "optional": "true"
         }
