@@ -17,6 +17,7 @@
 #include "ohos_init.h"
 #include "wifi_device.h"
 #include "wifi_error_code.h"
+#include "bwifi_interface.h"
 #include <stdlib.h>
 #include <string.h>
 
@@ -163,7 +164,7 @@ static void WifiSTATask(void)
     }
 }
 
-static void WifiClientSTA(void)
+void WifiClientSTA(void)
 {
     printf("[%s:%d]: %s\n", __FILE__, __LINE__, __func__);
 
@@ -179,6 +180,7 @@ static void WifiClientSTA(void)
     if (osThreadNew((osThreadFunc_t)WifiSTATask, NULL, &attr) == NULL) {
         printf("Falied to create WifiSTATask!\n");
     }
+    while (bwifi_get_current_status () != BWIFI_STATUS_GOT_IP) {
+        osDelay(200); // 200
+    }
 }
-
-APP_FEATURE_INIT(WifiClientSTA);
