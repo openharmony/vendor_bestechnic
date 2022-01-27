@@ -15,8 +15,11 @@
 #include "audio_player.h"
 #include "ohos_init.h"
 
+extern "C" void WifiClientSTA(void);
+
 void AppEntry(void)
 {
+    WifiClientSTA();
     AudioPlayerStart();
 }
 

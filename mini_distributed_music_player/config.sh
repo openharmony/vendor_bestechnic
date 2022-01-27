@@ -20,6 +20,7 @@ OPT_BEST2600W_LITEOS_A7=" \
 # == area config liteos main bin begin == #
 OPT_BEST2600W_LITEOS_MAIN=" \
 LIBC_INIT_AFTER_OS_INIT=1   \
+HISTREAMER_HTTP_EN=1        \
 "
 # == area config liteos main bin end   == #
 
