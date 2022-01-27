@@ -15,7 +15,7 @@ declare_args() {
   bes_histreamer_test = true
   bes_ui_test = false
   bes_ability_test = false
-  bes_wifi_test = false
+  bes_wifi_test = true
 }
 
 static_library("example") {
@@ -27,6 +27,7 @@ static_library("example") {
 
   if (bes_histreamer_test) {
     deps += [ "histreamer:histreamer_test" ]
+    deps += [ "//third_party/curl:libcurl_static" ]
     defines += [ "HISTREAMER_TEST" ]
   }
 
