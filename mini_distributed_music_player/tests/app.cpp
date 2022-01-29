@@ -12,15 +12,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include "audio_player.h"
+
+#include "ability_test.h"
 #include "ohos_init.h"
+#include "ui_main.h"
 
-extern "C" void WifiClientSTA(void);
+/* ui app entry */
+void RunApp() { StartJSApp(); }
 
-void AppEntry(void)
-{
-    WifiClientSTA();
-    AudioPlayerStart();
-}
+void AppEntry(void) { UiMain(); }
 
 APP_FEATURE_INIT(AppEntry);
