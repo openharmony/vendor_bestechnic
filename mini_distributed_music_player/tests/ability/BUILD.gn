@@ -12,10 +12,7 @@
 # limitations under the License.
 
 static_library("ability_test") {
-  sources = [
-    "ability_test.cpp",
-    "launcher.cpp",
-  ]
+  sources = [ "ability_test.cpp" ]
 
   public_deps = [
     "//base/hiviewdfx/hilog_lite/frameworks/featured:hilog_static",

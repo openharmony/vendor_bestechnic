@@ -12,29 +12,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include <ability_info.h>
-#include <ability_manager.h>
-#include <element_name.h>
-#include <module_info.h>
-#include <want.h>
-#include "launcher.h"
 #include "ability_test.h"
 
-#define LAUNCHER_BUNDLE_NAME "com.huawei.launcher"
-#define JS_BUNDLE_NAME "com.app.example"
-#define JS_APP_PATH "/data/panel" // "/data/js"
+#include <cstring>
 
-void StartLauncherApp()
-{
-    InstallLauncher();
-    Want want = {nullptr};
-    ElementName element = {nullptr};
-    SetElementBundleName(&element, LAUNCHER_BUNDLE_NAME);
-    SetWantElement(&want, element);
-    StartAbility(&want);
-    ClearElement(&element);
-    ClearWant(&want);
-}
+#include "ability_info.h"
+#include "ability_manager.h"
+#include "element_name.h"
+#include "module_info.h"
+#include "want.h"
+
+#define LAUNCHER_BUNDLE_NAME "com.huawei.launcher"
+#define JS_BUNDLE_NAME "com.app.music_player"
+#define JS_APP_PATH "/data/player" // "/data/js"
+
 
 void StartJSApp()
 {

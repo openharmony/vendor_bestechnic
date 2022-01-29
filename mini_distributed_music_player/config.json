@@ -116,7 +116,6 @@
             "multimedia_histreamer_enable_plugin_hdi_adapter = true",
             "multimedia_histreamer_enable_plugin_minimp3_adapter = true",
             "multimedia_histreamer_enable_plugin_ffmpeg_adapter = false",
-            "multimedia_histreamer_enable_plugin_http_lite_source = true",
             "config_ohos_multimedia_histreamer_stack_size = 65536"
           ]
         }
