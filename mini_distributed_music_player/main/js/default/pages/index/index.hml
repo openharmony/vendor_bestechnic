@@ -1,0 +1,67 @@
+<!--
+Copyright (c) 2020 Huawei Device Co., Ltd.
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+-->
+
+<stack class="container" onswipe="swipeEvent">
+<!--    <div class="main" onclick="changePage('close')">-->
+    <div class="main">
+        <div class="header">
+<!--            <image class="back" onclick="exitApp" src="common/ic_back.png"></image>-->
+            <text class="title">音乐播放器</text>
+        </div>
+        <div class="body">
+
+            <div class="musicWrapper">
+                <div class="disc-wrapper">
+                    <image class="disc" src="{{disImage}}"></image>
+                </div>
+
+                <div class="music">
+                    <marquee class="musicName" scrollamount="15">{{curMusic.curMusicName}}</marquee>
+                    <marquee class="singer" scrollamount="15">{{curMusic.singer}}</marquee>
+                </div>
+                
+            </div>
+            <div class="progress-Wrapper">
+                <text class="playTime">{{curMusic.playTime}}</text>
+                <slider class="progressBar" min="0" max="100" value="{{playProgress}}"
+                        onchange="changeProgress"></slider>
+                <text class="allTime">{{curMusic.allTime}}</text>
+            </div>
+        </div>
+        <div class="footer">
+            <div class="controlBar">
+                <image class="modeBtn"  onclick="changeMode" src="{{modeImage}}"></image>
+                <image class="previousBtn" onclick="changeSong('previous')"  src="common/ic_music_previous.png"></image>
+                <image class="playBtn" onclick="playMusic" src="{{playImage}}"></image>
+                <image class="nextBtn" onclick="changeSong('next')" src="common/ic_music_next.png"></image>
+                <image class="listBtn" onclick="changePage" src="common/ic_music_list.png"></image>
+            </div> 
+        </div>
+        
+    </div>
+    <div show="{{showMusicList}}" class="list-Wrapper">
+        <text class="listText">播放列表</text>
+        <list  class="musicList" ref="musicList">
+            <list-item class="listItem" onclick="clickListItem($idx)" for="{{musicList}}">
+                <div class="space-Wrapper">
+                <div class="itemWrapper">
+                    <text class="itemName">{{$item.name}}</text>
+                    <text class="itemSinger">{{$item.singer}}</text>
+                </div>
+                </div>
+            </list-item>>
+        </list>
+    </div>
+</stack>
