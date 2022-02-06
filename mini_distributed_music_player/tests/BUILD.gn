@@ -12,10 +12,10 @@
 # limitations under the License.
 
 declare_args() {
-  bes_histreamer_test = true
+  bes_histreamer_test = false
   bes_ui_test = false
-  bes_ability_test = false
-  bes_wifi_test = true
+  bes_ability_test = true
+  bes_wifi_test = false
 }
 
 static_library("example") {
@@ -27,19 +27,12 @@ static_library("example") {
 
   if (bes_histreamer_test) {
     deps += [ "histreamer:histreamer_test" ]
-    deps += [ "//third_party/curl:libcurl_static" ]
     defines += [ "HISTREAMER_TEST" ]
   }
 
-  if (bes_ui_test) {
-    deps += [ "ui:ui_test" ]
-    defines += [ "UI_TEST" ]
-    include_dirs += [ "ui" ]
-  } else if (bes_ability_test) {
-    deps += [ "ability:ability_test" ]
-    defines += [ "ABILITY_TEST" ]
-    include_dirs += [ "ability" ]
-  }
+  deps += [ "ability:ability_test" ]
+  defines += [ "ABILITY_TEST" ]
+  include_dirs += [ "ability" ]
 
   if (bes_wifi_test) {
     deps += [ "wifi:wifi_test" ]

@@ -104,6 +104,8 @@
 #define FEATURE_MODULE_STORAGE 1
 
 #define FEATURE_MODULE_DEVICE 1
+
+#define FEATURE_MODULE_AUDIO 1
 /**
  * support js profiler
  */
