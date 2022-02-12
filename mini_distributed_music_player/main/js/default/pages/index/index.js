@@ -232,7 +232,7 @@ export default {
             console.log("start exit");
             this.exitApp();
         }
-   },
+    },
     getMusicList(){
         let that = this;
         //get all music file
