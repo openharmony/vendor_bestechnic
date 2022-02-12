@@ -11,31 +11,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-declare_args() {
-  bes_histreamer_test = false
-  bes_ui_test = false
-  bes_ability_test = true
-}
-
-static_library("example") {
-  sources = [ "app.cpp" ]
-  defines = []
-  deps = [ "//base/hiviewdfx/hilog_lite/frameworks/featured:hilog_static" ]
-
+static_library("dsoftbus_test") {
+  sources = [ "main.c" ]
   include_dirs = [ "//utils/native/lite/include" ]
-
-  if (bes_histreamer_test) {
-    deps += [ "histreamer:histreamer_test" ]
-    defines += [ "HISTREAMER_TEST" ]
-  }
-
-  deps += [ "ability:ability_test" ]
-  defines += [ "ABILITY_TEST" ]
-  include_dirs += [ "ability" ]
-
-  deps += [
-    "dsoftbus:dsoftbus_test",
-    "rpc:rpc_test",
-    "wifi:wifi_test",
-  ]
+  deps = [ "//kernel/liteos_m/components/net" ]
 }

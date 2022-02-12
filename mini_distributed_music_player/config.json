@@ -20,6 +20,9 @@
         "abilityms",
         "bundlems",
         "example",
+        "wifi_test",
+        "rpc_test",
+        "dsoftbus_test",
         "kernel"
       ]
     },
@@ -195,6 +198,9 @@
         {
           "component": "wifi_lite",
           "optional": "true"
+        },
+        {
+          "component": "dsoftbus"
         },
         {
           "component": "rpc",
