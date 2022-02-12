@@ -30,6 +30,7 @@
             <filefilter name="defaultFilter" desc="ARM Limited appache2">
                 <filteritem type="filepath" name="display_demo/config.json" desc="ARM limits license"/>
                 <filteritem type="filepath" name="iotlink_demo/config.json" desc="ARM limits license"/>
+                <filteritem type="filepath" name="mini_distributed_music_player/fs/data/data/data/dsoftbus/placeholder" desc="littlefs file placeholder"/>
                 <filteritem type="filepath" name="display_demo/fs/data/data/data/dsoftbus/placeholder" desc="littlefs file placeholder"/>
                 <filteritem type="filepath" name="xts_demo/config.json" desc="ARM limits license"/>
                 <filteritem type="filepath" name="display_demo/fs/data/data/font.ttf" desc="fs file"/>
