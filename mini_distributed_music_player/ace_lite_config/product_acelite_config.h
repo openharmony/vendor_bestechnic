@@ -22,6 +22,11 @@
 #define OHOS_ACELITE_PRODUCT_WATCH 1
 
 /**
+ * enable dm
+ */
+#define ENABLE_MODULE_DM_LITE 1
+
+/**
  * enable Canvas component Feature API on ipcamera real devices
  */
 #define FEATURE_COMPONENT_CANVAS 1
