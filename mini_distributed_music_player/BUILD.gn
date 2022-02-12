@@ -12,5 +12,8 @@
 # limitations under the License.
 
 group("mini_distributed_music_player") {
-  deps = [ "tests:example" ]
+  deps = [
+    "tests:example",
+    "tests/devicemanager",
+  ]
 }
