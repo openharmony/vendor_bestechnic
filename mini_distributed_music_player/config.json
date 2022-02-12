@@ -22,6 +22,10 @@
         "example",
         "wifi_test",
         "rpc_test",
+        "devicemanager_native_js",
+        "devicemanagersdk_mini",
+        "devicemanagerservice_mini",
+        "devicemanagerutils_mini",
         "dsoftbus_test",
         "kernel"
       ]
