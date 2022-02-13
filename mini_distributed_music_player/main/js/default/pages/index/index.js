@@ -14,6 +14,7 @@
  */
 
 // @ts-ignore
+import router from '@system.router'
 import audio from '@system.audio'
 import file from '@system.file'
 import app from '@system.app'
@@ -249,6 +250,11 @@ export default {
             fail(data,code){
                 console.log("get music list failed :"+code);
             }
+        });
+    },
+    openDailog(){
+        router.replace({
+            uri:"pages/dmstep6/dmstep6"
         });
     }
 }

@@ -17,7 +17,7 @@ limitations under the License.
 <!--    <div class="main" onclick="changePage('close')">-->
     <div class="main">
         <div class="header">
-<!--            <image class="back" onclick="exitApp" src="common/ic_back.png"></image>-->
+            <image class="back" onclick="exitApp" src="common/ic_back.png"></image>
             <text class="title">音乐播放器</text>
         </div>
         <div class="body">
@@ -31,7 +31,7 @@ limitations under the License.
                     <marquee class="musicName" scrollamount="15">{{curMusic.curMusicName}}</marquee>
                     <marquee class="singer" scrollamount="15">{{curMusic.singer}}</marquee>
                 </div>
-                
+
             </div>
             <div class="progress-Wrapper">
                 <text class="playTime">{{curMusic.playTime}}</text>
@@ -43,23 +43,24 @@ limitations under the License.
         <div class="footer">
             <div class="controlBar">
                 <image class="modeBtn"  onclick="changeMode" src="{{modeImage}}"></image>
+                <image class="MDBtn"  onclick="openDailog"  src="common/ic_music_share.png"></image>
                 <image class="previousBtn" onclick="changeSong('previous')"  src="common/ic_music_previous.png"></image>
                 <image class="playBtn" onclick="playMusic" src="{{playImage}}"></image>
                 <image class="nextBtn" onclick="changeSong('next')" src="common/ic_music_next.png"></image>
                 <image class="listBtn" onclick="changePage" src="common/ic_music_list.png"></image>
-            </div> 
+            </div>
         </div>
-        
+
     </div>
     <div show="{{showMusicList}}" class="list-Wrapper">
         <text class="listText">播放列表</text>
         <list  class="musicList" ref="musicList">
             <list-item class="listItem" onclick="clickListItem($idx)" for="{{musicList}}">
                 <div class="space-Wrapper">
-                <div class="itemWrapper">
-                    <text class="itemName">{{$item.name}}</text>
-                    <text class="itemSinger">{{$item.singer}}</text>
-                </div>
+                    <div class="itemWrapper">
+                        <text class="itemName">{{$item.name}}</text>
+                        <text class="itemSinger">{{$item.singer}}</text>
+                    </div>
                 </div>
             </list-item>>
         </list>
