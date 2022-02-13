@@ -32,7 +32,7 @@
 #include "iproxy_client.h"
 
 #define SAID 16
-#define DEVICEID "192.168.137.171"
+#define DEVICEID "192.168.137.217"
 #define DEFAULT_THREAD_STACK_SIZE 10240
 #define TEST_DELAY_MILLISECONDS 20000
 #define TEST_CLIENT_DELAY_MILLISECONDS 10000
@@ -57,7 +57,7 @@ static void RpcClientMain(void)
     static IClientProxy *hiviewInfterface = NULL;
 
     if (hiviewInfterface == NULL) {
-        IUnknown *hiviewDefApi = SAMGR_GetInstance()->GetRemoteDefaultFeatureApi(DEVICEID, "hiview");
+        IUnknown *hiviewDefApi = SAMGR_GetInstance()->GetRemoteDefaultFeatureApi(DEVICEID, "mini_sa_rpc");
         if (hiviewDefApi == NULL) {
             printf("[%s:%d]: %s\n", __FILE__, __LINE__, __func__);
             return;
@@ -68,7 +68,9 @@ static void RpcClientMain(void)
     IpcIo reply2;
     uint8_t tmpData2[IPC_LENGTH];
     IpcIoInit(&reply2, tmpData2, IPC_LENGTH, 0);
+    WriteInt32(&reply2, 32);
     hiviewInfterface->Invoke(hiviewInfterface, 1, &reply2, NULL, NULL);
+
     printf("[%s:%d]: %s\n", __FILE__, __LINE__, __func__);
     printf("RpcClientTest\n");
     return;

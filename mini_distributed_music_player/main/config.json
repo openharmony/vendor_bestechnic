@@ -29,7 +29,8 @@
     "js": [
       {
         "pages": [
-          "pages/index/index"
+          "pages/index/index",
+          "pages/dm/dmstep"
         ],
         "name": "default"
       }
