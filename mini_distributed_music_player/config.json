@@ -22,6 +22,7 @@
         "example",
         "wifi_test",
         "rpc_test",
+        "mini_sa",
         "devicemanager_native_js",
         "devicemanagersdk_mini",
         "devicemanagerservice_mini",
@@ -191,7 +192,8 @@
         {
           "component": "samgr_lite",
           "features": [
-            "config_ohos_distributedschedule_samgr_lite_shared_task_size = 4096"
+            "config_ohos_distributedschedule_samgr_lite_shared_task_size = 4096",
+            "enable_ohos_distributedschedule_samgr_lite_rpc_mini = true"
           ]
         }
       ]
