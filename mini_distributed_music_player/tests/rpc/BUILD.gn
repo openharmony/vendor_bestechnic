@@ -19,6 +19,7 @@ static_library("rpc_test") {
     "src/rpc_server.c",
   ]
   cflags = [ "-Wno-unused-variable" ]
+  defines = [ "MINI_SAMGR_LITE_RPC" ]
   ldflags = [ "-lpthread" ]
   include_dirs = [
     "//utils/native/lite/include",

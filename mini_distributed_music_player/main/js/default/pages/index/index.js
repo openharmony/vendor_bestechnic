@@ -46,6 +46,13 @@ export default {
             this.curMusic.allTime = this.timeChange(audio.duration);
             this.playStatus = 0;
         };
+
+        audio.onCallback((data) => {
+            console.log(JSON.stringify(data));
+            this.playMusic()
+            this.changeProgress(data)
+        });
+
         //update play progress
         audio.ontimeupdate = () => {
             if (audio.duration == null || audio.duration <= 0) {
@@ -109,7 +116,7 @@ export default {
         audio.currentTime = val;
         console.log("changeProgress end:");
     },
-    playMusic() {
+     playMusic() {
         console.log("playMusic:start");
         //play music when is paused
         this.playImage = "common/ic_music_pause.png";
@@ -209,6 +216,20 @@ export default {
         console.log("timeChange:end:" + result);
         return result;
     },
+    playRemote(progress) {
+        if (this.playStatus == 0) { // play
+            this.playImage = "common/ic_music_play.png";
+            audio.pause();
+            this.playStatus = 1;
+            console.log("playMusic:pause");
+        } else if (this.playStatus == 1) { // pause
+        } else { // init
+            this.playProgress = 0
+        }
+        console.log("play remote progress: " + this.playProgress)
+
+        audio.playRemote(this.playProgress)
+    },
     changePage(operation) {
         console.log("changePage:start");
         if (operation != null && operation == "close") {
@@ -254,7 +275,7 @@ export default {
     },
     openDailog(){
         router.replace({
-            uri:"pages/dmstep6/dmstep6"
+            uri:"pages/dm/dmstep"
         });
     }
 }
