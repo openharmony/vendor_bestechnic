@@ -20,8 +20,6 @@
 #include "lwip/tcpip.h"
 #include "lwip/netif.h"
 
-#define LWIP_NSC_IPSTATUS_CHANGE          0xf0
-
 static void DSoftBus(void)
 {
     printf("[%s:%d]: %s\n", __FILE__, __LINE__, __func__);
@@ -41,29 +39,4 @@ static void DSoftBus(void)
     }
 }
 
-static void DSoftBusWifiDHCPSucCB(struct netif *netif, netif_nsc_reason_t reason,
-                                  const netif_ext_callback_args_t *args)
-{
-    printf("%s %d\n", __FUNCTION__, __LINE__);
-    (void) args;
-    if (netif == NULL) {
-        printf("%s %d, error: input netif is NULL!\n", __FUNCTION__, __LINE__);
-        return;
-    }
-    if (reason == LWIP_NSC_IPSTATUS_CHANGE) {
-        printf("%s %d\n", __FUNCTION__, __LINE__);
-        if (netif_is_up(netif) && !ip_addr_isany(&netif->ip_addr)) {
-            printf("%s %d\n", __FUNCTION__, __LINE__);
-            DSoftBus();
-        }
-    }
-}
-
-static void WifiDHCPDSoftBusCB(void)
-{
-    printf("%s %d\n", __FUNCTION__, __LINE__);
-    NETIF_DECLARE_EXT_CALLBACK(WifiReadyDSoftBusCallback);
-    netif_add_ext_callback(&WifiReadyDSoftBusCallback, DSoftBusWifiDHCPSucCB);
-}
-
-APP_FEATURE_INIT(WifiDHCPDSoftBusCB);
+APP_FEATURE_INIT(DSoftBus);
