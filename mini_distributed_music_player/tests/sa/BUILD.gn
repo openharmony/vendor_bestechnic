@@ -21,5 +21,8 @@ static_library("mini_sa") {
   cflags = [ "-Wall" ]
 
   public_configs = [ ":mini_sa_config" ]
-  deps = [ "//foundation/distributedschedule/samgr_lite/samgr" ]
+  deps = [
+    "//foundation/communication/ipc/interfaces/innerkits/c/dbinder:dbinder",
+    "//foundation/distributedschedule/samgr_lite/samgr",
+  ]
 }
