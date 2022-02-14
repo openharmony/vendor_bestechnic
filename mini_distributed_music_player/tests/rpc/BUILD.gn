@@ -33,4 +33,5 @@ static_library("rpc_test") {
     "//kernel/liteos_m/components/net",
   ]
   deps += [ "//foundation/distributedschedule/samgr_lite/samgr" ]
+  deps += [ "//foundation/communication/dsoftbus/sdk:softbus_client" ]
 }
