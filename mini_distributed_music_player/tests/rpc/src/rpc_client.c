@@ -20,6 +20,7 @@
 
 #include "cmsis_os2.h"
 #include "ohos_init.h"
+#include "softbus_bus_center.h"
 #include "lwip/tcpip.h"
 #include "lwip/netif.h"
 #include "rpc_mini_samgr.h"
@@ -35,7 +36,6 @@
 #define DEVICEID "192.168.137.217"
 #define DEFAULT_THREAD_STACK_SIZE 10240
 #define TEST_DELAY_MILLISECONDS 20000
-#define TEST_CLIENT_DELAY_MILLISECONDS 10000
 #define NUMBER_A 12
 #define NUMBER_B 17
 
@@ -52,12 +52,28 @@ enum {
 static void RpcClientMain(void)
 {
     pthread_setname_np(pthread_self(), "rpc_client");
-    sleep(10);
+    sleep(100);
     printf("%s %d\n", __FUNCTION__, __LINE__);
     static IClientProxy *hiviewInfterface = NULL;
 
+    NodeBasicInfo *nodeInfo[4];
+    int32_t infoNum = 4;
+    int32_t ret = GetAllNodeDeviceInfo("com.ohos.devicemanagerui", &nodeInfo, &infoNum);
+    if (ret != 0) {
+        RPC_LOG_ERROR("GetAllNodeDeviceInfo failed, error=%d", ret);
+    } else {
+        RPC_LOG_INFO("GetAllNodeDeviceInfo infonum=%d", infoNum);
+        for (int i = 0; i < infoNum; i++) {
+            if (nodeInfo[i] == NULL) {
+                RPC_LOG_INFO("nodeInfo is null");
+                break;
+            }
+            printf("ygz deviceid %s\n", nodeInfo[i]->networkId);
+        }
+    }
+
     if (hiviewInfterface == NULL) {
-        IUnknown *hiviewDefApi = SAMGR_GetInstance()->GetRemoteDefaultFeatureApi(DEVICEID, "mini_sa_rpc");
+        IUnknown *hiviewDefApi = SAMGR_GetInstance()->GetRemoteDefaultFeatureApi(nodeInfo[0]->networkId, "mini_sa_rpc");
         if (hiviewDefApi == NULL) {
             printf("[%s:%d]: %s\n", __FILE__, __LINE__, __func__);
             return;
