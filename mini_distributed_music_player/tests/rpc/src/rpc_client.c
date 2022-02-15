@@ -19,125 +19,83 @@
 #include <pthread.h>
 
 #include "cmsis_os2.h"
-#include "ohos_init.h"
 #include "softbus_bus_center.h"
-#include "lwip/tcpip.h"
-#include "lwip/netif.h"
 #include "rpc_mini_samgr.h"
 #include "ipc_skeleton.h"
 #include "serializer.h"
-#include "rpc_log.h"
-#include "rpc_errno.h"
 #include "samgr_lite.h"
-#include "hiview_service.h"
 #include "iproxy_client.h"
 
-#define SAID 16
-#define DEVICEID "192.168.137.217"
 #define DEFAULT_THREAD_STACK_SIZE 10240
-#define TEST_DELAY_MILLISECONDS 20000
-#define NUMBER_A 12
-#define NUMBER_B 17
 
 #define IPC_LENGTH 64
-#define IPC_LENGTH_LONG 128
-#define LWIP_NSC_IPSTATUS_CHANGE          0xf0
 
-enum {
-    OP_ADD = 1,
-    OP_SUB = 2,
-    OP_MULTI = 3,
-};
 
-static void RpcClientMain(void)
+void RpcClientMain(void *args)
 {
     pthread_setname_np(pthread_self(), "rpc_client");
-    sleep(100);
+    if (args == NULL) {
+        return;
+    }
     printf("%s %d\n", __FUNCTION__, __LINE__);
-    static IClientProxy *hiviewInfterface = NULL;
+    static IClientProxy *miniInterface = NULL;
 
     NodeBasicInfo *nodeInfo[4];
     int32_t infoNum = 4;
     int32_t ret = GetAllNodeDeviceInfo("com.ohos.devicemanagerui", &nodeInfo, &infoNum);
     if (ret != 0) {
-        RPC_LOG_ERROR("GetAllNodeDeviceInfo failed, error=%d", ret);
+        printf("GetAllNodeDeviceInfo failed, error=%d\n", ret);
     } else {
-        RPC_LOG_INFO("GetAllNodeDeviceInfo infonum=%d", infoNum);
+        printf("GetAllNodeDeviceInfo infonum=%d\n", infoNum);
         for (int i = 0; i < infoNum; i++) {
             if (nodeInfo[i] == NULL) {
-                RPC_LOG_INFO("nodeInfo is null");
+                printf("nodeInfo is null\n");
                 break;
             }
-            printf("ygz deviceid %s\n", nodeInfo[i]->networkId);
+            printf("trusted deviceid %s\n", nodeInfo[i]->networkId);
         }
     }
 
-    if (hiviewInfterface == NULL) {
-        IUnknown *hiviewDefApi = SAMGR_GetInstance()->GetRemoteDefaultFeatureApi(nodeInfo[0]->networkId, "mini_sa_rpc");
-        if (hiviewDefApi == NULL) {
-            printf("[%s:%d]: %s\n", __FILE__, __LINE__, __func__);
+    if (miniInterface == NULL) {
+        IUnknown *miniDefApi = SAMGR_GetInstance()->GetRemoteDefaultFeatureApi(nodeInfo[0]->networkId, "mini_sa_rpc");
+        if (miniDefApi == NULL) {
+            printf("[%s:%d]\n", __func__, __LINE__);
             return;
         }
-        printf("[%s:%d]: %s\n", __FILE__, __LINE__, __func__);
-        hiviewDefApi->QueryInterface(hiviewDefApi, 0, (void **) &hiviewInfterface);
+        printf("[%s:%d]\n", __func__, __LINE__);
+        miniDefApi->QueryInterface(miniDefApi, 0, (void **) &miniInterface);
     }
-    IpcIo reply2;
-    uint8_t tmpData2[IPC_LENGTH];
-    IpcIoInit(&reply2, tmpData2, IPC_LENGTH, 0);
-    WriteInt32(&reply2, 32);
-    hiviewInfterface->Invoke(hiviewInfterface, 1, &reply2, NULL, NULL);
-
-    printf("[%s:%d]: %s\n", __FILE__, __LINE__, __func__);
-    printf("RpcClientTest\n");
-    return;
+    IpcIo reply;
+    uint8_t tmpData[IPC_LENGTH];
+    IpcIoInit(&reply, tmpData, IPC_LENGTH, 0);
+    WriteInt32(&reply, *(int32_t *)args);
+    miniInterface->Invoke(miniInterface, 1, &reply, NULL, NULL);
 }
 
-static void RpcClientTest(void)
+void RpcClientTest(int32_t* progress)
 {
-    pthread_t threadId2;
-    pthread_attr_t threadAttr2;
-    int ret = pthread_attr_init(&threadAttr2);
+    pthread_t threadId;
+    pthread_attr_t threadAttr;
+    int ret = pthread_attr_init(&threadAttr);
     if (ret != 0) {
-        RPC_LOG_ERROR("pthread_attr_init failed %d", ret);
-        return ERR_FAILED;
-    }
-
-    if (pthread_attr_setstacksize(&threadAttr2, DEFAULT_THREAD_STACK_SIZE) != 0) {
-        RPC_LOG_ERROR("pthread_attr_setstacksize failed");
-        return ERR_FAILED;
-    }
-
-    ret = pthread_create(&threadId2, &threadAttr2, RpcClientMain, NULL);
-    if (ret != 0) {
-        RPC_LOG_ERROR("pthread_create failed %d", ret);
-        return ERR_FAILED;
-    }
-    pthread_detach(threadId2);
-}
-
-static void RpcClientWifiDHCPSucCB(struct netif *netif,
-                                   netif_nsc_reason_t reason, const netif_ext_callback_args_t *args)
-{
-    printf("%s %d\n", __FUNCTION__, __LINE__);
-    (void) args;
-    if (netif == NULL) {
-        printf("%s %d, error: input netif is NULL!\n", __FUNCTION__, __LINE__);
+        printf("pthread_attr_init failed %d\n", ret);
         return;
     }
-    if (reason == LWIP_NSC_IPSTATUS_CHANGE) {
-        printf("%s %d\n", __FUNCTION__, __LINE__);
-        if (netif_is_up(netif) && !ip_addr_isany(&netif->ip_addr)) {
-            printf("%s %d\n", __FUNCTION__, __LINE__);
-            RpcClientTest();
-        }
+
+    if (pthread_attr_setstacksize(&threadAttr, DEFAULT_THREAD_STACK_SIZE) != 0) {
+        printf("pthread_attr_setstacksize failed\n");
+        return;
     }
+    int32_t *prog = malloc(sizeof(int32_t));
+    if (prog == NULL) {
+        return;
+    } else {
+        *prog = *progress;
+    }
+    ret = pthread_create(&threadId, &threadAttr, RpcClientMain, (void*)prog);
+    if (ret != 0) {
+        printf("pthread_create failed %d\n", ret);
+        return;
+    }
+    pthread_detach(threadId);
 }
-
-static void WifiDHCPRpcClientCB(void)
-{
-    printf("%s %d\n", __FUNCTION__, __LINE__);
-    NETIF_DECLARE_EXT_CALLBACK(WifiReadyRpcClientCallback);
-    netif_add_ext_callback(&WifiReadyRpcClientCallback, RpcClientWifiDHCPSucCB);
-}
-
-APP_FEATURE_INIT(WifiDHCPRpcClientCB);
