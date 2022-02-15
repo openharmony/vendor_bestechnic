@@ -92,6 +92,7 @@ static_library("devicemanagerservice_mini") {
     "//foundation/communication/dsoftbus/interfaces/kits/discovery",
     "//foundation/communication/dsoftbus/interfaces/kits/transport",
     "//foundation/communication/dsoftbus/interfaces/inner_kits/transport",
+    "//foundation/distributedhardware/devicemanager/services/devicemanagerservice/include/dependency/multipleuser",
     "//foundation/distributedschedule/samgr_lite/interfaces/kits/samgr",
   ]
 
@@ -107,6 +108,7 @@ static_library("devicemanagerservice_mini") {
     "${services_path}/src/message/msg_request_auth.cpp",
     "${services_path}/src/message/msg_response_auth.cpp",
     "${services_path}/src/message/msg_sync_group.cpp",
+    "${services_path}/src/multipleuser/multiple_user_connector.cpp",
     "${services_path}/src/requestauth/auth_manager.cpp",
     "${services_path}/src/requestauth/request_session.cpp",
     "${services_path}/src/requestauth/response_session.cpp",
