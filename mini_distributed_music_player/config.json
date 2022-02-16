@@ -207,7 +207,10 @@
           "optional": "true"
         },
         {
-          "component": "dsoftbus"
+          "component": "dsoftbus",
+          "features": [
+            "softbus_adapter_config = \"//vendor/bestechnic/mini_distributed_music_player/dsoftbus_lite_config\""
+          ]
         },
         {
           "component": "rpc",
