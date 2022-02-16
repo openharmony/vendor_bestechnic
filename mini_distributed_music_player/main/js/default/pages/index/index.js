@@ -49,8 +49,15 @@ export default {
 
         audio.onCallback((data) => {
             console.log(JSON.stringify(data));
-            this.playMusic()
-            this.changeProgress(data)
+            this.playImage = "common/ic_music_pause.png";
+            this.playStatus = 0;
+            this.playProgress = data.progress;
+            this.curMusic.curMusicName = "BBK";
+            this.curMusic.singer = "unknown singer";
+            audio.src = "/data/bbg.mp3";
+            this.changeProgress(data);
+            audio.loop = true;
+            audio.play();
         });
 
         //update play progress
@@ -274,6 +281,8 @@ export default {
         });
     },
     openDailog(){
+//        this.exitApp()
+//        this.stopPlay()
         router.replace({
             uri:"pages/dm/dmstep"
         });
