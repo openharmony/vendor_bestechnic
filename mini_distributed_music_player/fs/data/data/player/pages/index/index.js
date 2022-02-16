@@ -188,8 +188,16 @@ var _default = {
     _system2["default"].onCallback(function (data) {
       (0, _newArrowCheck2["default"])(this, _this);
       console.log(JSON.stringify(data));
-      this.playMusic();
+      this.playImage = "common/ic_music_pause.png";
+      this.playStatus = 0;
+      this.playProgress = data.progress;
+      this.curMusic.curMusicName = "BBK";
+      this.curMusic.singer = "unknown singer";
+      _system2["default"].src = "/data/bbg.mp3";
       this.changeProgress(data);
+      _system2["default"].loop = true;
+
+      _system2["default"].play();
     }.bind(this));
 
     _system2["default"].ontimeupdate = function () {
