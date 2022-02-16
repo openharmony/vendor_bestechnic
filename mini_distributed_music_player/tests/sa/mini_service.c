@@ -38,10 +38,12 @@ static MiniService g_miniService = {
         .Invoke = FeatureInvoke,
         IPROXY_END,
 };
-
+extern void CallOnPlayRemote(int32_t data);
 static int32_t FeatureInvoke(IServerProxy *iProxy, int32_t funcId, void *origin, IpcIo *req, IpcIo *reply)
 {
-    printf("lkl: %s %d\n", __func__ , __LINE__);
+    int32_t data;
+    ReadInt32(req, &data);
+    CallOnPlayRemote(data);
     return 0;
 }
 
@@ -89,4 +91,3 @@ static TaskConfig GetTaskConfig(Service *service)
     TaskConfig config = { LEVEL_LOW, PRI_NORMAL, 0x2000, 10, SINGLE_TASK };
     return config;
 }
-
