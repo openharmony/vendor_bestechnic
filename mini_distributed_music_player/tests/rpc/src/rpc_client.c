@@ -49,22 +49,25 @@ void RpcClientMain(void *args)
         printf("GetAllNodeDeviceInfo infonum=%d\n", infoNum);
         for (int i = 0; i < infoNum; i++) {
             if (nodeInfo[i] == NULL) {
-                printf("nodeInfo is null\n");
+                printf("node %d info is null\n", i);
                 break;
             }
             printf("trusted deviceid %s\n", nodeInfo[i]->networkId);
         }
     }
 
-    if (miniInterface == NULL) {
-        IUnknown *miniDefApi = SAMGR_GetInstance()->GetRemoteDefaultFeatureApi(nodeInfo[0]->networkId, "mini_sa_rpc");
-        if (miniDefApi == NULL) {
-            printf("[%s:%d]\n", __func__, __LINE__);
-            return;
-        }
-        printf("[%s:%d]\n", __func__, __LINE__);
-        miniDefApi->QueryInterface(miniDefApi, 0, (void **) &miniInterface);
+    if (nodeInfo[0]->networkId == NULL) {
+        printf("all nodes are null, get all trust node device info failed\n");
+        return;
     }
+
+    IUnknown *miniDefApi = SAMGR_GetInstance()->GetRemoteDefaultFeatureApi(nodeInfo[0]->networkId, "mini_sa_rpc");
+    if (miniDefApi == NULL) {
+        printf("[%s:%d]\n", __func__, __LINE__);
+        return;
+    }
+    printf("[%s:%d]\n", __func__, __LINE__);
+    miniDefApi->QueryInterface(miniDefApi, 0, (void **) &miniInterface);
     IpcIo reply;
     uint8_t tmpData[IPC_LENGTH];
     IpcIoInit(&reply, tmpData, IPC_LENGTH, 0);
