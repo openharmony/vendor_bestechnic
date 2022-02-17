@@ -49,15 +49,19 @@ export default {
 
         audio.onCallback((data) => {
             console.log(JSON.stringify(data));
-            this.playImage = "common/ic_music_pause.png";
+            this.playStatus = 2;
+            this.playMusic();
             this.playStatus = 0;
-            this.playProgress = data.progress;
-            this.curMusic.curMusicName = "BBK";
-            this.curMusic.singer = "unknown singer";
-            audio.src = "/data/bbg.mp3";
             this.changeProgress(data);
-            audio.loop = true;
-            audio.play();
+//            this.playImage = "common/ic_music_pause.png";
+//            this.playStatus = 0;
+//            this.playProgress = data.progress;
+//            this.curMusic.curMusicName = "BBK";
+//            this.curMusic.singer = "unknown singer";
+//            audio.src = "/data/bbg.mp3";
+//            this.changeProgress(data);
+//            audio.loop = true;
+//            audio.play();
         });
 
         //update play progress
