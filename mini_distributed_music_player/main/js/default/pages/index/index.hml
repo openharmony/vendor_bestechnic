@@ -18,7 +18,7 @@ limitations under the License.
     <div class="main">
         <div class="header">
             <image class="back" onclick="exitApp" src="common/ic_back.png"></image>
-            <text class="title">音乐播放器</text>
+            <text class="title">分布式音乐播放器</text>
         </div>
         <div class="body">
 
