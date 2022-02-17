@@ -31,22 +31,14 @@
     height: 12%;
     align-items: center;
     justify-content: center;
-    background-color: darkorange;
+/*    background-color: darkorange;*/
     color: bisque;
-/*    flex-direction: row;*/
-/*    justify-content: center;*/
 }
-
-/*.back {*/
-/*    width: 36px;*/
-/*    height: 36px;*/
-/*    margin-left: 20px;*/
-/*}*/
 
 .title {
     width: 100%;
     text-align: center;
-    color: aqua;
+    color: #e6e6e6;
 }
 
 .body {
@@ -56,13 +48,14 @@
     justify-content: center;
     align-items: center;
 }
+
 .music{
-    width: 50%;
+    width: 100%;
     height: 85%;
     flex-direction: column;
     justify-content: space-around;
     align-items: flex-start;
-    background-color: red;
+/*    background-color: red;*/
 }
 
 .disc-wrapper{
@@ -108,42 +101,46 @@
 
 .musicName {
     width: 100%;
-    height: 20px;
+    height: 55px;
     font-size: 30px;
-    background-color: blue;
+    color: #FFFFFF;
+/*    background-color: crimson;*/
+    text-align: center;
 }
 
 .singer {
     width: 100%;
-    height: 20px;
+    height: 42px;
     font-size: 25px;
-    background-color: blue;
+/*    background-color: yellow;*/
+    color: #bfbfbf;
+    text-align: center;
 }
 
 .progress-Wrapper {
     width: 100%;
     height: 15%;
     flex-direction: row;
-    color: yellow;
-    background-color: aqua;
+/*    color: yellow;*/
+/*    background-color: aqua;*/
     justify-content: center;
 }
 
 .playTime {
-    width: 33%;
+    width: 25%;
     text-align: right;
-    color: seagreen;
+    color: #A2A2A2;
 }
 
 .allTime {
-    width: 33%;
+    width: 25%;
     text-align: left;
     margin-left: 18px;
     color: #A2A2A2;
 }
 
 .progressBar {
-    width:33%;
+    width:50%;
     height: 32px;
     selected-color: #ffffff;
     block-color: #ffffff;
@@ -159,9 +156,8 @@
     flex-direction: row;
     justify-content: center;
     align-items: center;
-    background-color: cornflowerblue;
+    background-color: moccasin;
 }
-
 
 .modeBtn {
     width: 36px;
