@@ -191,6 +191,7 @@ var _default = {
       this.playStatus = 2;
       this.playMusic();
       this.playStatus = 0;
+      this.playImage = "common/ic_music_pause.png";
       this.changeProgress(data);
     }.bind(this));
 
