@@ -1,0 +1,20 @@
+{
+    "appID": "com.huawei.showcase",
+    "appName": "$string:entry_MainAbility",
+    "versionName": "1.0",
+    "versionCode": 1,
+    "minPlatformVersion": 6,
+    "pages": [
+        "pages/index/index",
+        "pages/component/index/containerIndex/index",
+        "pages/component/index/baseIndex/index",
+        "pages/component/index/formIndex/index",
+        "pages/component/qrcode/attr/attr",
+        "pages/component/qrcode/event/event",
+        "pages/component/qrcode/index/index",
+        "pages/component/qrcode/style/style"
+    ],
+    "deviceType": [
+        "smartVision"
+    ]
+}
