@@ -68,7 +68,8 @@ static void RpcClientMain(void)
 
     IpcIo reply2;
     uintptr_t ptr2 = 0;
-    MessageOption option = TF_OP_SYNC;
+    MessageOption option;
+    MessageOptionInit(&option);
     int32_t ret = SendRequest(svc, OP_ADD, &data2, &reply2, option, &ptr2);
     if (ret != ERR_NONE) {
         RPC_LOG_INFO("OP_ADD failed");
