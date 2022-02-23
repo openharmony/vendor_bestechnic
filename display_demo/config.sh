@@ -13,24 +13,24 @@
 # limitations under the License.
 
 # == area config a7 liteos bin begin == #
-OPT_BEST2600W_LITEOS_A7=" \
+OPT_LITEOS_A7=" \
 "
 # == area config a7 liteos bin end   == #
 
 # == area config liteos main bin begin == #
-OPT_BEST2600W_LITEOS_MAIN=" \
+OPT_LITEOS_MAIN=" \
 LIBC_INIT_AFTER_OS_INIT=1   \
 "
 # == area config liteos main bin end   == #
 
 # == area config liteos cp bin begin == #
-OPT_BEST2600W_LITEOS_CP=" \
+OPT_LITEOS_CP=" \
 "
 # == area config liteos cp bin end   == #
 
 
 # == area config liteos main mini bin begin == #
-OPT_BEST2600W_LITEOS_MAIN_MINI_SE=" \
+OPT_LITEOS_MAIN_MINI_SE=" \
 "
 # == area config liteos main mini bin end   == #
 
