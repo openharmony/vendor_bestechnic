@@ -1,0 +1,22 @@
+kernel/liteos_m:
+  - vendor/bestechnic/patches/0001-kernel-liteos_m.patch
+drivers/adapter:
+  - vendor/bestechnic/patches/0001-drivers-adapter.patch
+third_party/musl:
+  - vendor/bestechnic/patches/0001-third_party-musl.patch
+base/startup/syspara_lite:
+  - vendor/bestechnic/patches/0001-base-startup-syspara_lite.patch
+build/lite:
+  - vendor/bestechnic/patches/0001-build-lite.patch
+base/security/huks:
+  - vendor/bestechnic/patches/0001-base-security-huks.patch
+test/xts/acts:
+  - vendor/bestechnic/patches/0001-test-xts-acts.patch
+test/xts/tools/lite:
+  - vendor/bestechnic/patches/0001-test-xts-tools-lite.patch
+utils/native/lite:
+  - vendor/bestechnic/patches/0001-utils-native-lite.patch
+third_party/mbedtls:
+  - vendor/bestechnic/patches/0001-third_party-mbedtls.patch
+third_party/lwip:
+  - vendor/bestechnic/patches/0001-third_party-lwip.patch
