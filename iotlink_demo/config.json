@@ -124,6 +124,10 @@
         {
           "component": "hilog_lite",
           "optional": "true"
+        },
+        {
+          "component": "hievent_lite",
+          "optional": "true"
         }
       ]
     },
