@@ -19,7 +19,7 @@ vendor/bestechnic/                    --- vendor_bestechnic 仓库路径
 
 ## 安装教程
 
-参考 [安装调试教程](https://gitee.com/openharmony-sig/device_soc_bestechnic/blob/master/README.md)
+参考 [安装调试教程](https://gitee.com/openharmony/device_soc_bestechnic/blob/master/README.md)
 
 ## 使用说明
 
