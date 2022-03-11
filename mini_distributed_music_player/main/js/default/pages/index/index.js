@@ -18,6 +18,7 @@ import router from '@system.router'
 import audio from '@system.audio'
 import file from '@system.file'
 import app from '@system.app'
+import devicemanager from '@system.devicemanager'
 
 var modeImages = ['common/ic_music_listorder.png', 'common/ic_music_listcycle.png', 'common/ic_music_shuffle.png', 'common/ic_music_singlecycle.png'];
 
@@ -37,16 +38,54 @@ export default {
             playTime: "00:00",
             allTime: "00:00"
         },
-        musicList: [ ]
+        musicList: [ ],
+
+        dmpage:false,  //DM variable definition
+        status: null,
+        statusType:'',
+        subscribeId : 0,
+        IntervalID:0,
+        StartDiscoveryTimer:0,
+        timeout:0,
+        timeRemaining:20,
+        pinNumb: 0,
+        pin: ['','','','','',''],
+        statusInfo: {
+            deviceId: '',
+            deviceName: '',
+            deviceTypeId: 0
+        },
+        GetPonken:{
+            deviceId:'',
+            pinTone:''
+        },
+        StatInfo: {
+            deviceName: "",
+            appName: '',
+            appIcon: null,
+            pinCode: '',
+            pinToken: '0'
+        }
     },
     onInit() {
         //get music duration
+        this.DMinit()
+        this.StartDiscoveryTimer = setInterval(this.OndeviceFound, 2000);  //DM data initialization
+        this.startDevice()
+
+        var array = devicemanager.getTrustedDeviceListSync();
+        console.info(JSON.stringify(array))
+        if(array == null)
+        {
+            this.IntervalID = setInterval(this.initStatue, 3000);
+        }
+
+  
         audio.onplay = () => {
             console.log("onplay start");
             this.curMusic.allTime = this.timeChange(audio.duration);
             this.playStatus = 0;
         };
-
         audio.onCallback((data) => {
             console.log(JSON.stringify(data));
             this.playStatus = 2;
@@ -221,7 +260,8 @@ export default {
         if (seconds == null || seconds < 0) {
             return "00:00";
         }
-        let minute, second = 0;
+        let minute = 0;
+        let second = 0; 
         minute = Math.floor(seconds / 60);
         second = Math.floor(seconds % 60);
         let result = (minute > 9 ? minute : "0" + minute) + ":" + (second > 9 ? second : "0" + second);
@@ -286,10 +326,334 @@ export default {
         });
     },
     openDailog(){
-//        this.exitApp()
-//        this.stopPlay()
-        router.replace({
-            uri:"pages/dm/dmstep"
+        var arrayFa = devicemanager.getTrustedDeviceListSync();
+        console.info('host:getTrustedDeviceListSync'+JSON.stringify(arrayFa))
+        //if(arrayFa[0].deviceId != this.statusInfo.deviceId)
+        if(arrayFa == null)
+        {
+           this.dmpage  = true
+            this.statusType = 'DeviceType'
+        }
+        else{
+            this.dmpage = true
+            this.status = 'device-online'
+            this.arrayFa = null
+        }
+    },
+    DMinit(){
+        console.info('createDeviceManager')
+        devicemanager.createDeviceManager('com.ohos.devicemanagerui')
+    },
+    startDevice(){
+        //开始设备发现
+        console.info("Start Device discovery");
+        this.subscribeId = Math.floor(Math.random() * 10000 + 1000)
+        console.info('Start subscribeId'+ JSON.stringify(this.subscribeId))
+        var info = {
+            "subscribeId": this.subscribeId,
+            "mode": 0xAA,
+            "medium": 0,
+            "freq": 2,
+            "isSameAccount": false,
+            "isWakeRemote": false,
+            "capability": 0
+        };
+        devicemanager.startDeviceDiscovery(info);
+    },
+    stopDevice(){
+        console.log(this.subscribeId);
+        devicemanager.stopDeviceDiscovery(this.subscribeId);
+
+    },
+    AuthenticateDevice(){
+        let extraInfo = {
+            targetPkgName: 'test',
+            appName: "Newname",
+            appDescription: "testAPP",
+            business: '0',
+            displayOwner: 0
+        };
+        let AuthParam = {
+            authType: 1,
+            appIcon:null,
+            appThumbnail:null,
+            extraInfo: extraInfo
+        };
+/*        console.log("ready authenticateDevice")*/
+        let _this = this;
+        devicemanager.authenticateDevice(this.statusInfo, AuthParam, {
+            success(data0,data1){
+                console.log("in authenticateDevice success:")
+                console.log(JSON.stringify(data0))
+                console.log(JSON.stringify(data1))
+                _this.GetPonken ={
+                    deviceId:data0.deviceId,
+                    pinTone:data1.pinTone
+                }
+/*                console.log('this.GetPonken.deviceId'+ _this.GetPonken.deviceId);
+                console.log('this.GetPonken.pinTone'+ _this.GetPonken.pinTone);*/
+                _this.mainPin()
+            },
+            fail(err0,err1) {
+                console.log("authenticateDevice fail*")
+                console.log(JSON.stringify(err0))
+                console.log(JSON.stringify(err1));
+              /*  _this.dmpage = false*/
+            }
+        });
+        clearInterval(this.IntervalID)
+    },
+    joinAuthOk() {
+        this.joinPin()
+        this.setUserOperation(0)
+    },
+    /**
+     * Cancel authorization
+     */
+    joinAuthCancel() {
+        /*this.timing(1)*/
+        this.setUserOperation(1)
+        this.status = null
+        this.dmpage = false
+    },
+    /**
+     * Enter a number with the keyboard
+     * @param s
+     * @return
+     */
+    mainInputPin(s) {
+        if (this.pinNumb == 6) return
+        if (this.pinNumb < 6) {
+            this.pin[this.pinNumb] = s
+            ++this.pinNumb
+        }
+        if (this.pinNumb == 6) {
+            console.log("verifyAuthInfo ok")
+            this.verifyAuthInfo(this.pin.join(''))
+        }
+    },
+    joinAuthImageCancel() {
+        this.setUserOperation(1)
+        this.dmpage = false
+    },
+    /**
+     * verify auth info, such as pin code.
+     * @param pinCode
+     * @return
+     */
+    verifyAuthInfo(pinCode) {
+/*        console.info("in verifyAuthInfo:"+pinCode)
+        console.info("verifyAuthInfo :" + JSON.stringify(this.GetPonken))*/
+        devicemanager.verifyAuthInfo({
+            "authType": 1,
+            "token": this.GetPonken.pinTone,
+            "extraInfo": {
+                "pinCode": +pinCode
+            }
+        },{
+            success(data0,data1){
+                console.log("success verifyAuthInfo")
+            },
+            fail(err0) {
+                console.log("fail verifyAuthInfo")
+                console.log(JSON.stringify(err0))
+            }
+        });
+        this.OndeviceStateChange()
+    },
+    /**
+     * Keyboard delete number
+     */
+    mainInputPinBack() {
+        if (this.pinNumb > 0) {
+            --this.pinNumb
+            this.pin[this.pinNumb] = ''
+        }
+    },
+    mainInputPinCancel() {
+        this.setUserOperation(4)
+        this.dmpage = false
+    },
+    /**
+     * Get authentication param
+     */
+    initStatue() {
+        console.info('initStatue')
+        let data = devicemanager.getAuthenticationParam()
+        console.info('getAuthenticationParam:' + JSON.stringify(data))
+        // Authentication type, 1 for pin code.
+        //code ==1,pin码
+        if (data && data.authType == 1) {
+            this.StatInfo = {
+                deviceName: data.extraInfo.packageName,
+                appName: data.extraInfo.appName,
+                appIcon: null,
+                pinCode: data.extraInfo.pincode+'',
+                pinToken: data.extraInfo.pinToken
+            }
+            // direction: 1(main)/0(join)
+            if (data.extraInfo.direction == 1) {
+                this.mainPin()
+            } else if (data.appIcon) {
+                //连接端授权，业务
+                this.joinAuthImage()
+            } else if (data.extraInfo.business == 0) {
+                // business: 0(FA流转)/1(资源访问)
+                this.joinAuth()
+            } else {
+                this.joinAuthorize()
+            }
+        }
+    },
+    /**
+     * Set user Operation from devicemanager Fa, this interface can only used by devicemanager Fa.
+     *
+     * @param operateAction User Operation Actions.
+     * ACTION_ALLOW_AUTH = 0, allow authentication
+     * ACTION_CANCEL_AUTH = 1, cancel authentication
+     * ACTION_AUTH_CONFIRM_timeout = 2, user operation timeout for authentication confirm
+     * ACTION_CANCEL_PINCODE_DISPLAY = 3, cancel pinCode display
+     * ACTION_CANCEL_PINCODE_INPUT = 4, cancel pinCode input
+     */
+    setUserOperation(operation) {
+        var data = devicemanager.setUserOperation(operation);
+        console.info('setUserOperation result: ' + JSON.stringify(data))
+    },
+    joinAuth() {
+        if( this.status == null)
+        {
+             this.dmpage = true
+             this.status = 'join-auth'
+        }
+        //this.timing(2)
+    },
+    /**
+     * Join end authorization, business(FA流转)/1(资源访问): 1, show application icon
+     */
+    joinAuthImage() {
+        this.status = 'join-auth-image'
+        //this.timing(2)
+        /* router.back()*/
+    },
+    /**
+     * Cancel authorization
+     */
+    joinAuthorizeCancel() {
+        this.setUserOperation(1)
+        this.dmpage = false
+    },
+    /**
+     * Cancel authorization
+     */
+    joinPinCancel() {
+        this.setUserOperation(3)
+        this.exitDM()
+        this.status = null
+        this.dmpage = false
+    },
+    /**
+     * Join end authorization, business(FA流转)/1(资源访问): 0
+     */
+    joinAuthorize() {
+        this.status = 'join-authorize'
+        //this.timing(2)
+        /*  router.back()*/
+    },
+    /**
+     * Confirm authorization
+     */
+    joinAuthorizeOk() {
+        this.setUserOperation(0)
+        this.joinPin()
+    },
+    /**
+     * Input pinCode at the main control terminal
+     */
+    mainPin() {
+        this.statusType = null
+        this.status = 'main-pin'
+    },
+    joinPin() {
+        this.status = 'join-pin'
+        this.OndeviceStateChange()
+    },
+    /**
+     * Pure function countdown
+     * @param operateAction User Operation Actions.
+     */
+    timing(numb){
+        let  _this =this
+        _this.timeout = setInterval(function(){
+            _this.timeRemaining--;
+             console.log(_this.timeRemaining)
+            if(_this.timeRemaining ==0){
+                console.log(_this.timeRemaining)
+                _this.setUserOperation(numb)
+                _this.dmpage = false
+                /* _this.exitDM()*/
+                clearInterval(_this.timeout)
+            }
+        },1000)
+    },
+    log(m) {
+        console.info(TAG + m);
+    },
+    back() {
+        this.dmpage = false
+        this.statusType = null
+        this.status = null
+    },
+    changeCode(){
+        this.AuthenticateDevice()
+    },
+    localCode(){
+        this.status = null
+    },
+    BackToMusicPage(){
+        this.dmpage = false
+    },
+    exitDM(){
+        this.GetPonken = null
+        /*this.statusInfo = null*/
+        this.subscribeId =0
+        this.status = null
+        this.dmpage = false
+    },
+    OndeviceFound(){
+        devicemanager.on('deviceFound', (data0,data1) => {
+            if (data1 == null) {
+                console.info("deviceFound error data=null")
+                return;
+            }
+            clearInterval(this.StartDiscoveryTimer)
+            console.info("in deviceFound success");
+            console.info("deviceFound:" + JSON.stringify(data0));
+            console.info("deviceFound:" + JSON.stringify(data1));
+            this.statusInfo = {
+                deviceId: data1.deviceId,
+                deviceName: data1.deviceName,
+                deviceTypeId: data1.deviceTypeId
+            }
+        });
+    },
+   OndiscoverFail(){
+       devicemanager.on('discoverFail', (data,data1) => {
+           console.info('on discoverFail in')
+           console.info("discoverFail on:" + JSON.stringify(data));
+           console.info("discoverFail on:" + JSON.stringify(data1));
+       });
+   },
+    OndeviceStateChange(){
+        devicemanager.on('deviceStateChange', (data,data1) => {
+            console.info('on deviceStateChange in')
+            console.info("deviceStateChange data:" + JSON.stringify(data));
+            if(data.action == 0){
+                console.log('in data.action')
+                clearInterval(this.IntervalID)
+                this.status = null
+                this.dmpage = false
+            }
+            console.info("deviceStateChange data1:" + JSON.stringify(data1));
         });
     }
 }
