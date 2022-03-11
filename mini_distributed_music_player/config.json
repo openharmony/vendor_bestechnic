@@ -253,7 +253,7 @@
           ]
         },
         {
-          "component": "deviceauth_lite",
+          "component": "deviceauth_standard",
           "features": [
             "deviceauth_storage_path = \"/data/\"",
             "deviceauth_hichain_thread_stack_size = 9472"
