@@ -47,7 +47,7 @@ export default {
         IntervalID:0,
         StartDiscoveryTimer:0,
         timeout:0,
-        timeRemaining:20,
+        timeRemaining:0,
         pinNumb: 0,
         pin: ['','','','','',''],
         statusInfo: {
@@ -70,15 +70,15 @@ export default {
     onInit() {
         //get music duration
         this.DMinit()
-        this.StartDiscoveryTimer = setInterval(this.OndeviceFound, 2000);  //DM data initialization
-        this.startDevice()
+/*        this.StartDiscoveryTimer = setInterval(this.OndeviceFound, 2000);  //DM data initialization
+        this.startDevice()*/
 
-        var array = devicemanager.getTrustedDeviceListSync();
+   /*     var array = devicemanager.getTrustedDeviceListSync();
         console.info(JSON.stringify(array))
         if(array == null)
         {
             this.IntervalID = setInterval(this.initStatue, 3000);
-        }
+        }*/
 
   
         audio.onplay = () => {
@@ -328,11 +328,12 @@ export default {
     openDailog(){
         var arrayFa = devicemanager.getTrustedDeviceListSync();
         console.info('host:getTrustedDeviceListSync'+JSON.stringify(arrayFa))
-        //if(arrayFa[0].deviceId != this.statusInfo.deviceId)
+/*        if(arrayFa[0].deviceId != this.statusInfo.deviceId)*/
         if(arrayFa == null)
         {
            this.dmpage  = true
-            this.statusType = 'DeviceType'
+/*           this.statusType = 'DeviceType'*/
+           this.status = 'start'
         }
         else{
             this.dmpage = true
@@ -340,9 +341,33 @@ export default {
             this.arrayFa = null
         }
     },
+
     DMinit(){
-        console.info('createDeviceManager')
-        devicemanager.createDeviceManager('com.ohos.devicemanagerui')
+        devicemanager.createDeviceManager('com.ohos.devicemanagerui', {
+            success(data0){
+                console.log("in createDeviceManager success:")
+            },
+            fail(err0) {
+                console.log("in createDeviceManager fail:")
+            }
+        });
+        devicemanager.on('deviceFound', (data0,data1) => {
+            if (data1 == null) {
+                console.info("deviceFound error data=null")
+                return;
+            }
+            console.info("deviceFound:" + JSON.stringify(data0));
+            console.info("deviceFound:" + JSON.stringify(data1));
+            this.statusInfo = {
+                deviceId: data1.deviceId,
+                deviceName: data1.deviceName,
+                deviceTypeId: data1.deviceTypeId
+            }
+        });
+        this.OndeviceStateChange()
+       /* this.ondiscoverFail()*/
+        this.onserviceDie()
+        this.OndmFaCallback()
     },
     startDevice(){
         //开始设备发现
@@ -379,33 +404,39 @@ export default {
             appThumbnail:null,
             extraInfo: extraInfo
         };
-/*        console.log("ready authenticateDevice")*/
-        let _this = this;
+        console.log("ready authenticateDevice")
+   /*     let _this = this;*/
         devicemanager.authenticateDevice(this.statusInfo, AuthParam, {
             success(data0,data1){
                 console.log("in authenticateDevice success:")
                 console.log(JSON.stringify(data0))
                 console.log(JSON.stringify(data1))
-                _this.GetPonken ={
+/*                _this.GetPonken ={
                     deviceId:data0.deviceId,
                     pinTone:data1.pinTone
                 }
-/*                console.log('this.GetPonken.deviceId'+ _this.GetPonken.deviceId);
-                console.log('this.GetPonken.pinTone'+ _this.GetPonken.pinTone);*/
-                _this.mainPin()
+                console.log('this.GetPonken.deviceId'+ _this.GetPonken.deviceId);
+                console.log('this.GetPonken.pinTone'+ _this.GetPonken.pinTone);
+                _this.mainPin()*/
             },
             fail(err0,err1) {
                 console.log("authenticateDevice fail*")
                 console.log(JSON.stringify(err0))
                 console.log(JSON.stringify(err1));
-              /*  _this.dmpage = false*/
             }
         });
         clearInterval(this.IntervalID)
     },
     joinAuthOk() {
-        this.joinPin()
+        if(this.StatInfo.pinCode !=0){
+            clearInterval(this.IntervalID)
+            this.joinPin()
+        }
+    },
+    bottonjoinAuthOk(){
         this.setUserOperation(0)
+        this.IntervalID = setInterval(this.initStatue, 1000);
+        this.status = 'join-auth'
     },
     /**
      * Cancel authorization
@@ -415,6 +446,7 @@ export default {
         this.setUserOperation(1)
         this.status = null
         this.dmpage = false
+        this.exitDM()
     },
     /**
      * Enter a number with the keyboard
@@ -440,13 +472,14 @@ export default {
      * verify auth info, such as pin code.
      * @param pinCode
      * @return
-     */
+     *///验证认证信息pin码
+
     verifyAuthInfo(pinCode) {
 /*        console.info("in verifyAuthInfo:"+pinCode)
         console.info("verifyAuthInfo :" + JSON.stringify(this.GetPonken))*/
         devicemanager.verifyAuthInfo({
             "authType": 1,
-            "token": this.GetPonken.pinTone,
+            "token": '0',
             "extraInfo": {
                 "pinCode": +pinCode
             }
@@ -459,7 +492,7 @@ export default {
                 console.log(JSON.stringify(err0))
             }
         });
-        this.OndeviceStateChange()
+/*        this.OndeviceStateChange()*/
     },
     /**
      * Keyboard delete number
@@ -470,9 +503,18 @@ export default {
             this.pin[this.pinNumb] = ''
         }
     },
+    cleanInputPin(){
+        if (this.pinNumb > 0) {
+            for(let i = 0; i < this.pinNumb; i++){
+                this.pin[i] = ''
+            }
+            this.pinNumb = 0
+        }
+    },
     mainInputPinCancel() {
         this.setUserOperation(4)
         this.dmpage = false
+        this.exitDM()
     },
     /**
      * Get authentication param
@@ -499,7 +541,7 @@ export default {
                 this.joinAuthImage()
             } else if (data.extraInfo.business == 0) {
                 // business: 0(FA流转)/1(资源访问)
-                this.joinAuth()
+             /*   this.joinAuth()*/
             } else {
                 this.joinAuthorize()
             }
@@ -575,7 +617,7 @@ export default {
     },
     joinPin() {
         this.status = 'join-pin'
-        this.OndeviceStateChange()
+      /*  this.OndeviceStateChange()*/
     },
     /**
      * Pure function countdown
@@ -590,18 +632,16 @@ export default {
                 console.log(_this.timeRemaining)
                 _this.setUserOperation(numb)
                 _this.dmpage = false
-                /* _this.exitDM()*/
-                clearInterval(_this.timeout)
+                /* _this.exitDM()
+                clearInterval(_this.timeout)*/
             }
         },1000)
-    },
-    log(m) {
-        console.info(TAG + m);
     },
     back() {
         this.dmpage = false
         this.statusType = null
         this.status = null
+        this.exitDM()
     },
     changeCode(){
         this.AuthenticateDevice()
@@ -613,11 +653,13 @@ export default {
         this.dmpage = false
     },
     exitDM(){
-        this.GetPonken = null
-        /*this.statusInfo = null*/
-        this.subscribeId =0
         this.status = null
         this.dmpage = false
+        this.GetPonken = null
+        this.statusInfo = null
+        this.subscribeId =0
+        this.cleanInputPin()
+        clearInterval(this.IntervalID)
     },
     OndeviceFound(){
         devicemanager.on('deviceFound', (data0,data1) => {
@@ -625,8 +667,8 @@ export default {
                 console.info("deviceFound error data=null")
                 return;
             }
-            clearInterval(this.StartDiscoveryTimer)
-            console.info("in deviceFound success");
+    /*        clearInterval(this.StartDiscoveryTimer)
+            console.info("in deviceFound success");*/
             console.info("deviceFound:" + JSON.stringify(data0));
             console.info("deviceFound:" + JSON.stringify(data1));
             this.statusInfo = {
@@ -636,11 +678,14 @@ export default {
             }
         });
     },
+    statmainInputPin(){
+        this.status ='main-pin'
+    },
    OndiscoverFail(){
        devicemanager.on('discoverFail', (data,data1) => {
-           console.info('on discoverFail in')
+/*           console.info('on discoverFail in')
            console.info("discoverFail on:" + JSON.stringify(data));
-           console.info("discoverFail on:" + JSON.stringify(data1));
+           console.info("discoverFail on:" + JSON.stringify(data1));*/
        });
    },
     OndeviceStateChange(){
@@ -654,6 +699,18 @@ export default {
                 this.dmpage = false
             }
             console.info("deviceStateChange data1:" + JSON.stringify(data1));
+        });
+    },
+    onserviceDie(){
+        console.info('start serviceDie')
+        devicemanager.on('serviceDie', (data) => {
+            console.info('on serviceDie in')
+            console.info("serviceDie:" + JSON.stringify(data));
+        });
+    },
+    OndmFaCallback(){
+        devicemanager.on('dmFaCallback', (data) => {
+            console.info("on dmFaCallback data:" + JSON.stringify(data));
         });
     }
 }
