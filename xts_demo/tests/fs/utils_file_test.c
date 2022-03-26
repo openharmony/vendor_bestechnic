@@ -28,6 +28,10 @@
 
 void utils_file_test()
 {
+    char* fileName = "noclosefile";
+    int fd = UtilsFileOpen(fileName, O_RDONLY_FS | O_CREAT_FS, 0);
+    HILOG_INFO(HILOG_MODULE_APP, "%s fd:%d\r\n", __func__, fd);
+
     const char *path = "/data/test.txt";
     const char *data = "utils_file_test";
     const int whence[3] = {SEEK_SET_FS, SEEK_CUR_FS, SEEK_END_FS};
@@ -35,7 +39,7 @@ void utils_file_test()
     unsigned int fileSize = 0;
 
     int ret;
-    int fd = UtilsFileOpen(path, O_WRONLY_FS | O_CREAT_FS, 0664);
+    fd = UtilsFileOpen(path, O_WRONLY_FS | O_CREAT_FS, 0664);
     UtilsFileAssert(fd >= 0, return );
 
     ret = UtilsFileWrite(fd, data, strlen(data));
