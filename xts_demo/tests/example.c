@@ -16,11 +16,12 @@
 #include "ohos_init.h"
 #include "log.h"
 #include "fs_test.h"
-
+#include "utils_file.h"
 
 static void DemoSdkTask(void *arg)
 {
     (void)arg;
+    utils_file_test();
     fs_test();
 }
 
