@@ -1,15 +1,15 @@
 /******/ (function() { // webpackBootstrap
 /******/ 	var __webpack_modules__ = ({
 
-/***/ "D:\\work\\display_small_wan1\\entry\\src\\main\\js\\default\\pages\\index\\index.hml?entry":
-/*!****************************************************************************************!*\
-  !*** D:\work\display_small_wan1\entry\src\main\js\default\pages\index\index.hml?entry ***!
-  \****************************************************************************************/
+/***/ "D:\\work\\gitee\\locaUI_branch\\entry\\src\\main\\js\\default\\pages\\index\\index.hml?entry":
+/*!*****************************************************************************************!*\
+  !*** D:\work\gitee\locaUI_branch\entry\src\main\js\default\pages\index\index.hml?entry ***!
+  \*****************************************************************************************/
 /***/ (function(module, __unused_webpack_exports, __webpack_require__) {
 
-var $app_template$ = __webpack_require__(/*! !!./lib/json.js!./lib/template.js!./index.hml */ "./lib/json.js!./lib/template.js!D:\\work\\display_small_wan1\\entry\\src\\main\\js\\default\\pages\\index\\index.hml")
-var $app_style$ = __webpack_require__(/*! !!./lib/json.js!./lib/style.js!./index.css */ "./lib/json.js!./lib/style.js!D:\\work\\display_small_wan1\\entry\\src\\main\\js\\default\\pages\\index\\index.css")
-var $app_script$ = __webpack_require__(/*! !!./lib/script.js!./node_modules/babel-loader?presets[]=C:\Users\jifen\AppData\Local\Huawei\Sdk\js\3.0.0.0\build-tools\ace-loader\node_modules\@babel\preset-env&plugins[]=C:\Users\jifen\AppData\Local\Huawei\Sdk\js\3.0.0.0\build-tools\ace-loader\node_modules\@babel\plugin-transform-modules-commonjs&comments=false!./lib/resource-reference-script.js!./index.js */ "./lib/script.js!./node_modules/babel-loader/lib/index.js?presets[]=C:\\Users\\jifen\\AppData\\Local\\Huawei\\Sdk\\js\\3.0.0.0\\build-tools\\ace-loader\\node_modules\\@babel\\preset-env&plugins[]=C:\\Users\\jifen\\AppData\\Local\\Huawei\\Sdk\\js\\3.0.0.0\\build-tools\\ace-loader\\node_modules\\@babel\\plugin-transform-modules-commonjs&comments=false!./lib/resource-reference-script.js!D:\\work\\display_small_wan1\\entry\\src\\main\\js\\default\\pages\\index\\index.js")
+var $app_template$ = __webpack_require__(/*! !!./lib/json.js!./lib/template.js!./index.hml */ "./lib/json.js!./lib/template.js!D:\\work\\gitee\\locaUI_branch\\entry\\src\\main\\js\\default\\pages\\index\\index.hml")
+var $app_style$ = __webpack_require__(/*! !!./lib/json.js!./lib/style.js!./index.css */ "./lib/json.js!./lib/style.js!D:\\work\\gitee\\locaUI_branch\\entry\\src\\main\\js\\default\\pages\\index\\index.css")
+var $app_script$ = __webpack_require__(/*! !!./lib/script.js!./node_modules/babel-loader?presets[]=C:\Users\jifengtx\AppData\Local\Huawei\Sdk\js\3.0.0.1\build-tools\ace-loader\node_modules\@babel\preset-env&plugins[]=C:\Users\jifengtx\AppData\Local\Huawei\Sdk\js\3.0.0.1\build-tools\ace-loader\node_modules\@babel\plugin-transform-modules-commonjs&comments=false!./lib/resource-reference-script.js!./index.js */ "./lib/script.js!./node_modules/babel-loader/lib/index.js?presets[]=C:\\Users\\jifengtx\\AppData\\Local\\Huawei\\Sdk\\js\\3.0.0.1\\build-tools\\ace-loader\\node_modules\\@babel\\preset-env&plugins[]=C:\\Users\\jifengtx\\AppData\\Local\\Huawei\\Sdk\\js\\3.0.0.1\\build-tools\\ace-loader\\node_modules\\@babel\\plugin-transform-modules-commonjs&comments=false!./lib/resource-reference-script.js!D:\\work\\gitee\\locaUI_branch\\entry\\src\\main\\js\\default\\pages\\index\\index.js")
 var options=$app_script$
  if ($app_script$.__esModule) {
 
@@ -21,23 +21,23 @@ module.exports=new ViewModel(options);
 
 /***/ }),
 
-/***/ "./lib/json.js!./lib/style.js!D:\\work\\display_small_wan1\\entry\\src\\main\\js\\default\\pages\\index\\index.css":
-/*!***************************************************************************************************************!*\
-  !*** ./lib/json.js!./lib/style.js!D:\work\display_small_wan1\entry\src\main\js\default\pages\index\index.css ***!
-  \***************************************************************************************************************/
+/***/ "./lib/json.js!./lib/style.js!D:\\work\\gitee\\locaUI_branch\\entry\\src\\main\\js\\default\\pages\\index\\index.css":
+/*!****************************************************************************************************************!*\
+  !*** ./lib/json.js!./lib/style.js!D:\work\gitee\locaUI_branch\entry\src\main\js\default\pages\index\index.css ***!
+  \****************************************************************************************************************/
 /***/ (function(module) {
 
-module.exports = {"@keyframes":{"disc":[{"transform":{"rotate":"0deg"},"time":0},{"transform":{"rotate":"360deg"},"time":100}]},"classSelectors":{"container":{"height":"100%","width":"100%"},"container-DM":{"width":500,"flexDirection":"column","height":500,"backgroundColor":15794175},"main":{"width":"100%","height":"100%","flexDirection":"column","justifyContent":"space-between","alignItems":"center"},"header":{"width":"100%","height":"12%","alignItems":"center","justifyContent":"center","color":16770244},"title-music":{"width":"100%","textAlign":"center","color":15132390},"body":{"width":"100%","height":"60%","flexDirection":"column","justifyContent":"center","alignItems":"center"},"music":{"width":"100%","height":"85%","flexDirection":"column","justifyContent":"space-around","alignItems":"flex-start"},"disc-wrapper":{"width":204,"height":204,"borderRadius":102,"borderTopWidth":2,"borderRightWidth":2,"borderBottomWidth":2,"borderLeftWidth":2,"borderTopColor":16747520,"borderRightColor":16747520,"borderBottomColor":16747520,"borderLeftColor":16747520},"disc":{"width":200,"height":200,"justifyContent":"center","alignItems":"center","animationName":"disc","animationDuration":"10s","animationIterationCount":"infinite"},"footer":{"width":"100%","height":"25%"},"musicWrapper":{"width":"100%","height":"85%","flexDirection":"row","justifyContent":"space-around","alignItems":"center"},"musicName":{"width":"100%","height":55,"fontSize":30,"color":16777215,"textAlign":"center"},"singer":{"width":"100%","height":42,"fontSize":25,"color":12566463,"textAlign":"center"},"progress-Wrapper":{"width":"100%","height":"15%","flexDirection":"row","justifyContent":"center"},"playTime":{"width":"25%","textAlign":"right","color":10658466},"allTime":{"width":"25%","textAlign":"left","marginLeft":18,"color":10658466},"progressBar":{"width":"50%","height":32,"selectedColor":16777215,"blockColor":16777215,"color":4210752,"marginLeft":18,"marginTop":8},"controlBar":{"width":"100%","height":"100%","flexDirection":"row","justifyContent":"center","alignItems":"center","backgroundColor":16770229},"modeBtn":{"width":36,"height":36,"marginLeft":10,"color":16777200},"previousBtn":{"width":56,"height":56,"marginLeft":30,"color":65535},"nextBtn":{"width":56,"height":56,"marginLeft":30},"playBtn":{"width":98,"height":98,"marginLeft":30},"listBtn":{"width":36,"height":36,"marginLeft":30},"list-Wrapper":{"width":"100%","height":"60%","top":"15%","flexDirection":"column","backgroundColor":"#e6333333"},"listText":{"width":"50%","fontSize":30,"textAlign":"center","color":"#e9fcfffa"},"musicList":{"width":"100%","height":"100%","backgroundColor":3355443,"color":9109504},"listItem":{"width":"100%","height":"15%","color":16775388,"backgroundColor":4210752},"itemWrapper":{"width":"100%","height":"100%","textAlign":"center","alignItems":"center","marginTop":8,"borderRadius":10,"borderTopWidth":1,"borderRightWidth":1,"borderBottomWidth":1,"borderLeftWidth":1,"borderTopColor":"#22000000","borderRightColor":"#22000000","borderBottomColor":"#22000000","borderLeftColor":"#22000000","backgroundColor":35723},"space-Wrapper":{"width":"100%","height":"100%","textAlign":"center","alignItems":"center","borderTopWidth":1,"borderRightWidth":1,"borderBottomWidth":1,"borderLeftWidth":1,"borderTopColor":"#22000000","borderRightColor":"#22000000","borderBottomColor":"#22000000","borderLeftColor":"#22000000","backgroundColor":16775388},"itemName":{"width":"50%","height":"100%","color":16766720,"textAlign":"center"},"itemSinger":{"width":"50%","height":"100%","color":16766720,"textAlign":"center"},"MDBtn":{"width":56,"height":56,"marginLeft":-30},"navigator":{"flexDirection":"row","justifyContent":"space-between","width":"100%","height":60,"backgroundColor":16747520},"navigator-title":{"fontSize":35},"title":{"fontSize":50,"color":0},"title1":{"fontSize":50,"color":0,"paddingTop":30},"title-wrap":{"width":"100%","height":454,"display":"flex","flexDirection":"column","alignItems":"center","color":"#a6fcfcfc"},"title-wrap1":{"width":"100%","height":454,"display":"flex","flexDirection":"column","alignItems":"center","color":"#a6fcfcfc"},"content-wrap":{"width":320,"height":40,"flexDirection":"row","color":0,"marginTop":15},"main-pin":{"width":"100%","height":"100%","color":0},"title-tip":{"fontSize":30,"color":0,"paddingTop":30},"pin-numb":{"width":250,"height":60,"flexDirection":"row","justifyContent":"space-around","alignItems":"center"},"pin-numb-item":{"fontSize":30,"height":40,"paddingBottom":5,"width":30,"textAlign":"center","color":0},"pin-numb-line":{"width":240,"borderTopWidth":1,"borderRightWidth":1,"borderBottomWidth":1,"borderLeftWidth":1,"borderTopColor":11119017,"borderRightColor":11119017,"borderBottomColor":11119017,"borderLeftColor":11119017},"numb":{"fontSize":30,"height":40,"width":80,"textAlign":"center","color":0,"backgroundColor":16777215,"borderTopWidth":1,"borderRightWidth":1,"borderBottomWidth":1,"borderLeftWidth":1,"borderTopColor":0,"borderRightColor":0,"borderBottomColor":0,"borderLeftColor":0,"borderRadius":25},"input":{"flexDirection":"row","justifyContent":"space-around","alignItems":"center"},"join-pin > .pin":{"fontSize":50,"color":0},"join-authorize":{"width":"100%","height":"100%","paddingTop":50},"join-title":{"fontSize":30,"color":0},"join-auth-title":{"fontSize":25,"color":0,"paddingBottom":20},"button-wrap":{"width":400,"height":180,"flexDirection":"row","color":0,"marginTop":-10},"button-cancel":{"width":230,"marginTop":100,"fontSize":26,"marginLeft":40,"height":50,"color":2003199},"button-cancel-1":{"width":230,"marginTop":100,"fontSize":26,"marginLeft":40,"height":50,"color":2003199},"button-ok":{"borderTopWidth":1,"borderRightWidth":1,"borderBottomWidth":1,"borderLeftWidth":1,"borderTopColor":0,"borderRightColor":0,"borderBottomColor":0,"borderLeftColor":0,"textAlign":"center","borderRadius":25,"marginLeft":-40,"backgroundColor":2003199,"width":200,"marginTop":100,"fontSize":26,"height":50,"color":16777215},"Test-ok":{"borderTopWidth":1,"borderRightWidth":1,"borderBottomWidth":1,"borderLeftWidth":1,"borderTopColor":0,"borderRightColor":0,"borderBottomColor":0,"borderLeftColor":0,"textAlign":"center","borderRadius":25,"marginLeft":-100,"backgroundColor":2003199,"width":200,"marginTop":100,"fontSize":26,"height":50,"color":16777215},"join-auth":{"width":"100%","height":"100%","paddingTop":40,"color":16260863},"join-auth-image":{"width":"100%","height":"100%","paddingTop":30,"color":16260863},"join-pin":{"width":"100%","height":"100%","paddingTop":30,"color":16260863},"joinPinCancel":{"width":200,"marginTop":80,"fontSize":50,"marginLeft":150,"height":100,"color":2003199},"Heading":{"width":"100%","height":50,"textAlign":"center","marginTop":10,"justifyContent":"space-around"},"block-wrapper":{"width":"50%","justifyContent":"center","alignItems":"center"},"body1":{"flexDirection":"column","width":"100%","height":"80%"},"swiper":{"width":"100%","height":"100%"},"swiper-item":{"width":"100%","height":"100%"},"row2":{"width":"100%","height":"50%"},"grid":{"flexDirection":"row","flexWrap":"wrap","width":"100%","height":"100%"},"test1":{"height":"100%","paddingLeft":40,"display":"flex","flexDirection":"column"},"test2":{"color":0},"test3":{"height":60,"width":400,"display":"flex","marginTop":20},"test4":{"height":60,"width":400,"display":"flex"},"test8":{"color":0,"marginTop":20,"fontSize":40}}}
+module.exports = {"@keyframes":{"disc":[{"transform":{"rotate":"0deg"},"time":0},{"transform":{"rotate":"360deg"},"time":100}]},"classSelectors":{"container":{"height":"100%","width":"100%"},"container-DM":{"width":500,"flexDirection":"column","height":500,"backgroundColor":15794175},"main":{"width":"100%","height":"100%","flexDirection":"column","justifyContent":"space-between","alignItems":"center"},"header":{"width":"100%","height":"12%","alignItems":"center","justifyContent":"center","color":16770244},"title-music":{"width":"100%","textAlign":"center","color":15132390},"body":{"width":"100%","height":"60%","flexDirection":"column","justifyContent":"center","alignItems":"center"},"music":{"width":"100%","height":"85%","flexDirection":"column","justifyContent":"space-around","alignItems":"flex-start"},"disc-wrapper":{"width":204,"height":204,"borderRadius":102,"borderTopWidth":2,"borderRightWidth":2,"borderBottomWidth":2,"borderLeftWidth":2,"borderTopColor":16747520,"borderRightColor":16747520,"borderBottomColor":16747520,"borderLeftColor":16747520},"disc":{"width":200,"height":200,"justifyContent":"center","alignItems":"center","animationName":"disc","animationDuration":"10s","animationIterationCount":"infinite"},"footer":{"width":"100%","height":"25%"},"musicWrapper":{"width":"100%","height":"85%","flexDirection":"row","justifyContent":"space-around","alignItems":"center"},"musicName":{"width":"100%","height":55,"fontSize":30,"color":16777215,"textAlign":"center"},"singer":{"width":"100%","height":42,"fontSize":25,"color":12566463,"textAlign":"center"},"progress-Wrapper":{"width":"100%","height":"15%","flexDirection":"row","justifyContent":"center"},"playTime":{"width":"25%","textAlign":"right","color":10658466},"allTime":{"width":"25%","textAlign":"left","marginLeft":18,"color":10658466},"progressBar":{"width":"50%","height":32,"selectedColor":16777215,"blockColor":16777215,"color":4210752,"marginLeft":18,"marginTop":8},"controlBar":{"width":"100%","height":"100%","flexDirection":"row","justifyContent":"center","alignItems":"center","backgroundColor":16770229},"modeBtn":{"width":36,"height":36,"marginLeft":10,"color":16777200},"previousBtn":{"width":56,"height":56,"marginLeft":30,"color":65535},"nextBtn":{"width":56,"height":56,"marginLeft":30},"playBtn":{"width":98,"height":98,"marginLeft":30},"listBtn":{"width":36,"height":36,"marginLeft":30},"list-Wrapper":{"width":"100%","height":"60%","top":"15%","flexDirection":"column","backgroundColor":"#e6333333"},"listText":{"width":"50%","fontSize":30,"textAlign":"center","color":"#e9fcfffa"},"musicList":{"width":"100%","height":"100%","backgroundColor":3355443,"color":9109504},"listItem":{"width":"100%","height":"15%","color":16775388,"backgroundColor":4210752},"itemWrapper":{"width":"100%","height":"100%","textAlign":"center","alignItems":"center","marginTop":8,"borderRadius":10,"borderTopWidth":1,"borderRightWidth":1,"borderBottomWidth":1,"borderLeftWidth":1,"borderTopColor":"#22000000","borderRightColor":"#22000000","borderBottomColor":"#22000000","borderLeftColor":"#22000000","backgroundColor":35723},"space-Wrapper":{"width":"100%","height":"100%","textAlign":"center","alignItems":"center","borderTopWidth":1,"borderRightWidth":1,"borderBottomWidth":1,"borderLeftWidth":1,"borderTopColor":"#22000000","borderRightColor":"#22000000","borderBottomColor":"#22000000","borderLeftColor":"#22000000","backgroundColor":16775388},"itemName":{"width":"50%","height":"100%","color":16766720,"textAlign":"center"},"itemSinger":{"width":"50%","height":"100%","color":16766720,"textAlign":"center"},"MDBtn":{"width":56,"height":56,"marginLeft":-30},"navigator":{"flexDirection":"row","justifyContent":"space-between","width":"100%","height":60,"backgroundColor":16747520},"navigator-title":{"fontSize":35},"title":{"fontSize":50,"color":0},"title1":{"fontSize":50,"color":0,"paddingTop":30},"title-wrap":{"width":"100%","height":454,"display":"flex","flexDirection":"column","alignItems":"center","color":"#a6fcfcfc"},"title-wrap1":{"width":"100%","height":454,"display":"flex","flexDirection":"column","alignItems":"center","color":"#a6fcfcfc"},"content-wrap":{"width":320,"height":40,"flexDirection":"row","color":0,"marginTop":15},"main-pin":{"width":"100%","height":"100%","color":0},"title-tip":{"fontSize":30,"color":0,"paddingTop":30},"pin-numb":{"width":250,"height":60,"flexDirection":"row","justifyContent":"space-around","alignItems":"center"},"pin-numb-item":{"fontSize":30,"height":40,"paddingBottom":5,"width":30,"textAlign":"center","color":0},"pin-numb-line":{"width":240,"borderTopWidth":1,"borderRightWidth":1,"borderBottomWidth":1,"borderLeftWidth":1,"borderTopColor":11119017,"borderRightColor":11119017,"borderBottomColor":11119017,"borderLeftColor":11119017},"numb":{"fontSize":30,"height":40,"width":80,"textAlign":"center","color":0,"backgroundColor":16777215,"borderTopWidth":1,"borderRightWidth":1,"borderBottomWidth":1,"borderLeftWidth":1,"borderTopColor":0,"borderRightColor":0,"borderBottomColor":0,"borderLeftColor":0,"borderRadius":25},"input":{"flexDirection":"row","justifyContent":"space-around","alignItems":"center"},"join-pin > .pin":{"fontSize":50,"color":0},"join-authorize":{"width":"100%","height":"100%","paddingTop":50},"join-title":{"fontSize":30,"color":0},"join-auth-title":{"fontSize":25,"color":0,"paddingBottom":20},"button-wrap":{"width":400,"height":180,"flexDirection":"row","color":0,"marginTop":-10},"button-cancel":{"width":230,"marginTop":100,"fontSize":26,"marginLeft":20,"height":50,"color":2003199},"button-cancel-1":{"width":230,"marginTop":100,"fontSize":26,"marginLeft":40,"height":50,"color":2003199},"button-ok":{"borderTopWidth":1,"borderRightWidth":1,"borderBottomWidth":1,"borderLeftWidth":1,"borderTopColor":0,"borderRightColor":0,"borderBottomColor":0,"borderLeftColor":0,"textAlign":"center","borderRadius":25,"marginLeft":-40,"backgroundColor":2003199,"width":200,"marginTop":100,"fontSize":26,"height":50,"color":16777215},"Test-ok":{"borderTopWidth":1,"borderRightWidth":1,"borderBottomWidth":1,"borderLeftWidth":1,"borderTopColor":0,"borderRightColor":0,"borderBottomColor":0,"borderLeftColor":0,"textAlign":"center","borderRadius":25,"marginLeft":-100,"backgroundColor":2003199,"width":200,"marginTop":100,"fontSize":26,"height":50,"color":16777215},"join-auth":{"width":"100%","height":"100%","paddingTop":40,"color":16260863},"join-auth-image":{"width":"100%","height":"100%","paddingTop":30,"color":16260863},"join-pin":{"width":"100%","height":"100%","paddingTop":30,"color":16260863},"joinPinCancel":{"width":200,"marginTop":80,"fontSize":50,"marginLeft":150,"height":100,"color":2003199},"Heading":{"width":"100%","height":50,"textAlign":"center","marginTop":10,"justifyContent":"space-around"},"block-wrapper":{"width":"50%","justifyContent":"center","alignItems":"center"},"body1":{"flexDirection":"column","width":"100%","height":"80%"},"swiper":{"width":"100%","height":"100%"},"swiper-item":{"width":"100%","height":"100%"},"row2":{"width":"100%","height":"50%"},"grid":{"flexDirection":"row","flexWrap":"wrap","width":"100%","height":"100%"},"test1":{"height":"100%","paddingLeft":40,"display":"flex","flexDirection":"column"},"test2":{"color":0},"test3":{"height":60,"width":400,"display":"flex","marginTop":20},"test4":{"height":60,"width":400,"display":"flex"},"test8":{"color":0,"marginTop":20,"fontSize":40}}}
 
 /***/ }),
 
-/***/ "./lib/json.js!./lib/template.js!D:\\work\\display_small_wan1\\entry\\src\\main\\js\\default\\pages\\index\\index.hml":
-/*!******************************************************************************************************************!*\
-  !*** ./lib/json.js!./lib/template.js!D:\work\display_small_wan1\entry\src\main\js\default\pages\index\index.hml ***!
-  \******************************************************************************************************************/
+/***/ "./lib/json.js!./lib/template.js!D:\\work\\gitee\\locaUI_branch\\entry\\src\\main\\js\\default\\pages\\index\\index.hml":
+/*!*******************************************************************************************************************!*\
+  !*** ./lib/json.js!./lib/template.js!D:\work\gitee\locaUI_branch\entry\src\main\js\default\pages\index\index.hml ***!
+  \*******************************************************************************************************************/
 /***/ (function(module) {
 
-module.exports = function (vm) { var _vm = vm || this; return _c('stack', {'staticClass' : ["container"],'onBubbleEvents' : {'swipe' : _vm.swipeEvent}} , [_c('div', {'staticClass' : ["main"]} , [_c('div', {'staticClass' : ["header"]} , [_c('image', {'attrs' : {'src' : "common/ic_back.png"},'staticClass' : ["back"],'onBubbleEvents' : {'click' : _vm.exitApp}} ),_c('text', {'attrs' : {'value' : "分布式音乐播放器"},'staticClass' : ["title-music"]} )] ),_c('div', {'staticClass' : ["body"]} , [_c('div', {'staticClass' : ["musicWrapper"]} , [_c('div', {'staticClass' : ["music"]} , [_c('marquee', {'attrs' : {'scrollamount' : 15,'value' : function () {return _vm.curMusic.curMusicName}},'staticClass' : ["musicName"]} ),_c('marquee', {'attrs' : {'scrollamount' : 15,'value' : function () {return _vm.curMusic.singer}},'staticClass' : ["singer"]} )] )] ),_c('div', {'staticClass' : ["progress-Wrapper"]} , [_c('text', {'attrs' : {'value' : function () {return _vm.curMusic.playTime}},'staticClass' : ["playTime"]} ),_c('slider', {'attrs' : {'min' : 0,'max' : 100,'value' : function () {return _vm.playProgress}},'staticClass' : ["progressBar"],'onBubbleEvents' : {'change' : _vm.changeProgress}} ),_c('text', {'attrs' : {'value' : function () {return _vm.curMusic.allTime}},'staticClass' : ["allTime"]} )] )] ),_c('div', {'staticClass' : ["footer"]} , [_c('div', {'staticClass' : ["controlBar"]} , [_c('image', {'attrs' : {'src' : "common/pincode.png"},'staticClass' : ["playBtn"],'onBubbleEvents' : {'click' : _vm.openDailog}} ),_c('image', {'attrs' : {'src' : function () {return _vm.playImage}},'staticClass' : ["playBtn"],'onBubbleEvents' : {'click' : _vm.playMusic}} ),_c('image', {'attrs' : {'src' : "common/ic_music_share.png"},'staticClass' : ["playBtn"],'onBubbleEvents' : {'click' : _vm.playRemote}} )] )] )] ),_c('div', {'attrs' : {'show' : function () {return _vm.showMusicList}},'staticClass' : ["list-Wrapper"]} , [_c('text', {'attrs' : {'value' : "播放列表"},'staticClass' : ["listText"]} ),_c('list', {'attrs' : {'ref' : "musicList"},'staticClass' : ["musicList"]} , [_l((function () {return _vm.musicList}),function($item,$idx){return _c('list-item', {'attrs' : {'value' : ">"},'staticClass' : ["listItem"],'onBubbleEvents' : {'click' : function (evt) {_vm.clickListItem($idx,evt)}}} , [_c('div', {'staticClass' : ["space-Wrapper"]} , [_c('div', {'staticClass' : ["itemWrapper"]} , [_c('text', {'attrs' : {'value' : function () {return $item.name}},'staticClass' : ["itemName"]} ),_c('text', {'attrs' : {'value' : function () {return $item.singer}},'staticClass' : ["itemSinger"]} )] )] )] )})] )] ),_i((function () {return _vm.dmpage}),function(){return _c('div', {'staticClass' : ["container-DM"]} , [_c('div', {'staticClass' : ["navigator"]} , [_c('text', {'attrs' : {'value' : "返回"},'staticClass' : ["back"],'onBubbleEvents' : {'click' : _vm.back}} ),_c('text', {'attrs' : {'value' : function () {return _vm.date}}} ),_c('text', {'attrs' : {'value' : function () {return _vm.week}}} )] ),_c('div', {'staticClass' : ["body1"]} , [_i((function () {return _vm.status=='device-online'}),function(){return _c('div', {'staticClass' : ["main-pin"]} , [_c('div', {'staticClass' : ["title-wrap"]} , [_c('div', {'staticClass' : ["button-wrap"]} , [_c('text', {'attrs' : {'value' : "设备上线点击返回"},'staticClass' : ["button-cancel-1"],'onBubbleEvents' : {'click' : _vm.BackToMusicPage}} )] )] )] )}),_i((function () {return _vm.statusType=='DeviceType'}),function(){return _c('div', {'staticClass' : ["test1"]} , [_c('text', {'attrs' : {'value' : "选择设备"},'staticClass' : ["test8"]} ),_c('div', {'staticClass' : ["test3"]} , [_c('input', {'attrs' : {'type' : "radio",'name' : "colors",'id' : "red",'checked' : true,'value' : "red"},'onBubbleEvents' : {'click' : _vm.localCode}} ),_c('text', {'attrs' : {'value' : "本机"},'staticClass' : ["test2"]} )] ),_c('div', {'staticClass' : ["test4"]} , [_c('input', {'attrs' : {'type' : "radio",'name' : "colors",'value' : function () {return _vm.statusInfo.deviceId}},'onBubbleEvents' : {'click' : _vm.changeCode}} ),_c('text', {'attrs' : {'value' : function () {return _vm.statusInfo.deviceId}},'staticClass' : ["test2"]} )] )] )}),_i((function () {return _vm.status=='main-pin'}),function(){return _c('div', {'staticClass' : ["main-pin"]} , [_c('div', {'staticClass' : ["title-wrap"]} , [_c('text', {'attrs' : {'value' : "PIN码连接"},'staticClass' : ["title"]} ),_c('text', {'attrs' : {'value' : "请输入平板上显示的PIN码"},'staticClass' : ["title-tip"]} ),_c('div', {'staticClass' : ["pin-numb"]} , [_c('text', {'attrs' : {'value' : function () {return _vm.pin[0]}},'staticClass' : ["pin-numb-item"]} ),_c('text', {'attrs' : {'value' : function () {return _vm.pin[1]}},'staticClass' : ["pin-numb-item"]} ),_c('text', {'attrs' : {'value' : function () {return _vm.pin[2]}},'staticClass' : ["pin-numb-item"]} ),_c('text', {'attrs' : {'value' : function () {return _vm.pin[3]}},'staticClass' : ["pin-numb-item"]} ),_c('text', {'attrs' : {'value' : function () {return _vm.pin[4]}},'staticClass' : ["pin-numb-item"]} ),_c('text', {'attrs' : {'value' : function () {return _vm.pin[5]}},'staticClass' : ["pin-numb-item"]} )] ),_c('div', {'staticClass' : ["pin-numb-line"]} ),_c('div', {'staticClass' : ["content-wrap"]} , [_c('text', {'attrs' : {'value' : "1"},'staticClass' : ["numb"],'onBubbleEvents' : {'click' : function (evt) {_vm.mainInputPin(1,evt)}}} ),_c('text', {'attrs' : {'value' : "2"},'staticClass' : ["numb"],'onBubbleEvents' : {'click' : function (evt) {_vm.mainInputPin(2,evt)}}} ),_c('text', {'attrs' : {'value' : "3"},'staticClass' : ["numb"],'onBubbleEvents' : {'click' : function (evt) {_vm.mainInputPin(3,evt)}}} ),_c('text', {'attrs' : {'value' : "4"},'staticClass' : ["numb"],'onBubbleEvents' : {'click' : function (evt) {_vm.mainInputPin(4,evt)}}} )] ),_c('div', {'staticClass' : ["content-wrap"]} , [_c('text', {'attrs' : {'value' : "5"},'staticClass' : ["numb"],'onBubbleEvents' : {'click' : function (evt) {_vm.mainInputPin(5,evt)}}} ),_c('text', {'attrs' : {'value' : "6"},'staticClass' : ["numb"],'onBubbleEvents' : {'click' : function (evt) {_vm.mainInputPin(6,evt)}}} ),_c('text', {'attrs' : {'value' : "7"},'staticClass' : ["numb"],'onBubbleEvents' : {'click' : function (evt) {_vm.mainInputPin(7,evt)}}} ),_c('text', {'attrs' : {'value' : "8"},'staticClass' : ["numb"],'onBubbleEvents' : {'click' : function (evt) {_vm.mainInputPin(8,evt)}}} )] ),_c('div', {'staticClass' : ["content-wrap"]} , [_c('text', {'attrs' : {'value' : "9"},'staticClass' : ["numb"],'onBubbleEvents' : {'click' : function (evt) {_vm.mainInputPin(9,evt)}}} ),_c('text', {'attrs' : {'value' : "0"},'staticClass' : ["numb"],'onBubbleEvents' : {'click' : function (evt) {_vm.mainInputPin(0,evt)}}} ),_c('text', {'attrs' : {'value' : "删除"},'staticClass' : ["numb"],'onBubbleEvents' : {'click' : _vm.mainInputPinBack}} ),_c('text', {'attrs' : {'value' : "取消"},'staticClass' : ["numb"],'onBubbleEvents' : {'click' : _vm.mainInputPinCancel}} )] )] )] )}),_i((function () {return _vm.status=='join-authorize'}),function(){return _c('div', {'staticClass' : ["join-authorize"]} , [_c('div', {'staticClass' : ["title-wrap"]} , [_c('text', {'attrs' : {'value' : function () {return decodeURI('22%E6%98%AF%E5%90%A6%E5%85%81%E8%AE%B8') + (_vm.statusInfo.deviceName) + decodeURI('%E8%BF%9E%E6%8E%A5%E6%9C%AC%E6%9C%BA')}},'staticClass' : ["join-title"]} ),_c('text', {'attrs' : {'value' : "用于资源访问"},'staticClass' : ["title-tip"]} ),_c('div', {'staticClass' : ["button-wrap"]} , [_c('text', {'attrs' : {'value' : function () {return decodeURI('%E5%8F%96%E6%B6%88%EF%BC%88') + (_vm.timeRemaining) + decodeURI('%EF%BC%89')}},'staticClass' : ["button-cancel"],'onBubbleEvents' : {'click' : _vm.joinAuthorizeCancel}} ),_c('text', {'attrs' : {'value' : "允许"},'staticClass' : ["button-ok"],'onBubbleEvents' : {'click' : _vm.joinAuthorizeOk}} )] )] )] )}),_i((function () {return _vm.status=='join-auth'}),function(){return _c('div', {'staticClass' : ["join-auth"]} , [_c('div', {'staticClass' : ["title-wrap"]} , [_c('text', {'attrs' : {'value' : function () {return decodeURI('11%E6%98%AF%E5%90%A6%E5%85%81%E8%AE%B8') + (_vm.statusInfo.appName)}},'staticClass' : ["join-auth-title"]} ),_c('text', {'attrs' : {'value' : "是否允许打开apply auth?"},'staticClass' : ["title-tip"]} ),_c('text', {'attrs' : {'value' : function () {return decodeURI('%E6%9D%A5%E8%87%AA') + (_vm.statusInfo.deviceName)}},'staticClass' : ["title-tip"]} ),_c('div', {'staticClass' : ["button-wrap"]} , [_c('text', {'attrs' : {'value' : function () {return decodeURI('%E5%8F%96%E6%B6%88%EF%BC%88') + (_vm.timeRemaining) + decodeURI('%EF%BC%89')}},'staticClass' : ["button-cancel"],'onBubbleEvents' : {'click' : _vm.joinAuthCancel}} ),_c('text', {'attrs' : {'value' : "允许"},'staticClass' : ["button-ok"],'onBubbleEvents' : {'click' : _vm.joinAuthOk}} )] )] )] )}),_i((function () {return _vm.status=='join-auth-image'}),function(){return _c('div', {'staticClass' : ["join-auth-image"]} , [_c('div', {'staticClass' : ["title-wrap"]} , [_c('image', {'attrs' : {'src' : function () {return _vm.statusInfo.appIcon}}} ),_c('text', {'attrs' : {'value' : function () {return _vm.statusInfo.appName}},'staticClass' : ["join-auth-title"]} ),_c('text', {'attrs' : {'value' : "是否允许打开apply auth?"},'staticClass' : ["title-tip"]} ),_c('text', {'attrs' : {'value' : function () {return decodeURI('%E6%9D%A5%E8%87%AA') + (_vm.statusInfo.deviceName)}},'staticClass' : ["title-tip"]} ),_c('div', {'staticClass' : ["button-wrap"]} , [_c('text', {'attrs' : {'value' : function () {return decodeURI('%E5%8F%96%E6%B6%88%EF%BC%88') + (_vm.timeRemaining) + decodeURI('%EF%BC%89')}},'staticClass' : ["button-cancel"],'onBubbleEvents' : {'click' : _vm.joinAuthImageCancel}} ),_c('text', {'attrs' : {'value' : "允许"},'staticClass' : ["button-ok"],'onBubbleEvents' : {'click' : _vm.joinAuthImageOk}} )] )] )] )}),_i((function () {return _vm.status=='join-pin'}),function(){return _c('div', {'staticClass' : ["join-pin"]} , [_c('div', {'staticClass' : ["title-wrap"]} , [_c('text', {'attrs' : {'value' : "PIN码连接"},'staticClass' : ["title"]} ),_c('text', {'attrs' : {'value' : "请在主控端输入连接码进行验证"},'staticClass' : ["title-tip"]} ),_c('text', {'attrs' : {'value' : function () {return _vm.StatInfo.pinCode.split('').join(' ')}},'staticClass' : ["title"]} ),_c('div', {'staticClass' : ["button-wrap"]} , [_c('text', {'attrs' : {'value' : "取消"},'staticClass' : ["joinPinCancel"],'onBubbleEvents' : {'click' : _vm.joinPinCancel}} )] )] )] )})] )] )})] ) }
+module.exports = function (vm) { var _vm = vm || this; return _c('stack', {'staticClass' : ["container"],'onBubbleEvents' : {'swipe' : _vm.swipeEvent}} , [_c('div', {'staticClass' : ["main"]} , [_c('div', {'staticClass' : ["header"]} , [_c('image', {'attrs' : {'src' : "common/ic_back.png"},'staticClass' : ["back"],'onBubbleEvents' : {'click' : _vm.exitApp}} ),_c('text', {'attrs' : {'value' : "分布式音乐播放器"},'staticClass' : ["title-music"]} )] ),_c('div', {'staticClass' : ["body"]} , [_c('div', {'staticClass' : ["musicWrapper"]} , [_c('div', {'staticClass' : ["music"]} , [_c('marquee', {'attrs' : {'scrollamount' : 15,'value' : function () {return _vm.curMusic.curMusicName}},'staticClass' : ["musicName"]} ),_c('marquee', {'attrs' : {'scrollamount' : 15,'value' : function () {return _vm.curMusic.singer}},'staticClass' : ["singer"]} )] )] ),_c('div', {'staticClass' : ["progress-Wrapper"]} , [_c('text', {'attrs' : {'value' : function () {return _vm.curMusic.playTime}},'staticClass' : ["playTime"]} ),_c('slider', {'attrs' : {'min' : 0,'max' : 100,'value' : function () {return _vm.playProgress}},'staticClass' : ["progressBar"],'onBubbleEvents' : {'change' : _vm.changeProgress}} ),_c('text', {'attrs' : {'value' : function () {return _vm.curMusic.allTime}},'staticClass' : ["allTime"]} )] )] ),_c('div', {'staticClass' : ["footer"]} , [_c('div', {'staticClass' : ["controlBar"]} , [_c('image', {'attrs' : {'src' : "common/pincode.png"},'staticClass' : ["playBtn"],'onBubbleEvents' : {'click' : _vm.openDailog}} ),_c('image', {'attrs' : {'src' : function () {return _vm.playImage}},'staticClass' : ["playBtn"],'onBubbleEvents' : {'click' : _vm.playMusic}} ),_c('image', {'attrs' : {'src' : "common/ic_music_share.png"},'staticClass' : ["playBtn"],'onBubbleEvents' : {'click' : _vm.playRemote}} )] )] )] ),_c('div', {'attrs' : {'show' : function () {return _vm.showMusicList}},'staticClass' : ["list-Wrapper"]} , [_c('text', {'attrs' : {'value' : "播放列表"},'staticClass' : ["listText"]} ),_c('list', {'attrs' : {'ref' : "musicList"},'staticClass' : ["musicList"]} , [_l((function () {return _vm.musicList}),function($item,$idx){return _c('list-item', {'attrs' : {'value' : ">"},'staticClass' : ["listItem"],'onBubbleEvents' : {'click' : function (evt) {_vm.clickListItem($idx,evt)}}} , [_c('div', {'staticClass' : ["space-Wrapper"]} , [_c('div', {'staticClass' : ["itemWrapper"]} , [_c('text', {'attrs' : {'value' : function () {return $item.name}},'staticClass' : ["itemName"]} ),_c('text', {'attrs' : {'value' : function () {return $item.singer}},'staticClass' : ["itemSinger"]} )] )] )] )})] )] ),_i((function () {return _vm.dmpage}),function(){return _c('div', {'staticClass' : ["container-DM"]} , [_c('div', {'staticClass' : ["navigator"]} , [_c('text', {'attrs' : {'value' : "返回"},'staticClass' : ["back"],'onBubbleEvents' : {'click' : _vm.back}} ),_c('text', {'attrs' : {'value' : function () {return _vm.date}}} ),_c('text', {'attrs' : {'value' : function () {return _vm.week}}} )] ),_c('div', {'staticClass' : ["body1"]} , [_i((function () {return _vm.status=='device-online'}),function(){return _c('div', {'staticClass' : ["main-pin"]} , [_c('div', {'staticClass' : ["title-wrap"]} , [_c('div', {'staticClass' : ["button-wrap"]} , [_c('text', {'attrs' : {'value' : "设备上线点击返回"},'staticClass' : ["button-cancel-1"],'onBubbleEvents' : {'click' : _vm.BackToMusicPage}} )] )] )] )}),_i((function () {return _vm.statusType=='DeviceType'}),function(){return _c('div', {'staticClass' : ["test1"]} , [_c('text', {'attrs' : {'value' : "选择设备"},'staticClass' : ["test8"]} ),_c('div', {'staticClass' : ["test3"]} , [_c('input', {'attrs' : {'type' : "radio",'name' : "colors",'id' : "red",'checked' : true,'value' : "red"},'onBubbleEvents' : {'click' : _vm.localCode}} ),_c('text', {'attrs' : {'value' : "本机"},'staticClass' : ["test2"]} )] ),_c('div', {'staticClass' : ["test4"]} , [_c('input', {'attrs' : {'type' : "radio",'name' : "colors",'value' : function () {return _vm.statusInfo.deviceId}},'onBubbleEvents' : {'click' : _vm.changeCode}} ),_c('text', {'attrs' : {'value' : function () {return _vm.statusInfo.deviceId}},'staticClass' : ["test2"]} )] )] )}),_i((function () {return _vm.status=='main-pin'}),function(){return _c('div', {'staticClass' : ["main-pin"]} , [_c('div', {'staticClass' : ["title-wrap"]} , [_c('text', {'attrs' : {'value' : "PIN码连接"},'staticClass' : ["title"]} ),_c('text', {'attrs' : {'value' : "请输入平板上显示的PIN码"},'staticClass' : ["title-tip"]} ),_c('div', {'staticClass' : ["pin-numb"]} , [_c('text', {'attrs' : {'value' : function () {return _vm.pin[0]}},'staticClass' : ["pin-numb-item"]} ),_c('text', {'attrs' : {'value' : function () {return _vm.pin[1]}},'staticClass' : ["pin-numb-item"]} ),_c('text', {'attrs' : {'value' : function () {return _vm.pin[2]}},'staticClass' : ["pin-numb-item"]} ),_c('text', {'attrs' : {'value' : function () {return _vm.pin[3]}},'staticClass' : ["pin-numb-item"]} ),_c('text', {'attrs' : {'value' : function () {return _vm.pin[4]}},'staticClass' : ["pin-numb-item"]} ),_c('text', {'attrs' : {'value' : function () {return _vm.pin[5]}},'staticClass' : ["pin-numb-item"]} )] ),_c('div', {'staticClass' : ["pin-numb-line"]} ),_c('div', {'staticClass' : ["content-wrap"]} , [_c('text', {'attrs' : {'value' : "1"},'staticClass' : ["numb"],'onBubbleEvents' : {'click' : function (evt) {_vm.mainInputPin(1,evt)}}} ),_c('text', {'attrs' : {'value' : "2"},'staticClass' : ["numb"],'onBubbleEvents' : {'click' : function (evt) {_vm.mainInputPin(2,evt)}}} ),_c('text', {'attrs' : {'value' : "3"},'staticClass' : ["numb"],'onBubbleEvents' : {'click' : function (evt) {_vm.mainInputPin(3,evt)}}} ),_c('text', {'attrs' : {'value' : "4"},'staticClass' : ["numb"],'onBubbleEvents' : {'click' : function (evt) {_vm.mainInputPin(4,evt)}}} )] ),_c('div', {'staticClass' : ["content-wrap"]} , [_c('text', {'attrs' : {'value' : "5"},'staticClass' : ["numb"],'onBubbleEvents' : {'click' : function (evt) {_vm.mainInputPin(5,evt)}}} ),_c('text', {'attrs' : {'value' : "6"},'staticClass' : ["numb"],'onBubbleEvents' : {'click' : function (evt) {_vm.mainInputPin(6,evt)}}} ),_c('text', {'attrs' : {'value' : "7"},'staticClass' : ["numb"],'onBubbleEvents' : {'click' : function (evt) {_vm.mainInputPin(7,evt)}}} ),_c('text', {'attrs' : {'value' : "8"},'staticClass' : ["numb"],'onBubbleEvents' : {'click' : function (evt) {_vm.mainInputPin(8,evt)}}} )] ),_c('div', {'staticClass' : ["content-wrap"]} , [_c('text', {'attrs' : {'value' : "9"},'staticClass' : ["numb"],'onBubbleEvents' : {'click' : function (evt) {_vm.mainInputPin(9,evt)}}} ),_c('text', {'attrs' : {'value' : "0"},'staticClass' : ["numb"],'onBubbleEvents' : {'click' : function (evt) {_vm.mainInputPin(0,evt)}}} ),_c('text', {'attrs' : {'value' : "删除"},'staticClass' : ["numb"],'onBubbleEvents' : {'click' : _vm.mainInputPinBack}} ),_c('text', {'attrs' : {'value' : "取消"},'staticClass' : ["numb"],'onBubbleEvents' : {'click' : _vm.mainInputPinCancel}} )] )] )] )}),_i((function () {return _vm.status=='join-authorize'}),function(){return _c('div', {'staticClass' : ["join-authorize"]} , [_c('div', {'staticClass' : ["title-wrap"]} , [_c('text', {'attrs' : {'value' : function () {return decodeURI('22%E6%98%AF%E5%90%A6%E5%85%81%E8%AE%B8') + (_vm.statusInfo.deviceName) + decodeURI('%E8%BF%9E%E6%8E%A5%E6%9C%AC%E6%9C%BA')}},'staticClass' : ["join-title"]} ),_c('text', {'attrs' : {'value' : "用于资源访问"},'staticClass' : ["title-tip"]} ),_c('div', {'staticClass' : ["button-wrap"]} , [_c('text', {'attrs' : {'value' : function () {return decodeURI('%E5%8F%96%E6%B6%88%EF%BC%88') + (_vm.timeRemaining) + decodeURI('%EF%BC%89')}},'staticClass' : ["button-cancel"],'onBubbleEvents' : {'click' : _vm.joinAuthorizeCancel}} ),_c('text', {'attrs' : {'value' : "允许"},'staticClass' : ["button-ok"],'onBubbleEvents' : {'click' : _vm.joinAuthorizeOk}} )] )] )] )}),_i((function () {return _vm.status=='join-auth'}),function(){return _c('div', {'staticClass' : ["join-auth"]} , [_c('div', {'staticClass' : ["title-wrap"]} , [_c('text', {'attrs' : {'value' : function () {return decodeURI('11%E6%98%AF%E5%90%A6%E5%85%81%E8%AE%B8') + (_vm.statusInfo.appName)}},'staticClass' : ["join-auth-title"]} ),_c('text', {'attrs' : {'value' : "是否允许打开apply auth?"},'staticClass' : ["title-tip"]} ),_c('text', {'attrs' : {'value' : function () {return decodeURI('%E6%9D%A5%E8%87%AA') + (_vm.statusInfo.deviceName)}},'staticClass' : ["title-tip"]} ),_c('div', {'staticClass' : ["button-wrap"]} , [_c('text', {'attrs' : {'value' : function () {return decodeURI('%E5%8F%96%E6%B6%88%EF%BC%88') + (_vm.timeRemaining) + decodeURI('%EF%BC%89')}},'staticClass' : ["button-cancel"],'onBubbleEvents' : {'click' : _vm.joinAuthCancel}} ),_c('text', {'attrs' : {'value' : "允许"},'staticClass' : ["button-ok"],'onBubbleEvents' : {'click' : _vm.joinAuthOk}} )] )] )] )}),_i((function () {return _vm.status=='join-auth-image'}),function(){return _c('div', {'staticClass' : ["join-auth-image"]} , [_c('div', {'staticClass' : ["title-wrap"]} , [_c('image', {'attrs' : {'src' : function () {return _vm.statusInfo.appIcon}}} ),_c('text', {'attrs' : {'value' : function () {return _vm.statusInfo.appName}},'staticClass' : ["join-auth-title"]} ),_c('text', {'attrs' : {'value' : "是否允许打开apply auth?"},'staticClass' : ["title-tip"]} ),_c('text', {'attrs' : {'value' : function () {return decodeURI('%E6%9D%A5%E8%87%AA') + (_vm.statusInfo.deviceName)}},'staticClass' : ["title-tip"]} ),_c('div', {'staticClass' : ["button-wrap"]} , [_c('text', {'attrs' : {'value' : function () {return decodeURI('%E5%8F%96%E6%B6%88%EF%BC%88') + (_vm.timeRemaining) + decodeURI('%EF%BC%89')}},'staticClass' : ["button-cancel"],'onBubbleEvents' : {'click' : _vm.joinAuthImageCancel}} ),_c('text', {'attrs' : {'value' : "允许"},'staticClass' : ["button-ok"],'onBubbleEvents' : {'click' : _vm.joinAuthImageOk}} )] )] )] )}),_i((function () {return _vm.status=='join-pin'}),function(){return _c('div', {'staticClass' : ["join-pin"]} , [_c('div', {'staticClass' : ["title-wrap"]} , [_c('text', {'attrs' : {'value' : "PIN码连接"},'staticClass' : ["title"]} ),_c('text', {'attrs' : {'value' : "请在主控端输入连接码进行验证"},'staticClass' : ["title-tip"]} ),_c('text', {'attrs' : {'value' : function () {return _vm.StatInfo.pinCode.split('').join(' ')}},'staticClass' : ["title"]} ),_c('div', {'staticClass' : ["button-wrap"]} , [_c('text', {'attrs' : {'value' : "取消"},'staticClass' : ["joinPinCancel"],'onBubbleEvents' : {'click' : _vm.joinPinCancel}} )] )] )] )}),_i((function () {return _vm.status=='start'}),function(){return _c('div', {'staticClass' : ["main-pin"]} , [_c('div', {'staticClass' : ["title-wrap"]} , [_c('div', {'staticClass' : ["button-wrap"]} , [_c('text', {'attrs' : {'value' : "发现设备"},'staticClass' : ["button-cancel"],'onBubbleEvents' : {'click' : _vm. startDevice}} ),_c('text', {'attrs' : {'value' : "发起认证"},'staticClass' : ["button-cancel"],'onBubbleEvents' : {'click' : _vm.AuthenticateDevice}} )] ),_c('div', {'staticClass' : ["button-wrap"]} , [_c('text', {'attrs' : {'value' : "允许认证"},'staticClass' : ["button-cancel"],'onBubbleEvents' : {'click' : _vm.bottonjoinAuthOk}} ),_c('text', {'attrs' : {'value' : "输入PIN码"},'staticClass' : ["button-cancel"],'onBubbleEvents' : {'click' : _vm.statmainInputPin}} )] )] )] )})] )] )})] ) }
 
 /***/ }),
 
@@ -91,10 +91,10 @@ function requireModule(moduleName) {
 
 /***/ }),
 
-/***/ "./lib/script.js!./node_modules/babel-loader/lib/index.js?presets[]=C:\\Users\\jifen\\AppData\\Local\\Huawei\\Sdk\\js\\3.0.0.0\\build-tools\\ace-loader\\node_modules\\@babel\\preset-env&plugins[]=C:\\Users\\jifen\\AppData\\Local\\Huawei\\Sdk\\js\\3.0.0.0\\build-tools\\ace-loader\\node_modules\\@babel\\plugin-transform-modules-commonjs&comments=false!./lib/resource-reference-script.js!D:\\work\\display_small_wan1\\entry\\src\\main\\js\\default\\pages\\index\\index.js":
-/*!*********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
-  !*** ./lib/script.js!./node_modules/babel-loader/lib/index.js?presets[]=C:\Users\jifen\AppData\Local\Huawei\Sdk\js\3.0.0.0\build-tools\ace-loader\node_modules\@babel\preset-env&plugins[]=C:\Users\jifen\AppData\Local\Huawei\Sdk\js\3.0.0.0\build-tools\ace-loader\node_modules\@babel\plugin-transform-modules-commonjs&comments=false!./lib/resource-reference-script.js!D:\work\display_small_wan1\entry\src\main\js\default\pages\index\index.js ***!
-  \*********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/***/ "./lib/script.js!./node_modules/babel-loader/lib/index.js?presets[]=C:\\Users\\jifengtx\\AppData\\Local\\Huawei\\Sdk\\js\\3.0.0.1\\build-tools\\ace-loader\\node_modules\\@babel\\preset-env&plugins[]=C:\\Users\\jifengtx\\AppData\\Local\\Huawei\\Sdk\\js\\3.0.0.1\\build-tools\\ace-loader\\node_modules\\@babel\\plugin-transform-modules-commonjs&comments=false!./lib/resource-reference-script.js!D:\\work\\gitee\\locaUI_branch\\entry\\src\\main\\js\\default\\pages\\index\\index.js":
+/*!****************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./lib/script.js!./node_modules/babel-loader/lib/index.js?presets[]=C:\Users\jifengtx\AppData\Local\Huawei\Sdk\js\3.0.0.1\build-tools\ace-loader\node_modules\@babel\preset-env&plugins[]=C:\Users\jifengtx\AppData\Local\Huawei\Sdk\js\3.0.0.1\build-tools\ace-loader\node_modules\@babel\plugin-transform-modules-commonjs&comments=false!./lib/resource-reference-script.js!D:\work\gitee\locaUI_branch\entry\src\main\js\default\pages\index\index.js ***!
+  \****************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
 /***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 "use strict";
@@ -144,7 +144,7 @@ var _default = {
     IntervalID: 0,
     StartDiscoveryTimer: 0,
     timeout: 0,
-    timeRemaining: 20,
+    timeRemaining: 0,
     pinNumb: 0,
     pin: ['', '', '', '', '', ''],
     statusInfo: {
@@ -168,16 +168,6 @@ var _default = {
     var _this2 = this;
 
     this.DMinit();
-    this.StartDiscoveryTimer = setInterval(this.OndeviceFound, 2000);
-    this.startDevice();
-
-    var array = _system5["default"].getTrustedDeviceListSync();
-
-    console.info(JSON.stringify(array));
-
-    if (array == null) {
-      this.IntervalID = setInterval(this.initStatue, 3000);
-    }
 
     _system2["default"].onplay = function () {
       (0, _newArrowCheck2["default"])(this, _this2);
@@ -466,7 +456,7 @@ var _default = {
 
     if (arrayFa == null) {
       this.dmpage = true;
-      this.statusType = 'DeviceType';
+      this.status = 'start';
     } else {
       this.dmpage = true;
       this.status = 'device-online';
@@ -474,9 +464,37 @@ var _default = {
     }
   },
   DMinit: function DMinit() {
-    console.info('createDeviceManager');
+    var _this3 = this;
 
-    _system5["default"].createDeviceManager('com.ohos.devicemanagerui');
+    _system5["default"].createDeviceManager('com.ohos.devicemanagerui', {
+      success: function success(data0) {
+        console.log("in createDeviceManager success:");
+      },
+      fail: function fail(err0) {
+        console.log("in createDeviceManager fail:");
+      }
+    });
+
+    _system5["default"].on('deviceFound', function (data0, data1) {
+      (0, _newArrowCheck2["default"])(this, _this3);
+
+      if (data1 == null) {
+        console.info("deviceFound error data=null");
+        return;
+      }
+
+      console.info("deviceFound:" + JSON.stringify(data0));
+      console.info("deviceFound:" + JSON.stringify(data1));
+      this.statusInfo = {
+        deviceId: data1.deviceId,
+        deviceName: data1.deviceName,
+        deviceTypeId: data1.deviceTypeId
+      };
+    }.bind(this));
+
+    this.OndeviceStateChange();
+    this.onserviceDie();
+    this.OndmFaCallback();
   },
   startDevice: function startDevice() {
     console.info("Start Device discovery");
@@ -513,20 +531,13 @@ var _default = {
       appThumbnail: null,
       extraInfo: extraInfo
     };
-
-    var _this = this;
+    console.log("ready authenticateDevice");
 
     _system5["default"].authenticateDevice(this.statusInfo, AuthParam, {
       success: function success(data0, data1) {
         console.log("in authenticateDevice success:");
         console.log(JSON.stringify(data0));
         console.log(JSON.stringify(data1));
-        _this.GetPonken = {
-          deviceId: data0.deviceId,
-          pinTone: data1.pinTone
-        };
-
-        _this.mainPin();
       },
       fail: function fail(err0, err1) {
         console.log("authenticateDevice fail*");
@@ -538,13 +549,21 @@ var _default = {
     clearInterval(this.IntervalID);
   },
   joinAuthOk: function joinAuthOk() {
-    this.joinPin();
+    if (this.StatInfo.pinCode != 0) {
+      clearInterval(this.IntervalID);
+      this.joinPin();
+    }
+  },
+  bottonjoinAuthOk: function bottonjoinAuthOk() {
     this.setUserOperation(0);
+    this.IntervalID = setInterval(this.initStatue, 1000);
+    this.status = 'join-auth';
   },
   joinAuthCancel: function joinAuthCancel() {
     this.setUserOperation(1);
     this.status = null;
     this.dmpage = false;
+    this.exitDM();
   },
   mainInputPin: function mainInputPin(s) {
     if (this.pinNumb == 6) return;
@@ -566,7 +585,7 @@ var _default = {
   verifyAuthInfo: function verifyAuthInfo(pinCode) {
     _system5["default"].verifyAuthInfo({
       "authType": 1,
-      "token": this.GetPonken.pinTone,
+      "token": '0',
       "extraInfo": {
         "pinCode": +pinCode
       }
@@ -579,8 +598,6 @@ var _default = {
         console.log(JSON.stringify(err0));
       }
     });
-
-    this.OndeviceStateChange();
   },
   mainInputPinBack: function mainInputPinBack() {
     if (this.pinNumb > 0) {
@@ -588,9 +605,19 @@ var _default = {
       this.pin[this.pinNumb] = '';
     }
   },
+  cleanInputPin: function cleanInputPin() {
+    if (this.pinNumb > 0) {
+      for (var i = 0; i < this.pinNumb; i++) {
+        this.pin[i] = '';
+      }
+
+      this.pinNumb = 0;
+    }
+  },
   mainInputPinCancel: function mainInputPinCancel() {
     this.setUserOperation(4);
     this.dmpage = false;
+    this.exitDM();
   },
   initStatue: function initStatue() {
     console.info('initStatue');
@@ -612,9 +639,7 @@ var _default = {
         this.mainPin();
       } else if (data.appIcon) {
         this.joinAuthImage();
-      } else if (data.extraInfo.business == 0) {
-        this.joinAuth();
-      } else {
+      } else if (data.extraInfo.business == 0) {} else {
         this.joinAuthorize();
       }
     }
@@ -656,7 +681,6 @@ var _default = {
   },
   joinPin: function joinPin() {
     this.status = 'join-pin';
-    this.OndeviceStateChange();
   },
   timing: function timing(numb) {
     var _this = this;
@@ -671,17 +695,14 @@ var _default = {
         _this.setUserOperation(numb);
 
         _this.dmpage = false;
-        clearInterval(_this.timeout);
       }
     }, 1000);
-  },
-  log: function log(m) {
-    console.info(TAG + m);
   },
   back: function back() {
     this.dmpage = false;
     this.statusType = null;
     this.status = null;
+    this.exitDM();
   },
   changeCode: function changeCode() {
     this.AuthenticateDevice();
@@ -693,24 +714,25 @@ var _default = {
     this.dmpage = false;
   },
   exitDM: function exitDM() {
-    this.GetPonken = null;
-    this.subscribeId = 0;
     this.status = null;
     this.dmpage = false;
+    this.GetPonken = null;
+    this.statusInfo = null;
+    this.subscribeId = 0;
+    this.cleanInputPin();
+    clearInterval(this.IntervalID);
   },
   OndeviceFound: function OndeviceFound() {
-    var _this3 = this;
+    var _this4 = this;
 
     _system5["default"].on('deviceFound', function (data0, data1) {
-      (0, _newArrowCheck2["default"])(this, _this3);
+      (0, _newArrowCheck2["default"])(this, _this4);
 
       if (data1 == null) {
         console.info("deviceFound error data=null");
         return;
       }
 
-      clearInterval(this.StartDiscoveryTimer);
-      console.info("in deviceFound success");
       console.info("deviceFound:" + JSON.stringify(data0));
       console.info("deviceFound:" + JSON.stringify(data1));
       this.statusInfo = {
@@ -720,21 +742,21 @@ var _default = {
       };
     }.bind(this));
   },
+  statmainInputPin: function statmainInputPin() {
+    this.status = 'main-pin';
+  },
   OndiscoverFail: function OndiscoverFail() {
-    var _this4 = this;
+    var _this5 = this;
 
     _system5["default"].on('discoverFail', function (data, data1) {
-      (0, _newArrowCheck2["default"])(this, _this4);
-      console.info('on discoverFail in');
-      console.info("discoverFail on:" + JSON.stringify(data));
-      console.info("discoverFail on:" + JSON.stringify(data1));
+      (0, _newArrowCheck2["default"])(this, _this5);
     }.bind(this));
   },
   OndeviceStateChange: function OndeviceStateChange() {
-    var _this5 = this;
+    var _this6 = this;
 
     _system5["default"].on('deviceStateChange', function (data, data1) {
-      (0, _newArrowCheck2["default"])(this, _this5);
+      (0, _newArrowCheck2["default"])(this, _this6);
       console.info('on deviceStateChange in');
       console.info("deviceStateChange data:" + JSON.stringify(data));
 
@@ -746,6 +768,25 @@ var _default = {
       }
 
       console.info("deviceStateChange data1:" + JSON.stringify(data1));
+    }.bind(this));
+  },
+  onserviceDie: function onserviceDie() {
+    var _this7 = this;
+
+    console.info('start serviceDie');
+
+    _system5["default"].on('serviceDie', function (data) {
+      (0, _newArrowCheck2["default"])(this, _this7);
+      console.info('on serviceDie in');
+      console.info("serviceDie:" + JSON.stringify(data));
+    }.bind(this));
+  },
+  OndmFaCallback: function OndmFaCallback() {
+    var _this8 = this;
+
+    _system5["default"].on('dmFaCallback', function (data) {
+      (0, _newArrowCheck2["default"])(this, _this8);
+      console.info("on dmFaCallback data:" + JSON.stringify(data));
     }.bind(this));
   }
 };
@@ -789,7 +830,7 @@ function requireModule(moduleName) {
 /******/ 	// startup
 /******/ 	// Load entry module and return exports
 /******/ 	// This entry module is referenced by other modules so it can't be inlined
-/******/ 	var __webpack_exports__ = __webpack_require__("D:\\work\\display_small_wan1\\entry\\src\\main\\js\\default\\pages\\index\\index.hml?entry");
+/******/ 	var __webpack_exports__ = __webpack_require__("D:\\work\\gitee\\locaUI_branch\\entry\\src\\main\\js\\default\\pages\\index\\index.hml?entry");
 /******/ 	
 /******/ 	return __webpack_exports__;
 /******/ })()
