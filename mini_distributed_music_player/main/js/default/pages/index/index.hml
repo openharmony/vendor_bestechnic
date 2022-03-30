@@ -173,6 +173,19 @@ limitations under the License.
                     </div>
                 </div>
             </div>
+            <div if="{{status == 'start'}}" class="main-pin">
+                <div class="title-wrap">
+                    <div class="button-wrap">
+                        <text class="button-cancel" @click=" startDevice">发现设备</text>
+                        <text class="button-cancel" @click="AuthenticateDevice">发起认证</text>
+                      <!--  <text class="button-cancel" @click="joinAuthOk">允许认证</text>-->
+                    </div>
+                    <div class="button-wrap">
+                        <text class="button-cancel" @click="bottonjoinAuthOk">允许认证</text>
+                        <text class="button-cancel" @click="statmainInputPin">输入PIN码</text>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </stack>
