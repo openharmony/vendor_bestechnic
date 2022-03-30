@@ -1,13 +1,13 @@
 /******/ (function() { // webpackBootstrap
 /******/ 	var __webpack_modules__ = ({
 
-/***/ "D:\\work\\display_small_wan1\\entry\\src\\main\\js\\default\\app.js?entry":
-/*!*************************************************************************!*\
-  !*** D:\work\display_small_wan1\entry\src\main\js\default\app.js?entry ***!
-  \*************************************************************************/
+/***/ "D:\\work\\gitee\\locaUI_branch\\entry\\src\\main\\js\\default\\app.js?entry":
+/*!**************************************************************************!*\
+  !*** D:\work\gitee\locaUI_branch\entry\src\main\js\default\app.js?entry ***!
+  \**************************************************************************/
 /***/ (function(module, __unused_webpack_exports, __webpack_require__) {
 
-var $app_script$ = __webpack_require__(/*! !!./lib/script.js!./node_modules/babel-loader?presets[]=C:\Users\jifen\AppData\Local\Huawei\Sdk\js\3.0.0.0\build-tools\ace-loader\node_modules\@babel\preset-env&plugins[]=C:\Users\jifen\AppData\Local\Huawei\Sdk\js\3.0.0.0\build-tools\ace-loader\node_modules\@babel\plugin-transform-modules-commonjs&comments=false!./lib/resource-reference-script.js!./lib/manifest-loader.js?path=D:\work\display_small_wan1\entry\src\main\js\default\app.js!./app.js */ "./lib/script.js!./node_modules/babel-loader/lib/index.js?presets[]=C:\\Users\\jifen\\AppData\\Local\\Huawei\\Sdk\\js\\3.0.0.0\\build-tools\\ace-loader\\node_modules\\@babel\\preset-env&plugins[]=C:\\Users\\jifen\\AppData\\Local\\Huawei\\Sdk\\js\\3.0.0.0\\build-tools\\ace-loader\\node_modules\\@babel\\plugin-transform-modules-commonjs&comments=false!./lib/resource-reference-script.js!./lib/manifest-loader.js?path=D:\\work\\display_small_wan1\\entry\\src\\main\\js\\default\\app.js!D:\\work\\display_small_wan1\\entry\\src\\main\\js\\default\\app.js")
+var $app_script$ = __webpack_require__(/*! !!./lib/script.js!./node_modules/babel-loader?presets[]=C:\Users\jifengtx\AppData\Local\Huawei\Sdk\js\3.0.0.1\build-tools\ace-loader\node_modules\@babel\preset-env&plugins[]=C:\Users\jifengtx\AppData\Local\Huawei\Sdk\js\3.0.0.1\build-tools\ace-loader\node_modules\@babel\plugin-transform-modules-commonjs&comments=false!./lib/resource-reference-script.js!./lib/manifest-loader.js?path=D:\work\gitee\locaUI_branch\entry\src\main\js\default\app.js!./app.js */ "./lib/script.js!./node_modules/babel-loader/lib/index.js?presets[]=C:\\Users\\jifengtx\\AppData\\Local\\Huawei\\Sdk\\js\\3.0.0.1\\build-tools\\ace-loader\\node_modules\\@babel\\preset-env&plugins[]=C:\\Users\\jifengtx\\AppData\\Local\\Huawei\\Sdk\\js\\3.0.0.1\\build-tools\\ace-loader\\node_modules\\@babel\\plugin-transform-modules-commonjs&comments=false!./lib/resource-reference-script.js!./lib/manifest-loader.js?path=D:\\work\\gitee\\locaUI_branch\\entry\\src\\main\\js\\default\\app.js!D:\\work\\gitee\\locaUI_branch\\entry\\src\\main\\js\\default\\app.js")
 var options=$app_script$
  if ($app_script$.__esModule) {
 
@@ -17,10 +17,10 @@ module.exports=new ViewModel(options);
 
 /***/ }),
 
-/***/ "./lib/script.js!./node_modules/babel-loader/lib/index.js?presets[]=C:\\Users\\jifen\\AppData\\Local\\Huawei\\Sdk\\js\\3.0.0.0\\build-tools\\ace-loader\\node_modules\\@babel\\preset-env&plugins[]=C:\\Users\\jifen\\AppData\\Local\\Huawei\\Sdk\\js\\3.0.0.0\\build-tools\\ace-loader\\node_modules\\@babel\\plugin-transform-modules-commonjs&comments=false!./lib/resource-reference-script.js!./lib/manifest-loader.js?path=D:\\work\\display_small_wan1\\entry\\src\\main\\js\\default\\app.js!D:\\work\\display_small_wan1\\entry\\src\\main\\js\\default\\app.js":
-/*!*************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
-  !*** ./lib/script.js!./node_modules/babel-loader/lib/index.js?presets[]=C:\Users\jifen\AppData\Local\Huawei\Sdk\js\3.0.0.0\build-tools\ace-loader\node_modules\@babel\preset-env&plugins[]=C:\Users\jifen\AppData\Local\Huawei\Sdk\js\3.0.0.0\build-tools\ace-loader\node_modules\@babel\plugin-transform-modules-commonjs&comments=false!./lib/resource-reference-script.js!./lib/manifest-loader.js?path=D:\work\display_small_wan1\entry\src\main\js\default\app.js!D:\work\display_small_wan1\entry\src\main\js\default\app.js ***!
-  \*************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/***/ "./lib/script.js!./node_modules/babel-loader/lib/index.js?presets[]=C:\\Users\\jifengtx\\AppData\\Local\\Huawei\\Sdk\\js\\3.0.0.1\\build-tools\\ace-loader\\node_modules\\@babel\\preset-env&plugins[]=C:\\Users\\jifengtx\\AppData\\Local\\Huawei\\Sdk\\js\\3.0.0.1\\build-tools\\ace-loader\\node_modules\\@babel\\plugin-transform-modules-commonjs&comments=false!./lib/resource-reference-script.js!./lib/manifest-loader.js?path=D:\\work\\gitee\\locaUI_branch\\entry\\src\\main\\js\\default\\app.js!D:\\work\\gitee\\locaUI_branch\\entry\\src\\main\\js\\default\\app.js":
+/*!*********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./lib/script.js!./node_modules/babel-loader/lib/index.js?presets[]=C:\Users\jifengtx\AppData\Local\Huawei\Sdk\js\3.0.0.1\build-tools\ace-loader\node_modules\@babel\preset-env&plugins[]=C:\Users\jifengtx\AppData\Local\Huawei\Sdk\js\3.0.0.1\build-tools\ace-loader\node_modules\@babel\plugin-transform-modules-commonjs&comments=false!./lib/resource-reference-script.js!./lib/manifest-loader.js?path=D:\work\gitee\locaUI_branch\entry\src\main\js\default\app.js!D:\work\gitee\locaUI_branch\entry\src\main\js\default\app.js ***!
+  \*********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -40,7 +40,7 @@ var _default = {
 };
 exports.default = _default;
 ;
-(exports["default"] || module.exports).manifest = __webpack_require__(/*! !!./lib/manifest-plugin.js!../../../../.preview/jsManifest/default/manifest.json */ "./lib/manifest-plugin.js!D:\\work\\display_small_wan1\\entry\\.preview\\jsManifest\\default\\manifest.json");
+(exports["default"] || module.exports).manifest = __webpack_require__(/*! !!./lib/manifest-plugin.js!../../../../.preview/jsManifest/default/manifest.json */ "./lib/manifest-plugin.js!D:\\work\\gitee\\locaUI_branch\\entry\\.preview\\jsManifest\\default\\manifest.json");
 
 function requireModule(moduleName) {
   return requireNative(moduleName.slice(1));
@@ -49,10 +49,10 @@ function requireModule(moduleName) {
 
 /***/ }),
 
-/***/ "./lib/manifest-plugin.js!D:\\work\\display_small_wan1\\entry\\.preview\\jsManifest\\default\\manifest.json":
-/*!***********************************************************************************************************!*\
-  !*** ./lib/manifest-plugin.js!D:\work\display_small_wan1\entry\.preview\jsManifest\default\manifest.json ***!
-  \***********************************************************************************************************/
+/***/ "./lib/manifest-plugin.js!D:\\work\\gitee\\locaUI_branch\\entry\\.preview\\jsManifest\\default\\manifest.json":
+/*!************************************************************************************************************!*\
+  !*** ./lib/manifest-plugin.js!D:\work\gitee\locaUI_branch\entry\.preview\jsManifest\default\manifest.json ***!
+  \************************************************************************************************************/
 /***/ (function(module) {
 
 "use strict";
@@ -91,7 +91,7 @@ module.exports = JSON.parse('{"manifest.json":"content"}');
 /******/ 	// startup
 /******/ 	// Load entry module and return exports
 /******/ 	// This entry module is referenced by other modules so it can't be inlined
-/******/ 	var __webpack_exports__ = __webpack_require__("D:\\work\\display_small_wan1\\entry\\src\\main\\js\\default\\app.js?entry");
+/******/ 	var __webpack_exports__ = __webpack_require__("D:\\work\\gitee\\locaUI_branch\\entry\\src\\main\\js\\default\\app.js?entry");
 /******/ 	
 /******/ 	return __webpack_exports__;
 /******/ })()
