@@ -1,18 +1,16 @@
-From e0e6d89ce9be11c0b33da2b6bf187758c3a6fc7c Mon Sep 17 00:00:00 2001
+From 5676c1f896882f2f77bf9f2e0854f759dec368ce Mon Sep 17 00:00:00 2001
 From: zetingxu <zetingxu@bestechnic.com>
-Date: Fri, 4 Mar 2022 22:25:53 +0800
-Subject: [PATCH] =?UTF-8?q?=E2=80=9Cthird=5Fparty-mbedtls=E2=80=9D?=
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Date: Fri, 1 Apr 2022 23:21:41 +0800
+Subject: [PATCH] third_party-mbedtls
 
 Signed-off-by: zetingxu <zetingxu@bestechnic.com>
-Change-Id: I653728ed157832d25c6e8906713800c5ed3fcc11
+Change-Id: Ic732c15c6ab536526989e848d7a771d80f066f22
 ---
  BUILD.gn                      |   3 +-
  library/entropy_poll.c        |  23 ++++---
+ library/net_sockets.c         |   4 ++
  port/config/config_liteos_m.h | 114 +++++++++++++++++-----------------
- 3 files changed, 74 insertions(+), 66 deletions(-)
+ 4 files changed, 78 insertions(+), 66 deletions(-)
 
 diff --git a/BUILD.gn b/BUILD.gn
 index 9ecb37a..7a031e5 100755
@@ -73,6 +71,21 @@ index d7062ea..901c8bd 100755
  }
  #endif
  
+diff --git a/library/net_sockets.c b/library/net_sockets.c
+index 671115f..ad905d3 100755
+--- a/library/net_sockets.c
++++ b/library/net_sockets.c
+@@ -61,6 +61,10 @@
+ 
+ #if defined(MBEDTLS_NET_C)
+ 
++#define read(fd,buf,len)        lwip_read(fd, buf, len)
++#define write(fd,buf,len)       lwip_write(fd, buf, len)
++#define close(fd)               lwip_close(fd)
++
+ #if !defined(unix) && !defined(__unix__) && !defined(__unix) && \
+     !defined(__APPLE__) && !defined(_WIN32) && !defined(__QNXNTO__) && \
+     !defined(__HAIKU__)
 diff --git a/port/config/config_liteos_m.h b/port/config/config_liteos_m.h
 index 5cf2ea8..946e2c6 100755
 --- a/port/config/config_liteos_m.h
