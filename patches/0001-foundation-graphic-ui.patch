@@ -1,24 +1,22 @@
-From 259cdc6af64d4c6b55a53f2b2111af3b12a2ad40 Mon Sep 17 00:00:00 2001
-From: yangjian <jianyang@bestechnic.com>
-Date: Sun, 9 Jan 2022 17:51:13 +0800
-Subject: [PATCH] foundation/graphic/ui/
+From 62c127dca1ff4b03da8127d6ef418f6daa986858 Mon Sep 17 00:00:00 2001
+From: zetingxu <zetingxu@bestechnic.com>
+Date: Mon, 11 Apr 2022 11:10:14 +0800
+Subject: [PATCH] foundation-graphic-ui
 
-Signed-off-by: yangjian <jianyang@bestechnic.com>
-Change-Id: I94c6a1682c68a69eed7868b9bbea6286139145a2
+Signed-off-by: zetingxu <zetingxu@bestechnic.com>
+Change-Id: I255c533a3809b3bff836db999725263d2deedcae
 ---
- BUILD.gn                                   | 96 ++++++++++++++--------
- frameworks/common/image.cpp                |  2 +-
- frameworks/components/root_view.cpp        |  4 +-
- frameworks/components/ui_image_view.cpp    | 14 ++--
- frameworks/dock/pointer_input_device.cpp   |  2 +-
- interfaces/kits/components/ui_image_view.h |  4 +-
- 6 files changed, 72 insertions(+), 50 deletions(-)
+ BUILD.gn                                 | 95 +++++++++++++++---------
+ frameworks/common/image.cpp              |  2 +-
+ frameworks/components/root_view.cpp      |  4 +-
+ frameworks/dock/pointer_input_device.cpp |  2 +-
+ 4 files changed, 61 insertions(+), 42 deletions(-)
 
 diff --git a/BUILD.gn b/BUILD.gn
-index 20d81b0..2c889d1 100755
+index a195755..267e85c 100755
 --- a/BUILD.gn
 +++ b/BUILD.gn
-@@ -28,22 +28,24 @@ config("graphic_define_config") {
+@@ -28,25 +28,27 @@ config("graphic_define_config") {
    include_dirs = [
      "interfaces/kits",
      "interfaces/innerkits",
@@ -34,29 +32,33 @@ index 20d81b0..2c889d1 100755
 -    "ENABLE_MULTI_FONT=0",
 -    "DEFAULT_ANIMATION=1"
 -  ]
-+  # defines = [
-+  #   "ENABLE_VECTOR_FONT=1",
-+  #   "ENABLE_BITMAP_FONT=0",
-+  #   "ENABLE_SHAPING=0",
-+  #   "ENABLE_ICU=1",
-+  #   "ENABLE_MULTI_FONT=0",
-+  #   "DEFAULT_ANIMATION=1"
-+  # ]
++#  defines = [
++#    "ENABLE_VECTOR_FONT=1",
++#    "ENABLE_BITMAP_FONT=0",
++#    "ENABLE_SHAPING=0",
++#    "ENABLE_ICU=1",
++#    "ENABLE_MULTI_FONT=0",
++#    "DEFAULT_ANIMATION=1"
++#  ]
  
 -  if (ohos_kernel_type == "linux") {
 -    defines += [ "RESOURCE_DIR=\"/storage/data/\"" ]
 -  } else {
 -    defines += [ "RESOURCE_DIR=\"/user/data/\"" ]
 -  }
-+  # if (ohos_kernel_type == "linux") {
-+  #   defines += [ "RESOURCE_DIR=\"/storage/data/\"" ]
-+  # } else {
-+  #   defines += [ "RESOURCE_DIR=\"/user/data/\"" ]
-+  # }
++#  if (ohos_kernel_type == "linux") {
++#    defines += [ "RESOURCE_DIR=\"/storage/data/\"" ]
++#  } else {
++#    defines += [ "RESOURCE_DIR=\"/user/data/\"" ]
++#  }
+   
+   if (enable_graphic_gif) {
+-    defines += [ "ENABLE_GIF=1" ]
++    defines = [ "ENABLE_GIF=1" ]
+   }
  }
  
- if (enable_graphic_font) {
-@@ -56,7 +58,7 @@ if (enable_graphic_font) {
+@@ -60,7 +62,7 @@ if (enable_graphic_font) {
    }
  }
  
@@ -65,7 +67,7 @@ index 20d81b0..2c889d1 100755
    sources = [
      "frameworks/animator/animator.cpp",
      "frameworks/animator/animator_manager.cpp",
-@@ -162,30 +164,53 @@ shared_library("ui") {
+@@ -166,29 +168,49 @@ shared_library("ui") {
      "frameworks/engines/gfx/hi3516/hi3516_engine.cpp",
    ]
  
@@ -77,7 +79,6 @@ index 20d81b0..2c889d1 100755
 -    "//foundation/graphic/wms:lite_wms",
 -    "//third_party/bounds_checking_function:libsec_shared",
 -    "//third_party/freetype:freetype",
--    "//third_party/giflib:libgif",
 -    "//third_party/icu/icu4c/source/common:icu_font",
 -    "//third_party/libjpeg:libjpeg",
 -    "//third_party/libpng:libpng",
@@ -97,20 +98,19 @@ index 20d81b0..2c889d1 100755
 +      "frameworks/engines/gfx/hi3516/hi3516_engine.cpp",
 +      "frameworks/window/window.cpp",
 +      "frameworks/window/window_impl.cpp",
-     ]
++     ]
 +    deps = [
 +      "//build/lite/config/component/cJSON:cjson_static",
 +      "//third_party/bounds_checking_function:libsec_static",
 +      "//third_party/freetype:freetype",
-+      "//third_party/giflib:libgif",
- 
--    deps += [
--      "//foundation/multimedia/media_lite/frameworks/player_lite:player_lite",
-+      # "//third_party/icu/icu4c/source/common:icu_font",
++     # "//third_party/icu/icu4c/source/common:icu_font",
 +      "//third_party/libjpeg:libjpeg",
 +      "//third_party/libpng:libpng",
 +      "//third_party/qrcodegen:qrcodegen",
      ]
+-
+-    deps += [
+-      "//foundation/multimedia/media_lite/frameworks/player_lite:player_lite",
 +  } else {
 +    target_type = "shared_library"
 +    deps = [
@@ -120,13 +120,11 @@ index 20d81b0..2c889d1 100755
 +      "//foundation/graphic/wms:lite_wms",
 +      "//third_party/bounds_checking_function:libsec_shared",
 +      "//third_party/freetype:freetype",
-+      "//third_party/giflib:libgif",
 +      "//third_party/icu/icu4c/source/common:icu_font",
 +      "//third_party/libjpeg:libjpeg",
 +      "//third_party/libpng:libpng",
 +      "//third_party/qrcodegen:qrcodegen",
-+    ]
-+
+     ]
 +    if (enable_video_component) {
 +      defines += [ "ENABLE_VIDEO_COMPONENT=1" ]
 +      source += [ "frameworks/components/ui_video.cpp" ]
@@ -139,8 +137,8 @@ index 20d81b0..2c889d1 100755
 +    ldflags = [ "-Wl,-rpath-link=$ohos_root_path/$root_out_dir" ]
    }
  
-   public_deps = [ "//foundation/graphic/utils:lite_graphic_utils" ]
-@@ -195,5 +220,4 @@ shared_library("ui") {
+   if (enable_graphic_gif) {
+@@ -201,5 +223,4 @@ shared_library("ui") {
      "-fno-exceptions",
    ]
    cflags_cc = cflags
@@ -174,70 +172,6 @@ index d908b9f..91a4390 100755
          invalidateRects_.Clear();
  #endif
  
-diff --git a/frameworks/components/ui_image_view.cpp b/frameworks/components/ui_image_view.cpp
-index ae8a9fe..7b7d57d 100644
---- a/frameworks/components/ui_image_view.cpp
-+++ b/frameworks/components/ui_image_view.cpp
-@@ -23,12 +23,12 @@
- #include "gfx_utils/image_info.h"
- #include "gfx_utils/mem_api.h"
- #include "imgdecode/cache_manager.h"
--#ifndef VERSION_LITE
-+#ifdef ENABLE_GIF
- #include "gif_lib.h"
- #endif
- 
- namespace OHOS {
--#ifndef VERSION_LITE
-+#ifdef ENABLE_GIF
- class GifImageAnimator : public Animator, public AnimatorCallback {
- public:
-     GifImageAnimator(UIView* view, const char* src)
-@@ -231,7 +231,7 @@ UIImageView::UIImageView()
-       reserve_(0)
- {
-     style_ = &(StyleDefault::GetBackgroundTransparentStyle());
--#ifndef VERSION_LITE
-+#ifdef ENABLE_GIF
-     gifImageAnimator_ = nullptr;
-     gifFrameFlag_ = false;
- #endif
-@@ -239,7 +239,7 @@ UIImageView::UIImageView()
- 
- UIImageView::~UIImageView()
- {
--#ifndef VERSION_LITE
-+#ifdef ENABLE_GIF
-     RemoveAndStopGifAnimator();
- #endif
-     if (drawTransMap_ != nullptr) {
-@@ -475,7 +475,7 @@ void UIImageView::OnDraw(BufferInfo& gfxDstBuffer, const Rect& invalidatedArea)
- 
- void UIImageView::SetSrc(const char* src)
- {
--#ifndef VERSION_LITE
-+#ifdef ENABLE_GIF
-     if (src == nullptr) {
-         return;
-     }
-@@ -543,7 +543,7 @@ void UIImageView::ReMeasure()
- 
- void UIImageView::SetSrc(const ImageInfo* src)
- {
--#ifndef VERSION_LITE
-+#ifdef ENABLE_GIF
-     if (!gifFrameFlag_ && (gifImageAnimator_ != nullptr)) {
-         RemoveAndStopGifAnimator();
-     }
-@@ -560,7 +560,7 @@ void UIImageView::SetSrc(const ImageInfo* src)
-     Invalidate();
- }
- 
--#ifndef VERSION_LITE
-+#ifdef ENABLE_GIF
- void UIImageView::AddAndStartGifAnimator()
- {
-     if (gifImageAnimator_ != nullptr) {
 diff --git a/frameworks/dock/pointer_input_device.cpp b/frameworks/dock/pointer_input_device.cpp
 index d6032a5..a12e900 100755
 --- a/frameworks/dock/pointer_input_device.cpp
@@ -251,28 +185,6 @@ index d6032a5..a12e900 100755
              return;
          }
          draggableView_ = GetDraggableView(touchableView_);
-diff --git a/interfaces/kits/components/ui_image_view.h b/interfaces/kits/components/ui_image_view.h
-index 4abc338..33f3a34 100644
---- a/interfaces/kits/components/ui_image_view.h
-+++ b/interfaces/kits/components/ui_image_view.h
-@@ -38,7 +38,7 @@
- #include "common/image.h"
- #include "components/ui_view.h"
- #include "gfx_utils/graphic_types.h"
--#ifndef VERSION_LITE
-+#ifdef ENABLE_GIF
- #include "animator/animator.h"
- #endif
- 
-@@ -309,7 +309,7 @@ protected:
-     bool transMapInvalid_ = true;
- private:
-     void ReMeasure() override;
--#ifndef VERSION_LITE
-+#ifdef ENABLE_GIF
-     friend class GifImageAnimator;
-     void AddAndStartGifAnimator();
-     void RemoveAndStopGifAnimator();
 -- 
 2.17.1
 
