@@ -81,9 +81,9 @@ FILE_LIST:
     SIZE: 6291456
     SWITCH: true
 - RESOURCE:
-    ADDR: 751304704
+    ADDR: 750125056
     FILE_NAME: resource.bin
-    SIZE: 524288
+    SIZE: 4194304
     SWITCH: true
 - LOG:
     ADDR: 752353280
