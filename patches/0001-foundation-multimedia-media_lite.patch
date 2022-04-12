@@ -1,10 +1,10 @@
-From dd9dd8649c74bcf6069c0f336608b091ea75c9d1 Mon Sep 17 00:00:00 2001
-From: yangjian <jianyang@bestechnic.com>
-Date: Sun, 9 Jan 2022 17:52:55 +0800
-Subject: [PATCH] foundation/multimedia/media_lite/
+From 54bd55999973bc6d6c7fd887f21933eb9053bdcb Mon Sep 17 00:00:00 2001
+From: zetingxu <zetingxu@bestechnic.com>
+Date: Sat, 9 Apr 2022 17:54:24 +0800
+Subject: [PATCH] foundation-multimedia-media_lite
 
-Signed-off-by: yangjian <jianyang@bestechnic.com>
-Change-Id: I64ca72203795fc510b814aba0e26cdd436c007d5
+Signed-off-by: zetingxu <zetingxu@bestechnic.com>
+Change-Id: I8d49d14a1d0c63b0b7b0ff605adf5ae6acb0fda6
 ---
  frameworks/player_lite/BUILD.gn               | 221 +++++++++-------
  .../buffersource/include/buffer_source.h      |   0
@@ -64,13 +64,13 @@ Change-Id: I64ca72203795fc510b814aba0e26cdd436c007d5
  .../kits/player_lite/js/builtin/BUILD.gn      |  22 +-
  .../js/builtin/src/audio_player.cpp           |   6 +-
  interfaces/kits/player_lite/player.h          | 100 ++++----
- services/BUILD.gn                             |   5 +-
+ services/BUILD.gn                             |   1 +
  services/player_lite/BUILD.gn                 |  15 +-
  .../server/include/player_factory.h           |  37 +++
  .../server/include/player_server.h            |   5 +-
  .../player_lite/server/src/player_factory.cpp |  55 ++++
  .../player_lite/server/src/player_server.cpp  |  10 +-
- 64 files changed, 633 insertions(+), 199 deletions(-)
+ 64 files changed, 631 insertions(+), 197 deletions(-)
  rename frameworks/player_lite/{ => binder}/buffersource/include/buffer_source.h (100%)
  mode change 100755 => 100644
  rename frameworks/player_lite/{ => binder}/buffersource/src/buffer_source.cpp (100%)
@@ -179,7 +179,6 @@ Change-Id: I64ca72203795fc510b814aba0e26cdd436c007d5
  create mode 100644 interfaces/innerkits/player_interface.h
  mode change 100755 => 100644 interfaces/kits/player_lite/js/builtin/src/audio_player.cpp
  mode change 100755 => 100644 interfaces/kits/player_lite/player.h
- mode change 100755 => 100644 services/BUILD.gn
  mode change 100755 => 100644 services/player_lite/BUILD.gn
  create mode 100644 services/player_lite/server/include/player_factory.h
  mode change 100755 => 100644 services/player_lite/server/include/player_server.h
@@ -1432,33 +1431,17 @@ index 3da795a..04cfae4
 +} // namespace OHOS
 +#endif // PLAYER_H
 diff --git a/services/BUILD.gn b/services/BUILD.gn
-old mode 100755
-new mode 100644
-index 2c8ebdb..195f3e1
+index 1e74a8f..a923588 100755
 --- a/services/BUILD.gn
 +++ b/services/BUILD.gn
-@@ -21,9 +21,10 @@ executable("media_server") {
-   include_dirs = [
-     "//third_party/bounds_checking_function/include",
-     "//drivers/peripheral/display/interfaces/include",
+@@ -29,6 +29,7 @@ executable("media_server") {
+     "//foundation/multimedia/media_lite/services/player_lite",
+     "//foundation/multimedia/audio_lite/frameworks",
+     "//foundation/multimedia/audio_lite/services/include",
 +    "//foundation/multimedia/media_lite/interfaces/innerkits",
-     "//foundation/multimedia/camera_lite/services/include",
-     "//foundation/multimedia/utils/lite/interfaces/kits",
--    "//foundation/multimedia/utils/lite/hals"
-+    "//foundation/multimedia/utils/lite/hals",
    ]
    ldflags += [
      "-lstdc++",
-@@ -38,8 +39,8 @@ executable("media_server") {
-   deps = [
-     "//foundation/distributedschedule/samgr_lite/samgr:samgr",
-     "//foundation/multimedia/camera_lite/services:camera_server",
--    "//foundation/multimedia/media_lite/services/recorder_lite:recorder_server",
-     "//foundation/multimedia/media_lite/services/player_lite:player_server",
-+    "//foundation/multimedia/media_lite/services/recorder_lite:recorder_server",
-   ]
- }
- copy("camera_config") {
 diff --git a/services/player_lite/BUILD.gn b/services/player_lite/BUILD.gn
 old mode 100755
 new mode 100644

@@ -58,13 +58,13 @@ FILE_LIST:
     ADDR: 738721792
     FILE_NAME: rtos_main.bin
     MAGIC: true
-    SIZE: 8257536
+    SIZE: 5701632
     SWITCH: true
 - RTOSMINI:
-    ADDR: 749731840
+    ADDR: 744423424
     FILE_NAME: rtos_mini.bin
     MAGIC: true
-    SIZE: 3735552
+    SIZE: 5701632
     SWITCH: true
 - LITTLEFS:
     ADDR: 750125056
