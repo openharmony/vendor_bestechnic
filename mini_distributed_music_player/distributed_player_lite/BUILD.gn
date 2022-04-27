@@ -13,7 +13,7 @@
 
 import("//build/lite/config/component/lite_component.gni")
 import("//build/lite/ndk/ndk.gni")
-import("//foundation/ace/ace_engine_lite/ace_lite.gni")
+import("//foundation/arkui/ace_engine_lite/ace_lite.gni")
 
 lite_library("distributed_player_lite") {
   target_type = "static_library"
