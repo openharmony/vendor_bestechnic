@@ -47,16 +47,18 @@ FILE_LIST:
     FILE_NAME: trustzone_main.bin
     MAGIC: true
     SIZE: 155648
-    SWITCH: true
+    SWITCH: false
 - TRUSTZONEB:
     ADDR: 738549760
     FILE_NAME: trustzone_mini.bin
     MAGIC: true
     SIZE: 155648
-    SWITCH: true
+    SWITCH: false
 - RTOS:
     ADDR: 738721792
     FILE_NAME: rtos_main.bin
+    REMAP_BOTH_SWITCH: true
+    REMAP_SWITCH: true
     MAGIC: true
     SIZE: 5701632
     SWITCH: true
@@ -65,7 +67,7 @@ FILE_LIST:
     FILE_NAME: rtos_mini.bin
     MAGIC: true
     SIZE: 5701632
-    SWITCH: true
+    SWITCH: false
 - LITTLEFS:
     ADDR: 750125056
     FILE_NAME: littlefs.bin
@@ -85,4 +87,4 @@ FILE_LIST:
     ADDR: 0
     FILE_NAME: pub_otp.bin
     SIZE: 1024
-    SWITCH: true
+    SWITCH: false
