@@ -42,76 +42,49 @@ FILE_LIST:
     MAGIC: true
     SIZE: 65536
     SWITCH: true
-- BOOT2B:
-    ADDR: 738328576
-    FILE_NAME: ota_boot2b.bin
-    REMAP_BOTH_SWITCH: true
-    REMAP_SWITCH: true
-    MAGIC: true
-    SIZE: 65536
-    SWITCH: false
 - TRUSTZONEA:
     ADDR: 738394112
     FILE_NAME: trustzone_main.bin
     MAGIC: true
     SIZE: 155648
-    SWITCH: true
+    SWITCH: false
 - TRUSTZONEB:
     ADDR: 738549760
     FILE_NAME: trustzone_mini.bin
     MAGIC: true
     SIZE: 155648
-    SWITCH: true
-- TRUSTZONE_INFO:
-    ADDR: 738705408
-    FILE_NAME: trustzone_info.bin
-    MAGIC: true
-    SIZE: 16384
     SWITCH: false
-- RTOSA:
+- RTOS:
     ADDR: 738721792
     FILE_NAME: rtos_main.bin
+    REMAP_BOTH_SWITCH: true
+    REMAP_SWITCH: true
     MAGIC: true
-    SIZE: 6291456
+    SIZE: 5701632
     SWITCH: true
-- RTOSB:
-    ADDR: 745013248
+- RTOSMINI:
+    ADDR: 744423424
     FILE_NAME: rtos_mini.bin
     MAGIC: true
-    SIZE: 6291456
-    SWITCH: true
-- RESOURCE:
+    SIZE: 5701632
+    SWITCH: false
+- LITTLEFS:
     ADDR: 750125056
-    FILE_NAME: resource.bin
+    FILE_NAME: littlefs.bin
     SIZE: 4194304
     SWITCH: true
-- LOG:
-    ADDR: 752353280
-    FILE_NAME: log.bin
-    SIZE: 327680
-    SWITCH: true
-- DATA:
-    ADDR: 752680960
-    FILE_NAME: data.bin
-    SIZE: 2097152
-    SWITCH: true
-- MISC:
-    ADDR: 754778112
-    FILE_NAME: misc.bin
-    SIZE: 49152
-    SWITCH: false
-- USERDATA:
-    ADDR: 754827264
-    FILE_NAME: userdata.bin
-    SIZE: 16384
-    SWITCH: false
 - FACTORY:
-    ADDR: 754843648
+    ADDR: 754905088
     FILE_NAME: factory.bin
-    SIZE: 65536
+    SIZE: 4096
     SWITCH: true
 - FACTORYBK:
-    ADDR: 754909184
+    ADDR: 754970624
     FILE_NAME: factory.bin
-    SIZE: 65536
+    SIZE: 4096
     SWITCH: true
+- PUB_OTP:
+    ADDR: 0
+    FILE_NAME: pub_otp.bin
+    SIZE: 1024
+    SWITCH: false
