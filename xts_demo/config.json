@@ -78,7 +78,7 @@
       "bsp_bin_name": "ota_boot1",
       "signature": "false",
       "burn_name": "ota_boot1",
-      "enable": "false"
+      "enable": "true"
     },
     {
       "bsp_bin_name": "ota_boot2a",
