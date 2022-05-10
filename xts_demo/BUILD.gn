@@ -14,9 +14,8 @@
 group("xts_demo") {
   deps = [
     # "config:hdf_hcs",
+    "hals/utils/sys_param:vendor.para",
     "//base/hiviewdfx/hilog_lite/frameworks/featured:hilog_static",
-    "//base/startup/syspara_lite/frameworks/parameter/src:sysparam",
-
     # "//device/bestechnic/${board_name}/hals/security/huks:huks_adapter",
     # "//device/bestechnic/${board_name}/components/drivers:drivers_adapter",
     # "tests:example",
