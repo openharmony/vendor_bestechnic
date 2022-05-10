@@ -15,20 +15,6 @@
 
 #include "hal_sys_param.h"
 
-#define OHOS_DEVICE_TYPE "liteWearable"
-#define OHOS_DISPLAY_VERSION "OpenHarmony-2.2-Beta2"
-#define OHOS_MANUFACTURE "Bestechnic"
-#define OHOS_BRAND "Bestechnic"
-#define OHOS_MARKET_NAME "****"
-#define OHOS_PRODUCT_SERIES "****"
-#define OHOS_PRODUCT_MODEL "****"
-#define OHOS_SOFTWARE_MODEL "****"
-#define OHOS_HARDWARE_MODEL "bes2600w"
-#define OHOS_HARDWARE_PROFILE "aout:true,display:true"
-#define OHOS_BOOTLOADER_VERSION "bootloader"
-#define OHOS_ABI_LIST "****"
-#define OHOS_SERIAL "1234567890"
-#define OHOS_FIRST_API_VERSION  1
 #define ETH_ALEN 6
 #define MAC_BITS 4
 #define HEX_A 0xa
@@ -41,51 +27,6 @@
 typedef unsigned char               u8;
 
 static char serialNumber[2*ETH_ALEN + 1];
-
-const char* HalGetDeviceType(void)
-{
-    return OHOS_DEVICE_TYPE;
-}
-
-const char* HalGetManufacture(void)
-{
-    return OHOS_MANUFACTURE;
-}
-
-const char* HalGetBrand(void)
-{
-    return OHOS_BRAND;
-}
-
-const char* HalGetMarketName(void)
-{
-    return OHOS_MARKET_NAME;
-}
-
-const char* HalGetProductSeries(void)
-{
-    return OHOS_PRODUCT_SERIES;
-}
-
-const char* HalGetProductModel(void)
-{
-    return OHOS_PRODUCT_MODEL;
-}
-
-const char* HalGetSoftwareModel(void)
-{
-    return OHOS_SOFTWARE_MODEL;
-}
-
-const char* HalGetHardwareModel(void)
-{
-    return OHOS_HARDWARE_MODEL;
-}
-
-const char* HalGetHardwareProfile(void)
-{
-    return OHOS_HARDWARE_PROFILE;
-}
 
 static char Hex2Char(u8 hex)
 {
@@ -116,51 +57,6 @@ const char* HalGetSerial(void)
         }
     }
     return serialNumber;
-}
-
-const char* HalGetBootloaderVersion(void)
-{
-    return OHOS_BOOTLOADER_VERSION;
-}
-
-const char* HalGetAbiList(void)
-{
-    return OHOS_ABI_LIST;
-}
-
-const char* HalGetDisplayVersion(void)
-{
-    return OHOS_DISPLAY_VERSION;
-}
-
-const char* HalGetIncrementalVersion(void)
-{
-    return INCREMENTAL_VERSION;
-}
-
-const char* HalGetBuildType(void)
-{
-    return BUILD_TYPE;
-}
-
-const char* HalGetBuildUser(void)
-{
-    return BUILD_USER;
-}
-
-const char* HalGetBuildHost(void)
-{
-    return BUILD_HOST;
-}
-
-const char* HalGetBuildTime(void)
-{
-    return BUILD_TIME;
-}
-
-int HalGetFirstApiVersion(void)
-{
-    return OHOS_FIRST_API_VERSION;
 }
 
 /**

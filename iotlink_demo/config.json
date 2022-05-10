@@ -111,9 +111,9 @@
           "component": "bootstrap_lite"
         },
         {
-          "component": "syspara_lite",
+          "component": "init_lite",
           "features": [
-            "enable_ohos_startup_syspara_lite_use_posix_file_api = true"
+            "enable_ohos_startup_init_lite_use_posix_file_api = true"
           ]
         }
       ]
