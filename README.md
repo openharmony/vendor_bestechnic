@@ -32,5 +32,5 @@ vendor/bestechnic/                    --- vendor_bestechnic 仓库路径
 
 ## 相关仓
 
-[device/soc/bestechnic](https://gitee.com/openharmony/device_soc_bestechnic/blob/HEAD/README_zh.md)
+[device_soc_bestechnic](https://gitee.com/openharmony/device_soc_bestechnic/blob/HEAD/README_zh.md)
 
