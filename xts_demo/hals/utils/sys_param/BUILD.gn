@@ -23,8 +23,3 @@ static_library("hal_sysparam") {
     "BUILD_ROOTHASH=\"${ohos_build_roothash}\"",
   ]
 }
-
-copy("vendor.para") {
-  sources = [ "./vendor.para" ]
-  outputs = [ "$root_out_dir/vendor/etc/param/vendor.para" ]
-}

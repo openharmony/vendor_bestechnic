@@ -23,8 +23,3 @@ static_library("hal_sysparam") {
     "BUILD_ROOTHASH=\"${ohos_build_roothash}\"",
   ]
 }
-
-copy("iotlink_demo.para") {
-  sources = [ "./iotlink_demo.para" ]
-  outputs = [ "$root_out_dir/vendor/etc/param/iotlink_demo.para" ]
-}
