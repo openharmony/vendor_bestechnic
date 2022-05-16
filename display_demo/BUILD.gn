@@ -12,8 +12,5 @@
 # limitations under the License.
 
 group("display_demo") {
-  deps = [
-    "hals/utils/sys_param:vendor.para",
-    "tests:example",
-  ]
+  deps = [ "tests:example" ]
 }
