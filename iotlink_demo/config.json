@@ -40,7 +40,7 @@
       "fs_name": "log",
       "signature": "false",
       "block_size": "4096",
-      "fs_size": "327680",
+      "fs_size": "196608",
       "fs_src": "log",
       "burn_name": "log",
       "enable": "true"
@@ -49,7 +49,7 @@
       "fs_name": "data",
       "signature": "false",
       "block_size": "4096",
-      "fs_size": "2097152",
+      "fs_size": "262144",
       "fs_src": "data",
       "burn_name": "data",
       "enable": "true"

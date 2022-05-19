@@ -60,28 +60,28 @@ FILE_LIST:
     REMAP_BOTH_SWITCH: true
     REMAP_SWITCH: true
     MAGIC: true
-    SIZE: 5701632
+    SIZE: 12582912
     SWITCH: true
 - RTOSMINI:
-    ADDR: 744423424
+    ADDR: 751304704
     FILE_NAME: rtos_mini.bin
     MAGIC: true
-    SIZE: 5701632
+    SIZE: 12582912
     SWITCH: false
 - LITTLEFS:
-    ADDR: 750125056
+    ADDR: 763887616
     FILE_NAME: littlefs.bin
-    SIZE: 4194304
+    SIZE: 4456448
     SWITCH: true
 - FACTORY:
-    ADDR: 754905088
+    ADDR: 771620864
     FILE_NAME: factory.bin
-    SIZE: 4096
+    SIZE: 65536
     SWITCH: true
 - FACTORYBK:
-    ADDR: 754970624
+    ADDR: 771686400
     FILE_NAME: factory.bin
-    SIZE: 4096
+    SIZE: 65536
     SWITCH: true
 - PUB_OTP:
     ADDR: 0
