@@ -74,14 +74,14 @@ FILE_LIST:
     SIZE: 4456448
     SWITCH: true
 - FACTORY:
-    ADDR: 771620864
+    ADDR: 771682304
     FILE_NAME: factory.bin
-    SIZE: 65536
+    SIZE: 4096
     SWITCH: true
 - FACTORYBK:
-    ADDR: 771686400
+    ADDR: 771747840
     FILE_NAME: factory.bin
-    SIZE: 65536
+    SIZE: 4096
     SWITCH: true
 - PUB_OTP:
     ADDR: 0
