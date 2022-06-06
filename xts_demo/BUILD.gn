@@ -40,6 +40,6 @@ group("xts_demo") {
     "//test/xts/acts/utils_lite/file_hal:ActsUtilsFileTest",
 
     # "//test/xts/acts/kernel_lite/kernelcmsis_hal:ActsCMSISTest",
-    "//test/xts/acts/utils_lite/kv_store_hal:ActsKvStoreTest",
+    "//test/xts/acts/distributeddatamgr_lite/kv_store_hal:ActsKvStoreTest",
   ]
 }
