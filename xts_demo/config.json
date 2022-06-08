@@ -136,7 +136,7 @@
       ]
     },
     {
-      "subsystem": "ace",
+      "subsystem": "arkui",
       "components": [
         {
           "component": "ace_engine_lite",
@@ -206,14 +206,16 @@
       ]
     },
     {
-      "subsystem": "utils",
+      "subsystem": "distributeddatamgr",
       "components": [
         {
-          "component": "kv_store",
-          "features": [
-            "enable_ohos_utils_native_lite_kv_store_use_posix_kv_api = true"
-          ]
-        },
+          "component": "kv_store"
+        }
+      ]
+    },
+    {
+      "subsystem": "utils",
+      "components": [
         {
           "component": "js_builtin"
         },
