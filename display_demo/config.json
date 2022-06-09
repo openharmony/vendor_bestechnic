@@ -197,8 +197,7 @@
           "optional": "true"
         }
       ]
-    },
-    
+    },    
     {
       "subsystem": "distributeddatamgr",
       "components": [
