@@ -146,7 +146,7 @@
       ]
     },
     {
-      "subsystem": "ace",
+      "subsystem": "arkui",
       "components": [
         {
           "component": "ace_engine_lite",
@@ -208,11 +208,16 @@
       ]
     },
     {
-      "subsystem": "utils",
+      "subsystem": "distributeddatamgr",
       "components": [
         {
           "component": "kv_store"
-        },
+        }
+      ]
+    },
+    {
+      "subsystem": "utils",
+      "components": [
         {
           "component": "js_builtin"
         },
