@@ -22,6 +22,7 @@
 static void DemoSdkTask(void *arg)
 {
     (void)arg;
+    RegisterCustomATCmd();
 #ifdef FS_TEST
     fs_test();
 #endif
