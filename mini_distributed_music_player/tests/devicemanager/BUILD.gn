@@ -11,7 +11,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-devicemanager_path = "//foundation/distributedhardware/devicemanager"
+devicemanager_path = "//foundation/distributedhardware/device_manager"
 
 static_library("devicemanager") {
   deps = [ "${devicemanager_path}:devicemanager_mini" ]
