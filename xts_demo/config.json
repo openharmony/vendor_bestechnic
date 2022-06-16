@@ -160,10 +160,10 @@
       ]
     },
     {
-      "subsystem": "appexecfwk",
+      "subsystem": "bundlemanager",
       "components": [
         {
-          "component": "appexecfwk_lite"
+          "component": "bundle_framework_lite"
         }
       ]
     },
