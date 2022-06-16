@@ -19,7 +19,7 @@ static_library("ability_test") {
 
   public_deps = [
     "//base/hiviewdfx/hilog_lite/frameworks/featured:hilog_static",
-    "//foundation/aafwk/aafwk_lite/frameworks/ability_lite:aafwk_abilitykit_lite",
+    "//foundation/ability/ability_lite/frameworks/ability_lite:aafwk_abilitykit_lite",
     "//foundation/arkui/ace_engine_lite/frameworks:ace_lite",
   ]
 }
