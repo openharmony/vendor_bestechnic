@@ -27,9 +27,7 @@ static_library("example") {
   defines = []
   deps = [ "//base/hiviewdfx/hilog_lite/frameworks/featured:hilog_static" ]
 
-  include_dirs = [
-    "//utils/native/lite/include",
-  ]
+  include_dirs = [ "//utils/native/lite/include" ]
 
   if (bes_histreamer_test) {
     deps += [ "histreamer:histreamer_test" ]
