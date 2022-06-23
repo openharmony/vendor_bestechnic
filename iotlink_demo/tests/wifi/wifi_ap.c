@@ -79,10 +79,10 @@ static void WifiAPTask(void)
     printf("EnableHotspot succeed!\r\n");
 
     if (IsHotspotActive() == WIFI_HOTSPOT_NOT_ACTIVE) {
-        printf("Wifi Hotspot is not actived.\r\n");
+        printf("Wifi Hotspot is not activated.\r\n");
         return -1;
     }
-    printf("Wifi Hotspot is actived!\r\n");
+    printf("Wifi Hotspot is activated!\r\n");
 }
 
 static void OnHotspotStaJoinHandler(StationInfo *info)
@@ -146,7 +146,7 @@ static void Wifi_AP_Demo(void)
     attr.priority = AP_TASK_PRIORITY;
 
     if (osThreadNew((osThreadFunc_t)WifiAPTask, NULL, &attr) == NULL) {
-        printf("Falied to create WifiAPTask!\r\n");
+        printf("Failed to create WifiAPTask!\r\n");
     }
 }
 
