@@ -115,14 +115,14 @@ static void WifiSTATask(void)
     }
 
     if (IsWifiActive() == WIFI_STA_NOT_ACTIVE) {
-        printf("Wifi station is not actived.\n");
+        printf("Wifi station is not activated.\n");
         return;
     }
 
 #if SCAN_OPTION
     eventId = osEventFlagsNew(NULL);
     if (eventId == NULL) {
-        printf("Falied to create EventFlags!\n");
+        printf("Failed to create EventFlags!\n");
         return;
     }
     if (WifiScan(10000) < 0) {
@@ -177,7 +177,7 @@ static void WifiClientSTA(void)
     attr.priority = 24;
 
     if (osThreadNew((osThreadFunc_t)WifiSTATask, NULL, &attr) == NULL) {
-        printf("Falied to create WifiSTATask!\n");
+        printf("Failed to create WifiSTATask!\n");
     }
 }
 
