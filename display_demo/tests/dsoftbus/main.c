@@ -34,7 +34,7 @@ static void DSoftBus(void)
 
 extern void InitSoftBusServer(void);
     if (osThreadNew((osThreadFunc_t)InitSoftBusServer, NULL, &attr) == NULL) {
-        printf("Falied to create WifiSTATask!\n");
+        printf("Failed to create WifiSTATask!\n");
     }
 }
 
