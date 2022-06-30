@@ -93,7 +93,7 @@
 #define FEATURE_INTL_MODULE 1
 
 /**
- * support number format module
+ * supoort number format module
  */
 #define FEATURE_NUMBER_FORMAT 1
 
