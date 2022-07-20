@@ -221,7 +221,7 @@
           ]
         },
         {
-          "component": "rpc",
+          "component": "ipc",
           "optional": "true"
         }
       ]

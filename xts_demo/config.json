@@ -204,7 +204,7 @@
           "component": "dsoftbus"
         },
         {
-          "component": "rpc",
+          "component": "ipc",
           "optional": "true"
         }
       ]

@@ -35,7 +35,7 @@ static_library("example") {
 
   deps += [
     "dsoftbus:dsoftbus_test",
-    "rpc:rpc_test",
+    "ipc:rpc_test",
     "sa:mini_sa",
     "wifi:wifi_test",
   ]
