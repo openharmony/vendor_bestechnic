@@ -58,7 +58,7 @@ static_library("example") {
   }
 
   if (bes_rpc_test) {
-    deps += [ "rpc:rpc_test" ]
+    deps += [ "ipc:rpc_test" ]
     defines += [ "RPC_TEST" ]
   }
 
