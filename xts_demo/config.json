@@ -202,10 +202,6 @@
         },
         {
           "component": "dsoftbus"
-        },
-        {
-          "component": "rpc",
-          "optional": "true"
         }
       ]
     },
