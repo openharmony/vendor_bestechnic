@@ -183,12 +183,12 @@
       ]
     },
     {
-      "subsystem": "distributedschedule",
+      "subsystem": "systemabilitymgr",
       "components": [
         {
           "component": "samgr_lite",
           "features": [
-            "config_ohos_distributedschedule_samgr_lite_shared_task_size = 4096"
+            "config_ohos_systemabilitymgr_samgr_lite_shared_task_size = 4096"
           ]
         }
       ]
@@ -230,7 +230,7 @@
           "component": "kal_timer",
           "features": [
             "enable_histreamer_plugin_ffmpeg_adapter = false",
-            "config_ohos_distributedschedule_samgr_lite_shared_task_size = 4096"
+            "config_ohos_systemabilitymgre_samgr_lite_shared_task_size = 4096"
           ]
         }
       ]
