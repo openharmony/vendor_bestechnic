@@ -15,7 +15,7 @@ group("xts_demo") {
   deps = [
     # "config:hdf_hcs",
     "//base/hiviewdfx/hilog_lite/frameworks/featured:hilog_static",
-    "//base/startup/init_lite/interfaces/innerkits:libbegetutil",
+    "//base/startup/init/interfaces/innerkits:libbegetutil",
 
     # "//device/bestechnic/${board_name}/hals/security/huks:huks_adapter",
     # "//device/bestechnic/${board_name}/components/drivers:drivers_adapter",
@@ -33,7 +33,7 @@ group("xts_demo") {
     "//test/xts/acts/distributeddatamgr_lite/kv_store_hal:ActsKvStoreTest",
     "//test/xts/acts/hiviewdfx_lite/hievent_hal:ActsHieventLiteTest",
     "//test/xts/acts/hiviewdfx_lite/hilog_hal:ActsDfxFuncTest",
-    "//test/xts/acts/iot_hardware_lite/iot_controller_hal:ActsWifiIotTest",
+    "//test/xts/acts/iothardware_lite/peripheral_hal:ActsWifiIotTest",
     "//test/xts/acts/security_lite/huks/liteos_m_adapter:ActsHuksHalFunctionTest",
     "//test/xts/acts/startup_lite/bootstrap_hal:ActsBootstrapTest",
     "//test/xts/acts/startup_lite/syspara_hal:ActsParameterTest",
