@@ -32,6 +32,6 @@ static_library("rpc_test") {
     "//base/hiviewdfx/hiview_lite",
     "//kernel/liteos_m/components/net",
   ]
-  deps += [ "//foundation/distributedschedule/samgr_lite/samgr" ]
+  deps += [ "//foundation/systemabilitymgr/samgr_lite/samgr" ]
   deps += [ "//foundation/communication/dsoftbus/sdk:softbus_client" ]
 }

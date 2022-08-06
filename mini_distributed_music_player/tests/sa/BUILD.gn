@@ -13,7 +13,7 @@
 
 config("mini_sa_config") {
   include_dirs =
-      [ "//foundation/distributedschedule/samgr_lite/interfaces/kits/samgr" ]
+      [ "//foundation/systemabilitymgr/samgr_lite/interfaces/kits/samgr" ]
 }
 
 static_library("mini_sa") {
@@ -23,6 +23,6 @@ static_library("mini_sa") {
   public_configs = [ ":mini_sa_config" ]
   deps = [
     "//foundation/communication/ipc/interfaces/innerkits/c/dbinder:dbinder",
-    "//foundation/distributedschedule/samgr_lite/samgr",
+    "//foundation/systemabilitymgr/samgr_lite/samgr",
   ]
 }
