@@ -213,14 +213,6 @@
       ]
     },
     {
-      "subsystem": "distributeddatamgr",
-      "components": [
-        {
-          "component": "kv_store"
-        }
-      ]
-    },
-    {
       "subsystem": "commonlibrary",
       "components": [
         {
