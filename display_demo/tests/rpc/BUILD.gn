@@ -21,7 +21,7 @@ static_library("rpc_test") {
   cflags = [ "-Wno-unused-variable" ]
   ldflags = [ "-lpthread" ]
   include_dirs = [
-    "//utils/native/lite/include",
+    "//commonlibrary/utils_lite/include",
     "$IPC_ROOT_PATH/interfaces/innerkits/c/ipc/include",
     "$IPC_ROOT_PATH/ipc/test/rpc/include",
     "$IPC_ROOT_PATH/ipc/native/c/manager/include",

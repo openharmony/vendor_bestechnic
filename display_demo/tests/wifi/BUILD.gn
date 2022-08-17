@@ -18,7 +18,7 @@ static_library("wifi_test") {
   ]
   cflags = [ "-Wno-unused-variable" ]
   include_dirs = [
-    "//utils/native/lite/include",
+    "//commonlibrary/utils_lite/include",
     "//foundation/communication/wifi_lite/interfaces/wifiservice/",
   ]
 }
