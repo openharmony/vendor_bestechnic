@@ -153,7 +153,7 @@ static void fseek_test(const char *path)
     }
     fseek(fp, 0, SEEK_END);
     uint32_t len = ftell(fp);
-    LOG_I("%s size %u bytes", path, len);
+    LOG_I("%s size %lu bytes", path, len);
     fclose(fp);
 }
 
