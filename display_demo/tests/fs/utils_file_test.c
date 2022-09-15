@@ -26,7 +26,7 @@
         }                                                                      \
     } while (0)
 
-void utils_file_test()
+void utils_file_test(void)
 {
     const char *path = "/data/test.txt";
     const char *data = "utils_file_test";
