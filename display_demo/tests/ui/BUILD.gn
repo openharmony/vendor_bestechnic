@@ -23,7 +23,7 @@ static_library("ui_test") {
     "//foundation/graphic/ui:ui",
   ]
   include_dirs = [
-    "//utils/native/lite/include",
+    "//commonlibrary/utils_lite/include",
     "//foundation/graphic/ui/frameworks",
     "//third_party/freetype/include",
   ]

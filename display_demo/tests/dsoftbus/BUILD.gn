@@ -13,5 +13,5 @@
 
 static_library("dsoftbus_test") {
   sources = [ "main.c" ]
-  include_dirs = [ "//utils/native/lite/include" ]
+  include_dirs = [ "//commonlibrary/utils_lite/include" ]
 }
