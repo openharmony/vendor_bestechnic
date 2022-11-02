@@ -16,6 +16,7 @@ group("xts_demo") {
     # "config:hdf_hcs",
     "//base/hiviewdfx/hilog_lite/frameworks/featured:hilog_static",
     "//base/startup/init/interfaces/innerkits:libbegetutil",
+    "//vendor/bestechnic/xts_demo/hals/utils/sys_param:hal_sysparam",
 
     # "//device/bestechnic/${board_name}/hals/security/huks:huks_adapter",
     # "//device/bestechnic/${board_name}/components/drivers:drivers_adapter",
@@ -36,8 +37,8 @@ group("xts_demo") {
     "//test/xts/acts/iothardware_lite/peripheral_hal:ActsWifiIotTest",
     "//test/xts/acts/security_lite/huks/liteos_m_adapter:ActsHuksHalFunctionTest",
     "//test/xts/acts/startup_lite/bootstrap_hal:ActsBootstrapTest",
-    "//test/xts/acts/startup_lite/syspara_hal:ActsParameterTest",
+    # "//test/xts/acts/startup_lite/syspara_hal:ActsParameterTest",
     "//test/xts/acts/update_lite/dupdate_hal:ActsUpdaterFuncTest",
-    "//test/xts/acts/utils_lite/file_hal:ActsUtilsFileTest",
+    #"//test/xts/acts/utils_lite/file_hal:ActsUtilsFileTest",
   ]
 }
