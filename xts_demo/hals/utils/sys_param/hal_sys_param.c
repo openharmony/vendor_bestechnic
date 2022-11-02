@@ -29,13 +29,80 @@
 #define OHOS_ABI_LIST "****"
 #define OHOS_SERIAL "1234567890"
 #define OHOS_FIRST_API_VERSION  1
+static const char OHOS_SECURITY_PATCH_TAG[] = {"0.0.0.1"};
+static const int OHOS_SDK_API_VERSION = 1;
+static const char OHOS_VERSION_ID[] = {"0.0.0.1"};
+static const char OHOS_BUILD_ROOT_HASH[] = {"de259d62a5dee08a2ee02fd7fc02caf8"};
+static const char OHOS_OS_FULL_NAME[] = {"OpenHarmony"};
+
+const char *GetOSFullName(void)
+{
+    return OHOS_OS_FULL_NAME;
+}
+const char *GetBuildRootHash(void)
+{
+    return OHOS_BUILD_ROOT_HASH;
+}
+
+const char *GetBuildTime(void)
+{
+    return BUILD_TIME;
+}
+const char *GetBuildHost(void)
+{
+    return BUILD_HOST;
+}
+
+const char *GetBuildUser(void)
+{
+    return BUILD_USER;
+}
+const char *GetBuildType(void)
+{
+    return BUILD_TYPE;
+}
+
+const char *GetVersionId(void)
+{
+    return OHOS_VERSION_ID;
+}
+
+const char *GetProductModel(void)
+{
+    return OHOS_PRODUCT_MODEL;
+}
+const char *GetIncrementalVersion(void)
+{
+    return INCREMENTAL_VERSION;
+}
+
+int GetFirstApiVersion(void)
+{
+    return OHOS_FIRST_API_VERSION;
+}
+
+int GetSdkApiVersion(void)
+{
+    return OHOS_SDK_API_VERSION;
+}
 
 const char* HalGetDeviceType(void)
 {
     return OHOS_DEVICE_TYPE;
 }
 
+const char* GetDeviceType(void)
+{
+    return OHOS_DEVICE_TYPE;
+}
+
+
 const char* HalGetManufacture(void)
+{
+    return OHOS_MANUFACTURE;
+}
+
+const char* GetManufacture(void)
 {
     return OHOS_MANUFACTURE;
 }
@@ -45,12 +112,27 @@ const char* HalGetBrand(void)
     return OHOS_BRAND;
 }
 
+const char* GetBrand(void)
+{
+    return OHOS_BRAND;
+}
+
 const char* HalGetMarketName(void)
 {
     return OHOS_MARKET_NAME;
 }
 
+const char* GetMarketName(void)
+{
+    return OHOS_MARKET_NAME;
+}
+
 const char* HalGetProductSeries(void)
+{
+    return OHOS_PRODUCT_SERIES;
+}
+
+const char* GetProductSeries(void)
 {
     return OHOS_PRODUCT_SERIES;
 }
@@ -64,23 +146,40 @@ const char* HalGetSoftwareModel(void)
 {
     return OHOS_SOFTWARE_MODEL;
 }
-
+const char* GetSoftwareModel(void)
+{
+    return OHOS_SOFTWARE_MODEL;
+}
 const char* HalGetHardwareModel(void)
 {
     return OHOS_HARDWARE_MODEL;
 }
-
+const char* GetHardwareModel(void)
+{
+    return OHOS_HARDWARE_MODEL;
+}
 const char* HalGetHardwareProfile(void)
 {
     return OHOS_HARDWARE_PROFILE;
 }
-
+const char* GetHardwareProfile(void)
+{
+    return OHOS_HARDWARE_PROFILE;
+}
 const char* HalGetSerial(void)
 {
     return OHOS_SERIAL;
 }
-
+const char* GetSerial(void)
+{
+    return OHOS_SERIAL;
+}
 const char* HalGetBootloaderVersion(void)
+{
+    return OHOS_BOOTLOADER_VERSION;
+}
+
+const char* GetBootloaderVersion(void)
 {
     return OHOS_BOOTLOADER_VERSION;
 }
@@ -91,6 +190,10 @@ const char* HalGetAbiList(void)
 }
 
 const char* HalGetDisplayVersion(void)
+{
+    return OHOS_DISPLAY_VERSION;
+}
+const char* GetDisplayVersion(void)
 {
     return OHOS_DISPLAY_VERSION;
 }
@@ -131,4 +234,33 @@ int HalGetFirstApiVersion(void)
 const char *GetDataPath(void)
 {
     return "/data";
+}
+
+const char *GetSecurityPatchTag(void)
+{
+    return OHOS_SECURITY_PATCH_TAG;
+}
+
+const char *GetAbiList(void)
+{
+    return OHOS_ABI_LIST;
+}
+
+
+typedef enum InitLogLevel {
+    INIT_DEBUG = 0,
+    INIT_INFO,
+    INIT_WARN,
+    INIT_ERROR,
+    INIT_FATAL
+} InitLogLevel;
+
+void StartupLog(InitLogLevel logLevel, unsigned int domain, const char *tag, const char *fmt, ...)
+{
+    return;
+}
+
+int SystemReadParam(const char *name, char *value,  unsigned int *len)
+{
+    return len;
 }

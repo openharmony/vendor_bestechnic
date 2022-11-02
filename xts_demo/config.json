@@ -21,7 +21,6 @@
         "bundlems",
         "broadcast",
         "hctest",
-        "module_ActsParameterTest",
         "module_ActsBootstrapTest",
         "module_ActsDfxFuncTest",
         "module_ActsHieventLiteTest",
