@@ -28,11 +28,11 @@ lite_library("distributed_player_lite") {
   include_dirs += [
     ".",
     "//foundation/multimedia/media_lite/interfaces/kits/player_lite",
-    "//foundation/multimedia/utils/lite/interfaces/kits",
+    "//foundation/multimedia/media_utils_lite/interfaces/kits",
   ]
   public_deps = [
     "//foundation/multimedia/media_lite/frameworks/player_lite",
-    "//foundation/multimedia/utils/lite:media_common",
+    "//foundation/multimedia/media_utils_lite:media_common",
     "//third_party/bounds_checking_function:libsec_static",
   ]
 }
