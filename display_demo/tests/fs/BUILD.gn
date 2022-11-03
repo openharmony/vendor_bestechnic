@@ -18,7 +18,7 @@ static_library("fs_test") {
   ]
   deps = [ "//base/hiviewdfx/hilog_lite/frameworks/featured:hilog_static" ]
   include_dirs = [
-    "//utils/native/lite/include",
-    "//utils/native/lite/memory/include",
+    "//commonlibrary/utils_lite/include",
+    "//commonlibrary/utils_lite/memory/include",
   ]
 }

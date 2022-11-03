@@ -18,7 +18,36 @@
 /**
  * @brief implement for js kvstorekit/filekit
  */
-const char *GetDataPath()
+const char *GetDataPath(void)
 {
     return "/data";
+}
+
+const char *GetSecurityPatchTag(void)
+{
+    return OHOS_SECURITY_PATCH_TAG;
+}
+
+const char *GetAbiList(void)
+{
+    return OHOS_ABI_LIST;
+}
+
+
+typedef enum InitLogLevel {
+    INIT_DEBUG = 0,
+    INIT_INFO,
+    INIT_WARN,
+    INIT_ERROR,
+    INIT_FATAL
+} InitLogLevel;
+
+void StartupLog(InitLogLevel logLevel, unsigned int domain, const char *tag, const char *fmt, ...)
+{
+    return;
+}
+
+int SystemReadParam(const char *name, char *value,  unsigned int *len)
+{
+    return len;
 }

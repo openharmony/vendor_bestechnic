@@ -61,7 +61,7 @@ const char* HalGetSerial(void)
 /**
  * @brief implement for js kvstorekit/filekit
  */
-const char *GetDataPath()
+const char *GetDataPath(void)
 {
     return "/data";
 }
