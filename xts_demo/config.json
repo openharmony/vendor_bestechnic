@@ -21,7 +21,6 @@
         "bundlems",
         "broadcast",
         "hctest",
-        "module_ActsParameterTest",
         "module_ActsBootstrapTest",
         "module_ActsDfxFuncTest",
         "module_ActsHieventLiteTest",
@@ -105,10 +104,6 @@
             "config_ohos_startup_init_lite_data_path = \"/data/\"",
             "config_ohos_startup_syspara_lite_data_path = \"/data/\""
           ]
-        },
-        {
-          "component": "syspara_lite",
-          "features": []
         }
       ]
     },

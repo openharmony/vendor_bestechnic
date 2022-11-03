@@ -24,7 +24,7 @@ static_library("histreamer_test") {
     "//foundation/multimedia/histreamer/engine/player:histreamer_player",
   ]
 
-  include_dirs = [ "//utils/native/lite/include" ]
+  include_dirs = [ "//commonlibrary/utils_lite/include" ]
 
   public_configs = [ ":include" ]
 }

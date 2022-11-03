@@ -22,7 +22,7 @@ static_library("rpc_test") {
   defines = [ "MINI_SAMGR_LITE_RPC" ]
   ldflags = [ "-lpthread" ]
   include_dirs = [
-    "//utils/native/lite/include",
+    "//commonlibrary/utils_lite/include",
     "$IPC_ROOT_PATH/interfaces/innerkits/c/ipc/include",
     "$IPC_ROOT_PATH/ipc/test/rpc/include",
     "$IPC_ROOT_PATH/ipc/native/c/manager/include",
