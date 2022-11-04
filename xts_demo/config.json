@@ -17,7 +17,6 @@
       "enable": "true",
       "force_link_libs": [
         "bootstrap",
-        "abilityms",
         "bundlems",
         "broadcast",
         "hctest",
@@ -145,19 +144,6 @@
           "component": "ace_engine_lite",
           "features": [
             "enable_ohos_ace_engine_lite_product_config = true"
-          ]
-        }
-      ]
-    },
-    {
-      "subsystem": "ability",
-      "components": [
-        {
-          "component": "ability_lite",
-          "features": [
-            "enable_ohos_appexecfwk_feature_ability = true",
-            "config_ohos_aafwk_ams_task_size = 4096",
-            "config_ohos_aafwk_aafwk_lite_task_stack_size = 32768"
           ]
         }
       ]
