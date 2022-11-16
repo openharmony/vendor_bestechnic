@@ -236,17 +236,6 @@ const char *GetDataPath(void)
     return "/data";
 }
 
-const char *GetSecurityPatchTag(void)
-{
-    return OHOS_SECURITY_PATCH_TAG;
-}
-
-const char *GetAbiList(void)
-{
-    return OHOS_ABI_LIST;
-}
-
-
 typedef enum InitLogLevel {
     INIT_DEBUG = 0,
     INIT_INFO,
@@ -258,9 +247,4 @@ typedef enum InitLogLevel {
 void StartupLog(InitLogLevel logLevel, unsigned int domain, const char *tag, const char *fmt, ...)
 {
     return;
-}
-
-int SystemReadParam(const char *name, char *value,  unsigned int *len)
-{
-    return len;
 }
