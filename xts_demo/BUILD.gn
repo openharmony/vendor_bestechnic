@@ -38,6 +38,6 @@ group("xts_demo") {
     "//test/xts/acts/startup_lite/bootstrap_hal:ActsBootstrapTest",
     "//test/xts/acts/startup_lite/syspara_hal:ActsParameterTest",
     "//test/xts/acts/update_lite/dupdate_hal:ActsUpdaterFuncTest",
-    "//test/xts/acts/utils_lite/file_hal:ActsUtilsFileTest",
+    #"//test/xts/acts/utils_lite/file_hal:ActsUtilsFileTest",
   ]
 }
