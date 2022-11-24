@@ -15,6 +15,13 @@
 
 #include "hal_sys_param.h"
 
+static const char OHOS_SERIAL[] = {"1234567890"};   // if not provid serial algorithm,Serial will use this default value.
+
+const char *HalGetSerial(void)
+{
+    return OHOS_SERIAL;
+}
+
 /**
  * @brief implement for js kvstorekit/filekit
  */
