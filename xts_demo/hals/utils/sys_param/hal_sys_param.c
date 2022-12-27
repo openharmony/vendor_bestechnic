@@ -37,8 +37,3 @@ typedef enum InitLogLevel {
     INIT_ERROR,
     INIT_FATAL
 } InitLogLevel;
-
-void StartupLog(InitLogLevel logLevel, unsigned int domain, const char *tag, const char *fmt, ...)
-{
-    return;
-}
