@@ -190,14 +190,11 @@
       "subsystem": "commonlibrary",
       "components": [
         {
-          "component": "js_builtin"
-        },
-        {
-          "component": "timer_task"
-        },
-        {
-          "component": "kal_timer",
+          "component": "utils_lite",
           "features": [
+            "utils_lite_feature_js_builtin = true",
+            "utils_lite_feature_timer_task = true",
+            "utils_lite_feature_kal_timer = true",
             "enable_histreamer_plugin_ffmpeg_adapter = false",
             "config_ohos_systemabilitymgre_samgr_lite_shared_task_size = 4096"
           ]
