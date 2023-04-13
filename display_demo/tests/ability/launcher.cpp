@@ -46,17 +46,12 @@ Launcher::~Launcher()
     DeleteUI();
 }
 
-void Launcher::OnStart(const Want &want)
+void Launcher::OnCreate(const Want &want)
 {
     HILOG_DEBUG(HILOG_MODULE_APP, "%s", __func__);
 }
 
-void Launcher::OnInactive()
-{
-    HILOG_DEBUG(HILOG_MODULE_APP, "%s", __func__);
-}
-
-void Launcher::OnActive(const Want &want)
+void Launcher::OnForeground(const Want &want)
 {
     HILOG_DEBUG(HILOG_MODULE_APP, "%s", __func__);
     InitUI();
@@ -68,7 +63,7 @@ void Launcher::OnBackground()
     DeleteUI();
 }
 
-void Launcher::OnStop()
+void Launcher::OnDestroy()
 {
     HILOG_DEBUG(HILOG_MODULE_APP, "%s", __func__);
     DeleteUI();

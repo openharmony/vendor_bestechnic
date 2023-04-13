@@ -33,11 +33,10 @@ public:
         return &instance;
     }
 
-    void OnStart(const Want &want) override;
-    void OnInactive();
-    void OnActive(const Want &want) override;
+    void OnCreate(const Want &want) override;
+    void OnForeground(const Want &want) override;
     void OnBackground() override;
-    void OnStop() override;
+    void OnDestroy() override;
 
 private:
     Launcher() {}
