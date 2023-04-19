@@ -20,11 +20,11 @@ static_library("ui_test") {
   ]
   deps = [
     "//base/hiviewdfx/hilog_lite/frameworks/featured:hilog_static",
-    "//foundation/graphic/ui:ui",
+    "//foundation/arkui/ui_lite:ui",
   ]
   include_dirs = [
     "//commonlibrary/utils_lite/include",
-    "//foundation/graphic/ui/frameworks",
+    "//foundation/arkui/ui_lite/frameworks",
     "//third_party/freetype/include",
   ]
 }
