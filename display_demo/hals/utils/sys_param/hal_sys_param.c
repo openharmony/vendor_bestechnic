@@ -65,3 +65,6 @@ const char *GetDataPath(void)
 {
     return "/data";
 }
+
+void RefreshAllServiceTimeStamp(void)
+{}

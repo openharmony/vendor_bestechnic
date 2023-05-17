@@ -37,3 +37,7 @@ typedef enum InitLogLevel {
     INIT_ERROR,
     INIT_FATAL
 } InitLogLevel;
+
+
+void RefreshAllServiceTimeStamp(void)
+{}
