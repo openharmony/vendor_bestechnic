@@ -52,8 +52,6 @@
 
 #define ENABLE_JPEG_AND_PNG 1
 
-#define ENABLE_GIF 1
-
 #define FULLY_RENDER 1
 
 /**
