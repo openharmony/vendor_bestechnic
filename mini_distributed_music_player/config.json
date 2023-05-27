@@ -124,11 +124,11 @@
       "subsystem": "multimedia",
       "components": [
         {
-          "component": "multimedia_histreamer",
+          "component": "histreamer",
           "features": [
-            "multimedia_histreamer_enable_plugin_hdi_adapter = true",
-            "multimedia_histreamer_enable_plugin_minimp3_adapter = true",
-            "multimedia_histreamer_enable_plugin_ffmpeg_adapter = false",
+            "histreamer_enable_plugin_hdi_adapter = true",
+            "histreamer_enable_plugin_minimp3_adapter = true",
+            "histreamer_enable_plugin_ffmpeg_adapter = false",
             "config_ohos_multimedia_media_lite_player_path = \"//vendor/bestechnic/mini_distributed_music_player/distributed_player_lite\""
           ]
         }
