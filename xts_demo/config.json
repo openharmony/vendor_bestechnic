@@ -230,7 +230,7 @@
             "enable_ohos_test_xts_acts_use_thirdparty_lwip = true"
           ]
         },
-        { "component": "xts_tools", "features":[] }
+        { "component": "tools", "features":[] }
       ]
     }
   ],
