@@ -20,8 +20,8 @@ static_library("histreamer_test") {
 
   deps = [
     "//base/hiviewdfx/hilog_lite/frameworks/featured:hilog_static",
-    "//foundation/multimedia/histreamer:histreamer",
-    "//foundation/multimedia/histreamer/engine/player:histreamer_player",
+    "//foundation/multimedia/media_foundation:histreamer",
+    "//foundation/multimedia/media_foundation/engine/player:histreamer_player",
   ]
 
   include_dirs = [ "//commonlibrary/utils_lite/include" ]
