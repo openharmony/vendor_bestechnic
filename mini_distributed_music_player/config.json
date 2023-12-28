@@ -124,7 +124,7 @@
       "subsystem": "multimedia",
       "components": [
         {
-          "component": "histreamer",
+          "component": "media_foundation",
           "features": [
             "histreamer_enable_plugin_hdi_adapter = true",
             "histreamer_enable_plugin_minimp3_adapter = true",
