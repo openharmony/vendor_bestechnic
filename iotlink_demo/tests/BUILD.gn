@@ -30,7 +30,7 @@ static_library("example") {
   include_dirs = [ "//commonlibrary/utils_lite/include" ]
 
   if (bes_histreamer_test) {
-    deps += [ "histreamer:histreamer_test" ]
+    deps += [ "media_foundation:histreamer_test" ]
     defines += [ "HISTREAMER_TEST" ]
   }
 
