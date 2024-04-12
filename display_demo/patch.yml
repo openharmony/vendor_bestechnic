@@ -1,0 +1,2 @@
+foundation/communication/dsoftbus:
+  - vendor/bestechnic/patches/foundation_communication_dsoftbus.patch
