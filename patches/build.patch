@@ -1,0 +1,38 @@
+diff --git a/compile_standard_whitelist.json b/compile_standard_whitelist.json
+index ce4ca863..01e49521 100644
+--- a/compile_standard_whitelist.json
++++ b/compile_standard_whitelist.json
+@@ -180,7 +180,7 @@
+         "//foundation/arkui/ace_engine/frameworks/core/components_ng/svg:ace_core_components_svg_ng_windows",
+         "//foundation/arkui/ace_engine/frameworks/core/components_ng/syntax:ace_core_components_syntax_ng_linux",
+         "//foundation/arkui/ace_engine/frameworks/core/components_ng/syntax:ace_core_components_syntax_ng_windows",
+-        "//foundation/arkui/ace_engine_lite/frameworks/targets/simulator:ace_lite",
++        "//foundation/arkui/ace_engine_lite/frameworks:ace_lite",
+         "//foundation/arkui/ui_lite/ext/ide:ui_ide",
+         "//foundation/communication/ipc/ipc/test/auxiliary/native:ipc_client_test",
+         "//foundation/communication/ipc/ipc/test/auxiliary/native:ipc_server_test",
+@@ -214,6 +214,7 @@
+         "//foundation/window/window_manager/test/demo:demo_system_sub_window",
+         "//foundation/window/window_manager/test/demo:demo_water_mark_listener",
+         "//foundation/window/window_manager/utils:libwmutil_static",
++        "//base/security/huks/interfaces/kits/liteapi:ace_kit_huks",
+         "//ide/tools/previewer/cli:cli_lite",
+         "//ide/tools/previewer/jsapp:jsapp_lite",
+         "//ide/tools/previewer/mock:mock_lite",
+@@ -363,6 +364,7 @@
+         "//foundation/communication/ipc/ipc/test/auxiliary/native:ipc_test_helper",
+         "//foundation/communication/ipc/ipc/test/auxiliary/native:ipc_test_helper_extra",
+         "//foundation/resourceschedule/memmgr/services/memmgrservice:memmgrservice",
++        "//base/security/huks/interfaces/kits/liteapi:ace_kit_huks",
+         "//test/xts/acts/arkui/ace_napi_test/entry/src/main/cpp:napitest",
+         "//test/xts/acts/multimedia/image/image_js_standard/imagePixelMapNDK/entry/src/main/cpp:ImagePixelMapNDKTest",
+         "//test/xts/acts/multimedia/image/image_js_standard/imageReceiverNDK/entry/src/main/cpp:ImageReceiverNDKTest",
+@@ -471,7 +473,7 @@
+         "//drivers/peripheral/wlan/client:wifi_driver_client",
+         "//drivers/peripheral/wlan/hal:wifi_hal",
+         "//foundation/ability/idl_tool:idl",
+-        "//foundation/arkui/ace_engine_lite/frameworks/targets/simulator:ace_lite",
++        "//foundation/arkui/ace_engine_lite/frameworks:ace_lite",
+         "//foundation/arkui/ui_lite/ext/ide:graphic_utils_static_ide",
+         "//foundation/arkui/ui_lite/ext/ide:ui_ide",
+         "//foundation/communication/netstack/frameworks/js/napi/http:http",
