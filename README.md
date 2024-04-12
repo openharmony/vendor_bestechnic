@@ -22,7 +22,13 @@ vendor/bestechnic/                    --- vendor_bestechnic 仓库路径
 参考 [安装调试教程](https://gitee.com/openharmony/device_soc_bestechnic/blob/master/README.md)
 
 ## 使用说明
-
+OpenHarmony-v4.1-release 分支使用说明：
+1. bestechnic 没在主干门禁，所以后期维护是bes自己适配,以前功能很多无法使用，一切以每个分支官方使用说明为准
+2. 下载代码 不能直接以root 权限现在编译，遇到编译问题，都是建议切到普通user 用户
+3. bes 验证下载方法：
+    a. 按照官方文档下载[OpenHarmony-v4.1-release分支](https://gitee.com/openharmony/docs/blob/master/zh-cn/release-notes/OpenHarmony-v4.1-release.md) 准备好环境，到这一步会出现编译报错
+    b. 按照bes方法打上补丁： python3 vendor/bestechnic/patch_process.py vendor/bestechnic/display_demo/
+    c. 按照bes方法编译：python3 build.py -p display_demo@bestechnic -f
 
 ## 贡献
 
