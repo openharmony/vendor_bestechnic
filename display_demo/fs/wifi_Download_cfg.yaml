@@ -32,57 +32,33 @@ FILE_LIST:
 - BOOT1:
     ADDR: null
     FILE_NAME: ota_boot1.bin
-    SIZE: 65536
+    SIZE: 0x1000
     SWITCH: true
-- BOOT2A:
-    ADDR: 738263040
-    FILE_NAME: ota_boot2a.bin
+- RTOS:
+    ADDR: 0x2c018000
+    FILE_NAME: rtos_main.bin
     REMAP_BOTH_SWITCH: true
     REMAP_SWITCH: true
     MAGIC: true
-    SIZE: 65536
-    SWITCH: true
-- TRUSTZONEA:
-    ADDR: 738394112
-    FILE_NAME: trustzone_main.bin
-    MAGIC: true
-    SIZE: 155648
-    SWITCH: true
-- TRUSTZONEB:
-    ADDR: 738549760
-    FILE_NAME: trustzone_mini.bin
-    MAGIC: true
-    SIZE: 155648
-    SWITCH: true
-- RTOS:
-    ADDR: 738721792
-    FILE_NAME: rtos_main.bin
-    MAGIC: true
-    SIZE: 8257536
-    SWITCH: true
-- RTOSMINI:
-    ADDR: 749731840
-    FILE_NAME: rtos_mini.bin
-    MAGIC: true
-    SIZE: 3735552
+    SIZE: 0xC00000
     SWITCH: true
 - LITTLEFS:
-    ADDR: 750125056
+    ADDR: 0x2D818000
     FILE_NAME: littlefs.bin
-    SIZE: 4194304
+    SIZE: 0x400000
     SWITCH: true
 - FACTORY:
-    ADDR: 754905088
+    ADDR: 0x2DFFE000
     FILE_NAME: factory.bin
-    SIZE: 4096
+    SIZE: 0x1000
     SWITCH: true
 - FACTORYBK:
-    ADDR: 754970624
+    ADDR: 0x2DFFF000
     FILE_NAME: factory.bin
-    SIZE: 4096
+    SIZE: 0x1000
     SWITCH: true
 - PUB_OTP:
     ADDR: 0
     FILE_NAME: pub_otp.bin
-    SIZE: 1024
+    SIZE: 0x400
     SWITCH: true
