@@ -14,6 +14,7 @@
  */
 
 #include "hal_sys_param.h"
+#include "bwifi_interface.h"
 
 #define ETH_ALEN 6
 #define MAC_BITS 4
@@ -43,8 +44,7 @@ const char* HalGetSerial(void)
     // as devboard has no production serial number, we just
     // use wifi mac address as device serial number.
     if (serialNumber[0] == STR_END_FLAG) {
-        extern int bwifi_get_own_mac(u8 *addr);
-        bwifi_get_own_mac(macAddr);
+        bwifi_get_dev_mac(WIFI_IF_STATION, macAddr);
         int j = 0;
         for (int i = 0; i < ETH_ALEN; i++) {
             u8 lowFour, highFour;
