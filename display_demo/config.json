@@ -11,8 +11,8 @@
   "bin_list": [
     {
       "elf_name": "wifiiot",
-      "bsp_target_name": "best2600w_liteos",
-      "signature": "false",
+      "bsp_target_name": "best2003_aiot",
+      "signature": "true",
       "burn_name": "rtos_main",
       "enable": "true",
       "force_link_libs": [
@@ -21,8 +21,6 @@
         "bundlems",
         "example",
         "kernel",
-        "ability_test",
-        "wifi_test",
         "fs_test"
       ]
     },
@@ -72,6 +70,12 @@
       "signature": "false",
       "burn_name": "ota_boot2a",
       "remap_enable": "true",
+      "enable": "false"
+    },
+    {
+      "bsp_bin_name": "pub_otp",
+      "signature": "false",
+      "burn_name": "pub_otp",
       "enable": "true"
     }
   ],
