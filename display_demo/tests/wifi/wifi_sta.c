@@ -19,83 +19,15 @@
 #include "wifi_error_code.h"
 #include <stdlib.h>
 #include <string.h>
+#include <stdio.h>
 
 #define SELECT_WIFI_SSID "test_wifi"
 #define SELECT_WIFI_PASSWORD  "12345678"
 #define SELECT_WIFI_SECURITYTYPE WIFI_SEC_TYPE_PSK
 
-#define SCAN_OPTION 1
-#if SCAN_OPTION
-#define SCAN_SUCCESS_FLAGS 1U
-osEventFlagsId_t eventId;
-#endif
-WifiEvent g_wifiEventHandler = {0};
-WifiErrorCode error;
-
-static void OnWifiScanStateChangedHandler(int state, int size)
-{
-    (void)state;
-    if (state > 0) {
-#if SCAN_OPTION
-        osEventFlagsSet(eventId, SCAN_SUCCESS_FLAGS);
-#endif
-        printf("wifi scan result %d\r\n", size);
-    } else {
-        printf("wifi scan failed\r\n");
-    }
-}
-
-static void OnWifiConnectionChangedHandler(int state, WifiLinkedInfo *info)
-{
-    (void)info;
-    if (state > 0) {
-        printf("callback function for wifi connect\r\n");
-    } else {
-        printf("connect error,please check password\r\n");
-    }
-}
-
-static void OnHotspotStaJoinHandler(StationInfo *info)
-{
-    (void)info;
-    printf("STA join AP\n");
-}
-
-static void OnHotspotStaLeaveHandler(StationInfo *info)
-{
-    (void)info;
-    printf("HotspotStaLeave:info is null.\n");
-}
-
-static void OnHotspotStateChangedHandler(int state)
-{
-    printf("HotspotStateChanged:state is %d.\n", state);
-}
-
-static WifiErrorCode WiFiInit(void)
-{
-    g_wifiEventHandler.OnWifiScanStateChanged = OnWifiScanStateChangedHandler;
-    g_wifiEventHandler.OnWifiConnectionChanged = OnWifiConnectionChangedHandler;
-    g_wifiEventHandler.OnHotspotStaJoin = OnHotspotStaJoinHandler;
-    g_wifiEventHandler.OnHotspotStaLeave = OnHotspotStaLeaveHandler;
-    g_wifiEventHandler.OnHotspotStateChanged = OnHotspotStateChangedHandler;
-    return RegisterWifiEvent(&g_wifiEventHandler);
-}
-
-#if SCAN_OPTION
-static int WifiScan(uint32_t timeoutMs)
-{
-    uint32_t flags = 0;
-    if (Scan() == ERROR_WIFI_IFACE_INVALID)
-        return -1;
-
-    flags = osEventFlagsWait(eventId, SCAN_SUCCESS_FLAGS, osFlagsWaitAny, timeoutMs);
-    return (flags == SCAN_SUCCESS_FLAGS) ? 0 : -1;
-}
-#endif
-
 static void WifiSTATask(void)
 {
+    WifiErrorCode error;
     WifiDeviceConfig select_ap_config = {0};
     strcpy(select_ap_config.ssid, SELECT_WIFI_SSID);
     strcpy(select_ap_config.preSharedKey, SELECT_WIFI_PASSWORD);
@@ -103,11 +35,6 @@ static void WifiSTATask(void)
 
     osDelay(2000);
     printf("<--WifiSTATask Init-->\r\n");
-
-    if (WiFiInit() != WIFI_SUCCESS) {
-        printf("WiFiInit failed!\r\n");
-        return;
-    }
 
     if (EnableWifi() != WIFI_SUCCESS) {
         printf("EnableWifi failed\r\n");
@@ -118,37 +45,21 @@ static void WifiSTATask(void)
         printf("Wifi station is not activated.\n");
         return;
     }
-
-#if SCAN_OPTION
-    eventId = osEventFlagsNew(NULL);
-    if (eventId == NULL) {
-        printf("Failed to create EventFlags!\n");
+    // SetCountryCode("CN");
+    if (Scan() != WIFI_SUCCESS) {
+        printf("[%s:%d]\n",__func__, __LINE__);
         return;
     }
-    if (WifiScan(10000) < 0) {
-        printf("WifiScan failed\r\n");
-        return;
-    }
-    unsigned int size = WIFI_SCAN_HOTSPOT_LIMIT;
-    WifiScanInfo *info = (WifiScanInfo *)malloc(sizeof(WifiScanInfo) * WIFI_SCAN_HOTSPOT_LIMIT);
+    WifiScanInfo* info = malloc(sizeof(WifiScanInfo) * WIFI_SCAN_HOTSPOT_LIMIT);
     if (info == NULL) {
-        printf("malloc failed\r\n");
+        printf("WifiScanStateTask:malloc fail.\n");
         return;
     }
-    if (GetScanInfoList(info, &size) != WIFI_SUCCESS) ///< size = scan_result_len
-    {
-        printf("GetScanInfoList failed\r\n");
-        free(info);
-        return;
+    unsigned int checkSize = WIFI_SCAN_HOTSPOT_LIMIT;
+    error = GetScanInfoList(info, &checkSize);
+    if (error != WIFI_SUCCESS) {
+        printf("WifiScanStateTask:get info fail, error is %d.\n", error);
     }
-    printf("********************\r\n");
-    for (unsigned int i = 0; i < size; i++) {
-        printf("no:%03u, ssid:%-30s, rssi:%5d\r\n", i + 1, info[i].ssid, info[i].rssi);
-    }
-    printf("********************\r\n");
-    free(info);
-#endif
-
     int result;
     if (AddDeviceConfig(&select_ap_config, &result) != WIFI_SUCCESS) {
         printf("AddDeviceConfig failed!\r\n");
@@ -165,7 +76,7 @@ static void WifiSTATask(void)
 
 static void WifiClientSTA(void)
 {
-    printf("[%s:%d]: %s\n", __FILE__, __LINE__, __func__);
+    printf("[%s:%d]\n", __func__, __LINE__);
 
     osThreadAttr_t attr;
     attr.name = "WifiSTATask";
