@@ -21,6 +21,7 @@
         "bundlems",
         "example",
         "kernel",
+        "wifi_test",
         "fs_test"
       ]
     },
