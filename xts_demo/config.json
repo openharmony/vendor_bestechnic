@@ -169,7 +169,7 @@
         {
           "component": "samgr_lite",
           "features": [
-            "samgr_lite_config_ohos_systemabilitymgr_shared_task_size = 4096"
+            "config_ohos_systemabilitymgr_samgr_lite_shared_task_size = 4096"
           ]
         }
       ]
