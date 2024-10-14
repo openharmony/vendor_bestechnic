@@ -1,0 +1,151 @@
+From 8b4b5a662489549bd53ba6cf541a6c64977a1d39 Mon Sep 17 00:00:00 2001
+From: yangjian <jianyang@bestechnic.com>
+Date: Mon, 14 Oct 2024 10:33:38 +0800
+Subject: [PATCH] foundation/communication/dsoftbus
+
+Signed-off-by: yangjian <jianyang@bestechnic.com>
+Change-Id: I7c874061470f96d240b0a22cec65992f20057691
+---
+ .../proxy/include/softbus_proxychannel_manager.h          | 2 +-
+ .../tcp_direct/include/trans_tcp_direct_message.h         | 2 +-
+ interfaces/kits/transport/session.h                       | 8 ++++----
+ sdk/bus_center/ipc/mini/bus_center_server_proxy.c         | 2 +-
+ .../session/src/client_trans_message_service.c            | 8 ++++----
+ .../session/src/client_trans_session_service.c            | 2 +-
+ 6 files changed, 12 insertions(+), 12 deletions(-)
+
+diff --git a/core/transmission/trans_channel/proxy/include/softbus_proxychannel_manager.h b/core/transmission/trans_channel/proxy/include/softbus_proxychannel_manager.h
+index 8428eba0a..3d4c550c2 100644
+--- a/core/transmission/trans_channel/proxy/include/softbus_proxychannel_manager.h
++++ b/core/transmission/trans_channel/proxy/include/softbus_proxychannel_manager.h
+@@ -61,7 +61,7 @@ int32_t TransProxyGetAuthId(int32_t channelId, AuthHandle *authHandle);
+ int32_t TransProxyGetNameByChanId(int32_t chanId, char *pkgName, char *sessionName,
+     uint16_t pkgLen, uint16_t sessionLen);
+ 
+-int32_t TransRefreshProxyTimesNative(int channelId);
++int32_t TransRefreshProxyTimesNative(int32_t channelId);
+ 
+ void TransProxyDeathCallback(const char *pkgName, int32_t pid);
+ 
+diff --git a/core/transmission/trans_channel/tcp_direct/include/trans_tcp_direct_message.h b/core/transmission/trans_channel/tcp_direct/include/trans_tcp_direct_message.h
+index 9156b7a9e..b287b70ed 100644
+--- a/core/transmission/trans_channel/tcp_direct/include/trans_tcp_direct_message.h
++++ b/core/transmission/trans_channel/tcp_direct/include/trans_tcp_direct_message.h
+@@ -32,7 +32,7 @@ extern "C" {
+ int32_t TransSrvDataListInit(void);
+ void TransSrvDataListDeinit(void);
+ int32_t TransSrvAddDataBufNode(int32_t channelId, int32_t fd);
+-void TransSrvDelDataBufNode(int channelId);
++void TransSrvDelDataBufNode(int32_t channelId);
+ int32_t TransTdcPostBytes(int32_t channelId, TdcPacketHead *packetHead, const char *data);
+ int32_t TransTdcProcessPacket(int32_t channelId);
+ int32_t TransTdcSrvRecvData(ListenerModule module, int32_t channelId, int32_t type);
+diff --git a/interfaces/kits/transport/session.h b/interfaces/kits/transport/session.h
+index afcf01c50..2c0205409 100644
+--- a/interfaces/kits/transport/session.h
++++ b/interfaces/kits/transport/session.h
+@@ -558,7 +558,7 @@ void CloseSession(int sessionId);
+  * @since 1.0
+  * @version 1.0
+  */
+-int SendBytes(int sessionId, const void *data, unsigned int len);
++int32_t SendBytes(int32_t sessionId, const void *data, uint32_t len);
+ 
+ /**
+  * @brief Sends a message.
+@@ -575,7 +575,7 @@ int SendBytes(int sessionId, const void *data, unsigned int len);
+  * @since 1.0
+  * @version 1.0
+  */
+-int SendMessage(int sessionId, const void *data, unsigned int len);
++int32_t SendMessage(int32_t sessionId, const void *data, uint32_t len);
+ 
+ /**
+  * @example sendstream_demo.c
+@@ -596,7 +596,7 @@ int SendMessage(int sessionId, const void *data, unsigned int len);
+  * @since 1.0
+  * @version 1.0
+  */
+-int SendStream(int sessionId, const StreamData *data, const StreamData *ext, const StreamFrameInfo *param);
++int32_t SendStream(int32_t sessionId, const StreamData *data, const StreamData *ext, const StreamFrameInfo *param);
+ 
+ /**
+  * @example getsessioninfo_demo.c
+@@ -711,7 +711,7 @@ int SetFileSendListener(const char *pkgName, const char *sessionName, const IFil
+  * @since 1.0
+  * @version 1.0
+  */
+-int SendFile(int sessionId, const char *sFileList[], const char *dFileList[], uint32_t fileCnt);
++int32_t SendFile(int32_t sessionId, const char *sFileList[], const char *dFileList[], uint32_t fileCnt);
+ 
+ /**
+  * @brief Get Session based on a session ID.
+diff --git a/sdk/bus_center/ipc/mini/bus_center_server_proxy.c b/sdk/bus_center/ipc/mini/bus_center_server_proxy.c
+index 5a70a0b5b..5f3dbaf47 100644
+--- a/sdk/bus_center/ipc/mini/bus_center_server_proxy.c
++++ b/sdk/bus_center/ipc/mini/bus_center_server_proxy.c
+@@ -44,7 +44,7 @@ int32_t ServerIpcGetLocalDeviceInfo(const char *pkgName, void *info, uint32_t in
+     return LnnIpcGetLocalDeviceInfo(pkgName, info, infoTypeLen);
+ }
+ 
+-int32_t ServerIpcGetNodeKeyInfo(const char *pkgName, const char *networkId, int key, unsigned char *buf, uint32_t len)
++int32_t ServerIpcGetNodeKeyInfo(const char *pkgName, const char *networkId, int32_t key, unsigned char *buf, uint32_t len)
+ {
+     return LnnIpcGetNodeKeyInfo(pkgName, networkId, key, buf, len);
+ }
+diff --git a/sdk/transmission/session/src/client_trans_message_service.c b/sdk/transmission/session/src/client_trans_message_service.c
+index 05821368b..4f8f6c26a 100644
+--- a/sdk/transmission/session/src/client_trans_message_service.c
++++ b/sdk/transmission/session/src/client_trans_message_service.c
+@@ -57,7 +57,7 @@ int CheckSendLen(int32_t channelId, int32_t channelType, unsigned int len, int32
+     return SOFTBUS_OK;
+ }
+ 
+-int SendBytes(int sessionId, const void *data, unsigned int len)
++int32_t SendBytes(int32_t sessionId, const void *data, uint32_t len)
+ {
+     if (data == NULL || len == 0) {
+         TRANS_LOGW(TRANS_BYTES, "Invalid param");
+@@ -104,7 +104,7 @@ int SendBytes(int sessionId, const void *data, unsigned int len)
+     return ClientTransChannelSendBytes(channelId, channelType, data, len);
+ }
+ 
+-int SendMessage(int sessionId, const void *data, unsigned int len)
++int32_t SendMessage(int32_t sessionId, const void *data, uint32_t len)
+ {
+     TRANS_LOGI(TRANS_MSG, "sessionId=%{public}d, len=%{public}d", sessionId, len);
+     if (data == NULL || len == 0) {
+@@ -147,7 +147,7 @@ int SendMessage(int sessionId, const void *data, unsigned int len)
+     return ClientTransChannelSendMessage(channelId, channelType, data, len);
+ }
+ 
+-int SendStream(int sessionId, const StreamData *data, const StreamData *ext, const StreamFrameInfo *param)
++int32_t SendStream(int32_t sessionId, const StreamData *data, const StreamData *ext, const StreamFrameInfo *param)
+ {
+     if ((data == NULL) || (ext == NULL) || (param == NULL)) {
+         TRANS_LOGW(TRANS_STREAM, "Invalid param");
+@@ -186,7 +186,7 @@ int SendStream(int sessionId, const StreamData *data, const StreamData *ext, con
+     return ClientTransChannelSendStream(channelId, type, data, ext, param);
+ }
+ 
+-int SendFile(int sessionId, const char *sFileList[], const char *dFileList[], uint32_t fileCnt)
++int32_t SendFile(int32_t sessionId, const char *sFileList[], const char *dFileList[], uint32_t fileCnt)
+ {
+     if ((sFileList == NULL) || (fileCnt == 0)) {
+         TRANS_LOGW(TRANS_FILE, "Invalid param");
+diff --git a/sdk/transmission/session/src/client_trans_session_service.c b/sdk/transmission/session/src/client_trans_session_service.c
+index 2ddd50962..94a2183f4 100644
+--- a/sdk/transmission/session/src/client_trans_session_service.c
++++ b/sdk/transmission/session/src/client_trans_session_service.c
+@@ -870,7 +870,7 @@ int GetSessionOption(int sessionId, SessionOption option, void* optionValue, uin
+     return g_SessionOptionArr[option].readFunc(channelId, type, optionValue, valueSize);
+ }
+ 
+-int CreateSocket(const char *pkgName, const char *sessionName)
++int32_t CreateSocket(const char *pkgName, const char *sessionName)
+ {
+     if (!IsValidString(pkgName, PKG_NAME_SIZE_MAX - 1) || !IsValidString(sessionName, SESSION_NAME_SIZE_MAX - 1)) {
+         TRANS_LOGE(TRANS_SDK, "invalid pkgName or sessionName");
+-- 
+2.25.1
+

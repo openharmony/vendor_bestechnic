@@ -1,0 +1,27 @@
+From e16ffd34b1a050ec87d68dfe350e89cf0315ad7a Mon Sep 17 00:00:00 2001
+From: yangjian <jianyang@bestechnic.com>
+Date: Mon, 14 Oct 2024 10:32:43 +0800
+Subject: [PATCH] foundation/arkui/ace_engine_lite
+
+Signed-off-by: yangjian <jianyang@bestechnic.com>
+Change-Id: Iea6b826caa4788bd43a7409ea00ed042784845cd
+---
+ frameworks/module_manager/BUILD.gn | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/frameworks/module_manager/BUILD.gn b/frameworks/module_manager/BUILD.gn
+index 1b61d3b..a70a362 100644
+--- a/frameworks/module_manager/BUILD.gn
++++ b/frameworks/module_manager/BUILD.gn
+@@ -70,7 +70,7 @@ lite_library("ace_module_manager") {
+       cflags_cc = cflags
+     }
+     if (defined(global_parts_info.security_huks)) {
+-      defines += [ "ENABLE_HUKS_ACE_LITE_FEATURE" ]
++     # defines += [ "ENABLE_HUKS_ACE_LITE_FEATURE" ]
+     }
+   } else {
+     public_deps += [
+-- 
+2.25.1
+
