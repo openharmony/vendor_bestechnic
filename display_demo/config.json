@@ -101,8 +101,7 @@
         {
           "component": "init",
           "features": [
-            "enable_ohos_startup_init_feature_begetctl_liteos = true",
-            "enable_ohos_startup_init_lite_use_posix_file_api = true"
+            "init_feature_begetctl_liteos = true"
           ]
         }
       ]
@@ -221,16 +220,12 @@
           "features": [
             "huks_use_lite_storage = true",
             "huks_use_hardware_root_key = true",
-            "huks_config_file = \"hks_config_lite.h\"",
-            "huks_key_store_path = \"/data/\"",
-            "ohos_security_huks_mbedtls_porting_path = \"//device/soc/bestechnic/hals/mbedtls\""
+            "huks_config_file = \"hks_config_lite.h\""
           ]
         },
         {
           "component": "device_auth",
           "features": [
-            "deviceauth_storage_path = \"/data/\"",
-            "deviceauth_hichain_thread_stack_size = 9472"
           ]
         }
       ]

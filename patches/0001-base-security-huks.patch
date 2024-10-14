@@ -1,0 +1,56 @@
+From 6b400f1a6efc2311dbdac11833cb51ef841c78ef Mon Sep 17 00:00:00 2001
+From: yangjian <jianyang@bestechnic.com>
+Date: Mon, 14 Oct 2024 10:26:33 +0800
+Subject: [PATCH] base/security/huks
+
+Signed-off-by: yangjian <jianyang@bestechnic.com>
+Change-Id: Icda859ea9a72ef76de0475182e5ad79c5e5fb5ee
+---
+ frameworks/huks_lite/BUILD.gn    | 2 +-
+ huks.gni                         | 3 +--
+ interfaces/kits/liteapi/BUILD.gn | 2 +-
+ 3 files changed, 3 insertions(+), 4 deletions(-)
+
+diff --git a/frameworks/huks_lite/BUILD.gn b/frameworks/huks_lite/BUILD.gn
+index 230be73c..7137b5f3 100644
+--- a/frameworks/huks_lite/BUILD.gn
++++ b/frameworks/huks_lite/BUILD.gn
+@@ -24,7 +24,7 @@ group("huks_sdk") {
+       deps += [ "//base/security/huks/test:unittest" ]
+     }
+   }
+-  if (os_level == "mini" && enable_huks_lite_hap) {
++  if (os_level == "mini") {
+     deps += [ "//base/security/huks/interfaces/kits/liteapi:ace_kit_huks" ]
+   }
+ }
+diff --git a/huks.gni b/huks.gni
+index 964b7f45..3f5817ad 100644
+--- a/huks.gni
++++ b/huks.gni
+@@ -37,9 +37,8 @@ if (!defined(global_parts_info) ||
+ if (!defined(global_parts_info.useriam_user_auth_framework)) {
+   enable_user_auth_framework = false
+ }
+-
+ if (os_level == "mini" && defined(global_parts_info.arkui_ace_engine_lite)) {
+-  enable_huks_lite_hap = true
++  #enable_huks_lite_hap = true
+ }
+ 
+ if (defined(global_parts_info) &&
+diff --git a/interfaces/kits/liteapi/BUILD.gn b/interfaces/kits/liteapi/BUILD.gn
+index 01e6a056..38f9ad1c 100755
+--- a/interfaces/kits/liteapi/BUILD.gn
++++ b/interfaces/kits/liteapi/BUILD.gn
+@@ -71,6 +71,6 @@ ohos_static_library("ace_kit_huks") {
+   deps += [
+     "$HUKS_PATH/interfaces/inner_api/huks_lite:huks_3.0_sdk",
+     "$ROOT_PATH/foundation/arkui/ace_engine_lite/frameworks:ace_lite",
+-    "//third_party/bounds_checking_function:libsec_shared",
++ #   "//third_party/bounds_checking_function:libsec_static",
+   ]
+ }
+-- 
+2.25.1
+
