@@ -1,4 +1,8 @@
 foundation/communication/dsoftbus:
-  - vendor/bestechnic/patches/foundation_communication_dsoftbus.patch
+  - vendor/bestechnic/patches/0001-foundation-communication-dsoftbus.patch
 build:
-  - vendor/bestechnic/patches/build.patch
+  - vendor/bestechnic/patches/0001-build.patch
+foundation/arkui/ace_engine_lite:
+  - vendor/bestechnic/patches/0001-foundation-arkui-ace_engine_lite.patch
+base/security/huks:
+  - vendor/bestechnic/patches/0001-base-security-huks.patch

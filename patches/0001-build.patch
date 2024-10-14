@@ -1,0 +1,82 @@
+From c392f2958fa68d0a99f18c7edfc6811695361f35 Mon Sep 17 00:00:00 2001
+From: yangjian <jianyang@bestechnic.com>
+Date: Mon, 14 Oct 2024 10:30:31 +0800
+Subject: [PATCH] build
+
+Signed-off-by: yangjian <jianyang@bestechnic.com>
+Change-Id: I6b69fceb6085a8048617266ba0dcab8b6d31822b
+---
+ compile_standard_whitelist.json | 15 +++++++++++++--
+ 1 file changed, 13 insertions(+), 2 deletions(-)
+
+diff --git a/compile_standard_whitelist.json b/compile_standard_whitelist.json
+index 6a5175cb..270866c2 100644
+--- a/compile_standard_whitelist.json
++++ b/compile_standard_whitelist.json
+@@ -77,6 +77,8 @@
+         "//base/security/huks/frameworks/huks_standard/main/crypto_engine:libhuks_crypto_engine_small_static",
+         "//base/security/huks/frameworks/huks_standard/main/os_dependency:libhuks_os_dependency_small_static",
+         "//base/security/huks/interfaces/inner_api/huks_lite:huks_3.0_sdk",
++        "//foundation/arkui/ace_engine_lite/frameworks:ace_lite",
++        "//third_party/bounds_checking_function:libsec_static",
+         "//base/security/huks/interfaces/inner_api/huks_lite:huks_server",
+         "//base/security/huks/services/huks_standard/huks_engine/main/core:huks_engine_core_standard",
+         "//base/security/huks/services/huks_standard/huks_service/main/core:libhuks_service_core_small_static",
+@@ -182,7 +184,8 @@
+         "//foundation/arkui/ace_engine/frameworks/core/components_ng/svg:ace_core_components_svg_ng_windows",
+         "//foundation/arkui/ace_engine/frameworks/core/components_ng/syntax:ace_core_components_syntax_ng_linux",
+         "//foundation/arkui/ace_engine/frameworks/core/components_ng/syntax:ace_core_components_syntax_ng_windows",
+-        "//foundation/arkui/ace_engine_lite/frameworks/targets/simulator:ace_lite",
++        "//foundation/arkui/ace_engine_lite/frameworks:ace_lite",
++        "//third_party/bounds_checking_function:libsec_static",
+         "//foundation/arkui/ui_lite/ext/ide:ui_ide",
+         "//foundation/communication/ipc/ipc/test/auxiliary/native:ipc_client_test",
+         "//foundation/communication/ipc/ipc/test/auxiliary/native:ipc_server_test",
+@@ -216,6 +219,7 @@
+         "//foundation/window/window_manager/test/demo:demo_system_sub_window",
+         "//foundation/window/window_manager/test/demo:demo_water_mark_listener",
+         "//foundation/window/window_manager/utils:libwmutil_static",
++        "//base/security/huks/interfaces/kits/liteapi:ace_kit_huks",
+         "//ide/tools/previewer/cli:cli_lite",
+         "//ide/tools/previewer/jsapp:jsapp_lite",
+         "//ide/tools/previewer/mock:mock_lite",
+@@ -365,6 +369,7 @@
+         "//foundation/communication/ipc/ipc/test/auxiliary/native:ipc_test_helper",
+         "//foundation/communication/ipc/ipc/test/auxiliary/native:ipc_test_helper_extra",
+         "//foundation/resourceschedule/memmgr/services/memmgrservice:memmgrservice",
++        "//base/security/huks/interfaces/kits/liteapi:ace_kit_huks",
+         "//test/xts/acts/arkui/ace_napi_test/entry/src/main/cpp:napitest",
+         "//test/xts/acts/multimedia/image/image_js_standard/imagePixelMapNDK/entry/src/main/cpp:ImagePixelMapNDKTest",
+         "//test/xts/acts/multimedia/image/image_js_standard/imageReceiverNDK/entry/src/main/cpp:ImageReceiverNDKTest",
+@@ -384,6 +389,8 @@
+         "//base/security/huks/frameworks/huks_standard/main/crypto_engine/mbedtls:libhuks_mbedtls_small_static",
+         "//base/security/huks/frameworks/huks_standard/main/os_dependency:libhuks_os_dependency_small_static",
+         "//base/security/huks/interfaces/inner_api/huks_lite:huks_3.0_sdk",
++        "//foundation/arkui/ace_engine_lite/frameworks:ace_lite",
++        "//third_party/bounds_checking_function:libsec_static",
+         "//base/security/huks/interfaces/inner_api/huks_lite:huks_server",
+         "//base/security/huks/services/huks_standard/huks_engine/main/core:huks_engine_core_standard",
+         "//base/security/huks/services/huks_standard/huks_service/main/core:libhuks_service_core_small_static",
+@@ -454,6 +461,9 @@
+         "//base/security/huks/frameworks/huks_standard/main/crypto_engine/mbedtls:libhuks_mbedtls_small_static",
+         "//base/security/huks/interfaces/inner_api/huks_lite:hks_compatibility_bin",
+         "//base/security/huks/interfaces/inner_api/huks_lite:huks_3.0_sdk",
++        "//foundation/arkui/ace_engine_lite/frameworks:ace_lite",
++        "//third_party/bounds_checking_function:libsec_static",
++        "//third_party/bounds_checking_function:libsec_static",
+         "//base/security/huks/interfaces/inner_api/huks_lite:huks_server",
+         "//base/security/huks/utils/crypto_adapter:libhuks_utils_client_service_adapter_static",
+         "//base/update/updateservice/services/engine:updateservice",
+@@ -475,7 +485,8 @@
+         "//drivers/peripheral/wlan/client:wifi_driver_client",
+         "//drivers/peripheral/wlan/hal:wifi_hal",
+         "//foundation/ability/idl_tool:idl",
+-        "//foundation/arkui/ace_engine_lite/frameworks/targets/simulator:ace_lite",
++        "//foundation/arkui/ace_engine_lite/frameworks:ace_lite",
++        "//third_party/bounds_checking_function:libsec_static",
+         "//foundation/arkui/ui_lite/ext/ide:graphic_utils_static_ide",
+         "//foundation/arkui/ui_lite/ext/ide:ui_ide",
+         "//foundation/communication/netstack/frameworks/js/napi/http:http",
+-- 
+2.25.1
+
